@@ -60,7 +60,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
          * - Access Token -> Header
          * - Refresh Token -> Cookie
          */
-        response.setHeader(ACCESS_TOKEN_HEADER_NAME, access);
+        response.setHeader(ACCESS_TOKEN_HEADER_NAME, "Bearer " + access);
         response.addCookie(cookieService.createRefreshCookie(REFRESH_TOKEN_COOKIE_NAME, refresh));
         response.setStatus(HttpStatus.OK.value());
 

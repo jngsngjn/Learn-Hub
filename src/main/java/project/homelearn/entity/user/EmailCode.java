@@ -1,0 +1,26 @@
+package project.homelearn.entity.user;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import project.homelearn.entity.curriculum.Curriculum;
+
+@Entity
+@Getter @Setter
+@Table(name = "email_code")
+public class EmailCode {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String code;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curriculum_id", nullable = false)
+    private Curriculum curriculum;
+}

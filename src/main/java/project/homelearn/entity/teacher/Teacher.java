@@ -7,9 +7,8 @@ import lombok.Setter;
 import project.homelearn.entity.user.User;
 
 @Entity
-@DiscriminatorValue("Teacher")
-@Getter
-@Setter
+@DiscriminatorValue("TEACHER")
+@Getter @Setter
 public class Teacher extends User {
 
 }

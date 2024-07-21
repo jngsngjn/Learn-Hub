@@ -21,7 +21,7 @@ public class ReissueController {
         String result = reissueService.checkRefreshToken(request);
 
         if (result == null) {
-            return new ResponseEntity<>("Refresh token is null", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Refresh token is null", HttpStatus.BAD_REQUEST); // 400
         }
 
         if (result.equals("expired")) {
@@ -35,6 +35,6 @@ public class ReissueController {
         String refreshToken = result.split(" ")[1];
         reissueService.reissueRefreshToken(refreshToken, response);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK); // 200
     }
 }

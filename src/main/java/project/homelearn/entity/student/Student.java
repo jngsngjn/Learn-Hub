@@ -11,5 +11,5 @@ import project.homelearn.entity.user.User;
 @Getter @Setter
 public class Student extends User {
 
-    private String email;
+
 }
