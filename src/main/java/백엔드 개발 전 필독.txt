@@ -1,0 +1,9 @@
+1. 노션 코드 컨벤션 정독
+2. DB -> 리포지토리 -> 서비스 -> 컨트롤러 -> DTO -> 리액트 (엔티티 그대로 반환 X)
+3. 컨트롤러에 @Controller 대신 @RestController 사용 (@ResponseBody 사용 X)
+4. 모두 지연 로딩 세팅 해놨으니 페치 조인 적극 사용
+5. 단위 테스트, POSTMAN 적극 사용
+6. DTO에 Bean Validation 사용 (서버측 검증)
+7. 쿼리 작성 시 성능에도 최대한 신경써보기 (필수는 아님)
+8. 동시성 문제 고려 (ex. HashMap 대신 ConcurrentHashMap 사용, 인스턴스 변수 지양)
+9. System.out.println() 대신 @Slf4j와 log.info() 사용

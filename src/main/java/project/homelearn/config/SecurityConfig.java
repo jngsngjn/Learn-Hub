@@ -12,16 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import project.homelearn.filter.CustomLoginFilter;
 import project.homelearn.filter.CustomLogoutFilter;
 import project.homelearn.filter.JwtFilter;
-import project.homelearn.filter.CustomLoginFilter;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtUtil;
 import project.homelearn.service.jwt.RedisTokenService;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -36,13 +33,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(auth -> auth.disable());
+        // CSRF 설정
+        http.csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        );
+
         http.formLogin(auth -> auth.disable());
         http.httpBasic(auth -> auth.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/join", "/reissue").permitAll()
+                .requestMatchers("/", "/login", "/join", "/reissue", "/api/csrf-token").permitAll()
                 .requestMatchers("/manager").hasRole("MANAGER")
+                .requestMatchers("/teacher").hasRole("TEACHER")
                 .requestMatchers("/student").hasRole("STUDENT")
                 .anyRequest().authenticated()
         );
