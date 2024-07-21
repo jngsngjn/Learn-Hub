@@ -1,4 +1,4 @@
-package project.homelearn.entity.admin;
+package project.homelearn.entity.manager;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -7,7 +7,7 @@ import lombok.Setter;
 import project.homelearn.entity.user.User;
 
 @Entity
-@DiscriminatorValue("ADMIN")
+@DiscriminatorValue("MANAGER")
 @Getter @Setter
-public class Admin extends User {
+public class Manager extends User {
 }

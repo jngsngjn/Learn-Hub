@@ -8,7 +8,7 @@ import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.FreeBoardComment;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
 import project.homelearn.entity.homework.Homework;
-import project.homelearn.entity.inquiry.AdminInquiry;
+import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.entity.user.User;
@@ -43,8 +43,8 @@ public class StudentNotification {
     private QuestionBoardComment questionBoardComment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_inquiry_id")
-    private AdminInquiry adminInquiry;
+    @JoinColumn(name = "manager_inquiry_id")
+    private ManagerInquiry managerInquiry;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_inquiry_id")

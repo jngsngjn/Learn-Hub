@@ -12,7 +12,7 @@ import project.homelearn.entity.board.scrap.QuestionScrap;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.StudentLecture;
 import project.homelearn.entity.homework.StudentHomework;
-import project.homelearn.entity.inquiry.AdminInquiry;
+import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
 import project.homelearn.entity.notification.student.StudentNotification;
 import project.homelearn.entity.vote.StudentVote;
@@ -80,7 +80,7 @@ public abstract class User extends BaseEntity {
     private List<TeacherInquiry> teacherInquiries = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AdminInquiry> adminInquiries = new ArrayList<>();
+    private List<ManagerInquiry> managerInquiries = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentLecture> studentLectures = new ArrayList<>();

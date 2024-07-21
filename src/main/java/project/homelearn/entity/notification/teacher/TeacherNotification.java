@@ -6,7 +6,7 @@ import lombok.Setter;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
 import project.homelearn.entity.curriculum.Curriculum;
-import project.homelearn.entity.inquiry.AdminInquiry;
+import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
 
 @Entity
@@ -39,6 +39,6 @@ public class TeacherNotification {
     private TeacherInquiry teacherInquiry;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_inquiry_id")
-    private AdminInquiry adminInquiry;
+    @JoinColumn(name = "manager_inquiry_id")
+    private ManagerInquiry managerInquiry;
 }

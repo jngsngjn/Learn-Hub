@@ -1,14 +1,14 @@
-package project.homelearn.entity.notification.admin;
+package project.homelearn.entity.notification.manager;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import project.homelearn.entity.inquiry.AdminInquiry;
+import project.homelearn.entity.inquiry.ManagerInquiry;
 
 @Entity
 @Getter @Setter
-@Table(name = "admin_notification")
-public class AdminNotification {
+@Table(name = "manager_notification")
+public class ManagerNotification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,9 @@ public class AdminNotification {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquiry_id", nullable = false)
-    private AdminInquiry adminInquiry;
+    private ManagerInquiry managerInquiry;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AdminNotificationType type;
+    private ManagerNotificationType type;
 }

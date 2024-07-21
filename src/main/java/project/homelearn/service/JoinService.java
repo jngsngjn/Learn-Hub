@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.JoinDto;
 import project.homelearn.entity.student.Student;
-import project.homelearn.repository.StudentRepository;
-import project.homelearn.repository.UserRepository;
+import project.homelearn.repository.user.StudentRepository;
+import project.homelearn.repository.user.UserRepository;
 
 import static project.homelearn.entity.user.Role.ROLE_STUDENT;
 

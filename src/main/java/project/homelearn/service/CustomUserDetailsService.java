@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import project.homelearn.dto.CustomUserDetails;
 import project.homelearn.entity.user.User;
-import project.homelearn.repository.UserRepository;
+import project.homelearn.repository.user.UserRepository;
 
 @Slf4j
 @Service

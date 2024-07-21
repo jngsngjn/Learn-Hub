@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import project.homelearn.dto.CustomUserDetails;
-import project.homelearn.entity.admin.Admin;
+import project.homelearn.entity.manager.Manager;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.Role;
 import project.homelearn.entity.user.User;
@@ -76,10 +76,10 @@ public class JwtFilter extends OncePerRequestFilter {
             user.setRole(ROLE_STUDENT);
         }
 
-        if (role.equals(ROLE_ADMIN)) {
-            user = new Admin();
+        if (role.equals(ROLE_MANAGER)) {
+            user = new Manager();
             user.setUsername(jwtUtil.getUsername(accessToken));
-            user.setRole(ROLE_ADMIN);
+            user.setRole(ROLE_MANAGER);
         }
 
         // 임시 세션에 저장

@@ -1,4 +1,4 @@
-package project.homelearn.entity.admin;
+package project.homelearn.entity.manager;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,8 +7,8 @@ import project.homelearn.entity.BaseEntity;
 
 @Entity
 @Getter @Setter
-@Table(name = "admin_board")
-public class AdminBoard extends BaseEntity {
+@Table(name = "manager_board")
+public class ManagerBoard extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class AdminBoard extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AdminBoardType type;
+    private ManagerBoardType type;
 
     @Column(nullable = false)
     private String title;

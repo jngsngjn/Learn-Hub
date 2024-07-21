@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class AdminController {
+public class ManagerController {
 
-    @GetMapping("/admin")
-    public String admin() {
-        return "Hello, admin!";
+    @GetMapping("/manager")
+    public String manager() {
+        return "Hello, manager!";
     }
 }
