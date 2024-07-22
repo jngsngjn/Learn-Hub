@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import project.homelearn.entity.BaseEntity;
-import project.homelearn.entity.calendar.Calendar;
+import project.homelearn.entity.calendar.ManagerCalendar;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.inquiry.TeacherInquiry;
 import project.homelearn.entity.notification.teacher.TeacherNotification;
@@ -31,6 +31,9 @@ public class Curriculum extends BaseEntity {
 
     @Column(nullable = false)
     private int th; // 기수
+
+    @Column(nullable = false)
+    private String color;
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -63,9 +66,6 @@ public class Curriculum extends BaseEntity {
     private List<Survey> surveys = new ArrayList<>();
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Calendar> calendars = new ArrayList<>();
-
-    @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeacherNotification> teacherNotifications = new ArrayList<>();
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -73,4 +73,7 @@ public class Curriculum extends BaseEntity {
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EmailCode> emailCodes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ManagerCalendar> managerCalendars = new ArrayList<>();
 }

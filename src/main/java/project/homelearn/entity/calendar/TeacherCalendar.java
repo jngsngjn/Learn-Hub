@@ -3,21 +3,25 @@ package project.homelearn.entity.calendar;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.user.User;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-public class Calendar {
+@Table(name = "teacher_calendar")
+public class TeacherCalendar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curriculum_id", nullable = false)
-    private Curriculum curriculum;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    private TeacherCalendarColor color;
 
     @Column(nullable = false)
     private String title;

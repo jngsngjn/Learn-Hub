@@ -9,6 +9,7 @@ import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.FreeBoardComment;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
 import project.homelearn.entity.board.scrap.QuestionScrap;
+import project.homelearn.entity.calendar.TeacherCalendar;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.StudentLecture;
 import project.homelearn.entity.homework.StudentHomework;
@@ -41,6 +42,8 @@ public abstract class User extends BaseEntity {
     private String password;
 
     private String name;
+
+    private String phone;
 
     @Column(unique = true)
     private String email;
@@ -96,4 +99,7 @@ public abstract class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentNotification> studentNotifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TeacherCalendar> teacherCalendars = new ArrayList<>();
 }

@@ -14,10 +14,6 @@ public class ManagerBoard extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ManagerBoardType type;
-
     @Column(nullable = false)
     private String title;
 

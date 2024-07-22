@@ -20,6 +20,10 @@ public class Lecture extends BaseEntity {
     @JoinColumn(name = "curriculum_id", nullable = false)
     private Curriculum curriculum;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    private Subject subject;
+
     @Column(nullable = false)
     private String title;
 
