@@ -13,7 +13,7 @@ import project.homelearn.repository.curriculum.CurriculumRepository;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ManagerService {
+public class ManagerCurriculumService {
 
     private final CurriculumRepository curriculumRepository;
 
@@ -21,7 +21,6 @@ public class ManagerService {
         try {
             CurriculumType type = curriculumAddDto.getType();
             Long count = curriculumRepository.findCountByType(type);
-            log.info("count = {}", count);
 
             Curriculum curriculum = new Curriculum();
             Long th = count + 1;

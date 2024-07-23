@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.CurriculumAddDto;
-import project.homelearn.service.manager.ManagerService;
+import project.homelearn.service.manager.ManagerCurriculumService;
 
 @Slf4j
 @RestController
@@ -16,7 +16,7 @@ import project.homelearn.service.manager.ManagerService;
 @RequiredArgsConstructor
 public class ManagerCurriculumController {
 
-    private final ManagerService managerService;
+    private final ManagerCurriculumService managerCurriculumService;
 
     @GetMapping
     public String manager() {
@@ -29,7 +29,7 @@ public class ManagerCurriculumController {
     public ResponseEntity<?> addCurriculum(@Valid @RequestBody CurriculumAddDto curriculumAddDto) {
         log.info("/curriculum/add 접근");
         log.info("CurriculumAddDto = {}", curriculumAddDto);
-        boolean result = managerService.addCurriculum(curriculumAddDto);
+        boolean result = managerCurriculumService.addCurriculum(curriculumAddDto);
 
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);

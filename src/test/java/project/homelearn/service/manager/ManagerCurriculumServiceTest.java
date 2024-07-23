@@ -17,20 +17,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @SpringBootTest
-class ManagerServiceTest {
+class ManagerCurriculumServiceTest {
 
     @Autowired
     private CurriculumRepository curriculumRepository;
 
     @Autowired
-    private ManagerService managerService;
+    private ManagerCurriculumService managerCurriculumService;
 
     CurriculumAddDto curriculumAddDto1;
     CurriculumAddDto curriculumAddDto2;
 
     @BeforeEach
     void before() {
-        managerService = new ManagerService(curriculumRepository);
+        managerCurriculumService = new ManagerCurriculumService(curriculumRepository);
 
         curriculumAddDto1 = new CurriculumAddDto();
         curriculumAddDto1.setType(CurriculumType.NCP);
@@ -47,8 +47,8 @@ class ManagerServiceTest {
 
     @Test
     void addCurriculum_success() {
-        managerService.addCurriculum(curriculumAddDto1);
-        managerService.addCurriculum(curriculumAddDto2);
+        managerCurriculumService.addCurriculum(curriculumAddDto1);
+        managerCurriculumService.addCurriculum(curriculumAddDto2);
 
         List<Curriculum> result = curriculumRepository.findAll();
         Curriculum th1 = result.get(0);
