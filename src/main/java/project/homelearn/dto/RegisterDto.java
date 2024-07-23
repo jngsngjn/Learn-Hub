@@ -3,7 +3,7 @@ package project.homelearn.dto;
 import lombok.Data;
 
 @Data
-public class JoinDto {
+public class RegisterDto {
 
     private String username;
 

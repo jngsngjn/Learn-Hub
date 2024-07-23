@@ -4,18 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.homelearn.dto.JoinDto;
-import project.homelearn.service.JoinService;
+import project.homelearn.dto.RegisterDto;
+import project.homelearn.service.RegisterService;
 
 @RestController
 @RequiredArgsConstructor
-public class JoinController {
+public class RegisterController {
 
-    private final JoinService joinService;
+    private final RegisterService registerService;
 
-    @PostMapping("/join")
-    public String join(@ModelAttribute JoinDto joinDto) {
-        joinService.joinProcess(joinDto);
+    @PostMapping("/register")
+    public String register(@ModelAttribute RegisterDto registerDto) {
+        registerService.registerProcess(registerDto);
         return "ok";
     }
 }
