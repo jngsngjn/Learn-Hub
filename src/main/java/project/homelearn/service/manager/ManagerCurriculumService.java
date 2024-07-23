@@ -45,9 +45,13 @@ public class ManagerCurriculumService {
         curriculum.setType(type);
 
         if (type.equals(NCP)) {
-            curriculum.setName(NCP.getDescription());
+            String ncp = NCP.getDescription();
+            curriculum.setName(ncp);
+            curriculum.setFullName(ncp + " " + th + "기");
         } else {
-            curriculum.setName(AWS.getDescription());
+            String aws = AWS.getDescription();
+            curriculum.setName(aws);
+            curriculum.setFullName(aws + " " + th + "기");
         }
         return curriculum;
     }

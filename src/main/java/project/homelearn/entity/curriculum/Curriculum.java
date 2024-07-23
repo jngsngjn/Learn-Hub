@@ -28,6 +28,9 @@ public class Curriculum extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "full_name", nullable = false, unique = true)
+    private String fullName;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CurriculumType type;

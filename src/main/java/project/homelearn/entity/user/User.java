@@ -43,6 +43,9 @@ public abstract class User extends BaseEntity {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     private String phone;
 
     @Column(unique = true)
