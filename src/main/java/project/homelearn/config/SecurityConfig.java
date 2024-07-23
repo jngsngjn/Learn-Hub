@@ -34,15 +34,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         // CSRF 설정
-        http.csrf(csrf -> csrf
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        );
+//        http.csrf(csrf -> csrf
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//        );
+
+        http.csrf(csrf -> csrf.disable());
 
         http.formLogin(auth -> auth.disable());
         http.httpBasic(auth -> auth.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/join", "/reissue", "/api/csrf-token").permitAll()
+                .requestMatchers("/", "/login", "/join", "/reissue", "/csrf-token").permitAll()
                 .requestMatchers("/manager/**").hasRole("MANAGER")
                 .requestMatchers("/teacher/**").hasRole("TEACHER")
                 .requestMatchers("/student/**").hasRole("STUDENT")
