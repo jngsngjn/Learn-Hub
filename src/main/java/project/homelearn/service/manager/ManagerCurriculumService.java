@@ -9,6 +9,8 @@ import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 
+import static project.homelearn.entity.curriculum.CurriculumType.*;
+
 @Slf4j
 @Service
 @Transactional
@@ -22,19 +24,7 @@ public class ManagerCurriculumService {
             CurriculumType type = curriculumAddDto.getType();
             Long count = curriculumRepository.findCountByType(type);
 
-            Curriculum curriculum = new Curriculum();
-            Long th = count + 1;
-            curriculum.setTh(th);
-            curriculum.setColor(curriculumAddDto.getColor());
-            curriculum.setStartDate(curriculumAddDto.getStartDate());
-            curriculum.setEndDate(curriculumAddDto.getEndDate());
-            curriculum.setType(type);
-
-            if (type.equals(CurriculumType.NCP)) {
-                curriculum.setName("네이버 클라우드 데브옵스 " + th + "기");
-            } else {
-                curriculum.setName("AWS " + th + "기");
-            }
+            Curriculum curriculum = createCurriculum(curriculumAddDto, count, type);
 
             curriculumRepository.save(curriculum);
             return true;
@@ -43,5 +33,22 @@ public class ManagerCurriculumService {
             log.error("Error adding curriculum", e);
             return false;
         }
+    }
+
+    private static Curriculum createCurriculum(CurriculumAddDto curriculumAddDto, Long count, CurriculumType type) {
+        Curriculum curriculum = new Curriculum();
+        Long th = count + 1;
+        curriculum.setTh(th);
+        curriculum.setColor(curriculumAddDto.getColor());
+        curriculum.setStartDate(curriculumAddDto.getStartDate());
+        curriculum.setEndDate(curriculumAddDto.getEndDate());
+        curriculum.setType(type);
+
+        if (type.equals(NCP)) {
+            curriculum.setName(NCP.getDescription());
+        } else {
+            curriculum.setName(AWS.getDescription());
+        }
+        return curriculum;
     }
 }
