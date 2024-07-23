@@ -22,4 +22,5 @@ public class ManagerStudentDto {
 
     @NotNull
     private String email;
+
 }

@@ -23,11 +23,40 @@ public class ManagerStudentService {
 
     private final StudentRepository studentRepository;
 
+    //필터링 x : 전체 학생 조회
     public Page<ManagerStudentDto> getStudents(int size, int page){
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> studentPage = studentRepository.findAllByOrderByCreatedDateDesc(pageable);
 
-        List<ManagerStudentDto> studentDtos = studentPage.stream()
+        List<ManagerStudentDto> studentDto = getManagerStudentDto(studentPage);
+
+        return new PageImpl<>(studentDto, pageable, studentPage.getTotalElements());
+    }
+
+    //필터링 o : 교육과정명 기준 학생 조회
+    public Page<ManagerStudentDto> getStudentsWithCurriculumName(int size, int page, String curriculumName){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> studentPage = studentRepository.findByCurriculumName(pageable, curriculumName);
+
+        List<ManagerStudentDto> studentDto = getManagerStudentDto(studentPage);
+
+        return new PageImpl<>(studentDto, pageable, studentPage.getTotalElements());
+    }
+
+
+    //필터링 o : 기수 + 교육과정명 기준 학생 조회
+    public Page<ManagerStudentDto> getStudentsWithCurriculumNameAndCurriculumTh(int size, int page, String curriculumName, Long curriculumTh){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> studentPage = studentRepository.findByCurriculumThAndCurriculumName(pageable, curriculumName, curriculumTh);
+
+        List<ManagerStudentDto> studentDto =getManagerStudentDto(studentPage);
+
+        return new PageImpl<>(studentDto, pageable, studentPage.getTotalElements());
+    }
+
+    //학생 DTO 매핑 메소드
+    private static List<ManagerStudentDto> getManagerStudentDto(Page<Student> studentPage) {
+        return studentPage.stream()
                 .map(student -> new ManagerStudentDto(
                         student.getName(),
                         student.getCurriculum().getTh(),
@@ -35,7 +64,5 @@ public class ManagerStudentService {
                         student.getPhone(),
                         student.getEmail()))
                 .collect(Collectors.toList());
-
-        return new PageImpl<>(studentDtos, pageable, studentPage.getTotalElements());
     }
 }
