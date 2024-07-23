@@ -56,6 +56,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // POI Core
+    implementation 'org.apache.poi:poi:5.2.3'
+
+    // POI OOXML for .xlsx files
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
