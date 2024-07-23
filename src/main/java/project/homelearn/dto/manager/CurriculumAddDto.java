@@ -1,5 +1,6 @@
 package project.homelearn.dto.manager;
 
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class CurriculumAddDto {
     @NotNull
     private LocalDate startDate;
 
+    @Future
     @NotNull
     private LocalDate endDate;
 
