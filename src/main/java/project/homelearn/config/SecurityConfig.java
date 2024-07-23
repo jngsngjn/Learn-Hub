@@ -43,9 +43,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login", "/join", "/reissue", "/api/csrf-token").permitAll()
-                .requestMatchers("/manager").hasRole("MANAGER")
-                .requestMatchers("/teacher").hasRole("TEACHER")
-                .requestMatchers("/student").hasRole("STUDENT")
+                .requestMatchers("/manager/**").hasRole("MANAGER")
+                .requestMatchers("/teacher/**").hasRole("TEACHER")
+                .requestMatchers("/student/**").hasRole("STUDENT")
                 .anyRequest().authenticated()
         );
 
