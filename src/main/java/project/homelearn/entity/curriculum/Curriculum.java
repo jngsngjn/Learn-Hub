@@ -41,12 +41,6 @@ public class Curriculum extends BaseEntity {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @Column(name = "image_name", nullable = false)
-    private String imageName;
-
-    @Column(name = "image_path", nullable = false)
-    private String imagePath;
-
     @OneToOne(mappedBy = "curriculum", fetch = FetchType.LAZY)
     private User user;
 
