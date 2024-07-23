@@ -14,7 +14,7 @@ import project.homelearn.service.manager.ManagerService;
 @RestController
 @RequestMapping("/manager")
 @RequiredArgsConstructor
-public class ManagerController {
+public class ManagerCurriculumController {
 
     private final ManagerService managerService;
 
