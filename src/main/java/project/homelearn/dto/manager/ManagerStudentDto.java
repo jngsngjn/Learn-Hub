@@ -23,4 +23,7 @@ public class ManagerStudentDto {
     @NotNull
     private String email;
 
+    @NotNull
+    private boolean isAttend;
+
 }
