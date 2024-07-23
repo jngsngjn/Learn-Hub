@@ -33,7 +33,7 @@ public class Curriculum extends BaseEntity {
     private CurriculumType type;
 
     @Column(nullable = false)
-    private int th; // 기수
+    private Long th; // 기수
 
     @Column(nullable = false)
     private String color;

@@ -4,5 +4,5 @@ import project.homelearn.entity.curriculum.CurriculumType;
 
 public interface CurriculumRepositoryCustom {
 
-    int findCountByType(CurriculumType type);
+    Long findCountByType(CurriculumType type);
 }

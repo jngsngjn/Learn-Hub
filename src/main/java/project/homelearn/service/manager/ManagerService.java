@@ -20,10 +20,11 @@ public class ManagerService {
     public boolean addCurriculum(CurriculumAddDto curriculumAddDto) {
         try {
             CurriculumType type = curriculumAddDto.getType();
-            int count = curriculumRepository.findCountByType(type);
+            Long count = curriculumRepository.findCountByType(type);
+            log.info("count = {}", count);
 
             Curriculum curriculum = new Curriculum();
-            int th = count + 1;
+            Long th = count + 1;
             curriculum.setTh(th);
             curriculum.setColor(curriculumAddDto.getColor());
             curriculum.setStartDate(curriculumAddDto.getStartDate());

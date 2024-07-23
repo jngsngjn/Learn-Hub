@@ -14,14 +14,14 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public int findCountByType(CurriculumType type) {
+    public Long findCountByType(CurriculumType type) {
         return queryFactory
-                .selectFrom(curriculum)
+                .select(curriculum.count())
+                .from(curriculum)
                 .where(
                         curriculum.type.eq(type),
                         curriculum.endDate.after(LocalDate.now())
                 )
-                .fetch()
-                .size();
+                .fetchOne();
     }
 }
