@@ -22,3 +22,12 @@ public class CurriculumAddDto {
     @NotBlank
     private String color;
 }
+
+/*
+{
+  "type": "NCP",
+  "startDate": "2024-02-22",
+  "endDate": "2024-06-22",
+  "color": "blue"
+}
+ */
