@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.CurriculumAddDto;
 import project.homelearn.service.manager.ManagerCurriculumService;
@@ -20,15 +19,11 @@ public class ManagerCurriculumController {
 
     @GetMapping
     public String manager() {
-        String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
-        log.info("role = {}", role);
         return "Hello, manager!";
     }
 
     @PostMapping("/curriculum/add")
     public ResponseEntity<?> addCurriculum(@Valid @RequestBody CurriculumAddDto curriculumAddDto) {
-        log.info("/curriculum/add 접근");
-        log.info("CurriculumAddDto = {}", curriculumAddDto);
         boolean result = managerCurriculumService.addCurriculum(curriculumAddDto);
 
         if (result) {

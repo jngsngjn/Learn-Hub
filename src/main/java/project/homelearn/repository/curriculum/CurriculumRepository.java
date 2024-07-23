@@ -5,4 +5,6 @@ import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.repository.curriculum.querydsl.CurriculumRepositoryCustom;
 
 public interface CurriculumRepository extends JpaRepository<Curriculum, Long>, CurriculumRepositoryCustom {
+
+    Curriculum findByFullName(String fullName);
 }

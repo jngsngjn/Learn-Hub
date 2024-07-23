@@ -67,7 +67,7 @@ public class ReissueService {
         redisTokenService.deleteByRefreshToken(refreshToken);
         redisTokenService.saveRefreshToken(username, newRefresh, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION));
 
-        response.setHeader(ACCESS_TOKEN_HEADER_NAME, newAccess);
+        response.setHeader(ACCESS_TOKEN_HEADER_NAME, "Bearer " + newAccess);
         response.addCookie(cookieService.createRefreshCookie(REFRESH_TOKEN_COOKIE_NAME, newRefresh));
     }
 }

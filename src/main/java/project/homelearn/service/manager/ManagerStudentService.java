@@ -1,5 +1,6 @@
 package project.homelearn.service.manager;
 
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -9,7 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.ManagerStudentDto;
+import project.homelearn.dto.manager.StudentAddDto;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
+import project.homelearn.entity.user.EmailCode;
+import project.homelearn.repository.curriculum.CurriculumRepository;
+import project.homelearn.repository.user.EmailCodeRepository;
 import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.StudentRepository;
@@ -22,13 +28,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Transactional
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ManagerStudentService {
 
+    private final EmailCodeService emailCodeService;
+
     private final StudentRepository studentRepository;
     private final LoginHistoryRepository loginHistoryRepository;
+    private final EmailCodeRepository emailCodeRepository;
+    private final CurriculumRepository curriculumRepository;
 
     //필터링 x : 전체 학생 조회
     public Page<ManagerStudentDto> getStudents(int size, int page){
@@ -89,5 +99,21 @@ public class ManagerStudentService {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
         return loginHistoryRepository.findByLoginDateTimeBetween(startOfDay, endOfDay);
+    }
+
+    // 학생 등록 (상담 후)
+    public boolean addStudent(StudentAddDto studentAddDto) throws MessagingException {
+        String email = studentAddDto.getEmail();
+        String code = emailCodeService.sendVerificationCode(email);
+        Curriculum curriculum = curriculumRepository.findByFullName(studentAddDto.getCurriculumFullName());
+        log.info("fullName = {}", studentAddDto.getCurriculumFullName());
+
+        EmailCode emailCode = new EmailCode();
+        emailCode.setName(studentAddDto.getName());
+        emailCode.setEmail(email);
+        emailCode.setCurriculum(curriculum);
+        emailCode.setCode(code);
+        emailCodeRepository.save(emailCode);
+        return true;
     }
 }
