@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.homelearn.dto.manager.inquiry.ManagerInquiryDto;
+import project.homelearn.dto.manager.inquiry.ManagerResponseDto;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -60,6 +62,39 @@ public class ManagerInquiryService {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findTeacherInquiriesWithCurriculumNameAndCurriculumTh(curriculumName, curriculumTh);
 
         return getManagerInquiryDtoList(managerInquiries);
+    }
+
+    //문의 내역 상세보기
+    public ManagerInquiryDto getOneManagerInquiryDtoById(Long id) {
+        Optional<ManagerInquiry> managerInquiry = managerInquiryRepository.findById(id);
+
+        if (managerInquiry.isPresent()) {
+            ManagerInquiry inquiry = managerInquiry.get();
+            return new ManagerInquiryDto(
+                    inquiry.getId(),
+                    inquiry.getTitle(),
+                    inquiry.getContent(),
+                    inquiry.getCreatedDate(),
+                    inquiry.getUser(),
+                    inquiry.getResponse(),
+                    inquiry.getResponseDate()
+            );
+        }
+        return null;
+    }
+
+    //매니저가 문의 내역 답변달기
+    public boolean addResponse(ManagerResponseDto managerResponseDto, Long inquiryId){
+        Optional<ManagerInquiry> managerInquiry = managerInquiryRepository.findById(inquiryId);
+
+        if (managerInquiry.isPresent()) {
+            ManagerInquiry inquiry = managerInquiry.get();
+            inquiry.setResponse(managerResponseDto.getResponse());
+            inquiry.setResponseDate(managerResponseDto.getResponseDate());
+            managerInquiryRepository.save(inquiry);
+            return true;
+        }
+        return false;
     }
 
 

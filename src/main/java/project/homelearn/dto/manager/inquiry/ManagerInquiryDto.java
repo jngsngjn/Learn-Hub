@@ -29,4 +29,9 @@ public class ManagerInquiryDto {
     private String response;
 
     private LocalDateTime responseDate;
+
+    public ManagerInquiryDto(String response, LocalDateTime responseDate) {
+        this.response = response;
+        this.responseDate = responseDate;
+    }
 }

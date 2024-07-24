@@ -20,7 +20,7 @@ public class ManagerStudentController {
     private final ManagerStudentService managerStudentService;
 
     @GetMapping("/manage-student")
-    public Page<ManagerStudentDto> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
+    public ResponseEntity<?> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
                                                @RequestParam(name = "curriculumName", required = false) String curriculumName,
                                                @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
@@ -33,7 +33,10 @@ public class ManagerStudentController {
             students = managerStudentService.getStudents(15, page);
         }
 
-        return students;
+        if(students != null && !students.isEmpty()){
+            return ResponseEntity.status(HttpStatus.OK).body(students);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     // 학생 등록
