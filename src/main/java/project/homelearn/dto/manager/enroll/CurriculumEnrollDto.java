@@ -35,6 +35,7 @@ public class CurriculumEnrollDto {
   "color": "blue"
 }
 
+강사 등록 시
 {
   "type": "NCP",
   "startDate": "2024-02-22",

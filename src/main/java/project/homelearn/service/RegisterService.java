@@ -7,10 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.RegisterDto;
 import project.homelearn.entity.student.Student;
-import project.homelearn.repository.user.StudentRepository;
+import project.homelearn.entity.teacher.Teacher;
+import project.homelearn.entity.user.EnrollList;
+import project.homelearn.entity.user.Gender;
+import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.UserRepository;
 
 import static project.homelearn.entity.user.Role.ROLE_STUDENT;
+import static project.homelearn.entity.user.Role.ROLE_TEACHER;
 
 @Slf4j
 @Service
@@ -19,23 +23,60 @@ import static project.homelearn.entity.user.Role.ROLE_STUDENT;
 public class RegisterService {
 
     private final UserRepository userRepository;
-    private final StudentRepository studentRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final EnrollListRepository enrollListRepository;
 
-    public void registerProcess(RegisterDto registerDto) {
-        String username = registerDto.getUsername();
-        String password = registerDto.getPassword();
+    public boolean registerProcess(RegisterDto registerDto) {
+        Gender gender = registerDto.getGender();
+        String email = registerDto.getEmail();
 
-        if (userRepository.existsByUsername(username)) {
-            log.info("이미 존재하는 아이디로 회원가입 시도 = {}", username);
-            return;
+        try {
+            if (gender != null) {
+                registerStudent(registerDto, gender, email);
+            } else {
+                registerTeacher(registerDto, email);
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("Error registering : ", e);
+            return false;
         }
+    }
 
+    private void registerStudent(RegisterDto registerDto, Gender gender, String email) {
         Student student = new Student();
-        student.setUsername(username);
-        student.setPassword(passwordEncoder.encode(password));
-        student.setEmail(registerDto.getEmail());
+        student.setUsername(registerDto.getUsername());
+        student.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        student.setName(registerDto.getName());
+        student.setGender(gender);
+        student.setPhone(registerDto.getPhone());
+        student.setEmail(email);
+
+        EnrollList enroll = enrollListRepository.findByEmail(email);
+        student.setCurriculum(enroll.getCurriculum());
         student.setRole(ROLE_STUDENT);
-        studentRepository.save(student);
+        userRepository.save(student);
+
+        deleteEnrollList(email);
+    }
+
+    private void registerTeacher(RegisterDto registerDto, String email) {
+        Teacher teacher = new Teacher();
+        teacher.setUsername(registerDto.getUsername());
+        teacher.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        teacher.setName(registerDto.getName());
+        teacher.setPhone(registerDto.getPhone());
+        teacher.setEmail(email);
+
+        EnrollList enroll = enrollListRepository.findByEmail(email);
+        teacher.setCurriculum(enroll.getCurriculum());
+        teacher.setRole(ROLE_TEACHER);
+        userRepository.save(teacher);
+
+        deleteEnrollList(email);
+    }
+
+    private void deleteEnrollList(String email) {
+        enrollListRepository.deleteByEmail(email);
     }
 }
