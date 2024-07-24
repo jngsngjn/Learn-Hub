@@ -15,7 +15,6 @@ import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;
 import project.homelearn.repository.curriculum.CurriculumRepository;
-import project.homelearn.repository.user.EmailCodeRepository;
 import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.EnrollListRepository;
@@ -39,7 +38,6 @@ public class ManagerStudentService {
     private final StudentRepository studentRepository;
     private final EnrollListRepository enrollListRepository;
     private final LoginHistoryRepository loginHistoryRepository;
-    private final EmailCodeRepository emailCodeRepository;
     private final CurriculumRepository curriculumRepository;
 
     //필터링 x : 전체 학생 조회
