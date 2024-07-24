@@ -25,11 +25,14 @@ public class ManagerStudentController {
                                                @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
         Page<ManagerStudentDto> students;
-        if (curriculumName != null && !curriculumName.isEmpty()) {
+        if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()) {
+            students = managerStudentService.getStudentsWithCurriculumNameAndCurriculumTh(15, page, curriculumName, curriculumTh);
+        } else if (curriculumName != null && !curriculumName.isEmpty()) {
             students = managerStudentService.getStudentsWithCurriculumName(15, page, curriculumName);
         } else {
             students = managerStudentService.getStudents(15, page);
         }
+
 
         return students;
     }

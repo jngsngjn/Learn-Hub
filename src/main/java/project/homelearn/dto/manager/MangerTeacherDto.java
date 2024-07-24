@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ManagerStudentDto {
+public class MangerTeacherDto {
 
     @NotNull
     private String name;
@@ -22,8 +22,5 @@ public class ManagerStudentDto {
 
     @NotNull
     private String email;
-
-    @NotNull
-    private boolean isAttend;
 
 }
