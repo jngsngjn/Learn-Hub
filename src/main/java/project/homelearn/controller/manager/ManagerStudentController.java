@@ -33,7 +33,6 @@ public class ManagerStudentController {
             students = managerStudentService.getStudents(15, page);
         }
 
-
         return students;
     }
 

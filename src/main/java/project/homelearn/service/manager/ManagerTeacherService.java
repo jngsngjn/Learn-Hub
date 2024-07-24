@@ -67,8 +67,8 @@ public class ManagerTeacherService {
         return teacherPage.stream()
                 .map(teacher -> new MangerTeacherDto(
                         teacher.getName(),
-                        teacher.getCurriculum().getTh(),
-                        teacher.getCurriculum().getName(),
+                        teacher.getCurriculum() != null ? teacher.getCurriculum().getTh() : null,
+                        teacher.getCurriculum() != null ? teacher.getCurriculum().getName() : null,
                         teacher.getPhone(),
                         teacher.getEmail()
                 ))
