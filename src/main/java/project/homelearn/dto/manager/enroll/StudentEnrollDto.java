@@ -1,4 +1,4 @@
-package project.homelearn.dto.manager;
+package project.homelearn.dto.manager.enroll;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -17,6 +17,10 @@ public class StudentEnrollDto {
 
     @NotBlank
     private String curriculumFullName;
+
+    /*
+    성별 추가해야 함
+     */
 }
 /*
 {

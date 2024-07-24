@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.ManagerStudentDto;
-import project.homelearn.dto.manager.StudentEnrollDto;
+import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ManagerStudentService {
 
-    private final EnrollService enrollService;
+    private final EmailService emailService;
 
     private final StudentRepository studentRepository;
     private final EnrollListRepository enrollListRepository;
@@ -78,7 +78,7 @@ public class ManagerStudentService {
     // 학생 등록 (상담 후)
     public boolean enrollStudent(StudentEnrollDto studentEnrollDto) {
         String email = studentEnrollDto.getEmail();
-        String code = enrollService.sendCode(email);
+        String code = emailService.sendCode(email);
         if (code == null) {
             return false;
         }

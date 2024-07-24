@@ -1,4 +1,4 @@
-package project.homelearn.dto.manager;
+package project.homelearn.dto.manager.enroll;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ import project.homelearn.entity.curriculum.CurriculumType;
 import java.time.LocalDate;
 
 @Data
-public class CurriculumAddDto {
+public class CurriculumEnrollDto {
 
     @NotNull
     private CurriculumType type;
@@ -23,6 +23,10 @@ public class CurriculumAddDto {
 
     @NotBlank
     private String color;
+
+    /*
+    강사 추가해야 함
+     */
 }
 
 /*

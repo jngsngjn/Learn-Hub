@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.CurriculumAddDto;
+import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.service.manager.ManagerCurriculumService;
 
 @Slf4j
@@ -23,8 +23,8 @@ public class ManagerCurriculumController {
     }
 
     @PostMapping("/curriculum/add")
-    public ResponseEntity<?> addCurriculum(@Valid @RequestBody CurriculumAddDto curriculumAddDto) {
-        boolean result = managerCurriculumService.addCurriculum(curriculumAddDto);
+    public ResponseEntity<?> addCurriculum(@Valid @RequestBody CurriculumEnrollDto curriculumEnrollDto) {
+        boolean result = managerCurriculumService.addCurriculum(curriculumEnrollDto);
 
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);

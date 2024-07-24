@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EnrollService {
+public class EmailService {
 
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;

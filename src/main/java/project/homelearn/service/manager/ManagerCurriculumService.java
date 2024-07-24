@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.manager.CurriculumAddDto;
+import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.repository.curriculum.CurriculumRepository;
@@ -19,12 +19,12 @@ public class ManagerCurriculumService {
 
     private final CurriculumRepository curriculumRepository;
 
-    public boolean addCurriculum(CurriculumAddDto curriculumAddDto) {
+    public boolean addCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
         try {
-            CurriculumType type = curriculumAddDto.getType();
+            CurriculumType type = curriculumEnrollDto.getType();
             Long count = curriculumRepository.findCountByType(type);
 
-            Curriculum curriculum = createCurriculum(curriculumAddDto, count, type);
+            Curriculum curriculum = createCurriculum(curriculumEnrollDto, count, type);
 
             curriculumRepository.save(curriculum);
             return true;
@@ -35,13 +35,13 @@ public class ManagerCurriculumService {
         }
     }
 
-    private static Curriculum createCurriculum(CurriculumAddDto curriculumAddDto, Long count, CurriculumType type) {
+    private static Curriculum createCurriculum(CurriculumEnrollDto curriculumEnrollDto, Long count, CurriculumType type) {
         Curriculum curriculum = new Curriculum();
         Long th = count + 1;
         curriculum.setTh(th);
-        curriculum.setColor(curriculumAddDto.getColor());
-        curriculum.setStartDate(curriculumAddDto.getStartDate());
-        curriculum.setEndDate(curriculumAddDto.getEndDate());
+        curriculum.setColor(curriculumEnrollDto.getColor());
+        curriculum.setStartDate(curriculumEnrollDto.getStartDate());
+        curriculum.setEndDate(curriculumEnrollDto.getEndDate());
         curriculum.setType(type);
 
         if (type.equals(NCP)) {
