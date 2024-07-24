@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import project.homelearn.dto.common.register.RegisterDto;
+import project.homelearn.dto.common.register.UsernameDto;
 import project.homelearn.service.common.RegisterService;
 
 @Slf4j
@@ -29,5 +30,15 @@ public class RegisterController {
         }
     }
 
+    @PostMapping("/register/id-duplicate-check")
+    public ResponseEntity<?> checkId(@Valid @RequestBody UsernameDto usernameDto) {
+        String username = usernameDto.getUsername();
+        boolean duplicated = registerService.duplicateId(username);
 
+        if (!duplicated) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -40,6 +40,10 @@ public class RegisterService {
         return registerInfoDto;
     }
 
+    public boolean duplicateId(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
     public boolean registerProcess(RegisterDto registerDto) {
         Gender gender = registerDto.getGender();
         String email = registerDto.getEmail();
