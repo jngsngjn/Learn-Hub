@@ -79,7 +79,6 @@ public class ManagerStudentController {
      */
     @DeleteMapping("/manage-students")
     public ResponseEntity<?> deleteStudents(@RequestBody List<Long> ids) {
-        System.out.println("ids = " + ids);
         if (ids == null || ids.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

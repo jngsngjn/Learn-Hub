@@ -9,7 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.MangerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
+import project.homelearn.dto.manager.manage.TeacherUpdateDto;
 import project.homelearn.service.manager.ManagerTeacherService;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -48,5 +51,42 @@ public class ManagerTeacherController {
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // 강사 정보 수정
+    @PatchMapping("/manage-teachers/{id}")
+    public ResponseEntity<?> updateTeacher(@PathVariable("id") Long id,
+                                           @Valid @RequestBody TeacherUpdateDto teacherUpdateDto) {
+        boolean result = managerTeacherService.updateTeacher(id, teacherUpdateDto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 강사 1명 삭제
+    @DeleteMapping("/manage-teachers/{id}")
+    public ResponseEntity<?> deleteTeacher(@PathVariable("id") Long id) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        managerTeacherService.deleteTeacher(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * 강사 여러 명 삭제
+     * Request : JSON, [1, 2, 3, 4, 5]
+     */
+    @DeleteMapping("/manage-teachers")
+    public ResponseEntity<?> deleteTeachers(@RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        managerTeacherService.deleteTeachers(ids);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

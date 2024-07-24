@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.MangerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
+import project.homelearn.dto.manager.manage.TeacherUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.entity.user.EnrollList;
@@ -97,5 +98,29 @@ public class ManagerTeacherService {
         enrollList.setPhone(teacherEnrollDto.getPhone());
         enrollListRepository.save(enrollList);
         return true;
+    }
+
+    public boolean updateTeacher(Long teacherId, TeacherUpdateDto teacherUpdateDto) {
+        try {
+            Curriculum curriculum = curriculumRepository.findById(teacherUpdateDto.getCurriculumId()).orElseThrow();
+
+            Teacher teacher = teacherRepository.findById(teacherId).orElseThrow();
+            teacher.setName(teacherUpdateDto.getName());
+            teacher.setEmail(teacherUpdateDto.getEmail());
+            teacher.setPhone(teacherUpdateDto.getPhone());
+            teacher.setCurriculum(curriculum);
+            return true;
+        } catch (Exception e) {
+            log.error("Error update teacher", e);
+            return false;
+        }
+    }
+
+    public void deleteTeacher(Long id) {
+        teacherRepository.deleteById(id);
+    }
+
+    public void deleteTeachers(List<Long> ids) {
+        teacherRepository.deleteAllById(ids);
     }
 }
