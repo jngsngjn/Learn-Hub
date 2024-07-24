@@ -1,4 +1,4 @@
-package project.homelearn.controller;
+package project.homelearn.controller.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.csrf.CsrfToken;

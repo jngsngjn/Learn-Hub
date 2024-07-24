@@ -22,8 +22,9 @@ public class ManagerCurriculumController {
         return "Hello, manager!";
     }
 
-    @PostMapping("/curriculum/add")
-    public ResponseEntity<?> addCurriculum(@Valid @RequestBody CurriculumEnrollDto curriculumEnrollDto) {
+    // 교육 과정 등록
+    @PostMapping("/curriculum/enroll")
+    public ResponseEntity<?> enrollCurriculum(@Valid @RequestBody CurriculumEnrollDto curriculumEnrollDto) {
         boolean result = managerCurriculumService.enrollCurriculum(curriculumEnrollDto);
 
         if (result) {

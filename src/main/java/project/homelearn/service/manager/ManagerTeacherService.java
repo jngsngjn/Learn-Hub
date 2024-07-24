@@ -75,6 +75,10 @@ public class ManagerTeacherService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 강사 등록
+     * Author : 정성진
+     */
     public boolean enrollTeacher(TeacherEnrollDto teacherEnrollDto) {
         String email = teacherEnrollDto.getEmail();
         String code = emailService.sendCode(email);

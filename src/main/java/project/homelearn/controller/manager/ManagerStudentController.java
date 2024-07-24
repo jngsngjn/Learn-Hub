@@ -37,6 +37,7 @@ public class ManagerStudentController {
         return students;
     }
 
+    // 학생 등록
     @PostMapping("/manage-student/enroll")
     public ResponseEntity<?> enrollStudent(@Valid @RequestBody StudentEnrollDto studentEnrollDto) {
         boolean result = managerStudentService.enrollStudent(studentEnrollDto);

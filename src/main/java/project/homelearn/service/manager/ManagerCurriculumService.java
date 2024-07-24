@@ -39,8 +39,9 @@ public class ManagerCurriculumService {
     }
 
     private Curriculum createCurriculum(CurriculumEnrollDto curriculumEnrollDto, Long count, CurriculumType type) {
-        Curriculum curriculum = new Curriculum();
         Long th = count + 1;
+
+        Curriculum curriculum = new Curriculum();
         curriculum.setTh(th);
         curriculum.setColor(curriculumEnrollDto.getColor());
         curriculum.setStartDate(curriculumEnrollDto.getStartDate());

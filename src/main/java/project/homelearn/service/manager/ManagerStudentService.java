@@ -35,9 +35,9 @@ public class ManagerStudentService {
     private final EmailService emailService;
 
     private final StudentRepository studentRepository;
+    private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
     private final LoginHistoryRepository loginHistoryRepository;
-    private final CurriculumRepository curriculumRepository;
 
     //필터링 x : 전체 학생 조회
     public Page<ManagerStudentDto> getStudents(int size, int page){
@@ -100,7 +100,10 @@ public class ManagerStudentService {
         return loginHistoryRepository.findByLoginDateTimeBetween(startOfDay, endOfDay);
     }
 
-    // 학생 등록 (상담 후)
+    /**
+     * 학생 등록
+     * Author : 정성진
+     */
     public boolean enrollStudent(StudentEnrollDto studentEnrollDto) {
         String email = studentEnrollDto.getEmail();
         String code = emailService.sendCode(email);
