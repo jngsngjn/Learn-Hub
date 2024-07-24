@@ -1,46 +1,23 @@
 import React from 'react';
-import CourseProgress from './CourseProgress';
-import Calendar from './Calendar';
-import MessageBox from './MessageBox';
-import SettingList from './SettingList';
 import './Dashboard.css';
 
 const Dashboard = () => {
   return (
     <div className="dashboard">
-      <div className="sidebar">
+      <div className="dashboard-item">
+        <h3>설문 조사</h3>
         <ul>
-          <li>대시보드</li>
-          <li>교육 과정</li>
-          <li>학생 관리</li>
-          <li>강사 관리</li>
-          <li>공지사항</li>
-          <li>문의
-            <ul>
-              <li>학생 문의</li>
-              <li>강사 문의</li>
-            </ul>
-          </li>
+          <li>네이버 클라우드 네트워크 만족도 설문조사</li>
+          <li>네이버 클라우드 네트워크 만족도 설문조사</li>
         </ul>
       </div>
-      <div className="content">
-        <div className="header">
-          <div className="date">2024.08.26 (월)</div>
-        </div>
-        <div className="main">
-          <div className="course-progress">
-            <CourseProgress />
-          </div>
-          <div className="calendar">
-            <Calendar />
-          </div>
-          <div className="survey">
-            <SettingList />
-          </div>
-          <div className="messages">
-            <MessageBox />
-          </div>
-        </div>
+      <div className="dashboard-item">
+        <h3>1:1 문의 내역</h3>
+        <div className="message-count">12</div>
+      </div>
+      <div className="dashboard-item">
+        <h3>1:1 문의 내역</h3>
+        <div className="message-count">12</div>
       </div>
     </div>
   );
