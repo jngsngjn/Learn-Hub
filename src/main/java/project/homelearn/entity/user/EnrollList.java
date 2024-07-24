@@ -7,8 +7,8 @@ import project.homelearn.entity.curriculum.Curriculum;
 
 @Entity
 @Getter @Setter
-@Table(name = "email_code")
-public class EmailCode {
+@Table(name = "enroll_list")
+public class EnrollList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

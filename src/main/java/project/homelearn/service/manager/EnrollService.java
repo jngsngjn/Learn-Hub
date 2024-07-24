@@ -1,6 +1,5 @@
 package project.homelearn.service.manager;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EmailCodeService {
+public class EnrollService {
 
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
@@ -30,28 +29,36 @@ public class EmailCodeService {
     private static final int ALPHABET_COUNT = 3;
     private static final int DIGIT_COUNT = 3;
 
-    public String sendVerificationCode(String to) throws MessagingException {
-        String verificationCode = generateVerificationCode();
+    public String sendCode(String to) {
+        String code = generateCode();
 
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 
-        Context context = new Context();
-        context.setVariable("verificationCode", verificationCode);
-        String html = templateEngine.process("email/verificationEmail", context);
+            // 이메일 템플릿에 인증 코드 변수 설정
+            Context context = new Context();
+            context.setVariable("code", code);
+            String html = templateEngine.process("email/codeEmail", context);
 
-        helper.setTo(to);
-        helper.setSubject("[Home Learn] 회원가입 인증 코드");
-        helper.setText(html, true);
+            // 이메일 설정
+            helper.setTo(to);
+            helper.setSubject("[Home Learn] 회원가입 인증 코드");
+            helper.setText(html, true);
 
-        javaMailSender.send(message);
-        log.info("toEmail = {}", to);
-        log.info("verificationCode = {}", verificationCode);
+            // 이메일 전송
+            javaMailSender.send(message);
+            log.info("toEmail = {}", to);
+            log.info("code = {}", code);
 
-        return verificationCode;
+            return code;
+        } catch (Exception e) {
+            log.error("Error sending email", e);
+            return null;
+        }
     }
 
-    private String generateVerificationCode() {
+    private String generateCode() {
         SecureRandom random = new SecureRandom();
         StringBuilder code = new StringBuilder(ALPHABET_COUNT + DIGIT_COUNT);
 

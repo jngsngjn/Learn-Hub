@@ -1,10 +1,10 @@
 package project.homelearn.repository.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import project.homelearn.entity.user.EmailCode;
+import project.homelearn.entity.user.EnrollList;
 
-public interface EmailCodeRepository extends JpaRepository<EmailCode, Long> {
-    EmailCode findByEmail(String email);
+public interface EnrollListRepository extends JpaRepository<EnrollList, Long> {
+    EnrollList findByEmail(String email);
 
     boolean existsByEmail(String email);
 
