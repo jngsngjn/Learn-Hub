@@ -1,6 +1,5 @@
 package project.homelearn.service.manager;
 
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,10 +13,10 @@ import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;
-import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.entity.user.LoginHistory;
-import project.homelearn.repository.user.LoginHistoryRepository;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.EnrollListRepository;
+import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.StudentRepository;
 
 import java.time.LocalDate;
@@ -113,9 +112,10 @@ public class ManagerStudentService {
 
         EnrollList enrollList = new EnrollList();
         enrollList.setName(studentEnrollDto.getName());
+        enrollList.setGender(studentEnrollDto.getGender());
         enrollList.setEmail(email);
-        enrollList.setCurriculum(curriculum);
         enrollList.setCode(code);
+        enrollList.setCurriculum(curriculum);
         enrollListRepository.save(enrollList);
         return true;
     }

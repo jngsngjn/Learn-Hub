@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
+import project.homelearn.entity.user.User;
 import project.homelearn.repository.curriculum.CurriculumRepository;
+import project.homelearn.repository.user.UserRepository;
 
 import static project.homelearn.entity.curriculum.CurriculumType.*;
 
@@ -17,9 +19,10 @@ import static project.homelearn.entity.curriculum.CurriculumType.*;
 @RequiredArgsConstructor
 public class ManagerCurriculumService {
 
+    private final UserRepository userRepository;
     private final CurriculumRepository curriculumRepository;
 
-    public boolean addCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
+    public boolean enrollCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
         try {
             CurriculumType type = curriculumEnrollDto.getType();
             Long count = curriculumRepository.findCountByType(type);
@@ -35,7 +38,7 @@ public class ManagerCurriculumService {
         }
     }
 
-    private static Curriculum createCurriculum(CurriculumEnrollDto curriculumEnrollDto, Long count, CurriculumType type) {
+    private Curriculum createCurriculum(CurriculumEnrollDto curriculumEnrollDto, Long count, CurriculumType type) {
         Curriculum curriculum = new Curriculum();
         Long th = count + 1;
         curriculum.setTh(th);
@@ -43,6 +46,12 @@ public class ManagerCurriculumService {
         curriculum.setStartDate(curriculumEnrollDto.getStartDate());
         curriculum.setEndDate(curriculumEnrollDto.getEndDate());
         curriculum.setType(type);
+
+        Long teacherId = curriculumEnrollDto.getTeacherId();
+        if (teacherId != null) {
+            User user = userRepository.findById(teacherId).orElseThrow();
+            user.setCurriculum(curriculum);
+        }
 
         if (type.equals(NCP)) {
             String ncp = NCP.getDescription();

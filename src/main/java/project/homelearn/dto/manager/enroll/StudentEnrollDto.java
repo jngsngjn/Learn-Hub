@@ -1,13 +1,18 @@
 package project.homelearn.dto.manager.enroll;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import project.homelearn.entity.user.Gender;
 
 @Data
 public class StudentEnrollDto {
 
     @NotBlank
     private String name;
+
+    @NotNull
+    private Gender gender;
 
     @NotBlank
     private String email;
@@ -18,13 +23,11 @@ public class StudentEnrollDto {
     @NotBlank
     private String curriculumFullName;
 
-    /*
-    성별 추가해야 함
-     */
 }
 /*
 {
   "name": "홍길동",
+  "gender": "MALE",
   "email": "홍길동@gmail.com",
   "phone": "010-1234-5678",
   "curriculumFullName": "네이버 클라우드 데브옵스 과정 1기"

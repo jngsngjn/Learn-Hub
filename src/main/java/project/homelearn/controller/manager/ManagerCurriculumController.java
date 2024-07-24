@@ -24,7 +24,7 @@ public class ManagerCurriculumController {
 
     @PostMapping("/curriculum/add")
     public ResponseEntity<?> addCurriculum(@Valid @RequestBody CurriculumEnrollDto curriculumEnrollDto) {
-        boolean result = managerCurriculumService.addCurriculum(curriculumEnrollDto);
+        boolean result = managerCurriculumService.enrollCurriculum(curriculumEnrollDto);
 
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);

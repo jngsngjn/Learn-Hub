@@ -9,19 +9,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.MangerTeacherDto;
+import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.teacher.Teacher;
+import project.homelearn.entity.user.EnrollList;
+import project.homelearn.repository.curriculum.CurriculumRepository;
+import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.TeacherRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Transactional
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ManagerTeacherService {
 
+    private final EmailService emailService;
     private final TeacherRepository teacherRepository;
+    private final CurriculumRepository curriculumRepository;
+    private final EnrollListRepository enrollListRepository;
 
     //필터링 x : 전체 강사 조회
     public Page<MangerTeacherDto> getTeachers(int size, int page) {
@@ -65,5 +73,23 @@ public class ManagerTeacherService {
                         teacher.getEmail()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public boolean enrollTeacher(TeacherEnrollDto teacherEnrollDto) {
+        String email = teacherEnrollDto.getEmail();
+        String code = emailService.sendCode(email);
+        if (code == null) {
+            return false;
+        }
+
+        Curriculum curriculum = curriculumRepository.findByFullName(teacherEnrollDto.getCurriculumFullName());
+
+        EnrollList enrollList = new EnrollList();
+        enrollList.setName(teacherEnrollDto.getName());
+        enrollList.setEmail(email);
+        enrollList.setCode(code);
+        enrollList.setCurriculum(curriculum);
+        enrollListRepository.save(enrollList);
+        return true;
     }
 }

@@ -46,9 +46,9 @@ class ManagerCurriculumServiceTest {
     }
 
     @Test
-    void addCurriculum_success() {
-        managerCurriculumService.addCurriculum(curriculumEnrollDto1);
-        managerCurriculumService.addCurriculum(curriculumEnrollDto2);
+    void enrollCurriculum_success() {
+        managerCurriculumService.enrollCurriculum(curriculumEnrollDto1);
+        managerCurriculumService.enrollCurriculum(curriculumEnrollDto2);
 
         List<Curriculum> result = curriculumRepository.findAll();
         Curriculum th1 = result.get(0);

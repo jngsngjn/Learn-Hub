@@ -24,9 +24,7 @@ public class CurriculumEnrollDto {
     @NotBlank
     private String color;
 
-    /*
-    강사 추가해야 함
-     */
+    private Long teacherId;
 }
 
 /*
@@ -35,5 +33,13 @@ public class CurriculumEnrollDto {
   "startDate": "2024-02-22",
   "endDate": "2024-10-22",
   "color": "blue"
+}
+
+{
+  "type": "NCP",
+  "startDate": "2024-02-22",
+  "endDate": "2024-10-22",
+  "color": "blue",
+  "teacherId": "2"
 }
  */

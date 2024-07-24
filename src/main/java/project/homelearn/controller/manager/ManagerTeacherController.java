@@ -1,14 +1,14 @@
 package project.homelearn.controller.manager;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import project.homelearn.dto.manager.ManagerStudentDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.MangerTeacherDto;
+import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
 import project.homelearn.service.manager.ManagerTeacherService;
 
 @Slf4j
@@ -32,5 +32,15 @@ public class ManagerTeacherController {
         }
 
         return teachers;
+    }
+
+    @PostMapping("/manage-teacher/enroll")
+    public ResponseEntity<?> enrollTeacher(@Valid @RequestBody TeacherEnrollDto teacherEnrollDto) {
+        boolean result = managerTeacherService.enrollTeacher(teacherEnrollDto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
