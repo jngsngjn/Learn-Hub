@@ -1,4 +1,4 @@
-package project.homelearn.controller;
+package project.homelearn.controller.student;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

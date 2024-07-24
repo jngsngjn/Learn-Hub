@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
+import project.homelearn.dto.manager.manage.StudentUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;
@@ -128,6 +129,33 @@ public class ManagerStudentService {
 
     /**
      * 학생 정보 수정
-     * 목록 : PK, 이름, 이메일, 전화번호, 성별
      */
+    public boolean updateStudent(Long id, StudentUpdateDto studentUpdateDto) {
+        try {
+            Student student = studentRepository.findById(id).orElseThrow();
+
+            student.setName(studentUpdateDto.getName());
+            student.setPhone(studentUpdateDto.getPhone());
+            student.setEmail(studentUpdateDto.getEmail());
+            student.setGender(studentUpdateDto.getGender());
+            return true;
+        } catch (Exception e) {
+            log.error("Error update Student : ", e);
+            return false;
+        }
+    }
+
+    /**
+     * 학생 1명 삭제
+     */
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
+    }
+
+    /**
+     * 학생 여러 명 삭제
+     */
+    public void deleteStudents(List<Long> ids) {
+        studentRepository.deleteAllById(ids);
+    }
 }

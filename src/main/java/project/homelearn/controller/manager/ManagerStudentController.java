@@ -9,7 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
+import project.homelearn.dto.manager.manage.StudentUpdateDto;
 import project.homelearn.service.manager.ManagerStudentService;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -45,5 +48,39 @@ public class ManagerStudentController {
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // 학생 정보 수정
+    @PatchMapping("/manage-student/{id}")
+    public ResponseEntity<?> updateStudent(@PathVariable("id") Long id,
+                                           @Valid @RequestBody StudentUpdateDto studentUpdateDto) {
+        boolean result = managerStudentService.updateStudent(id, studentUpdateDto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 학생 1명 삭제
+    @DeleteMapping("/manage-student/{id}")
+    public ResponseEntity<?> deleteStudent(@PathVariable("id") Long id) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        managerStudentService.deleteStudent(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 학생 여러 명 삭제
+    @DeleteMapping("/manage-students")
+    public ResponseEntity<?> deleteStudents(@RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        managerStudentService.deleteStudents(ids);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
