@@ -88,6 +88,7 @@ public class ManagerStudentService {
                         student.getCurriculum().getTh(),
                         student.getCurriculum().getName(),
                         student.getPhone(),
+                        student.getGender(),
                         student.getEmail(),
                         studentIdsWithLoginToday.contains(student.getId())  // 출석 여부
                 ))
