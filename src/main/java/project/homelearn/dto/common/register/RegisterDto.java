@@ -1,4 +1,4 @@
-package project.homelearn.dto;
+package project.homelearn.dto.common.register;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

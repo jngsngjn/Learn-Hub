@@ -119,6 +119,7 @@ public class ManagerStudentService {
         enrollList.setEmail(email);
         enrollList.setCode(code);
         enrollList.setCurriculum(curriculum);
+        enrollList.setPhone(studentEnrollDto.getPhone());
         enrollListRepository.save(enrollList);
         return true;
     }

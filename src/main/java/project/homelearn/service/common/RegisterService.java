@@ -1,11 +1,13 @@
-package project.homelearn.service;
+package project.homelearn.service.common;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.RegisterDto;
+import project.homelearn.dto.common.EmailCodeDto;
+import project.homelearn.dto.common.register.RegisterDto;
+import project.homelearn.dto.common.register.RegisterInfoDto;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.entity.user.EnrollList;
@@ -25,6 +27,18 @@ public class RegisterService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final EnrollListRepository enrollListRepository;
+
+    public RegisterInfoDto getRegisterInfo(EmailCodeDto emailCodeDto) {
+        EnrollList enrollList = enrollListRepository.findByEmail(emailCodeDto.getEmail());
+
+        RegisterInfoDto registerInfoDto = new RegisterInfoDto();
+        registerInfoDto.setName(enrollList.getName());
+        registerInfoDto.setGender(enrollList.getGender());
+        registerInfoDto.setPhone(enrollList.getPhone());
+        registerInfoDto.setEmail(enrollList.getEmail());
+
+        return registerInfoDto;
+    }
 
     public boolean registerProcess(RegisterDto registerDto) {
         Gender gender = registerDto.getGender();

@@ -93,6 +93,7 @@ public class ManagerTeacherService {
         enrollList.setEmail(email);
         enrollList.setCode(code);
         enrollList.setCurriculum(curriculum);
+        enrollList.setPhone(teacherEnrollDto.getPhone());
         enrollListRepository.save(enrollList);
         return true;
     }

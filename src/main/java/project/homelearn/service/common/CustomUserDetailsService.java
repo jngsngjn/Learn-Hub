@@ -1,4 +1,4 @@
-package project.homelearn.service;
+package project.homelearn.service.common;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import project.homelearn.dto.CustomUserDetails;
+import project.homelearn.dto.common.CustomUserDetails;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.user.UserRepository;
 

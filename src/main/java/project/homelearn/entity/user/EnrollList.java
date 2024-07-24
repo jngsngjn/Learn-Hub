@@ -21,6 +21,9 @@ public class EnrollList {
     private Gender gender;
 
     @Column(unique = true, nullable = false)
+    private String phone;
+
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
