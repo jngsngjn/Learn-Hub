@@ -1,4 +1,4 @@
-package project.homelearn.controller.manager;
+package project.homelearn.controller.manager.inquiry;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,6 @@ import project.homelearn.dto.manager.inquiry.ManagerResponseDto;
 import project.homelearn.service.manager.ManagerInquiryService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
