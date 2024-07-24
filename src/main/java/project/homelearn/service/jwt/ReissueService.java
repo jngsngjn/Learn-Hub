@@ -10,7 +10,7 @@ import project.homelearn.entity.user.Role;
 
 import java.time.Duration;
 
-import static project.homelearn.config.JwtConstants.*;
+import static project.homelearn.config.security.JwtConstants.*;
 
 @Slf4j
 @Service

@@ -1,4 +1,4 @@
-package project.homelearn.config;
+package project.homelearn.config.db;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

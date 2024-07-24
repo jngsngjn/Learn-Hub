@@ -22,7 +22,7 @@ import project.homelearn.service.jwt.RedisTokenService;
 
 import java.time.Duration;
 
-import static project.homelearn.config.JwtConstants.*;
+import static project.homelearn.config.security.JwtConstants.*;
 
 @Slf4j
 @RequiredArgsConstructor
