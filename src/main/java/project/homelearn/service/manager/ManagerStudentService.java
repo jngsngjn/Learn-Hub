@@ -10,14 +10,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.ManagerStudentDto;
-import project.homelearn.dto.manager.StudentAddDto;
+import project.homelearn.dto.manager.StudentEnrollDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
-import project.homelearn.entity.user.EmailCode;
+import project.homelearn.entity.user.EnrollList;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.EmailCodeRepository;
 import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.repository.user.LoginHistoryRepository;
+import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.StudentRepository;
 
 import java.time.LocalDate;
@@ -33,9 +34,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ManagerStudentService {
 
-    private final EmailCodeService emailCodeService;
+    private final EnrollService enrollService;
 
     private final StudentRepository studentRepository;
+    private final EnrollListRepository enrollListRepository;
     private final LoginHistoryRepository loginHistoryRepository;
     private final EmailCodeRepository emailCodeRepository;
     private final CurriculumRepository curriculumRepository;
@@ -102,18 +104,21 @@ public class ManagerStudentService {
     }
 
     // 학생 등록 (상담 후)
-    public boolean addStudent(StudentAddDto studentAddDto) throws MessagingException {
-        String email = studentAddDto.getEmail();
-        String code = emailCodeService.sendVerificationCode(email);
-        Curriculum curriculum = curriculumRepository.findByFullName(studentAddDto.getCurriculumFullName());
-        log.info("fullName = {}", studentAddDto.getCurriculumFullName());
+    public boolean enrollStudent(StudentEnrollDto studentEnrollDto) {
+        String email = studentEnrollDto.getEmail();
+        String code = enrollService.sendCode(email);
+        if (code == null) {
+            return false;
+        }
 
-        EmailCode emailCode = new EmailCode();
-        emailCode.setName(studentAddDto.getName());
-        emailCode.setEmail(email);
-        emailCode.setCurriculum(curriculum);
-        emailCode.setCode(code);
-        emailCodeRepository.save(emailCode);
+        Curriculum curriculum = curriculumRepository.findByFullName(studentEnrollDto.getCurriculumFullName());
+
+        EnrollList enrollList = new EnrollList();
+        enrollList.setName(studentEnrollDto.getName());
+        enrollList.setEmail(email);
+        enrollList.setCurriculum(curriculum);
+        enrollList.setCode(code);
+        enrollListRepository.save(enrollList);
         return true;
     }
 }

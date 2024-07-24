@@ -9,7 +9,7 @@ import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.inquiry.TeacherInquiry;
 import project.homelearn.entity.notification.teacher.TeacherNotification;
 import project.homelearn.entity.survey.Survey;
-import project.homelearn.entity.user.EmailCode;
+import project.homelearn.entity.user.EnrollList;
 import project.homelearn.entity.user.User;
 import project.homelearn.entity.vote.Vote;
 
@@ -26,20 +26,20 @@ public class Curriculum extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String name; // ex. 네이버 클라우드 데브옵스 과정
 
     @Column(name = "full_name", nullable = false, unique = true)
-    private String fullName;
+    private String fullName; // ex. 네이버 클라우드 데브옵스 과정 1기
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CurriculumType type;
+    private CurriculumType type; // NCP, AWS
 
     @Column(nullable = false)
     private Long th; // 기수
 
     @Column(nullable = false)
-    private String color;
+    private String color; // #FFFFFF
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -72,7 +72,7 @@ public class Curriculum extends BaseEntity {
     private List<TeacherInquiry> teacherInquiries = new ArrayList<>();
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EmailCode> emailCodes = new ArrayList<>();
+    private List<EnrollList> enrollLists = new ArrayList<>();
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ManagerCalendar> managerCalendars = new ArrayList<>();
