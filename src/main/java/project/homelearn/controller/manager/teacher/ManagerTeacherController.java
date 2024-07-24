@@ -1,4 +1,4 @@
-package project.homelearn.controller.manager;
+package project.homelearn.controller.manager.teacher;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
