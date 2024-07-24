@@ -23,6 +23,4 @@ public class MangerTeacherDto {
     @NotNull
     private String email;
 
-//    @NotNull
-//    private boolean isAssigned;
 }

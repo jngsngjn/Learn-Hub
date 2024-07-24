@@ -43,6 +43,16 @@ public class ManagerTeacherService {
         return new PageImpl<>(teacherDto, pageable, teacherPage.getTotalElements());
     }
 
+    //배정안되어 있는 강사들만 조회
+    public Page<MangerTeacherDto> getTeachersCurriculumIsNull(int size, int page){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Teacher> teacherPage = teacherRepository.findByCurriculumIdIsNull(pageable);
+
+        List<MangerTeacherDto> teacherDto = getManagerTeacherDto(teacherPage);
+
+        return new PageImpl<>(teacherDto, pageable, teacherPage.getTotalElements());
+    }
+
     //학생 DTO 매핑 메소드
     private static List<MangerTeacherDto> getManagerTeacherDto(Page<Teacher> teacherPage) {
         // 학생 정보를 DTO로 변환
