@@ -1,0 +1,61 @@
+/* 전체 레이아웃 */
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+  width: 200px;
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar li ul {
+  margin-top: 5px;
+  padding-left: 10px;
+}
+
+/* 메인 컨텐츠 영역 스타일 */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.date {
+  font-size: 16px;
+}
+
+/* 메인 영역 스타일 */
+.main {
+  display: flex;
+  gap: 20px;
+}
+
+.course-progress, .calendar, .survey, .messages {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.calendar {
+  flex: 2;
+}
