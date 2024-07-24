@@ -1,4 +1,4 @@
-package project.homelearn.config;
+package project.homelearn.config.common;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

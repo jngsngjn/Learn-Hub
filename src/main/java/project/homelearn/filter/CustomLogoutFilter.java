@@ -16,7 +16,7 @@ import project.homelearn.service.jwt.RedisTokenService;
 
 import java.io.IOException;
 
-import static project.homelearn.config.JwtConstants.REFRESH_TOKEN_COOKIE_NAME;
+import static project.homelearn.config.security.JwtConstants.REFRESH_TOKEN_COOKIE_NAME;
 
 @Slf4j
 @RequiredArgsConstructor

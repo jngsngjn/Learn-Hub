@@ -4,10 +4,10 @@ import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.entity.student.Student;
-
-import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     //필터링 x : 전체 학생 조회
@@ -21,5 +21,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s JOIN FETCH s.curriculum c WHERE c.th = :curriculumTh AND c.name = :curriculumName")
     Page<Student> findByCurriculumThAndCurriculumName(Pageable pageable, @Param("curriculumName") String curriculumName, @Param("curriculumTh")Long curriculumTh);
 
-
+    // 설문 시작 후 해당 커리큘럼의 모든 학생의 설문 완료 상태를 false로 변경
+    @Modifying
+    @Transactional
+    @Query("update Student s set s.surveyCompleted = false where s.curriculum.id = :curriculumId")
+    void updateSurveyCompletedFalse(@Param("curriculumId") Long curriculumId);
 }

@@ -21,7 +21,7 @@ import project.homelearn.service.jwt.JwtUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static project.homelearn.config.JwtConstants.ACCESS_TOKEN_HEADER_NAME;
+import static project.homelearn.config.security.JwtConstants.ACCESS_TOKEN_HEADER_NAME;
 import static project.homelearn.entity.user.Role.*;
 
 @Slf4j

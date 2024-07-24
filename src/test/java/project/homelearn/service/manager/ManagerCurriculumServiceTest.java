@@ -26,6 +26,9 @@ class ManagerCurriculumServiceTest {
     private UserRepository userRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ManagerCurriculumService managerCurriculumService;
 
     CurriculumEnrollDto curriculumEnrollDto1;

@@ -1,4 +1,4 @@
-package project.homelearn.config;
+package project.homelearn.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import project.homelearn.filter.CustomLoginFilter;
 import project.homelearn.filter.CustomLogoutFilter;
 import project.homelearn.filter.JwtFilter;

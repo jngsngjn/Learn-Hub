@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.manage.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
+import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;
@@ -74,7 +75,7 @@ public class ManagerStudentService {
     }
 
     //학생 DTO 매핑 메소드
-    private static List<ManagerStudentDto> getManagerStudentDto(Page<Student> studentPage, List<LoginHistory> todayLoginHistory) {
+    private List<ManagerStudentDto> getManagerStudentDto(Page<Student> studentPage, List<LoginHistory> todayLoginHistory) {
         // 오늘 로그인한 학생 ID 목록을 집합으로 생성
         Set<Long> studentIdsWithLoginToday = todayLoginHistory.stream()
                 .map(loginHistory -> loginHistory.getUser().getId())
@@ -96,7 +97,7 @@ public class ManagerStudentService {
     }
 
     //로그인 기록이 오늘이랑 일치하는지 판단
-    private  List<LoginHistory> getTodayLoginHistory() {
+    private List<LoginHistory> getTodayLoginHistory() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
         return loginHistoryRepository.findByLoginDateTimeBetween(startOfDay, endOfDay);
@@ -124,5 +125,37 @@ public class ManagerStudentService {
         enrollList.setPhone(studentEnrollDto.getPhone());
         enrollListRepository.save(enrollList);
         return true;
+    }
+
+    /**
+     * 학생 정보 수정
+     */
+    public boolean updateStudent(Long id, StudentUpdateDto studentUpdateDto) {
+        try {
+            Student student = studentRepository.findById(id).orElseThrow();
+
+            student.setName(studentUpdateDto.getName());
+            student.setPhone(studentUpdateDto.getPhone());
+            student.setEmail(studentUpdateDto.getEmail());
+            student.setGender(studentUpdateDto.getGender());
+            return true;
+        } catch (Exception e) {
+            log.error("Error update Student : ", e);
+            return false;
+        }
+    }
+
+    /**
+     * 학생 1명 삭제
+     */
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
+    }
+
+    /**
+     * 학생 여러 명 삭제
+     */
+    public void deleteStudents(List<Long> ids) {
+        studentRepository.deleteAllById(ids);
     }
 }
