@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
-import project.homelearn.dto.manager.manage.StudentUpdateDto;
+import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;

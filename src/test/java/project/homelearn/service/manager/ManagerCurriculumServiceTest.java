@@ -9,6 +9,7 @@ import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.repository.curriculum.CurriculumRepository;
+import project.homelearn.repository.user.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,9 @@ class ManagerCurriculumServiceTest {
     private CurriculumRepository curriculumRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ManagerCurriculumService managerCurriculumService;
 
     CurriculumEnrollDto curriculumEnrollDto1;
@@ -30,7 +34,7 @@ class ManagerCurriculumServiceTest {
 
     @BeforeEach
     void before() {
-        managerCurriculumService = new ManagerCurriculumService(curriculumRepository);
+        managerCurriculumService = new ManagerCurriculumService(userRepository, curriculumRepository);
 
         curriculumEnrollDto1 = new CurriculumEnrollDto();
         curriculumEnrollDto1.setType(CurriculumType.NCP);

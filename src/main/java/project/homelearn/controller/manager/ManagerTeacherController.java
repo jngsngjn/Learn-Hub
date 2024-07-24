@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.MangerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
-import project.homelearn.dto.manager.manage.TeacherUpdateDto;
+import project.homelearn.dto.manager.manage.teacher.TeacherUpdateDto;
 import project.homelearn.service.manager.ManagerTeacherService;
 
 import java.util.List;

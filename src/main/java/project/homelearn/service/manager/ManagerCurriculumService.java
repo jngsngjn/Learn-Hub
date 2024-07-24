@@ -2,16 +2,22 @@ package project.homelearn.service.manager;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
-import project.homelearn.entity.user.User;
+import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.repository.curriculum.CurriculumRepository;
-import project.homelearn.repository.user.UserRepository;
+import project.homelearn.repository.user.ManagerRepository;
+import project.homelearn.repository.user.TeacherRepository;
 
-import static project.homelearn.entity.curriculum.CurriculumType.*;
+import java.util.NoSuchElementException;
+
+import static project.homelearn.entity.curriculum.CurriculumType.AWS;
+import static project.homelearn.entity.curriculum.CurriculumType.NCP;
 
 @Slf4j
 @Service
@@ -19,7 +25,9 @@ import static project.homelearn.entity.curriculum.CurriculumType.*;
 @RequiredArgsConstructor
 public class ManagerCurriculumService {
 
-    private final UserRepository userRepository;
+    private final ManagerRepository managerRepository;
+    private final TeacherRepository teacherRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final CurriculumRepository curriculumRepository;
 
     public boolean enrollCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
@@ -50,8 +58,8 @@ public class ManagerCurriculumService {
 
         Long teacherId = curriculumEnrollDto.getTeacherId();
         if (teacherId != null) {
-            User user = userRepository.findById(teacherId).orElseThrow();
-            user.setCurriculum(curriculum);
+            Teacher teacher = teacherRepository.findById(teacherId).orElseThrow();
+            teacher.setCurriculum(curriculum);
         }
 
         if (type.equals(NCP)) {
@@ -64,5 +72,40 @@ public class ManagerCurriculumService {
             curriculum.setFullName(aws + " " + th + "기");
         }
         return curriculum;
+    }
+
+    public boolean updateCurriculum(Long id, CurriculumUpdateDto curriculumUpdateDto) {
+        try {
+            Curriculum curriculum = curriculumRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Curriculum not found with id: " + id));
+
+            Long teacherId = curriculumUpdateDto.getTeacherId();
+            if (teacherId != null) {
+                Teacher teacher = teacherRepository.findById(teacherId)
+                        .orElseThrow(() -> new NoSuchElementException("Teacher not found with id: " + teacherId));
+                teacher.setCurriculum(curriculum);
+            }
+
+            curriculum.setColor(curriculumUpdateDto.getColor());
+            curriculum.setStartDate(curriculumUpdateDto.getStartDate());
+            curriculum.setEndDate(curriculumUpdateDto.getEndDate());
+
+            return true;
+
+        } catch (NoSuchElementException e) {
+            log.error("Entity not found: ", e);
+            return false;
+        } catch (Exception e) {
+            log.error("Error updating curriculum: ", e);
+            return false;
+        }
+    }
+
+    public boolean checkPassword(String username, String rawPassword) {
+        String encodedPassword = managerRepository.findPasswordByUsername(username);
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public void deleteCurriculum(Long id) {
+        curriculumRepository.deleteById(id);
     }
 }
