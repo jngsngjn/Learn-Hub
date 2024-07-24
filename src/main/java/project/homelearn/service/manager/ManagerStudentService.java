@@ -83,14 +83,15 @@ public class ManagerStudentService {
         // 학생 정보를 DTO로 변환
         return studentPage.stream()
                 .map(student -> new ManagerStudentDto(
+                        student.getId(),
                         student.getName(),
                         student.getCurriculum().getTh(),
                         student.getCurriculum().getName(),
                         student.getPhone(),
                         student.getGender(),
                         student.getEmail(),
-                        studentIdsWithLoginToday.contains(student.getId())  // 출석 여부
-                ))
+                        studentIdsWithLoginToday.contains(student.getId())// 출석 여부
+                                ))
                 .collect(Collectors.toList());
     }
 

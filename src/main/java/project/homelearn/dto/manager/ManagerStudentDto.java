@@ -10,6 +10,9 @@ import project.homelearn.entity.user.Gender;
 public class ManagerStudentDto {
 
     @NotNull
+    private Long studentId;
+
+    @NotNull
     private String name;
 
     @NotNull

@@ -66,6 +66,7 @@ public class ManagerTeacherService {
         // 학생 정보를 DTO로 변환
         return teacherPage.stream()
                 .map(teacher -> new MangerTeacherDto(
+                        teacher.getId(),
                         teacher.getName(),
                         teacher.getCurriculum() != null ? teacher.getCurriculum().getTh() : null,
                         teacher.getCurriculum() != null ? teacher.getCurriculum().getName() : null,

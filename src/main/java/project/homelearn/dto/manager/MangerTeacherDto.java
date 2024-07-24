@@ -9,6 +9,9 @@ import lombok.Data;
 public class MangerTeacherDto {
 
     @NotNull
+    private Long teacherId;
+
+    @NotNull
     private String name;
 
     @NotNull
