@@ -11,7 +11,7 @@ import project.homelearn.service.manager.ManagerCurriculumService;
 
 @Slf4j
 @RestController
-@RequestMapping("/manager")
+@RequestMapping("/managers")
 @RequiredArgsConstructor
 public class ManagerCurriculumController {
 
@@ -23,7 +23,7 @@ public class ManagerCurriculumController {
     }
 
     // 교육 과정 등록
-    @PostMapping("/curriculum/enroll")
+    @PostMapping("/curriculums/enroll")
     public ResponseEntity<?> enrollCurriculum(@Valid @RequestBody CurriculumEnrollDto curriculumEnrollDto) {
         boolean result = managerCurriculumService.enrollCurriculum(curriculumEnrollDto);
 

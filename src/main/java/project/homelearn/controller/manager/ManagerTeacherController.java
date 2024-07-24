@@ -13,13 +13,13 @@ import project.homelearn.service.manager.ManagerTeacherService;
 
 @Slf4j
 @RestController
-@RequestMapping("/manager")
+@RequestMapping("/managers")
 @RequiredArgsConstructor
 public class ManagerTeacherController {
 
     private final ManagerTeacherService managerTeacherService;
 
-    @GetMapping("/manage-teacher")
+    @GetMapping("/manage-teachers")
     public Page<MangerTeacherDto> teacherList(@RequestParam(name = "page", defaultValue = "0") int page,
                                               @RequestParam(name = "curriculumName", required = false) String curriculumName,
                                               @RequestParam(name = "isAssigned", required = false, defaultValue = "true")boolean isAssigned){
@@ -40,7 +40,7 @@ public class ManagerTeacherController {
     }
 
     // 강사 등록
-    @PostMapping("/manage-teacher/enroll")
+    @PostMapping("/manage-teachers/enroll")
     public ResponseEntity<?> enrollTeacher(@Valid @RequestBody TeacherEnrollDto teacherEnrollDto) {
         boolean result = managerTeacherService.enrollTeacher(teacherEnrollDto);
         if (result) {
