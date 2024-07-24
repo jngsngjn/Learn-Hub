@@ -8,3 +8,10 @@
 - 서버로 요청 시 Access Token이 만료되었다면, Refresh Token을 사용하여 /reissue 경로로 새로운 Access Token을 요청해야 함. Axios Interceptor 등을 통해 자동화 필요
 
 3. UX를 위해 클라이언트측 검증 로직 필요
+
+4. 로그인 이후 헤더에 사용자 role 정보 담아줄테니 그에 맞추어 대시보드 보여주세요.
+
+* 응답 설정
+- Access Token -> Header
+- Refresh Token -> Cookie
+- Role -> Header

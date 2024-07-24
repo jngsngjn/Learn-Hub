@@ -65,9 +65,11 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
          * 응답 설정
          * - Access Token -> Header
          * - Refresh Token -> Cookie
+         * - Role -> Header
          */
         response.setHeader(ACCESS_TOKEN_HEADER_NAME, "Bearer " + access);
         response.addCookie(cookieService.createRefreshCookie(REFRESH_TOKEN_COOKIE_NAME, refresh));
+        response.setHeader("Role", role);
         response.setStatus(HttpStatus.OK.value());
 
         User user = userRepository.findByUsername(username);
