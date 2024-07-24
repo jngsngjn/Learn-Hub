@@ -1,4 +1,4 @@
-package project.homelearn.dto;
+package project.homelearn.dto.common;
 
 import lombok.Getter;
 

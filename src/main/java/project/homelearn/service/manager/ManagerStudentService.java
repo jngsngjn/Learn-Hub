@@ -74,7 +74,7 @@ public class ManagerStudentService {
     }
 
     //학생 DTO 매핑 메소드
-    private static List<ManagerStudentDto> getManagerStudentDto(Page<Student> studentPage, List<LoginHistory> todayLoginHistory) {
+    private List<ManagerStudentDto> getManagerStudentDto(Page<Student> studentPage, List<LoginHistory> todayLoginHistory) {
         // 오늘 로그인한 학생 ID 목록을 집합으로 생성
         Set<Long> studentIdsWithLoginToday = todayLoginHistory.stream()
                 .map(loginHistory -> loginHistory.getUser().getId())
@@ -95,7 +95,7 @@ public class ManagerStudentService {
     }
 
     //로그인 기록이 오늘이랑 일치하는지 판단
-    private  List<LoginHistory> getTodayLoginHistory() {
+    private List<LoginHistory> getTodayLoginHistory() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
         return loginHistoryRepository.findByLoginDateTimeBetween(startOfDay, endOfDay);
@@ -124,4 +124,9 @@ public class ManagerStudentService {
         enrollListRepository.save(enrollList);
         return true;
     }
+
+    /**
+     * 학생 정보 수정
+     * 목록 : PK, 이름, 이메일, 전화번호, 성별
+     */
 }
