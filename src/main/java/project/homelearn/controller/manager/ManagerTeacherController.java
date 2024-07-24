@@ -21,16 +21,21 @@ public class ManagerTeacherController {
 
     @GetMapping("/manage-teacher")
     public Page<MangerTeacherDto> teacherList(@RequestParam(name = "page", defaultValue = "0") int page,
-                                              @RequestParam(name = "curriculumName", required = false) String curriculumName){
+                                              @RequestParam(name = "curriculumName", required = false) String curriculumName,
+                                              @RequestParam(name = "isAssigned", required = false, defaultValue = "true")boolean isAssigned){
 
         Page<MangerTeacherDto> teachers;
         if(curriculumName != null && !curriculumName.isEmpty()){
             teachers = managerTeacherService.getTeachersWithCurriculumName(15, page, curriculumName);
         }
         else{
-            teachers = managerTeacherService.getTeachers(15, page);
+            if(isAssigned){
+                teachers = managerTeacherService.getTeachers(15, page);
+            }
+            else{
+                teachers = managerTeacherService.getTeachersCurriculumIsNull(15, page);
+            }
         }
-
         return teachers;
     }
 }
