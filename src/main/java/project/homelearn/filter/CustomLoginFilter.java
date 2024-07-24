@@ -11,7 +11,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.entity.user.Role;
+import project.homelearn.entity.user.User;
+import project.homelearn.repository.user.LoginHistoryRepository;
+import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtUtil;
 import project.homelearn.service.jwt.RedisTokenService;
@@ -28,6 +32,8 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final CookieService cookieService;
     private final RedisTokenService redisTokenService;
     private final AuthenticationManager authenticationManager;
+    private final LoginHistoryRepository loginHistoryRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -63,6 +69,9 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader(ACCESS_TOKEN_HEADER_NAME, "Bearer " + access);
         response.addCookie(cookieService.createRefreshCookie(REFRESH_TOKEN_COOKIE_NAME, refresh));
         response.setStatus(HttpStatus.OK.value());
+
+        User user = userRepository.findByUsername(username);
+        loginHistoryRepository.save(new LoginHistory(user));
 
         log.info("다음 사용자가 로그인 성공 : {}", username);
     }

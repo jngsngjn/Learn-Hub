@@ -16,6 +16,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import project.homelearn.filter.CustomLoginFilter;
 import project.homelearn.filter.CustomLogoutFilter;
 import project.homelearn.filter.JwtFilter;
+import project.homelearn.repository.user.LoginHistoryRepository;
+import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtUtil;
 import project.homelearn.service.jwt.RedisTokenService;
@@ -29,6 +31,8 @@ public class SecurityConfig {
     private final CookieService cookieService;
     private final RedisTokenService redisTokenService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final LoginHistoryRepository loginHistoryRepository;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,7 +61,7 @@ public class SecurityConfig {
 
         // 커스텀 필터 등록 (JwtFilter -> CustomLoginFilter -> CustomLogoutFilter -> LogoutFilter)
         http.addFilterBefore(new JwtFilter(jwtUtil), CustomLoginFilter.class);
-        http.addFilterAt(new CustomLoginFilter(jwtUtil, cookieService, redisTokenService, authenticationManager(authenticationConfiguration)),
+        http.addFilterAt(new CustomLoginFilter(jwtUtil, cookieService, redisTokenService, authenticationManager(authenticationConfiguration), loginHistoryRepository, userRepository),
                 UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTokenService, cookieService), LogoutFilter.class);
 
