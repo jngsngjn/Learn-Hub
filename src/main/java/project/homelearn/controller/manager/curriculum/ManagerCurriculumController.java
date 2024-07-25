@@ -78,6 +78,7 @@ public class ManagerCurriculumController {
 
     /**
      * 특정 교육 과정 페이지
+     * Author : 정성진
      * 1. 교육 과정 일반 정보 ✅ viewCurriculumBasic()
      * 2. 출결 현황
      * 3. 강사 정보 ✅ viewCurriculumTeacher()

@@ -1,5 +1,6 @@
 package project.homelearn.dto.manager.inquiry;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,10 +15,10 @@ public class ManagerInquiryDto {
     @NotNull
     private Long inquiryId;
 
-    @NotNull
+    @NotBlank
     private String inquiryTitle;
 
-    @NotNull
+    @NotBlank
     private String inquiryContent;
 
     @NotNull
@@ -29,9 +30,4 @@ public class ManagerInquiryDto {
     private String response;
 
     private LocalDateTime responseDate;
-
-    public ManagerInquiryDto(String response, LocalDateTime responseDate) {
-        this.response = response;
-        this.responseDate = responseDate;
-    }
 }

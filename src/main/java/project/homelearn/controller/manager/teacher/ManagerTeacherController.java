@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.manage.MangerTeacherDto;
+import project.homelearn.dto.manager.manage.teacher.ManagerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
 import project.homelearn.dto.manager.manage.teacher.TeacherUpdateDto;
 import project.homelearn.service.manager.ManagerTeacherService;
@@ -24,19 +24,20 @@ public class ManagerTeacherController {
 
     @GetMapping("/manage-teachers")
     public ResponseEntity<?> teacherList(@RequestParam(name = "page", defaultValue = "0") int page,
-                                              @RequestParam(name = "curriculumName", required = false) String curriculumName,
-                                              @RequestParam(name = "isAssigned", required = false, defaultValue = "true")boolean isAssigned){
+                                         @RequestParam(name = "curriculumName", required = false) String curriculumName,
+                                         @RequestParam(name = "isAssigned", required = false, defaultValue = "true") boolean isAssigned) {
+        int size = 15;
 
-        Page<MangerTeacherDto> teachers;
+        Page<ManagerTeacherDto> teachers;
         if(curriculumName != null && !curriculumName.isEmpty()){
-            teachers = managerTeacherService.getTeachersWithCurriculumName(15, page, curriculumName);
+            teachers = managerTeacherService.getTeachersWithCurriculumName(size, page, curriculumName);
         }
         else{
             if(isAssigned){
-                teachers = managerTeacherService.getTeachers(15, page);
+                teachers = managerTeacherService.getTeachers(size, page);
             }
             else{
-                teachers = managerTeacherService.getTeachersCurriculumIsNull(15, page);
+                teachers = managerTeacherService.getTeachersCurriculumIsNull(size, page);
             }
         }
         if(teachers != null && !teachers.isEmpty()){
@@ -45,7 +46,10 @@ public class ManagerTeacherController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    // 강사 등록
+    /**
+     * Author : 정성진
+     * 강사 등록
+     */
     @PostMapping("/manage-teachers/enroll")
     public ResponseEntity<?> enrollTeacher(@Valid @RequestBody TeacherEnrollDto teacherEnrollDto) {
         boolean result = managerTeacherService.enrollTeacher(teacherEnrollDto);
@@ -56,7 +60,10 @@ public class ManagerTeacherController {
         }
     }
 
-    // 강사 정보 수정
+    /**
+     * Author : 정성진
+     * 강사 정보 수정
+     */
     @PatchMapping("/manage-teachers/{id}")
     public ResponseEntity<?> updateTeacher(@PathVariable("id") Long id,
                                            @Valid @RequestBody TeacherUpdateDto teacherUpdateDto) {
@@ -68,7 +75,10 @@ public class ManagerTeacherController {
         }
     }
 
-    // 강사 1명 삭제
+    /**
+     * Author : 정성진
+     * 강사 1명 삭제
+     */
     @DeleteMapping("/manage-teachers/{id}")
     public ResponseEntity<?> deleteTeacher(@PathVariable("id") Long id) {
         if (id == null) {
@@ -80,6 +90,7 @@ public class ManagerTeacherController {
     }
 
     /**
+     * Author : 정성진
      * 강사 여러 명 삭제
      * Request : JSON, [1, 2, 3, 4, 5]
      */

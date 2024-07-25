@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
-import project.homelearn.dto.manager.manage.ManagerStudentDto;
+import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;

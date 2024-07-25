@@ -82,5 +82,4 @@ public class ManagerInquiryController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
 }

@@ -2,6 +2,9 @@ package project.homelearn.dto.manager.dashboard;
 
 import lombok.Data;
 
+/**
+ * 미완성
+ */
 @Data
 public class CurriculumDto {
 

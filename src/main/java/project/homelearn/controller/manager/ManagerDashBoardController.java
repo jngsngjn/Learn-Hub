@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import project.homelearn.dto.manager.dashboard.CurriculumDto;
 import project.homelearn.dto.manager.dashboard.ScheduleDto;
 import project.homelearn.service.manager.ManagerCalendarService;
-import project.homelearn.service.manager.ManagerCurriculumService;
 
 import java.util.List;
 
 /**
  * 미완성
+ * Author : 정성진
  */
 @Slf4j
 @RestController
@@ -23,7 +23,6 @@ import java.util.List;
 public class ManagerDashBoardController {
 
     private final ManagerCalendarService calendarService;
-    private final ManagerCurriculumService curriculumService;
 
     // 대시보드 캘린더 조회
     @GetMapping("/calendar")
