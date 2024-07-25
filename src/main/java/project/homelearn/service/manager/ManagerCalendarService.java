@@ -48,4 +48,43 @@ public class ManagerCalendarService {
         managerCalendarRepository.save(calendar);
     }
 
+    public boolean deleteSchedule(Long id) {
+        if (id == null) {
+            return false;
+        }
+        managerCalendarRepository.deleteById(id);
+        return true;
+    }
+
+    public boolean updateSchedule(Long id, ScheduleDto scheduleDto) {
+        try {
+            updateScheduleProcess(id, scheduleDto);
+            return true;
+        } catch (Exception e) {
+            log.error("Error update manager schedule : ", e);
+            return false;
+        }
+    }
+
+    private void updateScheduleProcess(Long id, ScheduleDto scheduleDto) {
+        ManagerCalendar calendar = managerCalendarRepository.findById(id).orElseThrow();
+
+        LocalDate endDate = scheduleDto.getEndDate();
+        if (endDate == null) {
+            calendar.setEndDate(null);
+        } else {
+            calendar.setEndDate(scheduleDto.getEndDate());
+        }
+
+        Long curriculumId = scheduleDto.getCurriculumId();
+        if (curriculumId == null) {
+            calendar.setCurriculum(null);
+        } else {
+            Curriculum curriculum = curriculumRepository.findById(curriculumId).orElseThrow();
+            calendar.setCurriculum(curriculum);
+        }
+
+        calendar.setTitle(scheduleDto.getTitle());
+        calendar.setStartDate(scheduleDto.getStartDate());
+    }
 }

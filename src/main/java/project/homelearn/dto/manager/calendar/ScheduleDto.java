@@ -32,4 +32,11 @@ public class ScheduleDto {
     "title": "원장님 생일",
     "startDate": "2024-07-30"
 }
+
+{
+    "title": "NCP 강의",
+    "startDate": "2024-07-30",
+    "endDate": "2024-08-10",
+    "curriculumId": "2"
+}
  */
