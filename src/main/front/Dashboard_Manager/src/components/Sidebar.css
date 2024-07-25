@@ -1,0 +1,81 @@
+.sidebar {
+  width: 200px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.date-container {
+  margin-bottom: 20px;
+}
+
+.date {
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.sidebar h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.menu li {
+  margin-bottom: 20px; /* 간격을 넓게 */
+  cursor: pointer;
+  font-size: 18px;
+  color: #555;
+  padding: 10px 10px; /* 패딩을 추가하여 간격 넓히기 */
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.menu li:hover {
+  background-color: #e0e0e0;
+}
+
+.dropdown .dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  list-style-type: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.submenu li {
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #777;
+  padding: 5px 0;
+}
+
+.submenu li:hover {
+  color: #000;
+}

@@ -27,7 +27,6 @@
 .course-progress-buttons button {
   padding: 5px 15px;
   border: 1px solid #757575;
-  background-color: #e0e0e0;
   cursor: pointer;
   font-size: 14px;
   border-radius: 20px;
@@ -80,10 +79,9 @@
 }
 
 .course-title {
-  font-weight: bold;
   cursor: pointer;
   color: #757575;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
 }
 
@@ -95,7 +93,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
   color: #666;
 }
 
