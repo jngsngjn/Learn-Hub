@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import project.homelearn.entity.curriculum.Curriculum;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter @Setter
@@ -24,8 +24,8 @@ public class ManagerCalendar {
     private String title;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 }
