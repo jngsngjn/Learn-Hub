@@ -22,6 +22,8 @@ class ManagerCurriculumServiceTest {
 
     @Autowired
     private CurriculumRepository curriculumRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserRepository userRepository;

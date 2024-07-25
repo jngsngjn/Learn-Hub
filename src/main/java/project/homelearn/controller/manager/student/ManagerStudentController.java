@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.ManagerStudentDto;
+import project.homelearn.dto.manager.manage.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.service.manager.ManagerStudentService;
@@ -23,7 +23,7 @@ public class ManagerStudentController {
     private final ManagerStudentService managerStudentService;
 
     @GetMapping("/manage-students")
-    public Page<ManagerStudentDto> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
+    public ResponseEntity<?> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
                                                @RequestParam(name = "curriculumName", required = false) String curriculumName,
                                                @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
@@ -36,7 +36,10 @@ public class ManagerStudentController {
             students = managerStudentService.getStudents(15, page);
         }
 
-        return students;
+        if(students != null && !students.isEmpty()){
+            return ResponseEntity.status(HttpStatus.OK).body(students);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     // 학생 등록
