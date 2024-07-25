@@ -19,6 +19,7 @@ public class RegisterController {
 
     private final RegisterService registerService;
 
+    // 회원가입
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterDto registerDto) {
         boolean result = registerService.registerProcess(registerDto);
@@ -30,6 +31,7 @@ public class RegisterController {
         }
     }
 
+    // 실시간 아이디 중복 여부 체크
     @PostMapping("/register/id-duplicate-check")
     public ResponseEntity<?> checkId(@Valid @RequestBody UsernameDto usernameDto) {
         String username = usernameDto.getUsername();
