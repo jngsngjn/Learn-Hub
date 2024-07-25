@@ -3,15 +3,30 @@ import './MessageBox.css';
 
 const MessageBox = () => {
   return (
-    <div>
-      <h2>1:1 문의 내역</h2>
+    <section className="message-box-wrapper">
       <div className="message-item">
-        <p>문의 제목</p>
-        <p>내용 미리보기</p>
-        <p>날짜</p>
+        <h2>1:1 문의 내역</h2>
+        <h3>학생</h3>
+        <div className="message-content">
+          <div className="message-icon">
+            <i className="fas fa-envelope envelope-icon"></i>
+            <span className="message-count">12</span>
+          </div>
+        </div>
+        <a href="#" className="view-more">자세히 보기 &gt;</a>
       </div>
-
-    </div>
+      <div className="message-item">
+        <h2>1:1 문의 내역</h2>
+        <h3>강사</h3>
+        <div className="message-content">
+          <div className="message-icon">
+            <i className="fas fa-envelope envelope-icon"></i>
+            <span className="message-count">12</span>
+          </div>
+        </div>
+        <a href="#" className="view-more">자세히 보기 &gt;</a>
+      </div>
+    </section>
   );
 };
 

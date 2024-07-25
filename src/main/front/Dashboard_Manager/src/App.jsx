@@ -2,7 +2,8 @@ import React from 'react';
 import Sidebar from './components/Sidebar';
 import Calendar from './components/Calendar';
 import CourseProgress from './components/CourseProgress';
-import Dashboard from './components/Dashboard';
+import SettingList from './components/SettingList';
+import MessageBox from './components/MessageBox';
 import './App.css';
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
           <div className="dashboard-grid">
             <CourseProgress />
             <Calendar />
-            <Dashboard />
+            <SettingList />
+            <MessageBox />
           </div>
         </div>
       </div>

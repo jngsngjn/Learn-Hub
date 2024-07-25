@@ -31,12 +31,10 @@ const Sidebar = () => {
             문의
             <span className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`}>▼</span>
           </div>
-          {dropdownOpen && (
-            <ul className="submenu">
-              <li>학생 문의</li>
-              <li>강사 문의</li>
-            </ul>
-          )}
+          <ul className={`submenu ${dropdownOpen ? 'open' : ''}`}>
+            <li>학생 문의</li>
+            <li>강사 문의</li>
+          </ul>
         </li>
       </ul>
     </div>

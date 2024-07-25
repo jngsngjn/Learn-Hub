@@ -3,14 +3,30 @@ import './SettingList.css';
 
 const SettingList = () => {
   return (
-    <div>
-      <h2>설문 조사</h2>
-      <div className="survey-item">
-        <p>설문 제목</p>
-        <p>내용 미리보기</p>
-        <p>날짜</p>
+    <div className="setting-list">
+      <div className="setting-list-header">
+        <h2>설문 조사</h2>
       </div>
-      {/* 추가적인 설문 항목들 */}
+      <ul className="survey-list">
+        <li className="survey-item">
+          <div className="survey-info">
+            <span className="survey-id">9기</span>
+            <div className="survey-details">
+              <p className="survey-title">네이버 클라우드 데브옵스 만족도 설문조사 3차</p>
+            </div>
+          </div>
+          <p className="survey-participants">25/30</p>
+        </li>
+        <li className="survey-item">
+          <div className="survey-info">
+            <span className="survey-id">10기</span>
+            <div className="survey-details">
+              <p className="survey-title">네이버 클라우드 데브옵스 만족도 설문조사 2차</p>
+            </div>
+          </div>
+          <p className="survey-participants">25/30</p>
+        </li>
+      </ul>
     </div>
   );
 };

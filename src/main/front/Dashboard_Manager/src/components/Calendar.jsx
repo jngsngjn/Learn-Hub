@@ -7,7 +7,7 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());  // 현재 날짜
   const [selectedDate, setSelectedDate] = useState(null);  // 선택된 날짜
   const [events, setEvents] = useState([]);  // 일정 이벤트
-  const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, description: '', time: '', color: '#FF9999' });  // 새로운 이벤트 상태
+  const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, time: '', color: '#FF9999' });  // 새로운 이벤트 상태
   const [isModalOpen, setIsModalOpen] = useState(false);  // 모달 창 열림
   const [viewEvent, setViewEvent] = useState(null);  // 보기 위한 이벤트
   const [editEvent, setEditEvent] = useState(null);  // 수정 중인 이벤트
@@ -64,13 +64,13 @@ const Calendar = () => {
   };
 
   const handleOpenModal = () => {
-    setNewEvent({ title: '', start: selectedDate, end: selectedDate, description: '', time: '', color: '#FF9999' }); // 새로운 이벤트 초기화
+    setNewEvent({ title: '', start: selectedDate, end: selectedDate, time: '', color: '#FF9999' }); // 새로운 이벤트 초기화
     setIsModalOpen(true); // 모달 창 열기
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false); // 모달 창 닫기
-    setNewEvent({ title: '', start: null, end: null, description: '', time: '', color: '#FF9999' }); // 새로운 이벤트 초기화
+    setNewEvent({ title: '', start: null, end: null, time: '', color: '#FF9999' }); // 새로운 이벤트 초기화
     setViewEvent(null);
     setEditEvent(null);
   };
@@ -155,14 +155,14 @@ const Calendar = () => {
           <div className="days">
             {generateCalendarDates().map((day, index) => (
               <div
-              key={index}
-              className={`day ${day.isCurrentMonth ? '' : 'other-month'} ${
-                selectedDate &&
-                day.date.getFullYear() === selectedDate.getFullYear() &&
-                day.date.getMonth() === selectedDate.getMonth() &&
-                day.date.getDate() === selectedDate.getDate() ? 'selected' : ''
-              } ${isCurrentDate(day.date) ? 'current-date' : ''}`}
-              onClick={() => handleDateClick(day.date)}
+                key={index}
+                className={`day ${day.isCurrentMonth ? '' : 'other-month'} ${
+                  selectedDate &&
+                  day.date.getFullYear() === selectedDate.getFullYear() &&
+                  day.date.getMonth() === selectedDate.getMonth() &&
+                  day.date.getDate() === selectedDate.getDate() ? 'selected' : ''
+                } ${isCurrentDate(day.date) ? 'current-date' : ''}`}
+                onClick={() => handleDateClick(day.date)}
               >
                 <span className="day-number">{day.date.getDate()}</span>
                 <div className="events-indicator">
@@ -179,63 +179,42 @@ const Calendar = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        {viewEvent ? (
-          <div>
-            <h3>일정 정보</h3>
-            <p><strong>제목:</strong> {viewEvent.title}</p>
-            <p><strong>시간:</strong> {viewEvent.time}</p>
-            <p><strong>내용:</strong> {viewEvent.description}</p>
-            <button onClick={handleDeleteEvent}>삭제</button>
-            <button onClick={() => setEditEvent(viewEvent)}>수정</button>
-          </div>
-        ) : (
-          <div>
-            <h3>일정 등록하기</h3>
-            <div className="event-form">
-              <input
-                type="text"
-                placeholder="일정 제목"
-                value={newEvent.title}
-                onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} // 제목 입력
-              />
-              <textarea
-                placeholder="상세 내용"
-                value={newEvent.description}
-                onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })} // 내용 입력
-              ></textarea>
-              <label>시작일</label>
-              <input
-                type="date"
-                value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
-                onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })} // 시작일 입력
-              />
-              <label>종료일</label>
-              <input
-                type="date"
-                value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
-                onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })} // 종료일 입력
-              />
-              <input
-                type="time"
-                value={newEvent.time}
-                onChange={(e) => setNewEvent({ ...newEvent, time: e.target.value })} // 시간 입력 핸들러
-              />
-              <div className="color-picker">
-                {['#FF9999', '#99FF99', '#9999FF'].map(color => (
-                  <div
-                    key={color}
-                    className={`color-option ${newEvent.color === color ? 'selected' : ''}`}
-                    style={{ backgroundColor: color }}
-                    onClick={() => setNewEvent({ ...newEvent, color })} // 색상 선택
-                  ></div>
-                ))}
-              </div>
-              <div className='calendar-submit'>
-                <button onClick={handleSaveEvent}>{editEvent ? '수정' : '등록'}</button>
-              </div>
+        <div>
+          <h3 className="modal-add">일정 등록하기</h3>
+          <div className="event-form">
+            <input
+              type="text"
+              placeholder="일정 제목"
+              value={newEvent.title}
+              onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} // 제목 입력
+            />
+            <label>시작일</label>
+            <input
+              type="date"
+              value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
+              onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })} // 시작일 입력
+            />
+            <label>종료일</label>
+            <input
+              type="date"
+              value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
+              onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })} // 종료일 입력
+            />
+            <div className="color-picker">
+              {['#FF9999', '#99FF99', '#9999FF'].map(color => (
+                <div
+                  key={color}
+                  className={`color-option ${newEvent.color === color ? 'selected' : ''}`}
+                  style={{ backgroundColor: color }}
+                  onClick={() => setNewEvent({ ...newEvent, color })} // 색상 선택
+                ></div>
+              ))}
+            </div>
+            <div className='calendar-submit'>
+              <button onClick={handleSaveEvent}>{editEvent ? '수정' : '등록'}</button>
             </div>
           </div>
-        )}
+        </div>
       </Modal>
     </div>
   );
