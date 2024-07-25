@@ -1,18 +1,24 @@
 package project.homelearn.dto.manager.calendar;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
 
-// 매니저 공통 일정 등록 DTO
+// 매니저 일정 등록 DTO
 @Data
-public class ScheduleCommonDto {
+public class ScheduleDto {
 
+    @NotBlank
     private String title;
 
+    @NotNull
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    private Long curriculumId;
 }
 
 /*

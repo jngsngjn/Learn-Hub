@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.homelearn.dto.manager.calendar.ScheduleCommonDto;
+import project.homelearn.dto.manager.calendar.ScheduleDto;
 import project.homelearn.service.manager.ManagerCalendarService;
 
 @Slf4j
@@ -24,18 +24,16 @@ public class ManagerCalendarController {
 
     // 특정 교육과정 캘린더 조회
 
-    // 전체 일정 등록
+    // 일정 등록
     @PostMapping
-    public ResponseEntity<?> enrollCommonSchedule(@Valid @RequestBody ScheduleCommonDto scheduleDto) {
-        boolean result = calendarService.addCommonSchedule(scheduleDto);
+    public ResponseEntity<?> enrollSchedule(@Valid @RequestBody ScheduleDto scheduleDto) {
+        boolean result = calendarService.addSchedule(scheduleDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-    // 특정 교육과정 일정 등록
 
     // 일정 수정
 
