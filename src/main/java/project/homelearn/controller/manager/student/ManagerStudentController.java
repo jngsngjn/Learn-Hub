@@ -7,9 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.manager.manage.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
+import project.homelearn.service.manager.ExcelService;
 import project.homelearn.service.manager.ManagerStudentService;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
 public class ManagerStudentController {
 
     private final ManagerStudentService managerStudentService;
+    private final ExcelService excelService;
 
     @GetMapping("/manage-students")
     public ResponseEntity<?> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
@@ -42,10 +45,21 @@ public class ManagerStudentController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    // 학생 등록
+    // 학생 1명 등록
     @PostMapping("/manage-students/enroll")
     public ResponseEntity<?> enrollStudent(@Valid @RequestBody StudentEnrollDto studentEnrollDto) {
         boolean result = managerStudentService.enrollStudent(studentEnrollDto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 엑셀 파일로 학생 대량 등록
+    @PostMapping("/manage-students/enroll-file")
+    public ResponseEntity<?> enrollStudentByFile(MultipartFile file) {
+        boolean result = excelService.importStudentFile(file);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
