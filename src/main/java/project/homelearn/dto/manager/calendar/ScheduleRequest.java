@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 // 매니저 일정 등록 DTO
 @Data
-public class ScheduleDto {
+public class ScheduleRequest {
 
     @NotBlank
     private String title;
