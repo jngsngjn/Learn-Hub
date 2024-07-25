@@ -72,4 +72,12 @@ public class ManagerCurriculumController {
         managerCurriculumService.deleteCurriculum(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /**
+     * 특정 교육 과정 페이지
+     * 1. 출결 현황
+     * 2. 강사 정보 (이름, 이메일, 전화번호)
+     * 3. 캘린더
+     * 4. 설문 조사
+     */
 }
