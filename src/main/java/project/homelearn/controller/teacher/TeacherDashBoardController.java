@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/teachers")
 @RequiredArgsConstructor
-public class TeacherController {
+public class TeacherDashBoardController {
 
 }

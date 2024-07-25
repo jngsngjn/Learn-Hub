@@ -1,4 +1,4 @@
-package project.homelearn.dto.manager.calendar;
+package project.homelearn.dto.manager.dashboard;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 // 캘린더 조회 DTO
 @Data
-public class ScheduleResponse {
+public class ScheduleDto {
 
     private Long id; // PK
 
@@ -20,7 +20,7 @@ public class ScheduleResponse {
     private String color;
 
     @QueryProjection
-    public ScheduleResponse(Long id, String title, LocalDate startDate, LocalDate endDate, String color) {
+    public ScheduleDto(Long id, String title, LocalDate startDate, LocalDate endDate, String color) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;

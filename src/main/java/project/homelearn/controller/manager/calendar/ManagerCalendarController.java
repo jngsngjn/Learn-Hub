@@ -6,36 +6,30 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.calendar.ScheduleResponse;
-import project.homelearn.dto.manager.calendar.ScheduleRequest;
+import project.homelearn.dto.manager.dashboard.ScheduleDto;
+import project.homelearn.dto.manager.calendar.ManagerScheduleAddDto;
 import project.homelearn.service.manager.ManagerCalendarService;
 
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/managers/calendar")
+@RequestMapping("/managers")
 @RequiredArgsConstructor
 public class ManagerCalendarController {
 
     private final ManagerCalendarService calendarService;
 
-    // 대시보드 캘린더 조회
-    @GetMapping("/dash-boards")
-    public List<ScheduleResponse> viewAllCalendar() {
-        return calendarService.getAllSchedules();
-    }
-
     // 특정 교육과정 캘린더 조회
-    @GetMapping("/{id}")
-    public List<ScheduleResponse> viewCurriculumCalendar(@PathVariable("id") Long id) {
+    @GetMapping("/calendar/{id}")
+    public List<ScheduleDto> viewCurriculumCalendar(@PathVariable("id") Long id) {
         return calendarService.getCurriculumSchedules(id);
     }
 
     // 일정 등록
-    @PostMapping
-    public ResponseEntity<?> enrollSchedule(@Valid @RequestBody ScheduleRequest scheduleRequest) {
-        boolean result = calendarService.addSchedule(scheduleRequest);
+    @PostMapping("/calendar")
+    public ResponseEntity<?> enrollSchedule(@Valid @RequestBody ManagerScheduleAddDto managerScheduleAddDto) {
+        boolean result = calendarService.addSchedule(managerScheduleAddDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -44,10 +38,10 @@ public class ManagerCalendarController {
     }
 
     // 일정 수정
-    @PatchMapping("/{id}")
+    @PatchMapping("/calendar/{id}")
     public ResponseEntity<?> modifySchedule(@PathVariable("id") Long id,
-                                            @Valid @RequestBody ScheduleRequest scheduleRequest) {
-        boolean result = calendarService.updateSchedule(id, scheduleRequest);
+                                            @Valid @RequestBody ManagerScheduleAddDto managerScheduleAddDto) {
+        boolean result = calendarService.updateSchedule(id, managerScheduleAddDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -56,7 +50,7 @@ public class ManagerCalendarController {
     }
 
     // 일정 삭제
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/calendar/{id}")
     public ResponseEntity<?> deleteSchedule(@PathVariable("id") Long id) {
         boolean result = calendarService.deleteSchedule(id);
         if (result) {
