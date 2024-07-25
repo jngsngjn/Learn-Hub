@@ -146,4 +146,16 @@ public class ManagerCurriculumService {
             return false;
         }
     }
+
+    /**
+     * 교육 과정 만족도 설문 마감
+     * Author : 정성진
+     */
+    public boolean stopSurveyProcess(Long id) {
+        if (id == null) {
+            return false;
+        }
+        surveyRepository.updateSurveyIsFinishedTrue(id);
+        return true;
+    }
 }

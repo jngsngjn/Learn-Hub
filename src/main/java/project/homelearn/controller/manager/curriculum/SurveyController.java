@@ -18,9 +18,21 @@ public class SurveyController {
 
     private final ManagerCurriculumService managerCurriculumService;
 
-    @PostMapping("/survey/{id}")
+    // 설문조사 시작 - 학생에게 알림보내야 함
+    @PostMapping("/survey-start/{id}")
     public ResponseEntity<?> startSurvey(@PathVariable("id") Long id) {
         boolean result = managerCurriculumService.startSurveyProcess(id);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // 설문조사 마감
+    @PostMapping("/survey-stop/{id}")
+    public ResponseEntity<?> stopSurvey(@PathVariable("id") Long id) {
+        boolean result = managerCurriculumService.stopSurveyProcess(id);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
