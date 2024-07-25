@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.entity.survey.Survey;
+import project.homelearn.repository.survey.querydsl.SurveyRepositoryCustom;
 
-public interface SurveyRepository extends JpaRepository<Survey, Long> {
+public interface SurveyRepository extends JpaRepository<Survey, Long>, SurveyRepositoryCustom {
 
     @Query("select count(s) from Survey s where s.curriculum.id = :curriculumId")
     int findSurveyCount(@Param("curriculumId") Long curriculumId);

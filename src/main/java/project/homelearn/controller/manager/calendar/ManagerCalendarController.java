@@ -6,11 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.dashboard.ScheduleDto;
 import project.homelearn.dto.manager.calendar.ManagerScheduleAddDto;
 import project.homelearn.service.manager.ManagerCalendarService;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -19,12 +16,6 @@ import java.util.List;
 public class ManagerCalendarController {
 
     private final ManagerCalendarService calendarService;
-
-    // 특정 교육과정 캘린더 조회
-    @GetMapping("/calendar/{id}")
-    public List<ScheduleDto> viewCurriculumCalendar(@PathVariable("id") Long id) {
-        return calendarService.getCurriculumSchedules(id);
-    }
 
     // 일정 등록
     @PostMapping("/calendar")

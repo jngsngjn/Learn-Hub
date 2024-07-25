@@ -6,12 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.manager.dashboard.ScheduleDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
-import project.homelearn.dto.manager.manage.curriculum.CurriculumUpdateDto;
-import project.homelearn.dto.manager.manage.curriculum.PasswordDto;
+import project.homelearn.dto.manager.manage.curriculum.*;
+import project.homelearn.service.manager.ManagerCalendarService;
 import project.homelearn.service.manager.ManagerCurriculumService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -19,7 +21,8 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class ManagerCurriculumController {
 
-    private final ManagerCurriculumService managerCurriculumService;
+    private final ManagerCurriculumService curriculumService;
+    private final ManagerCalendarService calendarService;
 
     @GetMapping
     public String manager() {
@@ -29,7 +32,7 @@ public class ManagerCurriculumController {
     // 교육 과정 등록
     @PostMapping("/manage-curriculums/enroll")
     public ResponseEntity<?> enrollCurriculum(@Valid @RequestBody CurriculumEnrollDto curriculumEnrollDto) {
-        boolean result = managerCurriculumService.enrollCurriculum(curriculumEnrollDto);
+        boolean result = curriculumService.enrollCurriculum(curriculumEnrollDto);
 
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -42,7 +45,7 @@ public class ManagerCurriculumController {
     @PatchMapping("/manage-curriculums/{id}")
     public ResponseEntity<?> updateCurriculum(@PathVariable("id") Long id,
                                               @Valid @RequestBody CurriculumUpdateDto curriculumUpdateDto) {
-        boolean result = managerCurriculumService.updateCurriculum(id, curriculumUpdateDto);
+        boolean result = curriculumService.updateCurriculum(id, curriculumUpdateDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -55,7 +58,7 @@ public class ManagerCurriculumController {
     public ResponseEntity<?> checkPassword(@Valid @RequestBody PasswordDto passwordDto,
                                            Principal principal) {
         String username = principal.getName();
-        boolean result = managerCurriculumService.checkPassword(username, passwordDto.getPassword());
+        boolean result = curriculumService.checkPassword(username, passwordDto.getPassword());
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -69,15 +72,39 @@ public class ManagerCurriculumController {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        managerCurriculumService.deleteCurriculum(id);
+        curriculumService.deleteCurriculum(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
      * 특정 교육 과정 페이지
-     * 1. 출결 현황
-     * 2. 강사 정보 (이름, 이메일, 전화번호)
-     * 3. 캘린더
-     * 4. 설문 조사
+     * 1. 교육 과정 일반 정보 ✅ viewCurriculumBasic()
+     * 2. 출결 현황
+     * 3. 강사 정보 ✅ viewCurriculumTeacher()
+     * 4. 캘린더 ✅ viewCurriculumCalendar()
+     * 5. 설문 조사 ✅ viewCurriculumSurvey()
      */
+    @GetMapping("/curriculum/basic/{curriculumId}")
+    public CurriculumProgressDto viewCurriculumBasic(@PathVariable("curriculumId") Long curriculumId) {
+        return curriculumService.getCurriculumProgress(curriculumId);
+    }
+
+    @GetMapping("/curriculum/teacher/{curriculumId}")
+    public CurriculumTeacherDto viewCurriculumTeacher(@PathVariable("curriculumId") Long curriculumId) {
+        return curriculumService.getCurriculumTeacherInfo(curriculumId);
+    }
+
+    @GetMapping("/curriculum/calendar/{curriculumId}")
+    public List<ScheduleDto> viewCurriculumCalendar(@PathVariable("curriculumId") Long curriculumId) {
+        return calendarService.getCurriculumSchedules(curriculumId);
+    }
+
+    @GetMapping("/curriculum/survey/{curriculumId}")
+    public ResponseEntity<?> viewCurriculumSurvey(@PathVariable("curriculumId") Long curriculumId) {
+        CurriculumSurveyDto survey = curriculumService.getCurriculumSurvey(curriculumId);
+        if (survey == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(survey, HttpStatus.OK);
+    }
 }
