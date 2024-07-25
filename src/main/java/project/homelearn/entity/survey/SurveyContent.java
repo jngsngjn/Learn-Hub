@@ -25,4 +25,12 @@ public class SurveyContent {
 
     @OneToMany(mappedBy = "surveyContent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SurveyAnswer> surveyAnswers = new ArrayList<>();
+
+    public SurveyContent() {
+    }
+
+    public SurveyContent(String content, QuestionType questionType) {
+        this.content = content;
+        this.questionType = questionType;
+    }
 }

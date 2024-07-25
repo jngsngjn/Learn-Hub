@@ -1,11 +1,12 @@
-package project.homelearn.dto.manager.manage;
+package project.homelearn.dto.manager.manage.student;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import project.homelearn.entity.user.Gender;
 
 @Data
-public class TeacherUpdateDto {
+public class StudentUpdateDto {
 
     @NotBlank
     private String name;
@@ -17,7 +18,7 @@ public class TeacherUpdateDto {
     private String email;
 
     @NotNull
-    private Long curriculumId;
+    private Gender gender;
 }
 
 /*
@@ -25,6 +26,6 @@ public class TeacherUpdateDto {
     "name": "수정과",
     "phone": "010-9999-9999",
     "email": "update@gmail.com",
-    "curriculumId": "1"
+    "gender": "FEMALE"
 }
  */

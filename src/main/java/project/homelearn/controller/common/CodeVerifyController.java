@@ -22,6 +22,7 @@ public class CodeVerifyController {
     private final UserService userService;
     private final RegisterService registerService;
 
+    // 회원가입 전 코드 인증
     @PostMapping("/code-verify")
     public HttpEntity<?> verifyCode(@Valid @RequestBody EmailCodeDto emailCodeDto) {
         boolean result = userService.verifyCode(emailCodeDto);
