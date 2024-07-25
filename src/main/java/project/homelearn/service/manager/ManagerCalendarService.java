@@ -4,13 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.manager.calendar.ScheduleDto;
+import project.homelearn.dto.manager.calendar.ScheduleResponse;
+import project.homelearn.dto.manager.calendar.ScheduleRequest;
 import project.homelearn.entity.calendar.ManagerCalendar;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.repository.calendar.ManagerCalendarRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -21,9 +23,9 @@ public class ManagerCalendarService {
     private final CurriculumRepository curriculumRepository;
     private final ManagerCalendarRepository managerCalendarRepository;
 
-    public boolean addSchedule(ScheduleDto scheduleDto) {
+    public boolean addSchedule(ScheduleRequest scheduleRequest) {
         try {
-            addScheduleProcess(scheduleDto);
+            addScheduleProcess(scheduleRequest);
             return true;
         } catch (Exception e) {
             log.error("Adding error common schedule : ", e);
@@ -31,16 +33,16 @@ public class ManagerCalendarService {
         }
     }
 
-    private void addScheduleProcess(ScheduleDto scheduleDto) {
+    private void addScheduleProcess(ScheduleRequest scheduleRequest) {
         ManagerCalendar calendar = new ManagerCalendar();
-        calendar.setTitle(scheduleDto.getTitle());
-        calendar.setStartDate(scheduleDto.getStartDate());
-        LocalDate endDate = scheduleDto.getEndDate();
+        calendar.setTitle(scheduleRequest.getTitle());
+        calendar.setStartDate(scheduleRequest.getStartDate());
+        LocalDate endDate = scheduleRequest.getEndDate();
         if (endDate != null) {
             calendar.setEndDate(endDate);
         }
 
-        Long curriculumId = scheduleDto.getCurriculumId();
+        Long curriculumId = scheduleRequest.getCurriculumId();
         if (curriculumId != null) {
             Curriculum curriculum = curriculumRepository.findById(curriculumId).orElseThrow();
             calendar.setCurriculum(curriculum);
@@ -56,9 +58,9 @@ public class ManagerCalendarService {
         return true;
     }
 
-    public boolean updateSchedule(Long id, ScheduleDto scheduleDto) {
+    public boolean updateSchedule(Long id, ScheduleRequest scheduleRequest) {
         try {
-            updateScheduleProcess(id, scheduleDto);
+            updateScheduleProcess(id, scheduleRequest);
             return true;
         } catch (Exception e) {
             log.error("Error update manager schedule : ", e);
@@ -66,17 +68,17 @@ public class ManagerCalendarService {
         }
     }
 
-    private void updateScheduleProcess(Long id, ScheduleDto scheduleDto) {
+    private void updateScheduleProcess(Long id, ScheduleRequest scheduleRequest) {
         ManagerCalendar calendar = managerCalendarRepository.findById(id).orElseThrow();
 
-        LocalDate endDate = scheduleDto.getEndDate();
+        LocalDate endDate = scheduleRequest.getEndDate();
         if (endDate == null) {
             calendar.setEndDate(null);
         } else {
-            calendar.setEndDate(scheduleDto.getEndDate());
+            calendar.setEndDate(scheduleRequest.getEndDate());
         }
 
-        Long curriculumId = scheduleDto.getCurriculumId();
+        Long curriculumId = scheduleRequest.getCurriculumId();
         if (curriculumId == null) {
             calendar.setCurriculum(null);
         } else {
@@ -84,7 +86,15 @@ public class ManagerCalendarService {
             calendar.setCurriculum(curriculum);
         }
 
-        calendar.setTitle(scheduleDto.getTitle());
-        calendar.setStartDate(scheduleDto.getStartDate());
+        calendar.setTitle(scheduleRequest.getTitle());
+        calendar.setStartDate(scheduleRequest.getStartDate());
+    }
+
+    public List<ScheduleResponse> getCurriculumSchedules(Long id) {
+        return managerCalendarRepository.findCurriculumSchedules(id);
+    }
+
+    public List<ScheduleResponse> getAllSchedules() {
+        return managerCalendarRepository.findAllSchedules();
     }
 }
