@@ -34,6 +34,7 @@
   position: relative;
   width: 88px;
   height: 32px;
+  transition: background-color 0.3s ease;
 }
 
 .course-progress-buttons button.active {
@@ -48,19 +49,21 @@
 }
 
 .course-item {
-  height: 105px;
+  height: 120px;
   position: relative;
   background-color: #ffffff;
   border-radius: 20px;
   border: 3px solid #757575;
   padding: 15px;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .course-info {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
 }
 
 .course-id {
@@ -84,11 +87,37 @@
   font-weight: 400;
 }
 
+.course-title:hover {
+  color: #000000;
+}
+
 .course-details {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 14px;
   color: #666;
+}
+
+.course-teacher {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.course-teacher-name {
+  font-weight: bold;
+  font-size: 25px;
+  color: #666;
+}
+
+.course-duration {
+  font-size: 25px;
+}
+
+.course-participants {
+  font-size: 20px;
 }
 
 .course-participants i {
