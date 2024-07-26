@@ -1,9 +1,9 @@
 package project.homelearn.entity.manager;
 
+import project.homelearn.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import project.homelearn.entity.BaseEntity;
 
 @Entity
 @Getter @Setter
@@ -24,12 +24,12 @@ public class ManagerBoard extends BaseEntity {
     @Column(nullable = false)
     private boolean emergency;
 
+    //보류
     @Column(name = "file_name")
     private String fileName;
 
+    //보류
     @Column(name = "file_path")
     private String filePath;
 
-    @Column(name = "view_count", nullable = false)
-    private int viewCount = 0;
 }
