@@ -22,8 +22,8 @@ import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtUtil;
 import project.homelearn.service.jwt.RedisTokenService;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -82,32 +82,36 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         User user = userRepository.findByUsername(username);
         loginHistoryRepository.save(new LoginHistory(user));
 
-        if (role.equals("ROLE_STUDENT")) {
-            boolean exists = attendanceRepository.existsByUser(user);
-
-            if (!exists) {
-                LocalDateTime loginLog = loginHistoryRepository.findUserLoginDateTime(user);
-                LocalTime nineFortyAM = LocalTime.of(9, 40);
-                LocalTime twoPM =LocalTime.of(14, 0);
-
-                LocalTime loginTime = loginLog.toLocalTime();
-
-                if (loginTime.isBefore(nineFortyAM)) { // 출석
-                    Attendance attendance = new Attendance(user, ATTENDANCE, loginLog.toLocalDate());
-                    attendanceRepository.save(attendance);
-
-                } else if (loginTime.isBefore(twoPM)) { // 지각
-                    Attendance attendance = new Attendance(user, LATE, loginLog.toLocalDate());
-                    attendanceRepository.save(attendance);
-
-                } else if (loginTime.isAfter(twoPM)) { // 결석
-                    Attendance attendance = new Attendance(user, ABSENT, loginLog.toLocalDate());
-                    attendanceRepository.save(attendance);
-                }
-            }
+        if ("ROLE_STUDENT".equals(role)) {
+            processStudentAttendance(user);
         }
 
         log.info("다음 사용자가 로그인 성공 : {}", username);
+    }
+
+    private void processStudentAttendance(User user) {
+        if (!attendanceRepository.existsByUser(user)) {
+            LocalDateTime loginLog = loginHistoryRepository.findUserLoginDateTime(user);
+
+            DayOfWeek dayOfWeek = loginLog.getDayOfWeek();
+            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                return; // 주말이면 출석 체크를 하지 않음
+            }
+
+            LocalTime loginTime = loginLog.toLocalTime();
+            LocalTime attendanceDeadline = LocalTime.of(9, 40);
+            LocalTime lateDeadline = LocalTime.of(14, 0);
+
+            Attendance attendance;
+            if (loginTime.isBefore(attendanceDeadline)) { // 출석
+                attendance = new Attendance(user, ATTENDANCE, loginLog.toLocalDate());
+            } else if (loginTime.isBefore(lateDeadline)) { // 지각
+                attendance = new Attendance(user, LATE, loginLog.toLocalDate());
+            } else { // 결석
+                attendance = new Attendance(user, ABSENT, loginLog.toLocalDate());
+            }
+            attendanceRepository.save(attendance);
+        }
     }
 
     @Override
