@@ -86,18 +86,30 @@ public class ManagerCurriculumController {
      * 5. 설문 조사 ✅ viewCurriculumSurvey()
      */
     @GetMapping("/curriculum/basic/{curriculumId}")
-    public CurriculumProgressDto viewCurriculumBasic(@PathVariable("curriculumId") Long curriculumId) {
-        return curriculumService.getCurriculumProgress(curriculumId);
+    public ResponseEntity<?> viewCurriculumBasic(@PathVariable("curriculumId") Long curriculumId) {
+        CurriculumProgressDto result = curriculumService.getCurriculumProgress(curriculumId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/curriculum/teacher/{curriculumId}")
-    public CurriculumTeacherDto viewCurriculumTeacher(@PathVariable("curriculumId") Long curriculumId) {
-        return curriculumService.getCurriculumTeacherInfo(curriculumId);
+    public ResponseEntity<?> viewCurriculumTeacher(@PathVariable("curriculumId") Long curriculumId) {
+        CurriculumTeacherDto result = curriculumService.getCurriculumTeacherInfo(curriculumId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/curriculum/calendar/{curriculumId}")
-    public List<ScheduleDto> viewCurriculumCalendar(@PathVariable("curriculumId") Long curriculumId) {
-        return calendarService.getCurriculumSchedules(curriculumId);
+    public ResponseEntity<?> viewCurriculumCalendar(@PathVariable("curriculumId") Long curriculumId) {
+        List<ScheduleDto> result = calendarService.getCurriculumSchedules(curriculumId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/curriculum/survey/{curriculumId}")

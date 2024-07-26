@@ -9,7 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumProgressDto;
 import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
+import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
@@ -157,5 +160,16 @@ public class ManagerStudentService {
      */
     public void deleteStudents(List<Long> ids) {
         studentRepository.deleteAllById(ids);
+    }
+
+    public CurriculumProgressDto getStudentCurriculum(Long studentId) {
+        CurriculumBasicDto basicDto = studentRepository.findStudentCurriculum(studentId);
+        Double progress = basicDto.calculateProgress();
+
+        return new CurriculumProgressDto(basicDto.getName(), basicDto.getTh(), progress);
+    }
+
+    public SpecificStudentDto getStudentBasic(Long studentId) {
+        return studentRepository.findSpecificStudentDto(studentId);
     }
 }

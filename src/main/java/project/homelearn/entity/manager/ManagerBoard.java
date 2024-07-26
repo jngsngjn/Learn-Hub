@@ -29,7 +29,4 @@ public class ManagerBoard extends BaseEntity {
 
     @Column(name = "file_path")
     private String filePath;
-
-    @Column(name = "view_count", nullable = false)
-    private int viewCount = 0;
 }

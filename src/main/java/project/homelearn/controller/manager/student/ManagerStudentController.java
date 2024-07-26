@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumProgressDto;
 import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
+import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.service.manager.ExcelService;
 import project.homelearn.service.manager.ManagerStudentService;
@@ -22,8 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerStudentController {
 
-    private final ManagerStudentService managerStudentService;
     private final ExcelService excelService;
+    private final ManagerStudentService studentService;
 
     @GetMapping("/manage-students")
     public ResponseEntity<?> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
@@ -33,11 +35,11 @@ public class ManagerStudentController {
 
         Page<ManagerStudentDto> students;
         if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()) {
-            students = managerStudentService.getStudentsWithCurriculumNameAndCurriculumTh(size, page, curriculumName, curriculumTh);
+            students = studentService.getStudentsWithCurriculumNameAndCurriculumTh(size, page, curriculumName, curriculumTh);
         } else if (curriculumName != null && !curriculumName.isEmpty()) {
-            students = managerStudentService.getStudentsWithCurriculumName(size, page, curriculumName);
+            students = studentService.getStudentsWithCurriculumName(size, page, curriculumName);
         } else {
-            students = managerStudentService.getStudents(size, page);
+            students = studentService.getStudents(size, page);
         }
 
         if(students != null && !students.isEmpty()){
@@ -52,7 +54,7 @@ public class ManagerStudentController {
      */
     @PostMapping("/manage-students/enroll")
     public ResponseEntity<?> enrollStudent(@Valid @RequestBody StudentEnrollDto studentEnrollDto) {
-        boolean result = managerStudentService.enrollStudent(studentEnrollDto);
+        boolean result = studentService.enrollStudent(studentEnrollDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -81,7 +83,7 @@ public class ManagerStudentController {
     @PatchMapping("/manage-students/{id}")
     public ResponseEntity<?> updateStudent(@PathVariable("id") Long id,
                                            @Valid @RequestBody StudentUpdateDto studentUpdateDto) {
-        boolean result = managerStudentService.updateStudent(id, studentUpdateDto);
+        boolean result = studentService.updateStudent(id, studentUpdateDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -99,7 +101,7 @@ public class ManagerStudentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        managerStudentService.deleteStudent(id);
+        studentService.deleteStudent(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -113,7 +115,31 @@ public class ManagerStudentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        managerStudentService.deleteStudents(ids);
+        studentService.deleteStudents(ids);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * 특정 학생 페이지
+     * 1. 커리큘럼 정보 ✅
+     * 2. 학생 정보 ✅
+     * 3. 출결 현황
+     */
+    @GetMapping("/student/curriculum/{studentId}")
+    public ResponseEntity<?> viewStudentCurriculum(@PathVariable("studentId") Long studentId) {
+        CurriculumProgressDto result = studentService.getStudentCurriculum(studentId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/student/basic/{studentId}")
+    public ResponseEntity<?> viewStudentBasic(@PathVariable("studentId") Long studentId) {
+        SpecificStudentDto result = studentService.getStudentBasic(studentId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
