@@ -8,26 +8,33 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumProgressDto;
 import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
+import project.homelearn.dto.manager.manage.student.StudentDetailsDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;
 import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.repository.curriculum.CurriculumRepository;
+import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
+import project.homelearn.repository.user.ManagerRepository;
 import project.homelearn.repository.user.StudentRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -42,6 +49,12 @@ public class ManagerStudentService {
     private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
     private final LoginHistoryRepository loginHistoryRepository;
+    private final ManagerInquiryRepository managerInquiryRepository;
+
+    /**
+    * 학생조회
+    * Author : 김승민
+    * */
 
     //필터링 x : 전체 학생 조회
     public Page<ManagerStudentDto> getStudents(int size, int page){
@@ -105,6 +118,42 @@ public class ManagerStudentService {
         LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
         return loginHistoryRepository.findByLoginDateTimeBetween(startOfDay, endOfDay);
     }
+
+//    //학생 1명 상세보기
+//    public StudentDetailsDto viewStudent(Long studentId){
+//        Student student = studentRepository.findById(studentId).orElse(null);
+//
+////        double attendanceRate = calculateAttendanceRate(student);
+////        Map<LocalDateTime, String> attendanceStatus = calculateAttendanceStatus(student);
+////        int unresolvedInquiryCount = managerInquiryRepository.countManagerInquiriesByUserId(studentId);
+////        String inquiryPageUrl = "/student-inquires?userId="+studentId;
+//
+//        return new StudentDetailsDto(
+//                student.getId(),
+//                student.getName(),
+//                student.getCurriculum().getTh(),
+//                student.getCurriculum().getName(),
+//                student.getPhone(),
+//                student.getGender(),
+//                student.getEmail(),
+//                attendanceRate,
+//                attendanceStatus,
+//                unresolvedInquiryCount,
+//                inquiryPageUrl
+//        );
+//    }
+
+//    //출석률 메소드
+//    private Double calculateAttendanceRate(Student student) {
+//        double result = 0.0;
+//
+//
+//    }
+//
+//    //날짜별 출석 상태 메소드
+//    private Map<LocalDateTime, String> calculateAttendanceStatus(Student student) {
+//        Map<LocalDateTime, String> attendanceStatus = new ConcurrentHashMap<>();
+//    }
 
     /**
      * 학생 등록

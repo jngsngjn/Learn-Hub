@@ -41,6 +41,14 @@ public class ManagerInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+
+    //학생 상세보기에서 해당 학생의 미완료 문의내역 순으로 문의내역 페이지 이동
+    @GetMapping("/student-inquiries-by-id")
+    public ResponseEntity<?> getStudentInquiriesById(@RequestParam("userId") Long userId) {
+        List<ManagerInquiryDto> inquiries = managerInquiryService.getManagerInquiryDtoById(userId);
+        return ResponseEntity.ok(inquiries);
+    }
+
     @GetMapping("/teacher-inquires")
     public ResponseEntity<?> teacherList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
                                                @RequestParam(name = "curriculumTh", required = false) Long curriculumTh){
