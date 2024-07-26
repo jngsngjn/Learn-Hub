@@ -8,8 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.ManagerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
+import project.homelearn.dto.manager.manage.teacher.SpecificTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.TeacherUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.teacher.Teacher;
@@ -32,6 +34,10 @@ public class ManagerTeacherService {
     private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
 
+    /**
+     * 강사조회
+     * Author : 김승민
+     * */
     //필터링 x : 전체 강사 조회
     public Page<ManagerTeacherDto> getTeachers(int size, int page) {
         Pageable pageable = PageRequest.of(page, size);
@@ -100,6 +106,10 @@ public class ManagerTeacherService {
         return true;
     }
 
+    /**
+     * 강사 수정
+     * Author : 정성진
+     */
     public boolean updateTeacher(Long teacherId, TeacherUpdateDto teacherUpdateDto) {
         try {
             Curriculum curriculum = curriculumRepository.findById(teacherUpdateDto.getCurriculumId()).orElseThrow();
@@ -116,11 +126,32 @@ public class ManagerTeacherService {
         }
     }
 
+    /**
+     * 강사 1명 삭제
+     * Author : 정성진
+     */
     public void deleteTeacher(Long id) {
         teacherRepository.deleteById(id);
     }
 
+    /**
+     * 강사 여러 명 삭제
+     * Author : 정성진
+     */
     public void deleteTeachers(List<Long> ids) {
         teacherRepository.deleteAllById(ids);
+    }
+
+    /**
+     * 강사 상세 페이지
+     * 1. 일반 정보 ✅ getTeacherBasic()
+     * 2. 강사가 배정되지 않은 교육 과정
+     */
+    public SpecificTeacherDto getTeacherBasic(Long teacherId) {
+        return teacherRepository.findSpecificTeacher(teacherId);
+    }
+
+    public CurriculumWithoutTeacherDto getCurriculumWithoutTeacher() {
+        return teacherRepository.findCurriculumWithoutTeacher();
     }
 }

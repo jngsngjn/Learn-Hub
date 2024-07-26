@@ -22,7 +22,7 @@ public class ManagerInquiryController {
 
     @GetMapping("/student-inquires")
     public ResponseEntity<?> studentList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
-                                               @RequestParam(name = "curriculumTh", required = false) Long curriculumTh){
+                                         @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
         List<ManagerInquiryDto> managerInquiries;
         if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()){
@@ -35,7 +35,7 @@ public class ManagerInquiryController {
             managerInquiries = managerInquiryService.getInquiryListDefaultFromStudents();
         }
 
-        if(managerInquiries != null && !managerInquiries.isEmpty()){
+        if (managerInquiries != null && !managerInquiries.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(managerInquiries);
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -43,27 +43,27 @@ public class ManagerInquiryController {
 
     @GetMapping("/teacher-inquires")
     public ResponseEntity<?> teacherList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
-                                               @RequestParam(name = "curriculumTh", required = false) Long curriculumTh){
+                                         @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
         List<ManagerInquiryDto> managerInquiries;
-        if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()){
+        if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()) {
             managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameAndThFromTeachers(curriculumName,curriculumTh);
         }
-        else if (curriculumName != null && !curriculumName.isEmpty()){
+        else if (curriculumName != null && !curriculumName.isEmpty()) {
             managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameFromTeachers(curriculumName);
         }
         else {
             managerInquiries = managerInquiryService.getInquiryListDefaultFromTeachers();
         }
 
-        if(managerInquiries != null && !managerInquiries.isEmpty()){
+        if (managerInquiries != null && !managerInquiries.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(managerInquiries);
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @GetMapping("/inquires/{inquiryId}")
-    public ResponseEntity<?> viewInquiry(@PathVariable("inquiryId")Long inquiryId){
+    public ResponseEntity<?> viewInquiry(@PathVariable("inquiryId") Long inquiryId) {
         ManagerInquiryDto result = managerInquiryService.getOneManagerInquiryDtoById(inquiryId);
         if (result != null) {
             return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -73,7 +73,7 @@ public class ManagerInquiryController {
 
     @PostMapping("/{inquiryId}/add-response")
     public ResponseEntity<?> addResponse(@Valid @RequestBody ManagerResponseDto managerResponseDto,
-                                         @PathVariable("inquiryId")Long inquiryId){
+                                         @PathVariable("inquiryId") Long inquiryId) {
         boolean result = managerInquiryService.addResponse(managerResponseDto,inquiryId);
         if (result) {
             return ResponseEntity.status(HttpStatus.OK).body(managerResponseDto);
