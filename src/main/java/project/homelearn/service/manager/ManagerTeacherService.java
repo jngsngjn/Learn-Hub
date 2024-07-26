@@ -34,12 +34,10 @@ public class ManagerTeacherService {
     private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
 
-
     /**
      * 강사조회
      * Author : 김승민
      * */
-
     //필터링 x : 전체 강사 조회
     public Page<ManagerTeacherDto> getTeachers(int size, int page) {
         Pageable pageable = PageRequest.of(page, size);
@@ -108,6 +106,10 @@ public class ManagerTeacherService {
         return true;
     }
 
+    /**
+     * 강사 수정
+     * Author : 정성진
+     */
     public boolean updateTeacher(Long teacherId, TeacherUpdateDto teacherUpdateDto) {
         try {
             Curriculum curriculum = curriculumRepository.findById(teacherUpdateDto.getCurriculumId()).orElseThrow();
@@ -124,14 +126,27 @@ public class ManagerTeacherService {
         }
     }
 
+    /**
+     * 강사 1명 삭제
+     * Author : 정성진
+     */
     public void deleteTeacher(Long id) {
         teacherRepository.deleteById(id);
     }
 
+    /**
+     * 강사 여러 명 삭제
+     * Author : 정성진
+     */
     public void deleteTeachers(List<Long> ids) {
         teacherRepository.deleteAllById(ids);
     }
 
+    /**
+     * 강사 상세 페이지
+     * 1. 일반 정보 ✅ getTeacherBasic()
+     * 2. 강사 배정 안 된 교육과정
+     */
     public SpecificTeacherDto getTeacherBasic(Long teacherId) {
         return teacherRepository.findSpecificTeacher(teacherId);
     }
