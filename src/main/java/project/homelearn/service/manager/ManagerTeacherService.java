@@ -8,9 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.ManagerTeacherDto;
-import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
 import project.homelearn.dto.manager.manage.teacher.SpecificTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.TeacherUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -145,13 +145,13 @@ public class ManagerTeacherService {
     /**
      * 강사 상세 페이지
      * 1. 일반 정보 ✅ getTeacherBasic()
-     * 2. 강사가 배정되지 않은 교육 과정
+     * 2. 강사가 배정되지 않은 교육 과정 ✅ getCurriculumWithoutTeacher()
      */
     public SpecificTeacherDto getTeacherBasic(Long teacherId) {
         return teacherRepository.findSpecificTeacher(teacherId);
     }
 
-    public CurriculumWithoutTeacherDto getCurriculumWithoutTeacher() {
-        return teacherRepository.findCurriculumWithoutTeacher();
+    public List<CurriculumWithoutTeacherDto> getCurriculumWithoutTeacher() {
+        return curriculumRepository.findCurriculumWithoutTeacher();
     }
 }

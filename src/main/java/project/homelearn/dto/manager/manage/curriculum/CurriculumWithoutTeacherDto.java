@@ -10,4 +10,41 @@ public class CurriculumWithoutTeacherDto {
 
     private CurriculumType type;
     private List<CurriculumIdAndThDto> curriculumIdAndThs;
+
+    public CurriculumWithoutTeacherDto(CurriculumType type, List<CurriculumIdAndThDto> curriculumIdAndThs) {
+        this.type = type;
+        this.curriculumIdAndThs = curriculumIdAndThs;
+    }
 }
+
+/*
+List로 반환함
+[
+    {
+        "type": "NCP",
+        "curriculumIdAndThs": [
+            {
+                "id": 3,
+                "th": 3
+            }
+        ]
+    },
+    {
+        "type": "AWS",
+        "curriculumIdAndThs": [
+            {
+                "id": 4,
+                "th": 1
+            },
+            {
+                "id": 5,
+                "th": 2
+            },
+            {
+                "id": 6,
+                "th": 3
+            }
+        ]
+    }
+]
+ */
