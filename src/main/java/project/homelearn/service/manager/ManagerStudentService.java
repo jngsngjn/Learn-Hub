@@ -8,10 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumProgressDto;
-import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -19,6 +19,7 @@ import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;
 import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.repository.curriculum.CurriculumRepository;
+import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.StudentRepository;
@@ -42,6 +43,12 @@ public class ManagerStudentService {
     private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
     private final LoginHistoryRepository loginHistoryRepository;
+    private final ManagerInquiryRepository managerInquiryRepository;
+
+    /**
+    * 학생조회
+    * Author : 김승민
+    * */
 
     //필터링 x : 전체 학생 조회
     public Page<ManagerStudentDto> getStudents(int size, int page){
@@ -105,6 +112,14 @@ public class ManagerStudentService {
         LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
         return loginHistoryRepository.findByLoginDateTimeBetween(startOfDay, endOfDay);
     }
+
+    //학생 1명 상세보기
+    //public StudentDetailsDto viewStudent(Long studentId){
+        //Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Invalid student ID"));
+
+        //return null;
+    //}
+
 
     /**
      * 학생 등록

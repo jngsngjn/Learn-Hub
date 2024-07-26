@@ -16,6 +16,7 @@ import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
 import project.homelearn.entity.notification.student.StudentNotification;
+import project.homelearn.entity.student.Attendance;
 import project.homelearn.entity.vote.StudentVote;
 
 import java.util.ArrayList;
@@ -105,4 +106,7 @@ public abstract class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeacherCalendar> teacherCalendars = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Attendance> attendances = new ArrayList<>();
 }

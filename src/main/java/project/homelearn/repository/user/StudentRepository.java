@@ -9,7 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
 import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
+
+import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     // 필터링 x : 전체 학생 조회
@@ -36,4 +39,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             "from Student s join fetch Curriculum c on s.curriculum.id = c.id " +
             "where s.id = :studentId")
     CurriculumBasicDto findStudentCurriculum(@Param("studentId") Long studentId);
+
+    @Query("SELECT s FROM Student s WHERE s.id NOT IN (SELECT lh.user.id FROM LoginHistory lh)")
+    List<Student> findAbsentStudents();
+
+
+    //학생이 속해있는 커리큘럼의 총 교육과정 일수
+    @Query("SELECT c FROM Student s JOIN s.curriculum c WHERE s.id = :studentId")
+    Curriculum findCurriculumByStudentId(@Param("studentId") Long studentId);
 }
