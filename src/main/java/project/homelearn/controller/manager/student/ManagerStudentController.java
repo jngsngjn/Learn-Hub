@@ -122,7 +122,7 @@ public class ManagerStudentController {
     /**
      * 특정 학생 페이지
      * 1. 커리큘럼 정보 ✅
-     * 2. 학생 정보 ✅
+     * 2. 학생 정보 (PK 추가)
      * 3. 출결 현황
      */
     @GetMapping("/student/curriculum/{studentId}")

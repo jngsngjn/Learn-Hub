@@ -11,9 +11,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import project.homelearn.entity.student.Attendance;
 import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.entity.user.Role;
 import project.homelearn.entity.user.User;
+import project.homelearn.repository.user.AttendanceRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
@@ -21,8 +23,12 @@ import project.homelearn.service.jwt.JwtUtil;
 import project.homelearn.service.jwt.RedisTokenService;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static project.homelearn.config.security.JwtConstants.*;
+import static project.homelearn.entity.student.AttendanceType.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,6 +40,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final LoginHistoryRepository loginHistoryRepository;
     private final UserRepository userRepository;
+    private final AttendanceRepository attendanceRepository;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -74,6 +81,31 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         User user = userRepository.findByUsername(username);
         loginHistoryRepository.save(new LoginHistory(user));
+
+        if (role.equals("ROLE_STUDENT")) {
+            boolean exists = attendanceRepository.existsByUser(user);
+
+            if (!exists) {
+                LocalDateTime loginLog = loginHistoryRepository.findUserLoginDateTime(user);
+                LocalTime nineFortyAM = LocalTime.of(9, 40);
+                LocalTime twoPM =LocalTime.of(14, 0);
+
+                LocalTime loginTime = loginLog.toLocalTime();
+
+                if (loginTime.isBefore(nineFortyAM)) { // 출석
+                    Attendance attendance = new Attendance(user, ATTENDANCE, loginLog.toLocalDate());
+                    attendanceRepository.save(attendance);
+
+                } else if (loginTime.isBefore(twoPM)) { // 지각
+                    Attendance attendance = new Attendance(user, LATE, loginLog.toLocalDate());
+                    attendanceRepository.save(attendance);
+
+                } else if (loginTime.isAfter(twoPM)) { // 결석
+                    Attendance attendance = new Attendance(user, ABSENT, loginLog.toLocalDate());
+                    attendanceRepository.save(attendance);
+                }
+            }
+        }
 
         log.info("다음 사용자가 로그인 성공 : {}", username);
     }

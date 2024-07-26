@@ -8,8 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.ManagerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
+import project.homelearn.dto.manager.manage.teacher.SpecificTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.TeacherUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.teacher.Teacher;
@@ -122,5 +124,13 @@ public class ManagerTeacherService {
 
     public void deleteTeachers(List<Long> ids) {
         teacherRepository.deleteAllById(ids);
+    }
+
+    public SpecificTeacherDto getTeacherBasic(Long teacherId) {
+        return teacherRepository.findSpecificTeacher(teacherId);
+    }
+
+    public CurriculumWithoutTeacherDto getCurriculumWithoutTeacher() {
+        return teacherRepository.findCurriculumWithoutTeacher();
     }
 }
