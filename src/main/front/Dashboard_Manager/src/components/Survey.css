@@ -34,7 +34,6 @@
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
 }
 
@@ -42,17 +41,17 @@
   position: relative;
   background-color: #ffffff;
   border-radius: 20px;
-  border: 3px solid #757575;
+  border: 2px solid #757575;
   padding: 15px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   min-width: 0;
 }
 
 .survey-info {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .survey-id {
@@ -71,22 +70,52 @@
 .survey-details {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  margin-left: 10px;
 }
 
 .survey-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: #333;
   margin: 0;
 }
 
-.survey-date {
-  font-size: 14px;
+.survey-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.survey-check {
+  font-size: 10px;
   color: #757575;
-  margin: 0;
+  border: 1px solid #757575;
+  border-radius: 50%;
+  padding: 5px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .survey-participants {
-  font-size: 18px;
+  font-size: 16px;
   color: #757575;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  text-align:center;
+}
+
+.survey-participants {
+  color: #666;
+  font-size: 18px;
+  margin-top:15px;
+}
+
+.survey-participants i {
+  margin-right: 15px;
 }

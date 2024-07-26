@@ -1,4 +1,4 @@
-.course-progress {
+.lecture-progress {
   background: #E8E8E9;
   border-radius: 20px;
   padding: 20px;
@@ -9,7 +9,7 @@
   margin: 0 auto;
 }
 
-.course-progress-header {
+.lecture-progress-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,19 +17,19 @@
   flex-wrap: wrap; /* Flex items가 작은 화면에서 줄 바꿈되도록 함 */
 }
 
-.course-progress-title {
+.lecture-progress-title {
   color: #757575;
   font-size: 32px;
   font-weight: bold;
   margin: 0;
 }
 
-.course-progress-buttons {
+.lecture-progress-buttons {
   display: flex;
   gap: 10px;
 }
 
-.course-progress-buttons button {
+.lecture-progress-buttons button {
   padding: 5px 15px;
   border: 1px solid #757575;
   cursor: pointer;
@@ -41,12 +41,12 @@
   transition: background-color 0.3s ease;
 }
 
-.course-progress-buttons button.active {
+.lecture-progress-buttons button.active {
   background-color: #757575;
   color: white;
 }
 
-.course-list {
+.lecture-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -55,7 +55,7 @@
   gap: 20px;
 }
 
-.course-item {
+.lecture-item {
   position: relative;
   background-color: #ffffff;
   border-radius: 20px;
@@ -67,13 +67,13 @@
   min-width: 0;
 }
 
-.course-info {
+.lecture-info {
   display: flex;
   align-items: center;
-  margin-bottom :30px;
+  margin-bottom: 30px;
 }
 
-.course-id {
+.lecture-id {
   font-size: 20px;
   width: 88px;
   height: 32px;
@@ -86,45 +86,45 @@
   margin-right: 10px;
 }
 
-.course-title {
+.lecture-title {
   cursor: pointer;
   color: #757575;
   font-size: 20px;
   font-weight: 400;
 }
 
-.course-title:hover {
+.lecture-title:hover {
   color: #000000;
 }
 
-.course-details {
+.lecture-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #666;
 }
 
-.course-teacher {
+.lecture-teacher {
   display: flex;
   align-items: center;
   text-align: center;
   gap: 20px;
 }
 
-.course-teacher-name {
+.lecture-teacher-name {
   font-weight: bold;
   font-size: 20px;
   color: #666;
 }
 
-.course-duration {
+.lecture-duration {
   font-size: 20px;
 }
 
-.course-participants {
+.lecture-participants {
   font-size: 18px;
 }
 
-.course-participants i {
+.lecture-participants i {
   margin-right: 5px;
 }

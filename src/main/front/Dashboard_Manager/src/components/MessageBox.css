@@ -10,8 +10,8 @@
   padding: 10px;
   text-align: center;
   position: relative;
-  border: 1px solid #000000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border: 1px solid #757575;
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
   width: 290px;
 }
 
@@ -40,7 +40,7 @@
 .message-icon {
   position: relative;
   font-size: 64px;
-  color: #757575;
+  color: #B4B4B8;
   font-size: 200px;
 
 }
@@ -57,7 +57,6 @@
   border-radius: 100px;
   padding: 5px 10px;
   font-size: 20px;
-  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;

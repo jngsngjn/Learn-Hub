@@ -57,11 +57,11 @@
 }
 
 .day:hover {
-  background-color: #A7D7C5;
+  background-color: #B4B4B8;
 }
 
 .day.selected {
-  background-color: #A7D7C5;
+  background-color: #B4B4B8;
 }
 
 .other-month {
@@ -202,23 +202,39 @@
 }
 
 .add-list button:hover {
-  background-color: #f0f0f0;
+  background-color: #B4B4B8;
+}
+
+.calendar-submit {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .calendar-submit button {
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  background-color: #5C8D89;
+  background-color: #000000;
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 10px;
+  padding: 10px 20px;
   transition: background-color 0.3s ease;
+  width: 300px;
 }
 
 .calendar-submit button:hover {
-  background-color: #3E6E6A;
+  background-color: #B4B4B8;
 }
+
+.modal-add {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
 
 .day .day-number {
   display: block;
@@ -229,7 +245,7 @@
 }
 
 .day.current-date .day-number {
-  background-color: #5C8D89;
+  background-color: #757575;
   color: white;
   border-radius: 50%;
   padding: 5px;
@@ -241,6 +257,7 @@
   position: absolute;
   right: 10px;
 }
+
 .modal-add{
      display: flex;
      text-align:center;

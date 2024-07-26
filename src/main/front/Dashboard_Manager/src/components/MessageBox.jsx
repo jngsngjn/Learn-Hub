@@ -9,7 +9,7 @@ const MessageBox = () => {
         <h3>학생</h3>
         <div className="message-content">
           <div className="message-icon">
-            <i className="fas fa-envelope envelope-icon"></i>
+            <i className="fa-regular fa-envelope"></i>
             <span className="message-count">12</span>
           </div>
         </div>
@@ -20,7 +20,7 @@ const MessageBox = () => {
         <h3>강사</h3>
         <div className="message-content">
           <div className="message-icon">
-            <i className="fas fa-envelope envelope-icon"></i>
+            <i className="fa-regular fa-envelope"></i>
             <span className="message-count">12</span>
           </div>
         </div>
