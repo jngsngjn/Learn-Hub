@@ -8,13 +8,13 @@ import lombok.Data;
 @Data
 public class CurriculumDto {
 
+    private Long id;
+
     private String name;
 
     private Integer th;
 
     private String teacherName;
-
-    private Integer week;
 
     private Integer attendance;
 

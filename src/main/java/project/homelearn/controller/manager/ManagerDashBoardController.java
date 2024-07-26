@@ -30,7 +30,7 @@ public class ManagerDashBoardController {
         return calendarService.getAllSchedules();
     }
 
-    // 대시보드 교육 과정 현황 조회
+    // 대시보드 교육 과정 현황 조회 (현재날짜에 출석인원/총인원)
     @GetMapping("/curriculum/{type}")
     public List<CurriculumDto> viewCurriculums(@PathVariable("type") String type) {
         return null;
