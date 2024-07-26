@@ -5,19 +5,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.homelearn.dto.manager.dashboard.CurriculumDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.entity.teacher.Teacher;
+import project.homelearn.entity.user.Role;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.survey.SurveyRepository;
-import project.homelearn.repository.user.ManagerRepository;
-import project.homelearn.repository.user.StudentRepository;
-import project.homelearn.repository.user.TeacherRepository;
+import project.homelearn.repository.user.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static project.homelearn.entity.curriculum.CurriculumType.AWS;
 import static project.homelearn.entity.curriculum.CurriculumType.NCP;
@@ -34,6 +38,8 @@ public class ManagerCurriculumService {
     private final CurriculumRepository curriculumRepository;
     private final SurveyRepository surveyRepository;
     private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
+    private final AttendanceRepository attendanceRepository;
 
     public boolean enrollCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
         try {
@@ -173,4 +179,36 @@ public class ManagerCurriculumService {
     public CurriculumSurveyDto getCurriculumSurvey(Long curriculumId) {
         return surveyRepository.findCurriculumSurvey(curriculumId);
     }
+
+    /**
+     * 대시보드 교육과정 section
+     * 0. NCP/AWS 따로 추출       V
+     * 1. 교육과정이름 + 기수       V
+     * 2. 강사명                  V
+     * 3. 학생총원                 V
+     * 4. 출석한 학생인원           V
+     *
+     * Author : 김승민
+     * */
+    public List<CurriculumDto> getNCPOrAWSCurriculum(String type){
+        List<Curriculum> curriculums = curriculumRepository.findByCurriculumType(type);
+        LocalDateTime now = LocalDateTime.now();
+
+        return curriculums.stream()
+                .map(curriculum -> {
+                    CurriculumDto curriculumDto = new CurriculumDto();
+                    curriculumDto.setId(curriculum.getId());
+                    curriculumDto.setName(curriculum.getName());
+                    curriculumDto.setTh(curriculumDto.getTh());
+
+                    curriculumDto.setTeacherName(userRepository.findTeacherNameByCurriculumId(curriculum.getId()));
+
+                    curriculumDto.setAttendance(attendanceRepository.countAttendanceByCurriculumId(curriculum.getId(), now.toLocalDate()));
+
+                    curriculumDto.setTotal(userRepository.countTotalStudentsByCurriculumId(curriculum.getId()));
+
+                    return curriculumDto;
+                }).collect(Collectors.toList());
+    }
+
 }

@@ -36,5 +36,8 @@ public interface ManagerInquiryRepository extends JpaRepository<ManagerInquiry, 
     @Query("SELECT i FROM ManagerInquiry i JOIN FETCH i.user u JOIN FETCH u.curriculum c WHERE TYPE(u) = Teacher AND c.name = :curriculumName AND c.th = :curriculumTh ORDER BY CASE WHEN i.response IS NULL THEN 0 ELSE 1 END, i.createdDate DESC ")
     List<ManagerInquiry> findTeacherInquiriesWithCurriculumNameAndCurriculumTh(@Param("curriculumName") String curriculumName, @Param("curriculumTh")Long curriculumTh);
 
+    @Query("select count(i) from ManagerInquiry i join fetch i.user u where i.response is null and u.role = :role")
+    Integer countInquiryWithOutResponse(String role);
+
 
 }

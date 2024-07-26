@@ -101,6 +101,16 @@ public class ManagerInquiryService {
         return false;
     }
 
+    /**
+     * 문의 내역 개수
+     * 학생
+     * 강사
+     * Author : 김승민
+     * */
+    public Integer getInquiryCount(String role){
+        return managerInquiryRepository.countInquiryWithOutResponse(role);
+    }
+
     //리스트 Dto 변환 메소드
     private static List<ManagerInquiryDto> getManagerInquiryDtoList(List<ManagerInquiry> managerInquiries) {
         return managerInquiries.stream()
@@ -115,4 +125,6 @@ public class ManagerInquiryService {
                 ))
                 .toList();
     }
+
+
 }

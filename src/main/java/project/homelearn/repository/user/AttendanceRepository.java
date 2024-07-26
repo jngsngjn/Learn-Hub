@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import project.homelearn.entity.student.Attendance;
 import project.homelearn.entity.student.AttendanceType;
 import project.homelearn.entity.user.User;
+import project.homelearn.repository.user.querydsl.AttendanceRepositoryCustom;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
+public interface AttendanceRepository extends JpaRepository<Attendance, Long>, AttendanceRepositoryCustom {
 
     @Query("select count(a) > 0 from Attendance a where a.user =:user and a.date = current_date")
     boolean existsByUser(@Param("user") User user);

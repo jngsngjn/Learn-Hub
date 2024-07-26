@@ -43,7 +43,6 @@ public class ManagerStudentService {
     private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
     private final LoginHistoryRepository loginHistoryRepository;
-    private final ManagerInquiryRepository managerInquiryRepository;
 
     /**
     * 학생조회

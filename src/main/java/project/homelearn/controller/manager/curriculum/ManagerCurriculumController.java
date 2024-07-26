@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.manager.dashboard.CurriculumDto;
 import project.homelearn.dto.manager.dashboard.ScheduleDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
@@ -27,6 +28,31 @@ public class ManagerCurriculumController {
     @GetMapping
     public String manager() {
         return "Hello, manager!";
+    }
+
+    /**
+     * 교육과정 전체 페이지
+     * Author : 김승민
+     * */
+    @GetMapping("/manage-curriculums/NCP")
+    public ResponseEntity<?> viewCurriculumListNCP() {
+        List<CurriculumDto> ncpList = curriculumService.getNCPOrAWSCurriculum("NCP");
+        if (ncpList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<>(ncpList, HttpStatus.OK);
+        }
+    }
+    @GetMapping("/manage-curriculums/AWS")
+    public ResponseEntity<?> viewCurriculumListAWS() {
+        List<CurriculumDto> awsList = curriculumService.getNCPOrAWSCurriculum("AWS");
+        if (awsList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<>(awsList, HttpStatus.OK);
+        }
     }
 
     // 교육 과정 등록
@@ -120,4 +146,5 @@ public class ManagerCurriculumController {
         }
         return new ResponseEntity<>(survey, HttpStatus.OK);
     }
+
 }
