@@ -9,10 +9,5 @@ import java.util.List;
 public class CurriculumWithoutTeacherDto {
 
     private CurriculumType type;
-    private List<CurriculumIdAndTh> curriculumIdAndThs;
-
-    static class CurriculumIdAndTh {
-        public Long id;
-        public Long th;
-    }
+    private List<CurriculumIdAndThDto> curriculumIdAndThs;
 }
