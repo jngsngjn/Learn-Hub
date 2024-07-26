@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import project.homelearn.dto.CustomUserDetails;
+import project.homelearn.dto.common.CustomUserDetails;
 import project.homelearn.entity.manager.Manager;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.Role;
@@ -21,7 +21,7 @@ import project.homelearn.service.jwt.JwtUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static project.homelearn.config.JwtConstants.ACCESS_TOKEN_HEADER_NAME;
+import static project.homelearn.config.security.JwtConstants.ACCESS_TOKEN_HEADER_NAME;
 import static project.homelearn.entity.user.Role.*;
 
 @Slf4j

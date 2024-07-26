@@ -11,14 +11,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import project.homelearn.entity.student.Attendance;
+import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.entity.user.Role;
+import project.homelearn.entity.user.User;
+import project.homelearn.repository.user.AttendanceRepository;
+import project.homelearn.repository.user.LoginHistoryRepository;
+import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtUtil;
 import project.homelearn.service.jwt.RedisTokenService;
 
-import java.time.Duration;
+import java.time.*;
 
-import static project.homelearn.config.JwtConstants.*;
+import static java.time.DayOfWeek.*;
+import static project.homelearn.config.security.JwtConstants.*;
+import static project.homelearn.entity.student.AttendanceType.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,6 +36,9 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final CookieService cookieService;
     private final RedisTokenService redisTokenService;
     private final AuthenticationManager authenticationManager;
+    private final LoginHistoryRepository loginHistoryRepository;
+    private final UserRepository userRepository;
+    private final AttendanceRepository attendanceRepository;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -59,12 +70,44 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
          * 응답 설정
          * - Access Token -> Header
          * - Refresh Token -> Cookie
+         * - Role -> Header
          */
         response.setHeader(ACCESS_TOKEN_HEADER_NAME, "Bearer " + access);
         response.addCookie(cookieService.createRefreshCookie(REFRESH_TOKEN_COOKIE_NAME, refresh));
+        response.setHeader("Role", role);
         response.setStatus(HttpStatus.OK.value());
 
+        User user = userRepository.findByUsername(username);
+        loginHistoryRepository.save(new LoginHistory(user));
+
+        LocalDate date = LocalDate.now();
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+        if ("ROLE_STUDENT".equals(role) && !(dayOfWeek == SATURDAY || dayOfWeek == SUNDAY)) {
+            processStudentAttendance(user);
+        }
+
         log.info("다음 사용자가 로그인 성공 : {}", username);
+    }
+
+    private void processStudentAttendance(User user) {
+        if (!attendanceRepository.existsByUser(user)) {
+            LocalDateTime loginLog = loginHistoryRepository.findUserLoginDateTime(user);
+
+            LocalTime loginTime = loginLog.toLocalTime();
+            LocalTime attendanceDeadline = LocalTime.of(9, 40);
+            LocalTime lateDeadline = LocalTime.of(14, 0);
+
+            Attendance attendance;
+            if (loginTime.isBefore(attendanceDeadline)) { // 출석
+                attendance = new Attendance(user, ATTENDANCE, loginLog.toLocalDate());
+            } else if (loginTime.isBefore(lateDeadline)) { // 지각
+                attendance = new Attendance(user, LATE, loginLog.toLocalDate());
+            } else { // 결석
+                attendance = new Attendance(user, ABSENT, loginLog.toLocalDate());
+            }
+            attendanceRepository.save(attendance);
+        }
     }
 
     @Override

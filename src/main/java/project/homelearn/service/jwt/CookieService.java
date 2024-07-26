@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
-import static project.homelearn.config.JwtConstants.REFRESH_TOKEN_COOKIE_NAME;
+import static project.homelearn.config.security.JwtConstants.REFRESH_TOKEN_COOKIE_NAME;
 
 @Service
 public class CookieService {

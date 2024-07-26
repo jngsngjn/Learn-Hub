@@ -24,7 +24,7 @@ public class Survey {
     @Column(nullable = false)
     private String title;
 
-    @Column(name = "is_finished")
+    @Column(name = "is_finished", nullable = false)
     private boolean isFinished = false;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)

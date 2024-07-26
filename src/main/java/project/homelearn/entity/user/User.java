@@ -16,6 +16,7 @@ import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
 import project.homelearn.entity.notification.student.StudentNotification;
+import project.homelearn.entity.student.Attendance;
 import project.homelearn.entity.vote.StudentVote;
 
 import java.util.ArrayList;
@@ -31,8 +32,8 @@ public abstract class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curriculum_id", unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curriculum_id")
     private Curriculum curriculum;
 
     @Column(unique = true, nullable = false)
@@ -42,6 +43,9 @@ public abstract class User extends BaseEntity {
     private String password;
 
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     private String phone;
 
@@ -102,4 +106,7 @@ public abstract class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeacherCalendar> teacherCalendars = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Attendance> attendances = new ArrayList<>();
 }
