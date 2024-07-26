@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; // useState 훅-*백 연동할때 useEffect 추가 해야될듯*
-import './CourseProgress.css';
+import './Lecture.css';
 
 const CourseProgress = () => {
   const [activeButton, setActiveButton] = useState('NCP'); //상태 버튼 변수

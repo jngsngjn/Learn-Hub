@@ -1,8 +1,8 @@
 import React from 'react';
 import Sidebar from './components/Sidebar';
 import Calendar from './components/Calendar';
-import CourseProgress from './components/CourseProgress';
-import SettingList from './components/SettingList';
+import CourseProgress from './components/Lecture';
+import SettingList from './components/Survey';
 import MessageBox from './components/MessageBox';
 import './App.css';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import './SettingList.css';
+import './Survey.css';
 
 const SettingList = () => {
   return (
