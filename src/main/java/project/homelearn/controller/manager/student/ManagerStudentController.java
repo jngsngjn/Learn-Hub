@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import project.homelearn.dto.manager.manage.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
+import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.service.manager.ExcelService;
 import project.homelearn.service.manager.ManagerStudentService;
@@ -27,16 +27,17 @@ public class ManagerStudentController {
 
     @GetMapping("/manage-students")
     public ResponseEntity<?> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
-                                               @RequestParam(name = "curriculumName", required = false) String curriculumName,
-                                               @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
+                                         @RequestParam(name = "curriculumName", required = false) String curriculumName,
+                                         @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
+        int size = 15;
 
         Page<ManagerStudentDto> students;
         if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()) {
-            students = managerStudentService.getStudentsWithCurriculumNameAndCurriculumTh(15, page, curriculumName, curriculumTh);
+            students = managerStudentService.getStudentsWithCurriculumNameAndCurriculumTh(size, page, curriculumName, curriculumTh);
         } else if (curriculumName != null && !curriculumName.isEmpty()) {
-            students = managerStudentService.getStudentsWithCurriculumName(15, page, curriculumName);
+            students = managerStudentService.getStudentsWithCurriculumName(size, page, curriculumName);
         } else {
-            students = managerStudentService.getStudents(15, page);
+            students = managerStudentService.getStudents(size, page);
         }
 
         if(students != null && !students.isEmpty()){
@@ -45,7 +46,10 @@ public class ManagerStudentController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    // 학생 1명 등록
+    /**
+     * Author : 정성진
+     * 학생 1명 등록
+     */
     @PostMapping("/manage-students/enroll")
     public ResponseEntity<?> enrollStudent(@Valid @RequestBody StudentEnrollDto studentEnrollDto) {
         boolean result = managerStudentService.enrollStudent(studentEnrollDto);
@@ -56,7 +60,10 @@ public class ManagerStudentController {
         }
     }
 
-    // 엑셀 파일로 학생 대량 등록
+    /**
+     * Author : 정성진
+     * 엑셀 파일로 학생 대량 등록
+     */
     @PostMapping("/manage-students/enroll-file")
     public ResponseEntity<?> enrollStudentByFile(MultipartFile file) {
         boolean result = excelService.importStudentFile(file);
@@ -67,7 +74,10 @@ public class ManagerStudentController {
         }
     }
 
-    // 학생 정보 수정
+    /**
+     * Author : 정성진
+     * 학생 정보 수정
+     */
     @PatchMapping("/manage-students/{id}")
     public ResponseEntity<?> updateStudent(@PathVariable("id") Long id,
                                            @Valid @RequestBody StudentUpdateDto studentUpdateDto) {
@@ -79,7 +89,10 @@ public class ManagerStudentController {
         }
     }
 
-    // 학생 1명 삭제
+    /**
+     * Author : 정성진
+     * 학생 1명 삭제
+     */
     @DeleteMapping("/manage-students/{id}")
     public ResponseEntity<?> deleteStudent(@PathVariable("id") Long id) {
         if (id == null) {

@@ -2,8 +2,8 @@ package project.homelearn.repository.calendar.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import project.homelearn.dto.manager.calendar.QScheduleResponse;
-import project.homelearn.dto.manager.calendar.ScheduleResponse;
+import project.homelearn.dto.manager.dashboard.QScheduleDto;
+import project.homelearn.dto.manager.dashboard.ScheduleDto;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class ManagerCalendarRepositoryImpl implements ManagerCalendarRepositoryC
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<ScheduleResponse> findAllSchedules() {
+    public List<ScheduleDto> findAllSchedules() {
         return queryFactory
-                .select(new QScheduleResponse(
+                .select(new QScheduleDto(
                         managerCalendar.id,
                         managerCalendar.title,
                         managerCalendar.startDate,
@@ -30,9 +30,9 @@ public class ManagerCalendarRepositoryImpl implements ManagerCalendarRepositoryC
     }
 
     @Override
-    public List<ScheduleResponse> findCurriculumSchedules(Long curriculumId) {
+    public List<ScheduleDto> findCurriculumSchedules(Long curriculumId) {
         return queryFactory
-                .select(new QScheduleResponse(
+                .select(new QScheduleDto(
                         managerCalendar.id,
                         managerCalendar.title,
                         managerCalendar.startDate,

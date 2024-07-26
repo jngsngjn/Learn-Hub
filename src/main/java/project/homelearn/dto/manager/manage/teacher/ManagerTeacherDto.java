@@ -1,16 +1,15 @@
-package project.homelearn.dto.manager.manage;
+package project.homelearn.dto.manager.manage.teacher;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import project.homelearn.entity.user.Gender;
 
 @Data
 @AllArgsConstructor
-public class ManagerStudentDto {
+public class ManagerTeacherDto {
 
     @NotNull
-    private Long studentId;
+    private Long teacherId;
 
     @NotNull
     private String name;
@@ -25,12 +24,5 @@ public class ManagerStudentDto {
     private String phone;
 
     @NotNull
-    private Gender gender;
-
-    @NotNull
     private String email;
-
-    @NotNull
-    private boolean isAttend;
-
 }

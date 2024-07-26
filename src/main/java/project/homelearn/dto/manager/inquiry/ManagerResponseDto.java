@@ -1,5 +1,6 @@
 package project.homelearn.dto.manager.inquiry;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ManagerResponseDto {
 
-    @NotNull
+    @NotBlank
     private String response;
 
     @NotNull

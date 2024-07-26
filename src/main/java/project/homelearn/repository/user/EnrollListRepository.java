@@ -6,7 +6,5 @@ import project.homelearn.entity.user.EnrollList;
 public interface EnrollListRepository extends JpaRepository<EnrollList, Long> {
     EnrollList findByEmail(String email);
 
-    boolean existsByEmail(String email);
-
     void deleteByEmail(String email);
 }
