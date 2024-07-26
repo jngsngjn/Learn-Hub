@@ -12,9 +12,11 @@ import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumProgressDto;
 import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
+import project.homelearn.dto.manager.manage.student.StudentAttendanceDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.service.manager.ExcelService;
 import project.homelearn.service.manager.ManagerStudentService;
+import project.homelearn.service.student.AttendanceService;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class ManagerStudentController {
 
     private final ExcelService excelService;
     private final ManagerStudentService studentService;
+    private final AttendanceService attendanceService;
 
     @GetMapping("/manage-students")
     public ResponseEntity<?> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
@@ -124,7 +127,7 @@ public class ManagerStudentController {
      * 특정 학생 페이지
      * 1. 커리큘럼 정보 ✅
      * 2. 학생 정보 (PK 추가)
-     * 3. 출결 현황
+     * 3. 출결 현황 ✅
      */
     @GetMapping("/student/curriculum/{studentId}")
     public ResponseEntity<?> viewStudentCurriculum(@PathVariable("studentId") Long studentId) {
@@ -138,6 +141,15 @@ public class ManagerStudentController {
     @GetMapping("/student/basic/{studentId}")
     public ResponseEntity<?> viewStudentBasic(@PathVariable("studentId") Long studentId) {
         SpecificStudentDto result = studentService.getStudentBasic(studentId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/student/attendance/{studentId}")
+    public ResponseEntity<?> viewStudentAttendance(@PathVariable("studentId") Long studentId) {
+        StudentAttendanceDto result = attendanceService.getStudentAttendance(studentId);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
