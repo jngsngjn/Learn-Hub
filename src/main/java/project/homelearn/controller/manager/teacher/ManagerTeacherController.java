@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.manage.teacher.ManagerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
+import project.homelearn.dto.manager.manage.teacher.SpecificTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.TeacherUpdateDto;
 import project.homelearn.service.manager.ManagerTeacherService;
 
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerTeacherController {
 
-    private final ManagerTeacherService managerTeacherService;
+    private final ManagerTeacherService teacherService;
 
     @GetMapping("/manage-teachers")
     public ResponseEntity<?> teacherList(@RequestParam(name = "page", defaultValue = "0") int page,
@@ -30,14 +31,14 @@ public class ManagerTeacherController {
 
         Page<ManagerTeacherDto> teachers;
         if(curriculumName != null && !curriculumName.isEmpty()){
-            teachers = managerTeacherService.getTeachersWithCurriculumName(size, page, curriculumName);
+            teachers = teacherService.getTeachersWithCurriculumName(size, page, curriculumName);
         }
         else{
             if(isAssigned){
-                teachers = managerTeacherService.getTeachers(size, page);
+                teachers = teacherService.getTeachers(size, page);
             }
             else{
-                teachers = managerTeacherService.getTeachersCurriculumIsNull(size, page);
+                teachers = teacherService.getTeachersCurriculumIsNull(size, page);
             }
         }
         if(teachers != null && !teachers.isEmpty()){
@@ -52,7 +53,7 @@ public class ManagerTeacherController {
      */
     @PostMapping("/manage-teachers/enroll")
     public ResponseEntity<?> enrollTeacher(@Valid @RequestBody TeacherEnrollDto teacherEnrollDto) {
-        boolean result = managerTeacherService.enrollTeacher(teacherEnrollDto);
+        boolean result = teacherService.enrollTeacher(teacherEnrollDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -67,7 +68,7 @@ public class ManagerTeacherController {
     @PatchMapping("/manage-teachers/{id}")
     public ResponseEntity<?> updateTeacher(@PathVariable("id") Long id,
                                            @Valid @RequestBody TeacherUpdateDto teacherUpdateDto) {
-        boolean result = managerTeacherService.updateTeacher(id, teacherUpdateDto);
+        boolean result = teacherService.updateTeacher(id, teacherUpdateDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -85,7 +86,7 @@ public class ManagerTeacherController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        managerTeacherService.deleteTeacher(id);
+        teacherService.deleteTeacher(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -100,7 +101,21 @@ public class ManagerTeacherController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        managerTeacherService.deleteTeachers(ids);
+        teacherService.deleteTeachers(ids);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * 특정 강사 페이지
+     * 1. 강사 정보 ✅
+     * 2. 강사가 배정되지 않은 교육 과정
+     */
+    @GetMapping("/teacher/basic/{teacherId}")
+    public ResponseEntity<?> viewTeacherBasic(@PathVariable("teacherId") Long teacherId) {
+        SpecificTeacherDto result = teacherService.getTeacherBasic(teacherId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
