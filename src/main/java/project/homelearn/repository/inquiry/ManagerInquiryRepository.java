@@ -40,7 +40,4 @@ public interface ManagerInquiryRepository extends JpaRepository<ManagerInquiry, 
     @Query("SELECT i FROM ManagerInquiry i JOIN FETCH i.user u ORDER BY CASE WHEN u.id = :userId AND i.response IS NULL THEN 0 ELSE 1 END, i.createdDate DESC")
     List<ManagerInquiry> findManagerInquiriesByUserId(@Param("userId") Long userId);
 
-    //해당 인원의 미완료 문의 내역 개수
-    @Query("SELECT COUNT(i) FROM ManagerInquiry i WHERE i.user.id = :userId AND i.response IS NULL")
-    int countManagerInquiriesByUserId(@Param("userId") Long userId);
 }
