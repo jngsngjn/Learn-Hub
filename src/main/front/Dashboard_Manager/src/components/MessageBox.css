@@ -72,3 +72,9 @@
   bottom: 10px;
   right: 20px;
 }
+.fa-envelope{
+  cursor:pointer;
+}
+.fa-envelope:hover{
+    color:#000000;
+}

@@ -75,12 +75,15 @@
 }
 
 .survey-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  color: #333;
+  color: #757575;
   margin: 0;
+  cursor:pointer;
 }
-
+.survey-title:hover{
+    color:#000000;
+}
 .survey-status {
   display: flex;
   justify-content: space-between;
@@ -113,9 +116,9 @@
 .survey-participants {
   color: #666;
   font-size: 18px;
-  margin-top:15px;
+  margin-top:10px;
 }
 
 .survey-participants i {
-  margin-right: 15px;
+  margin-right: 10px;
 }
