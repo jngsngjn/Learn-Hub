@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.manager.manage.MangerTeacherDto;
+import project.homelearn.dto.manager.manage.teacher.MangerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
 import project.homelearn.dto.manager.manage.teacher.TeacherUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -31,6 +31,12 @@ public class ManagerTeacherService {
     private final TeacherRepository teacherRepository;
     private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
+
+
+    /**
+     * 강사조회
+     * Author : 김승민
+     * */
 
     //필터링 x : 전체 강사 조회
     public Page<MangerTeacherDto> getTeachers(int size, int page) {

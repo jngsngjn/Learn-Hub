@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.manage.ManagerStudentDto;
+import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.service.manager.ManagerStudentService;

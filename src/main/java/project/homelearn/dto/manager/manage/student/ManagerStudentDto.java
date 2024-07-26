@@ -1,4 +1,4 @@
-package project.homelearn.dto.manager.manage;
+package project.homelearn.dto.manager.manage.student;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
