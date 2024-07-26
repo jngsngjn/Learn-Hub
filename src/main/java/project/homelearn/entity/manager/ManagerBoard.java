@@ -24,9 +24,11 @@ public class ManagerBoard extends BaseEntity {
     @Column(nullable = false)
     private boolean emergency;
 
+    //보류
     @Column(name = "file_name")
     private String fileName;
 
+    //보류
     @Column(name = "file_path")
     private String filePath;
 }

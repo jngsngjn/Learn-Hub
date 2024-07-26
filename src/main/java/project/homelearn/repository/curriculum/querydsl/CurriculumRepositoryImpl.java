@@ -2,11 +2,18 @@ package project.homelearn.repository.curriculum.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumIdAndThDto;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
+import project.homelearn.dto.manager.manage.curriculum.QCurriculumIdAndThDto;
 import project.homelearn.entity.curriculum.CurriculumType;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import static project.homelearn.entity.curriculum.CurriculumType.*;
 import static project.homelearn.entity.curriculum.QCurriculum.curriculum;
+import static project.homelearn.entity.user.QUser.user;
 
 @RequiredArgsConstructor
 public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
@@ -23,5 +30,32 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
                         curriculum.endDate.after(LocalDate.now())
                 )
                 .fetchOne();
+    }
+
+    @Override
+    public List<CurriculumWithoutTeacherDto> findCurriculumWithoutTeacher() {
+
+        // NCP 교육과정
+        List<CurriculumIdAndThDto> ncp = queryFactory
+                .select(new QCurriculumIdAndThDto(curriculum.id, curriculum.th))
+                .from(curriculum)
+                .leftJoin(curriculum.users, user)
+                .where(user.isNull(), curriculum.type.eq(NCP))
+                .fetch();
+
+        // AWS 교육과정
+        List<CurriculumIdAndThDto> aws = queryFactory
+                .select(new QCurriculumIdAndThDto(curriculum.id, curriculum.th))
+                .from(curriculum)
+                .leftJoin(curriculum.users, user)
+                .where(user.isNull(), curriculum.type.eq(AWS))
+                .fetch();
+
+        // 결과를 DTO로 변환하여 반환
+        List<CurriculumWithoutTeacherDto> curriculumWithoutTeacherDtos = new ArrayList<>();
+        curriculumWithoutTeacherDtos.add(new CurriculumWithoutTeacherDto(NCP, ncp));
+        curriculumWithoutTeacherDtos.add(new CurriculumWithoutTeacherDto(AWS, aws));
+
+        return curriculumWithoutTeacherDtos;
     }
 }

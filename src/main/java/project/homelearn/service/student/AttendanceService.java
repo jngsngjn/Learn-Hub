@@ -39,8 +39,8 @@ public class AttendanceService {
         }
     }
 
-    //출석현황
-    //해당날짜에 출석, 지각, 결석인지 Key : Value 로 return
+    // 출석현황
+    // 해당날짜에 출석, 지각, 결석인지 Key : Value 로 return
     public StudentAttendanceDto getStudentAttendance(Long studentId){
         Map<LocalDate, AttendanceType> dateAttendanceType = new ConcurrentHashMap<>();
         List<Attendance> attendances = attendanceRepository.findByUserId(studentId);
@@ -54,20 +54,20 @@ public class AttendanceService {
         );
     }
 
-    //출결율
-    //내 출석 현황 : 지금까지 한 수업 일수중에 출석 + 지각일을 퍼센티지로
+    // 출결율
+    // 내 출석 현황 : 지금까지 한 수업 일수중에 출석 + 지각일을 퍼센티지로
     private double studentAttendanceRatio(Long studentId) {
         int attendanceCount = attendanceRepository.findByStudentId(studentId);
-        int daysUntilNow = (int)ChronoUnit.DAYS.between(studentRepository.findCurriculumByStudentId(studentId).getStartDate(), LocalDate.now());
+        int daysUntilNow = (int) ChronoUnit.DAYS.between(studentRepository.findCurriculumByStudentId(studentId).getStartDate(), LocalDate.now());
 
-        double result = ((double)attendanceCount / (double)daysUntilNow) * 100;
+        double result = ((double) attendanceCount / (double) daysUntilNow) * 100;
 
         if (result < 0) {
             return 0.0;
         } else if (result > 100) {
             return 100.0;
         }
-        else{
+        else {
             return Math.round(result * 10) / 10.0;
         }
     }

@@ -9,10 +9,42 @@ import java.util.List;
 public class CurriculumWithoutTeacherDto {
 
     private CurriculumType type;
-    private List<CurriculumIdAndTh> curriculumIdAndThs;
+    private List<CurriculumIdAndThDto> curriculumIdAndThs;
 
-    static class CurriculumIdAndTh {
-        public Long id;
-        public Long th;
+    public CurriculumWithoutTeacherDto(CurriculumType type, List<CurriculumIdAndThDto> curriculumIdAndThs) {
+        this.type = type;
+        this.curriculumIdAndThs = curriculumIdAndThs;
     }
 }
+
+/*
+List로 반환함
+[
+    {
+        "type": "NCP",
+        "curriculumIdAndThs": [
+            {
+                "id": 3,
+                "th": 3
+            }
+        ]
+    },
+    {
+        "type": "AWS",
+        "curriculumIdAndThs": [
+            {
+                "id": 4,
+                "th": 1
+            },
+            {
+                "id": 5,
+                "th": 2
+            },
+            {
+                "id": 6,
+                "th": 3
+            }
+        ]
+    }
+]
+ */

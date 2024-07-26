@@ -3,7 +3,6 @@ package project.homelearn.repository.user.querydsl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumTeacherDto;
-import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
 import project.homelearn.dto.manager.manage.curriculum.QCurriculumTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.QSpecificTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.SpecificTeacherDto;
@@ -37,10 +36,5 @@ public class TeacherRepositoryImpl implements TeacherRepositoryCustom {
                 .leftJoin(teacher.curriculum, curriculum)
                 .where(teacher.id.eq(teacherId))
                 .fetchOne();
-    }
-
-    @Override
-    public CurriculumWithoutTeacherDto findCurriculumWithoutTeacher() {
-        return null;
     }
 }

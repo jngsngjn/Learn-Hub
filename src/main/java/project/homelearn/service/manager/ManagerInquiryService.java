@@ -24,7 +24,6 @@ public class ManagerInquiryService {
     * 강사 <- 문의
      * Author : 김승민
     * */
-
     //문의내역 리스트(학생)
     public List<ManagerInquiryDto> getInquiryListDefaultFromStudents() {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findStudentInquiriesAllDefault();
@@ -116,6 +115,4 @@ public class ManagerInquiryService {
                 ))
                 .toList();
     }
-
-
 }
