@@ -72,6 +72,10 @@
   bottom: 10px;
   right: 20px;
 }
+.view-more:hover{
+    color:#000000;
+}
+
 .fa-envelope{
   cursor:pointer;
 }

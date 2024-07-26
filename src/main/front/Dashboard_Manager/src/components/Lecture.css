@@ -14,7 +14,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  flex-wrap: wrap; /* Flex items가 작은 화면에서 줄 바꿈되도록 함 */
+  flex-wrap: wrap;
 }
 
 .lecture-progress-title {

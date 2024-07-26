@@ -180,7 +180,7 @@ const Calendar = () => {
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div>
-          <h3 className="modal-add">일정 등록하기</h3>
+          <h3 className="modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
           <div className="event-form">
             <input
               type="text"
@@ -212,6 +212,7 @@ const Calendar = () => {
             </div>
             <div className='calendar-submit'>
               <button onClick={handleSaveEvent}>{editEvent ? '수정' : '등록'}</button>
+              {editEvent && <button onClick={handleDeleteEvent}>삭제</button>}
             </div>
           </div>
         </div>
