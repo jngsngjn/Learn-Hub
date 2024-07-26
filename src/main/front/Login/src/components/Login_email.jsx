@@ -20,7 +20,7 @@ function LoginEmail() {
   };
 
   const handlePreviousStep = () => {
-    navigate('/');
+    navigate('/login');
   };
 
   return (
@@ -32,15 +32,15 @@ function LoginEmail() {
           <label className="login-email-label">이메일</label>
           <div className="login-email-input-wrapper">
             <input
-              type="email"
               className="login-email-input"
+              type="email"
               placeholder="이메일 입력"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <button
-              type="button"
               className="login-email-verify-button"
+              type="button"
               onClick={handleEmailVerification}
             >
               인증 하기
@@ -51,15 +51,15 @@ function LoginEmail() {
           <label className="login-email-label">인증코드</label>
           <div className="login-email-input-wrapper">
             <input
-              type="text"
               className="login-email-input"
+              type="text"
               placeholder="인증코드 입력"
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value)}
             />
             <button
-              type="button"
               className="login-email-verify-button"
+              type="button"
               onClick={handleCodeVerification}
             >
               인증 확인
@@ -68,15 +68,15 @@ function LoginEmail() {
         </div>
         <div className="login-email-button-group">
           <button
-            type="button"
             className="login-email-prev-button"
+            type="button"
             onClick={handlePreviousStep}
           >
             이전
           </button>
           <button
-            type="button"
             className="login-email-next-button"
+            type="button"
             onClick={handleNextStep}
           >
             다음

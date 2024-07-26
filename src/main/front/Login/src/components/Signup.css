@@ -47,21 +47,22 @@
 .signup-lock-icon {
   position: absolute;
   right: 20px;
-  top: 52%;
+  top: 50%;
   transform: translateY(-50%);
   color: #d9d9d9;
 }
 
 .password-match-message {
+  height: 20px;
+  font-size: 15px;
   margin-top: 5px;
-  font-size: 0.9em;
 }
 
-.password-match-message.match {
+.password-match-message .match {
   color: #6079FF;
 }
 
-.password-match-message.no-match {
+.password-match-message .no-match {
   color: #f44336;
 }
 

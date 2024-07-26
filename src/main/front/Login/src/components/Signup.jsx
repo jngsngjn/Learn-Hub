@@ -37,9 +37,9 @@ function Signup() {
           <label htmlFor="name" className="signup-label">이름</label>
           <div className="signup-input-wrapper">
             <input
+              className="signup-input"
               type="text"
               id="name"
-              className="signup-input"
               value={name}
               readOnly
             />
@@ -50,9 +50,9 @@ function Signup() {
           <label htmlFor="phone" className="signup-label">전화번호</label>
           <div className="signup-input-wrapper">
             <input
+              className="signup-input"
               type="text"
               id="phone"
-              className="signup-input"
               value={phone}
               readOnly
             />
@@ -63,9 +63,9 @@ function Signup() {
           <label htmlFor="email" className="signup-label">이메일</label>
           <div className="signup-input-wrapper">
             <input
+              className="signup-input"
               type="email"
               id="email"
-              className="signup-input"
               value={email}
               readOnly
             />
@@ -75,9 +75,9 @@ function Signup() {
         <div className="signup-input-group">
           <label htmlFor="username" className="signup-label">아이디</label>
           <input
+            className="signup-input"
             type="text"
             id="username"
-            className="signup-input"
             placeholder="아이디 입력"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -86,9 +86,9 @@ function Signup() {
         <div className="signup-input-group">
           <label htmlFor="password" className="signup-label">비밀번호</label>
           <input
+            className="signup-input"
             type="password"
             id="password"
-            className="signup-input"
             placeholder="비밀번호 입력"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -97,22 +97,24 @@ function Signup() {
         <div className="signup-input-group">
           <label htmlFor="confirm-password" className="signup-label">비밀번호 확인</label>
           <input
+            className="signup-input"
             type="password"
             id="confirm-password"
-            className="signup-input"
             placeholder="비밀번호 확인"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          {confirmPassword && (
-            <div className={`password-match-message ${passwordMatch ? 'match' : 'no-match'}`}>
-              {passwordMatch ? '비밀번호가 일치합니다' : '비밀번호가 일치하지 않습니다'}
-            </div>
-          )}
+          <div className="password-match-message">
+            {confirmPassword && (
+              <span className={passwordMatch ? 'match' : 'no-match'}>
+                {passwordMatch ? '비밀번호가 일치합니다' : '비밀번호가 일치하지 않습니다'}
+              </span>
+            )}
+          </div>
         </div>
         <div className="signup-button-group">
-          <button type="button" className="signup-prev-button" onClick={handlePreviousStep}>이전 단계</button>
-          <button type="submit" className="signup-button">회원가입</button>
+          <button className="signup-prev-button" type="button" onClick={handlePreviousStep}>이전 단계</button>
+          <button className="signup-button" type="submit">회원가입</button>
         </div>
       </form>
     </div>

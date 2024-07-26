@@ -24,8 +24,8 @@ function Login() {
         <div className="login-input-group">
           <span className="login-id-title">아이디</span>
           <input
-            type="text"
             className="login-input"
+            type="text"
             placeholder="아이디 입력"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -34,8 +34,8 @@ function Login() {
         <div className="login-input-group">
           <span className="login-pw-title">비밀번호</span>
           <input
-            type="password"
             className="login-input"
+            type="password"
             placeholder="비밀번호 입력"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -56,8 +56,8 @@ function Login() {
           </div>
         </div>
         <div className="login-button-group">
-          <button type="submit" className="login-button">로그인</button>
-          <button type="button" className="login-signup-button" onClick={handleSignup}>회원가입</button>
+          <button className="login-button" type="submit">로그인</button>
+          <button className="login-signup-button" type="button" onClick={handleSignup}>회원가입</button>
         </div>
       </form>
     </div>
