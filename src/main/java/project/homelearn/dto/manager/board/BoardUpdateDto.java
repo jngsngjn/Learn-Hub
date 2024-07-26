@@ -21,7 +21,7 @@ public class BoardUpdateDto {
 
     /*
     PATCH 메소드 수정 요청
-    localhost:8080/managers/notification-board/? -> board/1 ~ 100 (수정할 게시글 id값 입력)
+    localhost:8080/managers/notification-boards/? -> board/1 ~ 100 (수정할 게시글 id값 입력)
     BODY 요청페이지에서 raw 선택 후 textarea에 밑에 값 입력(json요청)
 
     긴급! 공지일 때 true

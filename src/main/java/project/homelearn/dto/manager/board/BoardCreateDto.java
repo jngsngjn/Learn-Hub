@@ -18,7 +18,7 @@ public class BoardCreateDto {
     
     /*
     POST 메소드 생성 요청
-    localhost:8080/managers/notification-board
+    localhost:8080/managers/notification-boards
     BODY요청 페이지에서 row 선택 후 textarea에 밑에 값 입력(json요청)
     {
         "title" : "대성진은",

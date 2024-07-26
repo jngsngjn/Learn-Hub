@@ -23,6 +23,6 @@ public class BoardReadDto {
 
     /*
     GET 메소드 조회 요청
-    localhost:8080/managers/notification-board?page=? -> page=1 ~ 20.. 값 입력 (한 페이지씩 입력)
+    localhost:8080/managers/notification-boards?page=? -> page=1 ~ 20.. 값 입력 (한 페이지씩 입력)
      */
 }

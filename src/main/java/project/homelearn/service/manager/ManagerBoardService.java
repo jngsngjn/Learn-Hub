@@ -24,6 +24,7 @@ public class ManagerBoardService {
 
     private final ManagerBoardRepository managerBoardRepository;
 
+    //생성 서비스
     public boolean createManagerBoard(BoardCreateDto managerBoardDto) {
         try {
             ManagerBoard board = new ManagerBoard();
@@ -39,6 +40,7 @@ public class ManagerBoardService {
         }
     }
 
+    //조회를 위한 DTO변환
     private static List<BoardReadDto> getAllManagerBoards(Page<ManagerBoard> managerBoards) {
         return managerBoards.stream()
                 .map(managerBoard -> new BoardReadDto(
@@ -49,8 +51,8 @@ public class ManagerBoardService {
                 )).toList();
     }
 
+    //변환된 DTO 조회 서비스
     public Page<BoardReadDto> getManagerBoards(int page, int size) {
-        //startPage, endPage, currentPage
         Page<ManagerBoard> managerBoards;
         Pageable pageable = PageRequest.of(page, size);
         try {
@@ -63,17 +65,8 @@ public class ManagerBoardService {
         }
     }
 
-    public boolean deleteManagerBoard(Long id) {
-        try {
-            managerBoardRepository.deleteById(id);
-            return true;
-        } catch (Exception e) {
-            log.error("Error deleting manager board", e);
-            return false;
-        }
-    }
-
-    public boolean updateManagerBoard(BoardUpdateDto boardUpdateDto, Long id) {
+    //수정 서비스
+    public boolean updateManagerBoard(Long id, BoardUpdateDto boardUpdateDto) {
         try {
             ManagerBoard board = managerBoardRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Error getting manager board" + id));
@@ -85,6 +78,17 @@ public class ManagerBoardService {
             return true;
         } catch (Exception e) {
             log.error("Error updating manager board", e);
+            return false;
+        }
+    }
+
+    //삭제 서비스
+    public boolean deleteManagerBoards(List<Long> ids) {
+        try {
+            managerBoardRepository.deleteAllById(ids);
+            return true;
+        } catch (Exception e) {
+            log.error("Error deleting manager board", e);
             return false;
         }
     }
