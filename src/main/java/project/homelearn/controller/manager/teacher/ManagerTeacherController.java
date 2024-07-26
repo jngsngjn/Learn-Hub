@@ -107,7 +107,7 @@ public class ManagerTeacherController {
 
     /**
      * 특정 강사 페이지
-     * 1. 강사 정보 ✅
+     * 1. 일반 정보 ✅ viewTeacherBasic()
      * 2. 강사가 배정되지 않은 교육 과정
      */
     @GetMapping("/teacher/basic/{teacherId}")

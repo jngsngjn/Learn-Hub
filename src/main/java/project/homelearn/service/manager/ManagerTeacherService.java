@@ -145,7 +145,7 @@ public class ManagerTeacherService {
     /**
      * 강사 상세 페이지
      * 1. 일반 정보 ✅ getTeacherBasic()
-     * 2. 강사 배정 안 된 교육과정
+     * 2. 강사가 배정되지 않은 교육 과정
      */
     public SpecificTeacherDto getTeacherBasic(Long teacherId) {
         return teacherRepository.findSpecificTeacher(teacherId);
