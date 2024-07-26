@@ -22,11 +22,9 @@ import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtUtil;
 import project.homelearn.service.jwt.RedisTokenService;
 
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 
+import static java.time.DayOfWeek.*;
 import static project.homelearn.config.security.JwtConstants.*;
 import static project.homelearn.entity.student.AttendanceType.*;
 
@@ -82,7 +80,10 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         User user = userRepository.findByUsername(username);
         loginHistoryRepository.save(new LoginHistory(user));
 
-        if ("ROLE_STUDENT".equals(role)) {
+        LocalDate date = LocalDate.now();
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+        if ("ROLE_STUDENT".equals(role) && !(dayOfWeek == SATURDAY || dayOfWeek == SUNDAY)) {
             processStudentAttendance(user);
         }
 
@@ -92,11 +93,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     private void processStudentAttendance(User user) {
         if (!attendanceRepository.existsByUser(user)) {
             LocalDateTime loginLog = loginHistoryRepository.findUserLoginDateTime(user);
-
-            DayOfWeek dayOfWeek = loginLog.getDayOfWeek();
-            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-                return; // 주말이면 출석 체크를 하지 않음
-            }
 
             LocalTime loginTime = loginLog.toLocalTime();
             LocalTime attendanceDeadline = LocalTime.of(9, 40);
