@@ -12,6 +12,7 @@ import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumProgressDto;
 import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
+import project.homelearn.dto.manager.manage.student.StudentDetailsDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.service.manager.ExcelService;
 import project.homelearn.service.manager.ManagerStudentService;
@@ -60,6 +61,15 @@ public class ManagerStudentController {
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/manage-students/{id}")
+    public ResponseEntity<?> viewStudent(@PathVariable("id") Long studentId) {
+        StudentDetailsDto studentDetailsDto = studentService.viewStudent(studentId);
+        if (studentDetailsDto != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(studentDetailsDto);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
