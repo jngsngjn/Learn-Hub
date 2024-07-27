@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.homelearn.service.manager.ManagerCurriculumService;
 
+/**
+ * Author : 정성진
+ */
 @Slf4j
 @RestController
 @RequestMapping("/managers/manage-curriculums")

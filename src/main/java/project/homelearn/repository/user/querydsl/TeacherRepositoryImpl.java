@@ -31,7 +31,7 @@ public class TeacherRepositoryImpl implements TeacherRepositoryCustom {
     @Override
     public SpecificTeacherDto findSpecificTeacher(Long teacherId) {
         return queryFactory
-                .select(new QSpecificTeacherDto(teacher.name, teacher.email, teacher.phone, curriculum.id, curriculum.type, curriculum.th))
+                .select(new QSpecificTeacherDto(teacher.id, teacher.name, teacher.email, teacher.phone, curriculum.id, curriculum.type, curriculum.th))
                 .from(teacher)
                 .leftJoin(teacher.curriculum, curriculum)
                 .where(teacher.id.eq(teacherId))

@@ -137,5 +137,4 @@ public class ManagerCurriculumController {
         }
         return new ResponseEntity<>(survey, HttpStatus.OK);
     }
-
 }

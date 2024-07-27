@@ -183,13 +183,12 @@ public class ManagerCurriculumService {
 
     /**
      * 대시보드 교육과정 section
+     * Author : 김승민
      * 0. NCP/AWS 따로 추출 ✅
      * 1. 교육과정이름 + 기수 ✅
      * 2. 강사명 ✅
      * 3. 학생총원 ✅
      * 4. 출석한 학생인원 ✅
-     *
-     * Author : 김승민
      * */
     public List<CurriculumDto> getCurriculumList(CurriculumType type) {
         List<Curriculum> curriculums = curriculumRepository.findByCurriculumType(type);

@@ -48,7 +48,6 @@ public class ManagerDashBoardController {
         else {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-
     }
 
     // 1:1 문의 개수 조회 (미답변)
@@ -60,7 +59,6 @@ public class ManagerDashBoardController {
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 
     // 최근 설문 2개 조회
 }

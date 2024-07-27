@@ -19,17 +19,17 @@ import project.homelearn.repository.user.AttendanceRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
-import project.homelearn.service.jwt.JwtUtil;
-import project.homelearn.service.jwt.RedisTokenService;
+import project.homelearn.service.jwt.JwtService;
+import project.homelearn.service.jwt.RedisService;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
     private final CookieService cookieService;
-    private final RedisTokenService redisTokenService;
+    private final RedisService redisService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final LoginHistoryRepository loginHistoryRepository;
     private final UserRepository userRepository;
@@ -61,10 +61,10 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // 커스텀 필터 등록 (JwtFilter -> CustomLoginFilter -> CustomLogoutFilter -> LogoutFilter)
-        http.addFilterBefore(new JwtFilter(jwtUtil), CustomLoginFilter.class);
-        http.addFilterAt(new CustomLoginFilter(jwtUtil, cookieService, redisTokenService, authenticationManager(authenticationConfiguration), loginHistoryRepository, userRepository, attendanceRepository),
+        http.addFilterBefore(new JwtFilter(jwtService), CustomLoginFilter.class);
+        http.addFilterAt(new CustomLoginFilter(jwtService, cookieService, redisService, authenticationManager(authenticationConfiguration), loginHistoryRepository, userRepository, attendanceRepository),
                 UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, redisTokenService, cookieService), LogoutFilter.class);
+        http.addFilterBefore(new CustomLogoutFilter(jwtService, redisService, cookieService), LogoutFilter.class);
 
         return http.build();
     }

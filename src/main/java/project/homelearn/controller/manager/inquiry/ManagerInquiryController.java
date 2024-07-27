@@ -12,6 +12,9 @@ import project.homelearn.service.manager.ManagerInquiryService;
 
 import java.util.List;
 
+/**
+ * Author : 김승민
+ */
 @Slf4j
 @RestController
 @RequestMapping("/managers")

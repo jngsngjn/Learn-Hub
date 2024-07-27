@@ -32,7 +32,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("update Student s set s.surveyCompleted = false where s.curriculum.id = :curriculumId")
     void updateSurveyCompletedFalse(@Param("curriculumId") Long curriculumId);
 
-    @Query("select new project.homelearn.dto.manager.manage.student.SpecificStudentDto(s.name, s.email, s.phone, s.gender) from Student s where s.id =:studentId")
+    @Query("select new project.homelearn.dto.manager.manage.student.SpecificStudentDto(s.id, s.name, s.email, s.phone, s.gender) from Student s where s.id =:studentId")
     SpecificStudentDto findSpecificStudentDto(@Param("studentId") Long studentId);
 
     @Query("select new project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto(c.name, c.th, c.startDate, c.endDate) " +
@@ -43,8 +43,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s WHERE s.id NOT IN (SELECT lh.user.id FROM LoginHistory lh)")
     List<Student> findAbsentStudents();
 
-
-    //학생이 속해있는 커리큘럼의 총 교육과정 일수
+    // 학생이 속해있는 커리큘럼의 총 교육과정 일수
     @Query("SELECT c FROM Student s JOIN s.curriculum c WHERE s.id = :studentId")
     Curriculum findCurriculumByStudentId(@Param("studentId") Long studentId);
 }

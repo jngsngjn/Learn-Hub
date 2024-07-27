@@ -13,6 +13,9 @@ import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Author : 김승민
+ */
 @Slf4j
 @Service
 @Transactional
@@ -21,10 +24,6 @@ public class ManagerInquiryService {
 
     private final ManagerInquiryRepository managerInquiryRepository;
 
-    /**
-    * 강사 <- 문의
-     * Author : 김승민
-    * */
     // 문의내역 리스트(학생)
     public List<ManagerInquiryDto> getInquiryListDefaultFromStudents() {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findStudentInquiriesAllDefault();
@@ -100,17 +99,12 @@ public class ManagerInquiryService {
         return false;
     }
 
-    /**
-     * 문의 내역 개수
-     * 학생
-     * 강사
-     * Author : 김승민
-     * */
+    // 1:1 문의 개수
     public Integer getInquiryCount(Role role) {
         return managerInquiryRepository.countInquiryWithOutResponse(role);
     }
 
-    //리스트 Dto 변환 메소드
+    // 리스트 Dto 변환 메소드
     private static List<ManagerInquiryDto> getManagerInquiryDtoList(List<ManagerInquiry> managerInquiries) {
         return managerInquiries.stream()
                 .map(managerInquiry -> new ManagerInquiryDto(

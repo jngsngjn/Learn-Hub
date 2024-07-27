@@ -17,9 +17,9 @@ import static project.homelearn.config.security.JwtConstants.*;
 @RequiredArgsConstructor
 public class ReissueService {
 
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
     private final CookieService cookieService;
-    private final RedisTokenService redisTokenService;
+    private final RedisService redisService;
 
     public String checkRefreshToken(HttpServletRequest request) {
 
@@ -31,21 +31,21 @@ public class ReissueService {
         }
 
         try {
-            jwtUtil.isExpired(refreshToken);
+            jwtService.isExpired(refreshToken);
         } catch (ExpiredJwtException e) {
             log.info("Refresh token is expired");
             return "expired";
         }
 
-        String category = jwtUtil.getCategory(refreshToken);
+        String category = jwtService.getCategory(refreshToken);
 
         if (!category.equals("refresh")) {
             log.info("Refresh token is invalid");
             return "invalid";
         }
 
-        String username = jwtUtil.getUsername(refreshToken);
-        String storedToken = redisTokenService.getRefreshToken(username);
+        String username = jwtService.getUsername(refreshToken);
+        String storedToken = redisService.getRefreshToken(username);
 
         if (!refreshToken.equals(storedToken)) {
             log.info("Refresh token is invalid");
@@ -56,16 +56,16 @@ public class ReissueService {
     }
 
     public void reissueRefreshToken(String refreshToken, HttpServletResponse response) {
-        String username = jwtUtil.getUsername(refreshToken);
-        String role = jwtUtil.getRole(refreshToken);
+        String username = jwtService.getUsername(refreshToken);
+        String role = jwtService.getRole(refreshToken);
 
         // 새로운 토큰 발급 (rotate)
-        String newAccess = jwtUtil.createJwt(ACCESS_TOKEN_HEADER_NAME, username, Role.valueOf(role), ACCESS_TOKEN_EXPIRATION);
-        String newRefresh = jwtUtil.createJwt(REFRESH_TOKEN_COOKIE_NAME, username, Role.valueOf(role), REFRESH_TOKEN_EXPIRATION);
+        String newAccess = jwtService.createJwt(ACCESS_TOKEN_HEADER_NAME, username, Role.valueOf(role), ACCESS_TOKEN_EXPIRATION);
+        String newRefresh = jwtService.createJwt(REFRESH_TOKEN_COOKIE_NAME, username, Role.valueOf(role), REFRESH_TOKEN_EXPIRATION);
 
         // Redis에 기존 Refresh 토큰을 삭제하고 새로운 Refresh 토큰 저장
-        redisTokenService.deleteByRefreshToken(refreshToken);
-        redisTokenService.saveRefreshToken(username, newRefresh, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION));
+        redisService.deleteByRefreshToken(refreshToken);
+        redisService.saveRefreshToken(username, newRefresh, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION));
 
         response.setHeader(ACCESS_TOKEN_HEADER_NAME, "Bearer " + newAccess);
         response.addCookie(cookieService.createRefreshCookie(REFRESH_TOKEN_COOKIE_NAME, newRefresh));

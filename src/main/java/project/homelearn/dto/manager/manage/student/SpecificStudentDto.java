@@ -8,6 +8,9 @@ import project.homelearn.entity.user.Gender;
 @Data
 public class SpecificStudentDto {
 
+    @NotNull
+    private Long id;
+
     @NotBlank
     private String name;
 
@@ -20,7 +23,8 @@ public class SpecificStudentDto {
     @NotNull
     private Gender gender;
 
-    public SpecificStudentDto(String name, String email, String phone, Gender gender) {
+    public SpecificStudentDto(Long id, String name, String email, String phone, Gender gender) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;

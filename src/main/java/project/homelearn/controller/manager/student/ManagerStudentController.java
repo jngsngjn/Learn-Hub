@@ -45,7 +45,7 @@ public class ManagerStudentController {
             students = studentService.getStudents(size, page);
         }
 
-        if(students != null && !students.isEmpty()){
+        if (students != null && !students.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(students);
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -64,7 +64,6 @@ public class ManagerStudentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
 
     /**
      * Author : 정성진
@@ -126,7 +125,7 @@ public class ManagerStudentController {
     /**
      * 특정 학생 페이지
      * 1. 커리큘럼 정보 ✅
-     * 2. 학생 정보 (PK 추가)
+     * 2. 학생 정보 ✅
      * 3. 출결 현황 ✅
      */
     @GetMapping("/student/curriculum/{studentId}")
