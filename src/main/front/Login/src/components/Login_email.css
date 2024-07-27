@@ -27,6 +27,7 @@
   color: #74b49b;
   margin-bottom: 5px;
   display: block;
+  margin-left:10px;
 }
 
 .login-email-input-wrapper {
@@ -43,26 +44,6 @@
   border-radius: 20px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
-
-.login-email-verify-button {
-  position: absolute;
-  right: 10px;
-  height: 40px;
-  padding: 10px 20px;
-  border: 2px solid #5c8d89;
-  border-radius: 20px;
-  background-color: #a7d7c5;
-  color: #000000;
-  cursor: pointer;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-
-.login-email-verify-button:hover {
-  background-color: #5c8d89;
-  color: #ffffff;
-  border: 2px solid #a7d7c5;
-}
-
 .login-email-button-group {
   display: flex;
   justify-content: space-between;

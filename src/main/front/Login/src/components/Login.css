@@ -1,12 +1,3 @@
-body {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  background-color: #f9f9f9;
-}
-
 .login-container {
   width: 450px;
   padding: 40px;

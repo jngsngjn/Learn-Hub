@@ -48,7 +48,7 @@ function Login() {
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
             />
-            아이디 저장
+            로그인 상태 유지
           </label>
           <div className="user-found">
             <span className="user-found-id">아이디 찾기 </span>/

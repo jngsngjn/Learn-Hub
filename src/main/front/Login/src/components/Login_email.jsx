@@ -38,13 +38,6 @@ function LoginEmail() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <button
-              className="login-email-verify-button"
-              type="button"
-              onClick={handleEmailVerification}
-            >
-              인증 하기
-            </button>
           </div>
         </div>
         <div className="login-email-input-group">
@@ -57,13 +50,7 @@ function LoginEmail() {
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value)}
             />
-            <button
-              className="login-email-verify-button"
-              type="button"
-              onClick={handleCodeVerification}
-            >
-              인증 확인
-            </button>
+
           </div>
         </div>
         <div className="login-email-button-group">
