@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import project.homelearn.dto.manager.inquiry.ManagerInquiryDto;
 import project.homelearn.dto.manager.inquiry.ManagerResponseDto;
 import project.homelearn.entity.inquiry.ManagerInquiry;
+import project.homelearn.entity.user.Role;
 import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 
 import java.util.List;
@@ -24,51 +25,49 @@ public class ManagerInquiryService {
     * 강사 <- 문의
      * Author : 김승민
     * */
-    //문의내역 리스트(학생)
+    // 문의내역 리스트(학생)
     public List<ManagerInquiryDto> getInquiryListDefaultFromStudents() {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findStudentInquiriesAllDefault();
 
         return getManagerInquiryDtoList(managerInquiries);
     }
 
-    //문의내역 커리큘럼 이름 기준(학생)
+    // 문의내역 커리큘럼 이름 기준(학생)
     public List<ManagerInquiryDto> getInquiryListWithCurriculumNameFromStudents(String curriculumName) {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findStudentInquiriesWithCurriculumName(curriculumName);
 
         return getManagerInquiryDtoList(managerInquiries);
     }
 
-    //문의내역 커리큘럼 이름 + 기수 기준(학생)
+    // 문의내역 커리큘럼 이름 + 기수 기준(학생)
     public List<ManagerInquiryDto> getInquiryListWithCurriculumNameAndThFromStudents(String curriculumName, Long curriculumTh) {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findStudentInquiriesWithCurriculumNameAndCurriculumTh(curriculumName, curriculumTh);
 
         return getManagerInquiryDtoList(managerInquiries);
     }
 
-
-
-    //문의내역 리스트(강사)
+    // 문의내역 리스트(강사)
     public List<ManagerInquiryDto> getInquiryListDefaultFromTeachers() {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findTeacherInquiresAllDefault();
 
         return getManagerInquiryDtoList(managerInquiries);
     }
 
-    //문의내역 커리큘럼 이름 기준(강사)
+    // 문의내역 커리큘럼 이름 기준(강사)
     public List<ManagerInquiryDto> getInquiryListWithCurriculumNameFromTeachers(String curriculumName) {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findTeacherInquiriesWithCurriculumName(curriculumName);
 
         return getManagerInquiryDtoList(managerInquiries);
     }
 
-    //문의내역 커리큘럼 이름 + 기수 기준(강사)
+    // 문의내역 커리큘럼 이름 + 기수 기준(강사)
     public List<ManagerInquiryDto> getInquiryListWithCurriculumNameAndThFromTeachers(String curriculumName, Long curriculumTh) {
         List<ManagerInquiry> managerInquiries = managerInquiryRepository.findTeacherInquiriesWithCurriculumNameAndCurriculumTh(curriculumName, curriculumTh);
 
         return getManagerInquiryDtoList(managerInquiries);
     }
 
-    //문의 내역 상세보기
+    // 문의 내역 상세보기
     public ManagerInquiryDto getOneManagerInquiryDtoById(Long id) {
         Optional<ManagerInquiry> managerInquiry = managerInquiryRepository.findById(id);
 
@@ -87,8 +86,8 @@ public class ManagerInquiryService {
         return null;
     }
 
-    //매니저가 문의 내역 답변달기
-    public boolean addResponse(ManagerResponseDto managerResponseDto, Long inquiryId){
+    // 매니저가 문의 내역 답변달기
+    public boolean addResponse(ManagerResponseDto managerResponseDto, Long inquiryId) {
         Optional<ManagerInquiry> managerInquiry = managerInquiryRepository.findById(inquiryId);
 
         if (managerInquiry.isPresent()) {
@@ -107,7 +106,7 @@ public class ManagerInquiryService {
      * 강사
      * Author : 김승민
      * */
-    public Integer getInquiryCount(String role){
+    public Integer getInquiryCount(Role role) {
         return managerInquiryRepository.countInquiryWithOutResponse(role);
     }
 
@@ -125,6 +124,4 @@ public class ManagerInquiryService {
                 ))
                 .toList();
     }
-
-
 }

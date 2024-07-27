@@ -1,16 +1,20 @@
 package project.homelearn.dto.manager.manage.teacher;
 
 import com.querydsl.core.annotations.QueryProjection;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import project.homelearn.entity.curriculum.CurriculumType;
 
 @Data
 public class SpecificTeacherDto {
 
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String phone;
 
     private Long curriculumId;

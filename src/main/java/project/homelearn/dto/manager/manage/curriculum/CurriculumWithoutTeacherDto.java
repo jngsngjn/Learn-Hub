@@ -1,5 +1,6 @@
 package project.homelearn.dto.manager.manage.curriculum;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import project.homelearn.entity.curriculum.CurriculumType;
 
@@ -8,7 +9,9 @@ import java.util.List;
 @Data
 public class CurriculumWithoutTeacherDto {
 
+    @NotNull
     private CurriculumType type;
+
     private List<CurriculumIdAndThDto> curriculumIdAndThs;
 
     public CurriculumWithoutTeacherDto(CurriculumType type, List<CurriculumIdAndThDto> curriculumIdAndThs) {

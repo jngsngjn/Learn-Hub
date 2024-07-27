@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 미완성
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +13,7 @@ public class CurriculumDto {
 
     private String name;
 
-    private Integer th;
+    private Long th;
 
     private String teacherName;
 

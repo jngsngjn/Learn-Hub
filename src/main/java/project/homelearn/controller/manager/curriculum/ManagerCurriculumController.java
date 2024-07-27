@@ -10,6 +10,7 @@ import project.homelearn.dto.manager.dashboard.CurriculumDto;
 import project.homelearn.dto.manager.dashboard.ScheduleDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
+import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.service.manager.ManagerCalendarService;
 import project.homelearn.service.manager.ManagerCurriculumService;
 
@@ -34,24 +35,14 @@ public class ManagerCurriculumController {
      * 교육과정 전체 페이지
      * Author : 김승민
      * */
-    @GetMapping("/manage-curriculums/NCP")
-    public ResponseEntity<?> viewCurriculumListNCP() {
-        List<CurriculumDto> ncpList = curriculumService.getNCPOrAWSCurriculum("NCP");
-        if (ncpList.isEmpty()) {
+    @GetMapping("/manage-curriculums/{type}") // NCP or AWS
+    public ResponseEntity<?> viewCurriculumList(@PathVariable("type") CurriculumType type) {
+        List<CurriculumDto> result = curriculumService.getCurriculumList(type);
+        if (result.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        else{
-            return new ResponseEntity<>(ncpList, HttpStatus.OK);
-        }
-    }
-    @GetMapping("/manage-curriculums/AWS")
-    public ResponseEntity<?> viewCurriculumListAWS() {
-        List<CurriculumDto> awsList = curriculumService.getNCPOrAWSCurriculum("AWS");
-        if (awsList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else{
-            return new ResponseEntity<>(awsList, HttpStatus.OK);
+        else {
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
     }
 

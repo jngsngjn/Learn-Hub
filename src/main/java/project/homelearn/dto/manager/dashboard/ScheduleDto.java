@@ -1,6 +1,8 @@
 package project.homelearn.dto.manager.dashboard;
 
 import com.querydsl.core.annotations.QueryProjection;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -9,12 +11,16 @@ import java.time.LocalDate;
 @Data
 public class ScheduleDto {
 
+    @NotNull
     private Long id; // PK
 
+    @NotBlank
     private String title;
 
+    @NotNull
     private LocalDate startDate;
 
+    @NotNull
     private LocalDate endDate;
 
     private String color;

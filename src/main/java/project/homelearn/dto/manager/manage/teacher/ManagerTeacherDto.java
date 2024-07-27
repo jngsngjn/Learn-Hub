@@ -1,9 +1,13 @@
 package project.homelearn.dto.manager.manage.teacher;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * 교육과정 배정 안된 강사들은..?
+ */
 @Data
 @AllArgsConstructor
 public class ManagerTeacherDto {
@@ -11,18 +15,18 @@ public class ManagerTeacherDto {
     @NotNull
     private Long teacherId;
 
-    @NotNull
+    @NotBlank
     private String name;
 
     @NotNull
     private Long curriculumTh;
 
-    @NotNull
+    @NotBlank
     private String curriculumName;
 
-    @NotNull
+    @NotBlank
     private String phone;
 
-    @NotNull
+    @NotBlank
     private String email;
 }
