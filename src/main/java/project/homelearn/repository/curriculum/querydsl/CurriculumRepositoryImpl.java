@@ -11,7 +11,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static project.homelearn.entity.curriculum.CurriculumType.*;
+import static project.homelearn.entity.curriculum.CurriculumType.AWS;
+import static project.homelearn.entity.curriculum.CurriculumType.NCP;
 import static project.homelearn.entity.curriculum.QCurriculum.curriculum;
 import static project.homelearn.entity.user.QUser.user;
 

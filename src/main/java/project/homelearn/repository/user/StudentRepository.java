@@ -11,10 +11,11 @@ import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
 import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
+import project.homelearn.repository.user.querydsl.StudentRepositoryCustom;
 
 import java.util.List;
 
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, Long>, StudentRepositoryCustom {
     // 필터링 x : 전체 학생 조회
     Page<Student> findAllByOrderByCreatedDateDesc(Pageable pageable);
 
@@ -46,4 +47,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // 학생이 속해있는 커리큘럼의 총 교육과정 일수
     @Query("SELECT c FROM Student s JOIN s.curriculum c WHERE s.id = :studentId")
     Curriculum findCurriculumByStudentId(@Param("studentId") Long studentId);
+
+    @Query("select count(s) from Student s where s.curriculum =:curriculum")
+    Integer findStudentCountByCurriculum(@Param("curriculum") Curriculum curriculum);
 }

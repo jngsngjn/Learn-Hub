@@ -177,6 +177,23 @@ public class ManagerCurriculumService {
         return new CurriculumProgressDto(basicDto.getName(), basicDto.getTh(), progress);
     }
 
+    public CurriculumAttendanceDto getCurriculumAttendance(Long curriculumId) {
+        Curriculum curriculum = curriculumRepository.findById(curriculumId).orElseThrow();
+        Integer total = studentRepository.findStudentCountByCurriculum(curriculum);
+        Long attendance = studentRepository.findAttendanceCount(curriculum);
+
+        CurriculumAttendanceDto attendanceDto = new CurriculumAttendanceDto();
+        attendanceDto.setTotal(total);
+        attendanceDto.setAttendance(attendance);
+
+        if (total != 0) {
+            attendanceDto.setRatio(Math.floorDiv(attendance.intValue() * 100, total));
+        } else {
+            attendanceDto.setRatio(0);
+        }
+        return attendanceDto;
+    }
+
     public CurriculumSurveyDto getCurriculumSurvey(Long curriculumId) {
         return surveyRepository.findCurriculumSurvey(curriculumId);
     }
