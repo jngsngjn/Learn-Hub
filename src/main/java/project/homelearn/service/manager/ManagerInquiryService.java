@@ -9,6 +9,7 @@ import project.homelearn.dto.manager.inquiry.ManagerResponseDto;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.user.Role;
 import project.homelearn.repository.inquiry.ManagerInquiryRepository;
+import project.homelearn.service.common.NotificationService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ManagerInquiryService {
 
+    private final NotificationService notificationService;
     private final ManagerInquiryRepository managerInquiryRepository;
 
     // 문의내역 리스트(학생)
@@ -95,6 +97,8 @@ public class ManagerInquiryService {
             inquiry.setResponse(managerResponseDto.getResponse());
             inquiry.setResponseDate(LocalDateTime.now());
             managerInquiryRepository.save(inquiry);
+
+            notificationService.notifyManageResponse(inquiry); // 학생 또는 강사에게 알림
             return true;
         }
         return false;

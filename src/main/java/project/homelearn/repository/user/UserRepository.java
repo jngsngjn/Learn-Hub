@@ -3,7 +3,7 @@ package project.homelearn.repository.user;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.user.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -16,4 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select count(u) from User u where u.curriculum.id = :curriculumId and u.role = project.homelearn.entity.user.Role.ROLE_STUDENT")
     Integer countTotalStudentsByCurriculumId(@Param("curriculumId")Long curriculumId);
+
+    @Query("select u from User u join u.managerInquiries mi where mi =:inquiry")
+    User findUserByManagerInquiry(@Param("inquiry") ManagerInquiry inquiry);
 }
