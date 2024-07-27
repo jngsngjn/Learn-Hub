@@ -24,7 +24,7 @@ public class ManagerInquiryController {
     private final ManagerInquiryService managerInquiryService;
 
     @GetMapping("/student-inquires")
-    public ResponseEntity<?> studentList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
+    public ResponseEntity<?> studentList (@RequestParam(name = "curriculumName", required = false) String curriculumName,
                                          @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
         List<ManagerInquiryDto> managerInquiries;
@@ -50,7 +50,7 @@ public class ManagerInquiryController {
 
         List<ManagerInquiryDto> managerInquiries;
         if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()) {
-            managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameAndThFromTeachers(curriculumName,curriculumTh);
+            managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameAndThFromTeachers(curriculumName, curriculumTh);
         }
         else if (curriculumName != null && !curriculumName.isEmpty()) {
             managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameFromTeachers(curriculumName);
@@ -74,10 +74,10 @@ public class ManagerInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @PostMapping("/{inquiryId}/add-response")
+    @PostMapping("/inquires/{inquiryId}/add-response")
     public ResponseEntity<?> addResponse(@Valid @RequestBody ManagerResponseDto managerResponseDto,
                                          @PathVariable("inquiryId") Long inquiryId) {
-        boolean result = managerInquiryService.addResponse(managerResponseDto,inquiryId);
+        boolean result = managerInquiryService.addResponse(managerResponseDto, inquiryId);
         if (result) {
             return ResponseEntity.status(HttpStatus.OK).body(managerResponseDto);
         }

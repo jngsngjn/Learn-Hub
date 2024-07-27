@@ -10,6 +10,7 @@ import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.user.Role;
 import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,7 +93,7 @@ public class ManagerInquiryService {
         if (managerInquiry.isPresent()) {
             ManagerInquiry inquiry = managerInquiry.get();
             inquiry.setResponse(managerResponseDto.getResponse());
-            inquiry.setResponseDate(managerResponseDto.getResponseDate());
+            inquiry.setResponseDate(LocalDateTime.now());
             managerInquiryRepository.save(inquiry);
             return true;
         }
