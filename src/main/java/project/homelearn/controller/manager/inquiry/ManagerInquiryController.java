@@ -12,6 +12,9 @@ import project.homelearn.service.manager.ManagerInquiryService;
 
 import java.util.List;
 
+/**
+ * Author : 김승민
+ */
 @Slf4j
 @RestController
 @RequestMapping("/managers")
@@ -20,7 +23,7 @@ public class ManagerInquiryController {
 
     private final ManagerInquiryService managerInquiryService;
 
-    @GetMapping("/student-inquires")
+    @GetMapping("/student-inquiries")
     public ResponseEntity<?> studentList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
                                          @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
@@ -41,13 +44,13 @@ public class ManagerInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @GetMapping("/teacher-inquires")
+    @GetMapping("/teacher-inquiries")
     public ResponseEntity<?> teacherList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
                                          @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
         List<ManagerInquiryDto> managerInquiries;
         if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()) {
-            managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameAndThFromTeachers(curriculumName,curriculumTh);
+            managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameAndThFromTeachers(curriculumName, curriculumTh);
         }
         else if (curriculumName != null && !curriculumName.isEmpty()) {
             managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameFromTeachers(curriculumName);
@@ -62,7 +65,7 @@ public class ManagerInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @GetMapping("/inquires/{inquiryId}")
+    @GetMapping("/inquiries/{inquiryId}")
     public ResponseEntity<?> viewInquiry(@PathVariable("inquiryId") Long inquiryId) {
         ManagerInquiryDto result = managerInquiryService.getOneManagerInquiryDtoById(inquiryId);
         if (result != null) {
@@ -71,12 +74,12 @@ public class ManagerInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @PostMapping("/{inquiryId}/add-response")
+    @PostMapping("/inquiries/{inquiryId}/add-response")
     public ResponseEntity<?> addResponse(@Valid @RequestBody ManagerResponseDto managerResponseDto,
                                          @PathVariable("inquiryId") Long inquiryId) {
-        boolean result = managerInquiryService.addResponse(managerResponseDto,inquiryId);
+        boolean result = managerInquiryService.addResponse(managerResponseDto, inquiryId);
         if (result) {
-            return ResponseEntity.status(HttpStatus.OK).body(managerResponseDto);
+            return ResponseEntity.status(HttpStatus.OK).body(managerResponseDto); // 응답 바디에 dto 넣는 이유가 뭐죠?
         }
         else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

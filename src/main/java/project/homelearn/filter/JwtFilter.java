@@ -16,7 +16,7 @@ import project.homelearn.entity.manager.Manager;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.Role;
 import project.homelearn.entity.user.User;
-import project.homelearn.service.jwt.JwtUtil;
+import project.homelearn.service.jwt.JwtService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,7 +28,7 @@ import static project.homelearn.entity.user.Role.*;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -51,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // 토큰 만료 여부 확인, 만료 시 다음 필터로 넘기지 않음
         try {
-            jwtUtil.isExpired(accessToken);
+            jwtService.isExpired(accessToken);
         } catch (ExpiredJwtException e) {
             String msg = "Access token is expired";
             writeError(response, msg);
@@ -59,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 토큰이 Access 토큰인지 확인, 아니면 다음 필터로 넘기지 않음
-        String category = jwtUtil.getCategory(accessToken);
+        String category = jwtService.getCategory(accessToken);
 
         if (!category.equals(ACCESS_TOKEN_HEADER_NAME)) {
             String msg = "Access token is invalid";
@@ -70,17 +70,17 @@ public class JwtFilter extends OncePerRequestFilter {
         // username, role 값을 획득
         User user = null;
 
-        Role role = Role.valueOf(jwtUtil.getRole(accessToken));
+        Role role = Role.valueOf(jwtService.getRole(accessToken));
 
         if (role.equals(ROLE_STUDENT)) {
             user = new Student();
-            user.setUsername(jwtUtil.getUsername(accessToken));
+            user.setUsername(jwtService.getUsername(accessToken));
             user.setRole(ROLE_STUDENT);
         }
 
         if (role.equals(ROLE_MANAGER)) {
             user = new Manager();
-            user.setUsername(jwtUtil.getUsername(accessToken));
+            user.setUsername(jwtService.getUsername(accessToken));
             user.setRole(ROLE_MANAGER);
         }
 

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.homelearn.dto.manager.dashboard.CurriculumDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -13,11 +14,12 @@ import project.homelearn.entity.survey.Survey;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.survey.SurveyRepository;
-import project.homelearn.repository.user.ManagerRepository;
-import project.homelearn.repository.user.StudentRepository;
-import project.homelearn.repository.user.TeacherRepository;
+import project.homelearn.repository.user.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static project.homelearn.entity.curriculum.CurriculumType.AWS;
 import static project.homelearn.entity.curriculum.CurriculumType.NCP;
@@ -28,12 +30,17 @@ import static project.homelearn.entity.curriculum.CurriculumType.NCP;
 @RequiredArgsConstructor
 public class ManagerCurriculumService {
 
-    private final ManagerRepository managerRepository;
-    private final TeacherRepository teacherRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final CurriculumRepository curriculumRepository;
+
+    private final UserRepository userRepository;
     private final SurveyRepository surveyRepository;
+
     private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
+    private final ManagerRepository managerRepository;
+
+    private final CurriculumRepository curriculumRepository;
+    private final AttendanceRepository attendanceRepository;
 
     public boolean enrollCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
         try {
@@ -170,7 +177,52 @@ public class ManagerCurriculumService {
         return new CurriculumProgressDto(basicDto.getName(), basicDto.getTh(), progress);
     }
 
+    public CurriculumAttendanceDto getCurriculumAttendance(Long curriculumId) {
+        Curriculum curriculum = curriculumRepository.findById(curriculumId).orElseThrow();
+        Integer total = studentRepository.findStudentCountByCurriculum(curriculum);
+        Long attendance = studentRepository.findAttendanceCount(curriculum);
+
+        CurriculumAttendanceDto attendanceDto = new CurriculumAttendanceDto();
+        attendanceDto.setTotal(total);
+        attendanceDto.setAttendance(attendance);
+
+        if (total != 0) {
+            attendanceDto.setRatio(Math.floorDiv(attendance.intValue() * 100, total));
+        } else {
+            attendanceDto.setRatio(0);
+        }
+        return attendanceDto;
+    }
+
     public CurriculumSurveyDto getCurriculumSurvey(Long curriculumId) {
         return surveyRepository.findCurriculumSurvey(curriculumId);
+    }
+
+    /**
+     * 대시보드 교육과정 section
+     * Author : 김승민
+     * 0. NCP/AWS 따로 추출 ✅
+     * 1. 교육과정이름 + 기수 ✅
+     * 2. 강사명 ✅
+     * 3. 학생총원 ✅
+     * 4. 출석한 학생인원 ✅
+     * */
+    public List<CurriculumDto> getCurriculumList(CurriculumType type) {
+        List<Curriculum> curriculums = curriculumRepository.findByCurriculumType(type);
+        LocalDateTime now = LocalDateTime.now();
+
+        return curriculums.stream()
+                .map(curriculum -> {
+                    CurriculumDto curriculumDto = new CurriculumDto();
+                    curriculumDto.setId(curriculum.getId());
+                    curriculumDto.setName(curriculum.getName());
+                    curriculumDto.setTh(curriculum.getTh());
+                    curriculumDto.setTeacherName(userRepository.findTeacherNameByCurriculumId(curriculum.getId()));
+                    curriculumDto.setAttendance(attendanceRepository.countAttendanceByCurriculumId(curriculum.getId(), now.toLocalDate()));
+                    curriculumDto.setTotal(userRepository.countTotalStudentsByCurriculumId(curriculum.getId()));
+
+                    return curriculumDto;
+                })
+                .collect(Collectors.toList());
     }
 }

@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.GenericFilterBean;
 import project.homelearn.service.jwt.CookieService;
-import project.homelearn.service.jwt.JwtUtil;
-import project.homelearn.service.jwt.RedisTokenService;
+import project.homelearn.service.jwt.JwtService;
+import project.homelearn.service.jwt.RedisService;
 
 import java.io.IOException;
 
@@ -22,8 +22,8 @@ import static project.homelearn.config.security.JwtConstants.REFRESH_TOKEN_COOKI
 @RequiredArgsConstructor
 public class CustomLogoutFilter extends GenericFilterBean {
 
-    private final JwtUtil jwtUtil;
-    private final RedisTokenService redisTokenService;
+    private final JwtService jwtService;
+    private final RedisService redisService;
     private final CookieService cookieService;
 
     @Override
@@ -52,7 +52,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
             return;
         }
 
-        String username = jwtUtil.getUsername(refresh);
+        String username = jwtService.getUsername(refresh);
         if (isStoredTokenInvalid(username, refresh)) {
             log.info("Stored refresh token is invalid");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -60,7 +60,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         }
 
         // 로그아웃 진행
-        redisTokenService.deleteRefreshToken(username);
+        redisService.deleteRefreshToken(username);
         cookieService.clearCookie(REFRESH_TOKEN_COOKIE_NAME, response);
 
         response.setStatus(HttpServletResponse.SC_OK);
@@ -69,16 +69,16 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
     private boolean isTokenInvalid(String refresh) {
         try {
-            jwtUtil.isExpired(refresh);
+            jwtService.isExpired(refresh);
         } catch (ExpiredJwtException e) {
             return true;
         }
 
-        return !jwtUtil.getCategory(refresh).equals(REFRESH_TOKEN_COOKIE_NAME);
+        return !jwtService.getCategory(refresh).equals(REFRESH_TOKEN_COOKIE_NAME);
     }
 
     private boolean isStoredTokenInvalid(String username, String refresh) {
-        String storedToken = redisTokenService.getRefreshToken(username);
+        String storedToken = redisService.getRefreshToken(username);
         return !refresh.equals(storedToken);
     }
 }

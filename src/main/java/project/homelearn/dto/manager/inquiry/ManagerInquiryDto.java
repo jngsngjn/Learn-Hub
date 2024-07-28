@@ -13,19 +13,19 @@ import java.time.LocalDateTime;
 public class ManagerInquiryDto {
 
     @NotNull
-    private Long inquiryId;
+    private Long id;
 
     @NotBlank
-    private String inquiryTitle;
+    private String title;
 
     @NotBlank
-    private String inquiryContent;
+    private String content;
 
     @NotNull
-    private LocalDateTime inquiryCreatedDate;
+    private LocalDateTime createdDate;
 
     @NotNull
-    private User inquiryUser;
+    private User user;
 
     private String response;
 

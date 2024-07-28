@@ -19,8 +19,8 @@ import project.homelearn.repository.user.AttendanceRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
-import project.homelearn.service.jwt.JwtUtil;
-import project.homelearn.service.jwt.RedisTokenService;
+import project.homelearn.service.jwt.JwtService;
+import project.homelearn.service.jwt.RedisService;
 
 import java.time.*;
 
@@ -32,9 +32,9 @@ import static project.homelearn.entity.student.AttendanceType.*;
 @RequiredArgsConstructor
 public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
     private final CookieService cookieService;
-    private final RedisTokenService redisTokenService;
+    private final RedisService redisService;
     private final AuthenticationManager authenticationManager;
     private final LoginHistoryRepository loginHistoryRepository;
     private final UserRepository userRepository;
@@ -60,11 +60,11 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         String role = authentication.getAuthorities().iterator().next().getAuthority();
 
         // 토큰 생성
-        String access = jwtUtil.createJwt(ACCESS_TOKEN_HEADER_NAME, username, Role.valueOf(role), ACCESS_TOKEN_EXPIRATION);
-        String refresh = jwtUtil.createJwt(REFRESH_TOKEN_COOKIE_NAME, username, Role.valueOf(role), REFRESH_TOKEN_EXPIRATION);
+        String access = jwtService.createJwt(ACCESS_TOKEN_HEADER_NAME, username, Role.valueOf(role), ACCESS_TOKEN_EXPIRATION);
+        String refresh = jwtService.createJwt(REFRESH_TOKEN_COOKIE_NAME, username, Role.valueOf(role), REFRESH_TOKEN_EXPIRATION);
 
         // Radis에 refresh 토큰 저장
-        redisTokenService.saveRefreshToken(username, refresh, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION));
+        redisService.saveRefreshToken(username, refresh, Duration.ofMillis(REFRESH_TOKEN_EXPIRATION));
 
         /**
          * 응답 설정

@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 
 @Service
-public class RedisTokenService {
+public class RedisService {
 
     private final RedisTemplate<String, String> redisTemplate;
     private final ValueOperations<String, String> valueOperations;
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
 
     @Autowired
-    public RedisTokenService(RedisTemplate<String, String> redisTemplate, JwtUtil jwtUtil) {
+    public RedisService(RedisTemplate<String, String> redisTemplate, JwtService jwtService) {
         this.redisTemplate = redisTemplate;
         this.valueOperations = redisTemplate.opsForValue();
-        this.jwtUtil = jwtUtil;
+        this.jwtService = jwtService;
     }
 
     public void saveRefreshToken(String username, String refreshToken, Duration duration) {
@@ -34,7 +34,7 @@ public class RedisTokenService {
     }
 
     public void deleteByRefreshToken(String refreshToken) {
-        String username = jwtUtil.getUsername(refreshToken);
+        String username = jwtService.getUsername(refreshToken);
         deleteRefreshToken(username);
     }
 }

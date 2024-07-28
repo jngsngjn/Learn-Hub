@@ -11,15 +11,19 @@ import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
 import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
+import project.homelearn.repository.user.querydsl.StudentRepositoryCustom;
 
 import java.util.List;
 
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, Long>, StudentRepositoryCustom {
+
+    Student findByUsername(String username);
+
     // 필터링 x : 전체 학생 조회
     Page<Student> findAllByOrderByCreatedDateDesc(Pageable pageable);
 
     // 필터링 o : 교육과정명 기준 학생 조회
-    @Query("SELECT s FROM Student s JOIN FETCH s.curriculum c WHERE c.name = :curriculumName")
+    @Query("SELECT s FROM Student s JOIN FETCH s.curriculum c WHERE c.name =:curriculumName")
     Page<Student> findByCurriculumName(Pageable pageable, @Param("curriculumName") String curriculumName);
 
     // 필터링 o : 기수 + 교육과정명 기준 학생 조회
@@ -29,22 +33,24 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // 설문 시작 후 해당 커리큘럼의 모든 학생의 설문 완료 상태를 false로 변경
     @Modifying
     @Transactional
-    @Query("update Student s set s.surveyCompleted = false where s.curriculum.id = :curriculumId")
+    @Query("update Student s set s.surveyCompleted = false where s.curriculum.id =:curriculumId")
     void updateSurveyCompletedFalse(@Param("curriculumId") Long curriculumId);
 
-    @Query("select new project.homelearn.dto.manager.manage.student.SpecificStudentDto(s.name, s.email, s.phone, s.gender) from Student s where s.id =:studentId")
+    @Query("select new project.homelearn.dto.manager.manage.student.SpecificStudentDto(s.id, s.name, s.email, s.phone, s.gender) from Student s where s.id =:studentId")
     SpecificStudentDto findSpecificStudentDto(@Param("studentId") Long studentId);
 
     @Query("select new project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto(c.name, c.th, c.startDate, c.endDate) " +
             "from Student s join fetch Curriculum c on s.curriculum.id = c.id " +
-            "where s.id = :studentId")
+            "where s.id =:studentId")
     CurriculumBasicDto findStudentCurriculum(@Param("studentId") Long studentId);
 
     @Query("SELECT s FROM Student s WHERE s.id NOT IN (SELECT lh.user.id FROM LoginHistory lh)")
     List<Student> findAbsentStudents();
 
-
-    //학생이 속해있는 커리큘럼의 총 교육과정 일수
-    @Query("SELECT c FROM Student s JOIN s.curriculum c WHERE s.id = :studentId")
+    // 학생이 속해있는 커리큘럼의 총 교육과정 일수
+    @Query("SELECT c FROM Student s JOIN s.curriculum c WHERE s.id =:studentId")
     Curriculum findCurriculumByStudentId(@Param("studentId") Long studentId);
+
+    @Query("select count(s) from Student s where s.curriculum =:curriculum")
+    Integer findStudentCountByCurriculum(@Param("curriculum") Curriculum curriculum);
 }

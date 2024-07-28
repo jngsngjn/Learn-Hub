@@ -1,21 +1,27 @@
 package project.homelearn.dto.manager.manage.curriculum;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-import static java.lang.Math.*;
+import static java.lang.Math.round;
 
 @Data
 public class CurriculumBasicDto {
 
+    @NotBlank
     private String name;
 
+    @NotNull
     private Long th;
 
+    @NotNull
     private LocalDate startDate;
 
+    @NotNull
     private LocalDate endDate;
 
     public CurriculumBasicDto(String name, Long th, LocalDate startDate, LocalDate endDate) {

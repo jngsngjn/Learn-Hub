@@ -5,7 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.repository.curriculum.querydsl.CurriculumRepositoryCustom;
+
+import java.util.List;
 
 public interface CurriculumRepository extends JpaRepository<Curriculum, Long>, CurriculumRepositoryCustom {
 
@@ -14,4 +17,6 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, Long>, C
     @Query("select new project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto(c.name, c.th, c.startDate, c.endDate) from Curriculum c where c.id =:id")
     CurriculumBasicDto findCurriculumBasic(@Param("id") Long id);
 
+    @Query("select c from Curriculum c where c.type = :type order by c.th asc")
+    List<Curriculum> findByCurriculumType(@Param("type") CurriculumType type);
 }

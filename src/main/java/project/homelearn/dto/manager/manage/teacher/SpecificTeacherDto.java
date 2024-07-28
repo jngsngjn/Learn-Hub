@@ -1,16 +1,24 @@
 package project.homelearn.dto.manager.manage.teacher;
 
 import com.querydsl.core.annotations.QueryProjection;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import project.homelearn.entity.curriculum.CurriculumType;
 
 @Data
 public class SpecificTeacherDto {
 
+    @NotNull
+    private Long id;
+
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String phone;
 
     private Long curriculumId;
@@ -20,7 +28,8 @@ public class SpecificTeacherDto {
     private Long th;
 
     @QueryProjection
-    public SpecificTeacherDto(String name, String email, String phone, Long curriculumId, CurriculumType type, Long th) {
+    public SpecificTeacherDto(Long id, String name, String email, String phone, Long curriculumId, CurriculumType type, Long th) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
