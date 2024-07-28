@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
@@ -22,10 +23,10 @@ const Sidebar = () => {
       </div>
       <h2>대시보드</h2>
       <ul className="menu">
-        <li>교육 과정</li>
-        <li>학생 관리</li>
-        <li>강사 관리</li>
-        <li>공지사항</li>
+        <li><Link to="/" className="sidebar-link">대시보드</Link></li>
+        <li><Link to="/student-management" className="sidebar-link">학생 관리</Link></li>
+        <li><span className="sidebar-link">강사 관리</span></li>
+        <li><span className="sidebar-link">공지사항</span></li>
         <li className="dropdown">
           <div className="dropdown-header" onClick={toggleDropdown}>
             문의

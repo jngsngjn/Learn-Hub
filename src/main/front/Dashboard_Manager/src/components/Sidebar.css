@@ -46,7 +46,7 @@
 }
 
 .menu li:hover {
-  color: #000000;
+  color: #000;
 }
 
 .dropdown .dropdown-header {
@@ -87,5 +87,14 @@
 }
 
 .submenu li:hover {
+  color: #000;
+}
+
+.sidebar .menu .sidebar-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidebar .menu .sidebar-link:hover {
   color: #000;
 }

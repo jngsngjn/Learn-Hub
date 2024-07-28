@@ -1,0 +1,83 @@
+.student-management {
+  padding: 20px;
+}
+
+.student-management h1 {
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content:end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.controls input, .controls select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.student-management table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.student-management th, .student-management td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.student-management th {
+  background-color: #E3E1D9;
+}
+
+.student-management tr:nth-child(even) {
+  background-color: #C7C8CC;
+}
+
+.student-management tr:hover {
+  background-color: #B4B4B8;
+  cursor:pointer;
+}
+
+.student-management th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #757575;
+  color: white;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+}
+
+.actions button {
+  font-size:15px;
+  font-weight:bold;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border:1px solid #757575;
+  background-color: #F4F5F7;
+  color: #757575;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #B4B4B8;
+}
+
+.status.present {
+  color: #757575;
+  font-weight: bold;
+}
+
+.status.absent {
+  color: #757575;
+  font-weight: bold;
+}
