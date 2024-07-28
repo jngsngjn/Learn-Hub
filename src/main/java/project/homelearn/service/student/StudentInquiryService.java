@@ -38,14 +38,14 @@ public class StudentInquiryService {
     }
 
     public boolean modifyManagerInquiry(Long inquiryId, String username, StudentToMangerInquiryDto inquiryDto) {
-        String writer = studentRepository.findUsernameByInquiryId(inquiryId);
+        ManagerInquiry inquiry = managerInquiryRepository.findById(inquiryId).orElseThrow();
+        String writer = inquiry.getUser().getUsername();
 
         if (!writer.equals(username)) {
             log.info("[학생] 매니저 문의 수정 : 작성자와 수정자가 같지 않음!, 작성자 = {}, 수정자 = {}", writer, username);
             return false;
         }
 
-        ManagerInquiry inquiry = managerInquiryRepository.findById(inquiryId).orElseThrow();
         if (inquiry.getResponse() != null) {
             log.info("[학생] 매니저 문의 수정 : 이미 답변이 된 문의임!");
             return false;
@@ -53,6 +53,18 @@ public class StudentInquiryService {
 
         inquiry.setTitle(inquiryDto.getTitle());
         inquiry.setContent(inquiryDto.getContent());
+        return true;
+    }
+
+    public boolean deleteManagerInquiry(Long inquiryId, String username) {
+        ManagerInquiry inquiry = managerInquiryRepository.findById(inquiryId).orElseThrow();
+        String writer = inquiry.getUser().getUsername();
+
+        if (!writer.equals(username)) {
+            return false;
+        }
+
+        managerInquiryRepository.deleteById(inquiryId);
         return true;
     }
 }

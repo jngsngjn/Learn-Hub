@@ -19,9 +19,6 @@ public interface StudentRepository extends JpaRepository<Student, Long>, Student
 
     Student findByUsername(String username);
 
-    @Query("select s.username from Student s join ManagerInquiry mi on s.id = mi.user.id where mi.id =:inquiryId")
-    String findUsernameByInquiryId(@Param("inquiryId") Long inquiryId);
-
     // 필터링 x : 전체 학생 조회
     Page<Student> findAllByOrderByCreatedDateDesc(Pageable pageable);
 
