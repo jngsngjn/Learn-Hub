@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.student.inquiry.StudentToMangerInquiryDto;
 import project.homelearn.service.student.StudentInquiryService;
 
@@ -26,7 +23,7 @@ public class StudentInquiryController {
     private final StudentInquiryService inquiryService;
 
     // 문의 등록 : 학생 -> 매니저
-    @PostMapping("/inquiries")
+    @PostMapping("/inquiries/manager")
     public ResponseEntity<?> inquiryToManager(Principal principal,
                                               @Valid @RequestBody StudentToMangerInquiryDto inquiryDto) {
         if (principal == null) {
@@ -36,5 +33,21 @@ public class StudentInquiryController {
 
         inquiryService.inquiryToManger(username, inquiryDto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 문의 수정 : 학생 -> 매니저
+    @PatchMapping("/inquiries/manager/{inquiryId}")
+    public ResponseEntity<?> modifyManagerInquiry(@PathVariable("inquiryId") Long inquiryId, Principal principal,
+                                                  @Valid @RequestBody StudentToMangerInquiryDto inquiryDto) {
+        if (principal == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        String username = principal.getName();
+        boolean result = inquiryService.modifyManagerInquiry(inquiryId, username, inquiryDto);
+
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
