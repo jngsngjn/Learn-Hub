@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Signup.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Signup() {
   const [name, setName] = useState('안성민');
@@ -10,6 +11,7 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
 
   const navigate = useNavigate();
 
@@ -17,12 +19,44 @@ function Signup() {
     setPasswordMatch(password === confirmPassword);
   }, [password, confirmPassword]);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (username.length > 0) {
+      checkUsernameAvailability();
+    } else {
+      setUsernameAvailable(null);
+    }
+  }, [username]);
+
+  const checkUsernameAvailability = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/register/id-duplicate-check', { username });
+      setUsernameAvailable(response.status === 200);
+    } catch (error) {
+      console.error('아이디 중복 체크 에러:', error);
+      setUsernameAvailable(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!passwordMatch) {
+    if (!passwordMatch || !usernameAvailable) {
       return;
     }
-    console.log('회원가입 시도:', { name, phone, email, username, password });
+    try {
+      const response = await axios.post('http://localhost:8080/register', {
+        name,
+        phone,
+        email,
+        username,
+        password
+      });
+      if (response.status === 200) {
+        console.log('회원가입 성공');
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+    }
   };
 
   const handlePreviousStep = () => {
@@ -82,6 +116,13 @@ function Signup() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
+          <div className="user-id-check">
+            {username && (
+              <span className={usernameAvailable ? 'available' : 'not-available'}>
+                {usernameAvailable ? '사용 가능한 아이디입니다' : '이미 사용 중인 아이디입니다'}
+              </span>
+            )}
+          </div>
         </div>
         <div className="signup-input-group">
           <label htmlFor="password" className="signup-label">비밀번호</label>

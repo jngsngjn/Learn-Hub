@@ -14,7 +14,7 @@
 }
 
 .signup-input-group {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   text-align: left;
 }
 
@@ -59,7 +59,6 @@
   font-size: 15px;
   margin-right:10px;
   margin-top: 10px;
-
 }
 
 .password-match-message .match {
@@ -107,3 +106,25 @@
   background-color: #5c8d89;
   border: 5px solid #a7d7c5;
 }
+.username-availability-message {
+  margin-top: 5px;
+  font-size: 0.8em;
+}
+
+.user-id-check {
+  display: flex;
+  justify-content: flex-end;
+  height: 10px;
+  font-size: 15px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.user-id-check .available {
+  color: #6079FF;
+}
+
+.user-id-check .not-available {
+  color: #f44336;
+}
+
