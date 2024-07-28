@@ -19,12 +19,13 @@ import static project.homelearn.entity.user.Role.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class NotificationService {
+public class CommonNotificationService {
 
     private final UserRepository userRepository;
     private final StudentNotificationRepository studentNotificationRepository;
     private final TeacherNotificationRepository teacherNotificationRepository;
 
+    // 매니저가 학생 또는 강사의 문의에 답변했을 때 해당 인원에게 알림
     public void notifyManageResponse(ManagerInquiry inquiry) {
         User user = userRepository.findUserByManagerInquiry(inquiry);
         Role role = user.getRole();

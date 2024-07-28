@@ -16,6 +16,9 @@ import project.homelearn.repository.user.querydsl.StudentRepositoryCustom;
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long>, StudentRepositoryCustom {
+
+    Student findByUsername(String username);
+
     // 필터링 x : 전체 학생 조회
     Page<Student> findAllByOrderByCreatedDateDesc(Pageable pageable);
 

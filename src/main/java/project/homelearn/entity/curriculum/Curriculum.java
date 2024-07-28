@@ -6,7 +6,6 @@ import lombok.Setter;
 import project.homelearn.entity.BaseEntity;
 import project.homelearn.entity.calendar.ManagerCalendar;
 import project.homelearn.entity.homework.Homework;
-import project.homelearn.entity.notification.teacher.TeacherNotification;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.entity.user.EnrollList;
 import project.homelearn.entity.user.User;
@@ -63,9 +62,6 @@ public class Curriculum extends BaseEntity {
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Survey> surveys = new ArrayList<>();
-
-    @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TeacherNotification> teacherNotifications = new ArrayList<>();
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EnrollList> enrollLists = new ArrayList<>();
