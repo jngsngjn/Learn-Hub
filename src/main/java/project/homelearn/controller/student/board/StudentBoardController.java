@@ -96,19 +96,38 @@ public class StudentBoardController {
 
     // 대댓글 등록
     @PostMapping("/{boardId}/comments/{commentId}")
-    public ResponseEntity<?> writeReplyToComment(Principal principal,
+    public ResponseEntity<?> writeReplyComment(Principal principal,
                                                  @PathVariable("commentId") Long commentId,
                                                  @Valid @RequestBody CommentWriteDto commentDto) {
         String username = principal.getName();
-        boardService.writeReplyToComment(commentId, username, commentDto);
+        boardService.writeReplyComment(commentId, username, commentDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 대댓글 수정
-//    @PatchMapping("/{boardId}/comments/{commentId}")
+    @PatchMapping("/{boardId}/comments/{commentId}/replies/{replyId}")
+    public ResponseEntity<?> modifyReplyComment(Principal principal,
+                                                  @PathVariable("commentId") Long replyId,
+                                                  @Valid @RequestBody CommentWriteDto commentDto) {
+        String username = principal.getName();
+        boolean result = boardService.modifyReplyComment(replyId, username, commentDto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
     // 대댓글 삭제
-//    @DeleteMapping("/{boardId}/comments/{commentId}")
+    @DeleteMapping("/{boardId}/comments/{commentId}/replies/{replyId}")
+    public ResponseEntity<?> deleteReplyComment(@PathVariable("boardId") Long boardId,
+                                                @PathVariable("replyId") Long replyId,
+                                                Principal principal) {
+        String username = principal.getName();
+        boolean result = boardService.deleteComment(boardId, replyId, username);
 
-    // 조회수 증가
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }

@@ -102,15 +102,31 @@ public class StudentBoardService {
         return true;
     }
 
-    public void writeReplyToComment(Long commentId, String username, CommentWriteDto commentDto) {
+    public void writeReplyComment(Long commentId, String username, CommentWriteDto commentDto) {
         User user = userRepository.findByUsername(username);
-        FreeBoardComment comment = commentRepository.findById(commentId).orElseThrow();
+        FreeBoardComment parentComment = commentRepository.findById(commentId).orElseThrow();
+
+        // 대댓글 깊이 확인
+        if (parentComment.getParentComment() != null) {
+            throw new IllegalArgumentException("대댓글의 깊이는 1로 제한됩니다.");
+        }
 
         FreeBoardComment reply = new FreeBoardComment();
         reply.setUser(user);
         reply.setContent(commentDto.getContent());
-        reply.setFreeBoard(comment.getFreeBoard());
-        reply.setParentComment(comment);
+        reply.setFreeBoard(parentComment.getFreeBoard());
+        reply.setParentComment(parentComment);
         commentRepository.save(reply);
+    }
+
+    public boolean modifyReplyComment(Long replyId, String username, CommentWriteDto commentDto) {
+        FreeBoardComment reply = commentRepository.findById(replyId).orElseThrow();
+        String writer = reply.getUser().getUsername();
+        if (!writer.equals(username)) {
+            return false;
+        }
+
+        reply.setContent(commentDto.getContent());
+        return true;
     }
 }
