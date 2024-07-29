@@ -31,8 +31,11 @@ public class Homework extends BaseEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    @Column(name = "file_name")
-    private String fileName;
+    @Column(name = "upload_file_name")
+    private String uploadFileName;
+
+    @Column(name = "store_file_name")
+    private String storeFileName;
 
     @Column(name = "file_path")
     private String filePath;

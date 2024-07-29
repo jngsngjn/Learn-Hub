@@ -19,4 +19,7 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, Long>, C
 
     @Query("select c from Curriculum c where c.type = :type order by c.th asc")
     List<Curriculum> findByCurriculumType(@Param("type") CurriculumType type);
+
+    @Query("select c.th, c.type from Curriculum c where c.id =:id")
+    List<Object> findThById(@Param("id") Long id);
 }

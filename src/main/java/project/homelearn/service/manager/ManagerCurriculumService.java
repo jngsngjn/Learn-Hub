@@ -1,7 +1,10 @@
 package project.homelearn.service.manager;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +19,14 @@ import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.survey.SurveyRepository;
 import project.homelearn.repository.user.*;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static project.homelearn.config.storage.StorageConstants.*;
 import static project.homelearn.entity.curriculum.CurriculumType.AWS;
 import static project.homelearn.entity.curriculum.CurriculumType.NCP;
 
@@ -42,14 +48,20 @@ public class ManagerCurriculumService {
     private final CurriculumRepository curriculumRepository;
     private final AttendanceRepository attendanceRepository;
 
+    private final AmazonS3Client amazonS3Client;
+
+    @Value("${bucket.name}")
+    private String bucketName;
+
     public boolean enrollCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
         try {
             CurriculumType type = curriculumEnrollDto.getType();
-            Long count = curriculumRepository.findCountByType(type);
+            Long th = curriculumRepository.findCountByType(type) + 1;
 
-            Curriculum curriculum = createCurriculum(curriculumEnrollDto, count, type);
-
+            Curriculum curriculum = createCurriculum(curriculumEnrollDto, th, type);
             curriculumRepository.save(curriculum);
+
+            createCurriculumStorage(th, type);
             return true;
 
         } catch (Exception e) {
@@ -58,9 +70,7 @@ public class ManagerCurriculumService {
         }
     }
 
-    private Curriculum createCurriculum(CurriculumEnrollDto curriculumEnrollDto, Long count, CurriculumType type) {
-        Long th = count + 1;
-
+    private Curriculum createCurriculum(CurriculumEnrollDto curriculumEnrollDto, Long th, CurriculumType type) {
         Curriculum curriculum = new Curriculum();
         curriculum.setTh(th);
         curriculum.setColor(curriculumEnrollDto.getColor());
@@ -84,6 +94,27 @@ public class ManagerCurriculumService {
             curriculum.setFullName(aws + " " + th + "기");
         }
         return curriculum;
+    }
+
+    private void createCurriculumStorage(Long count, CurriculumType type) {
+        String baseFolder = "";
+        if (type.equals(CurriculumType.NCP)) {
+            baseFolder = NCP_STORAGE_PREFIX + count;
+        } else if (type.equals(CurriculumType.AWS)) {
+            baseFolder = AWS_STORAGE_PREFIX + count;
+        }
+
+        createFolder(baseFolder + FREE_BOARD_STORAGE);
+        createFolder(baseFolder + SUBJECT_STORAGE);
+        createFolder(baseFolder + HOMEWORK_STORAGE);
+        createFolder(baseFolder + PROFILE_STORAGE);
+    }
+
+    private void createFolder(String folderName) {
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(0);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, folderName, new ByteArrayInputStream(new byte[0]), metadata);
+        amazonS3Client.putObject(putObjectRequest);
     }
 
     public boolean updateCurriculum(Long id, CurriculumUpdateDto curriculumUpdateDto) {
@@ -118,7 +149,43 @@ public class ManagerCurriculumService {
     }
 
     public void deleteCurriculum(Long id) {
+        List<Object> result = curriculumRepository.findThById(id);
         curriculumRepository.deleteById(id);
+
+        Object[] arr = (Object[]) result.get(0);
+        Long th = (Long) arr[0];
+        CurriculumType type = (CurriculumType) arr[1];
+
+        String baseFolder;
+        if (type.equals(NCP)) {
+            baseFolder = NCP_STORAGE_PREFIX + th + "/";
+        } else {
+            baseFolder = AWS_STORAGE_PREFIX + th + "/";
+        }
+        deleteFolder(baseFolder);
+    }
+
+    private void deleteFolder(String folderPath) {
+        ListObjectsV2Request listObjectsV2Request = new ListObjectsV2Request()
+                .withBucketName(bucketName)
+                .withPrefix(folderPath);
+
+        ListObjectsV2Result listObjectsV2Result;
+        List<String> keysToDelete = new ArrayList<>();
+
+        do {
+            listObjectsV2Result = amazonS3Client.listObjectsV2(listObjectsV2Request);
+            for (S3ObjectSummary objectSummary : listObjectsV2Result.getObjectSummaries()) {
+                keysToDelete.add(objectSummary.getKey());
+            }
+            listObjectsV2Request.setContinuationToken(listObjectsV2Result.getNextContinuationToken());
+        } while (listObjectsV2Result.isTruncated());
+
+        if (!keysToDelete.isEmpty()) {
+            DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName)
+                    .withKeys(keysToDelete.toArray(new String[0]));
+            amazonS3Client.deleteObjects(deleteObjectsRequest);
+        }
     }
 
     /**
