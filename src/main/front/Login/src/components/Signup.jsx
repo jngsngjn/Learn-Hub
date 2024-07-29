@@ -29,10 +29,11 @@ function Signup() {
 
   const checkUsernameAvailability = async () => {
     try {
+      /*username은 임시로 설정 나중에 id 로 변환 필요 */
       const response = await axios.post('http://localhost:8080/register/id-duplicate-check', { username });
       setUsernameAvailable(response.status === 200);
     } catch (error) {
-      console.error('아이디 중복 체크 에러:', error);
+      console.error('아이디 중복 에러:', error);
       setUsernameAvailable(false);
     }
   };
