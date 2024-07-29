@@ -16,10 +16,11 @@ public class LoginHistoryRepositoryImpl implements LoginHistoryRepositoryCustom 
     @Override
     public LocalDateTime findUserLoginDateTime(User user) {
         return queryFactory
-                .select(loginHistory.loginDateTime).distinct()
+                .select(loginHistory.loginDateTime)
                 .from(loginHistory)
                 .where(loginHistory.user.eq(user))
-                .orderBy(loginHistory.loginDateTime.asc())
+                .orderBy(loginHistory.loginDateTime.desc())
+                .limit(1)
                 .fetchOne();
     }
 }
