@@ -21,7 +21,6 @@ const Sidebar = () => {
       <div className="date-container">
         <span className="date">{currentDate}</span>
       </div>
-      <h2>대시보드</h2>
       <ul className="menu">
         <li><Link to="/" className="sidebar-link">대시보드</Link></li>
         <li><Link to="/student-management" className="sidebar-link">학생 관리</Link></li>
