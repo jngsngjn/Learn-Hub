@@ -20,7 +20,8 @@
 
 .signup-label {
   color: #74b49b;
-  margin-left: 10px;
+  margin-left: 5px;
+  height:20px;
   display: block;
   margin-bottom: 5px;
 }
@@ -69,6 +70,10 @@
   color: #f44336;
 }
 
+.not-available{
+    color:#f44336;
+}
+
 .signup-button-group {
   display: flex;
   justify-content: space-between;
@@ -113,11 +118,10 @@
 
 .user-id-check {
   display: flex;
-  justify-content: flex-end;
-  height: 10px;
-  font-size: 15px;
-  margin-right: 10px;
-  margin-top: 10px;
+      justify-content: flex-end;
+      height: 20px;
+      font-size: 15px;
+      margin-top: 10px;
 }
 
 .user-id-check .available {
@@ -128,3 +132,10 @@
   color: #f44336;
 }
 
+.password-check{
+    display: flex;
+    justify-content: flex-end;
+    height: 20px;
+    font-size: 15px;
+    margin-top: 10px;
+}

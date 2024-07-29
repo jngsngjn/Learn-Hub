@@ -43,6 +43,37 @@
   border-radius: 4px;
 }
 
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  font-size: 16px;
+  color: #aaa;
+}
+
+.refresh-button {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background-color: #f4f4f4;
+  cursor:pointer;
+}
+
+.refresh-button:hover {
+  background-color: #ddd;
+}
+
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -57,9 +88,9 @@
 
 .student-management th, .student-management td {
   border: 1px solid #ddd;
-   padding: 8px;
-   text-align: center;
-   background-color: #F4F5F7;
+  padding: 8px;
+  text-align: center;
+  background-color: #F4F5F7;
 }
 
 .student-management th {
@@ -148,10 +179,11 @@
   margin-top: 20px;
   display: flex;
   justify-content: center;
-  text-align:center;
-  align-items:center;
-  gap:40px;
+  text-align: center;
+  align-items: center;
+  gap: 40px;
 }
+
 .student-modal-button {
   padding: 10px 15px;
   border: none;
@@ -162,6 +194,6 @@
 }
 
 .student-modal-button:hover {
-  color:#757575;
+  color: #757575;
   background-color: #E8E8E9;
 }

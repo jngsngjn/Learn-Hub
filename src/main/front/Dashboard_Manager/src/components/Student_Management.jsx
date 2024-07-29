@@ -117,13 +117,15 @@ const StudentManagement = () => {
           </select>
         </div>
         <div className="search-container">
-          <input
-            type="text"
-            placeholder="학생 이름 검색"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <i className="fas fa-search search-icon"></i>
+          <div className="search-wrapper">
+            <input
+              type="text"
+              placeholder="학생 이름 검색"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <i className="fas fa-search search-icon"></i>
+          </div>
           <button onClick={handleRefresh} className="refresh-button">
             <i className="fas fa-sync"></i>
           </button>

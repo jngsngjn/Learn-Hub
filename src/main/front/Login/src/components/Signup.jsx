@@ -12,6 +12,8 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
+  const [usernameValid, setUsernameValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,14 +24,29 @@ function Signup() {
   useEffect(() => {
     if (username.length > 0) {
       checkUsernameAvailability();
+      validateUsername(username);
     } else {
       setUsernameAvailable(null);
+      setUsernameValid(false);
     }
   }, [username]);
 
+  useEffect(() => {
+    validatePassword(password);
+  }, [password]);
+
+  const validateUsername = (username) => {
+    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z\d]{6,12}$/; /*{영문}{숫자} 6~12자리 */
+    setUsernameValid(usernameRegex.test(username));
+  };
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/; /*{대문}{특수문자}{영문} 10~18자리 */
+    setPasswordValid(passwordRegex.test(password));
+  };
+
   const checkUsernameAvailability = async () => {
     try {
-      /*username은 임시로 설정 나중에 id 로 변환 필요 */
       const response = await axios.post('http://localhost:8080/register/id-duplicate-check', { username });
       setUsernameAvailable(response.status === 200);
     } catch (error) {
@@ -40,7 +57,7 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!passwordMatch || !usernameAvailable) {
+    if (!passwordMatch || !usernameAvailable || !usernameValid || !passwordValid) {
       return;
     }
     try {
@@ -118,7 +135,10 @@ function Signup() {
             onChange={(e) => setUsername(e.target.value)}
           />
           <div className="user-id-check">
-            {username && (
+            {username && !usernameValid && (
+              <span className="not-available">아이디는 영문자와 숫자를 포함하여 6-12자리여야 합니다</span>
+            )}
+            {username && usernameValid && (
               <span className={usernameAvailable ? 'available' : 'not-available'}>
                 {usernameAvailable ? '사용 가능한 아이디입니다' : '이미 사용 중인 아이디입니다'}
               </span>
@@ -135,6 +155,11 @@ function Signup() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <div className="password-check">
+            {password && !passwordValid && (
+              <span className="not-available">비밀번호는 대문자와 특수문자를 포함하여 10-18자리여야 합니다</span>
+            )}
+          </div>
         </div>
         <div className="signup-input-group">
           <label htmlFor="confirm-password" className="signup-label">비밀번호 확인</label>
