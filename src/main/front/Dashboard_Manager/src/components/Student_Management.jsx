@@ -132,7 +132,7 @@ const StudentManagement = () => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <span className="add_title">학생 등록</span>
         <div className="form-container">
-          <label className="excel-label">엑셀 파일</label>
+          <label className="excel-label">엑셀 파일 첨부 </label>
           <div className="file-upload">
             {selectedFile ? (
               <div className="file-preview">
@@ -158,7 +158,7 @@ const StudentManagement = () => {
               <option value="3기">3기</option>
             </select>
           </div>
-          <div className="input-group">
+          <div className="student-input-group">
             <label>이름</label>
             <input type="text" name="이름" value={newStudent.이름} onChange={handleInputChange} />
           </div>
@@ -169,11 +169,11 @@ const StudentManagement = () => {
               <button className={`gender-button ${newStudent.성별 === '여' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, 성별: '여' })}>여</button>
             </div>
           </div>
-          <div className="input-group">
+          <div className="student-input-group">
             <label>이메일</label>
             <input type="email" name="이메일" value={newStudent.이메일} onChange={handleInputChange} />
           </div>
-          <div className="input-group">
+          <div className="student-input-group">
             <label>전화번호</label>
             <input type="text" name="전화번호" value={newStudent.전화번호} onChange={handleInputChange} />
           </div>

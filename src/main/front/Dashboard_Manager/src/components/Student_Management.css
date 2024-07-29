@@ -1,9 +1,7 @@
 .student-management {
-  padding: 20px;
   width: 1300px;
   min-width: 1300px;
   max-width: 1300px;
-  margin-right: 10px;
 }
 
 .student-management h1 {
@@ -15,15 +13,15 @@
   justify-content: center;
   margin: 30px 40px;
   font-size: 30px;
-  font-weight:bold;
-  color:#757575;
+  font-weight: bold;
+  color: #757575;
 }
 
 .controls {
   display: flex;
   justify-content: space-between;
-  align-items:center;
-  text-align:center;
+  align-items: center;
+  text-align: center;
   gap: 10px;
   margin-bottom: 20px;
   width: 100%;
@@ -219,14 +217,13 @@
 }
 
 .gender-button {
-  font-size:15px;
-  font-weight:bold;
+  font-size: 15px;
+  font-weight: bold;
   background-color: #f4f4f4;
   border: 1px solid #D9D9D9;
   border-radius: 8px;
   padding: 20px 20px;
   cursor: pointer;
-
 }
 
 .gender-button.selected {
@@ -238,7 +235,7 @@
   background-color: #ddd;
 }
 
-.input-group {
+.student-input-group {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -247,16 +244,16 @@
   margin: 0 auto;
 }
 
-.input-group label {
+.student-input-group label {
   margin-bottom: 5px;
   margin-left: 60px;
   align-self: flex-start;
-  font-size:20px;
-    font-weight:bold;
-    color:#757575;
+  font-size: 20px;
+  font-weight: bold;
+  color: #757575;
 }
 
-.input-group input {
+.student-input-group input {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -337,19 +334,21 @@
   background-color: #ddd;
   color: #757575;
 }
+
 .gender-label {
   margin-bottom: 10px;
-  margin-right: 285px;
+  margin-right: 275px;
   align-self: center;
-  font-size:20px;
-    font-weight:bold;
-    color:#757575;
+  font-size: 20px;
+  font-weight: bold;
+  color: #757575;
 }
-.excel-label{
+
+.excel-label {
   margin-bottom: 10px;
-  margin-right: 220px;
-  align-self: center;
-  font-size:20px;
-  font-weight:bold;
-  color:#757575;
+  margin-right: 170px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #757575;
 }

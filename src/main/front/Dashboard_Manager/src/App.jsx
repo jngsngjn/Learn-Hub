@@ -6,6 +6,7 @@ import CourseProgress from './components/Lecture';
 import SettingList from './components/Survey';
 import MessageBox from './components/MessageBox';
 import StudentManagement from './components/Student_Management';
+import CurriculumManagement from './components/Curriculum_Management';
 import './App.css';
 
 function Dashboard() {
@@ -32,6 +33,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/student-management" element={<StudentManagement />} />
+              <Route path="/manager-curriculum" element={<CurriculumManagement />} />
             </Routes>
           </div>
         </div>
