@@ -31,6 +31,4 @@ public class FreeBoardComment extends CommentBaseEntity {
 
     @OneToMany(mappedBy = "freeBoardComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentNotification> studentNotifications = new ArrayList<>();
-
-    // 대댓글 최대 깊이(1) 보장 로직은 서비스 레이어에 추가할 것
 }
