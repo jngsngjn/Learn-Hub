@@ -1,5 +1,6 @@
 package project.homelearn.dto.manager.manage.student;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,22 +13,22 @@ public class ManagerStudentDto {
     @NotNull
     private Long studentId;
 
-    @NotNull
+    @NotBlank
     private String name;
 
     @NotNull
     private Long curriculumTh;
 
-    @NotNull
+    @NotBlank
     private String curriculumName;
 
-    @NotNull
+    @NotBlank
     private String phone;
 
     @NotNull
     private Gender gender;
 
-    @NotNull
+    @NotBlank
     private String email;
 
     @NotNull

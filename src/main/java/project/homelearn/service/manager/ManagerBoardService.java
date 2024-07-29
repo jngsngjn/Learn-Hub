@@ -16,10 +16,13 @@ import project.homelearn.repository.board.ManagerBoardRepository;
 
 import java.util.List;
 
+/**
+ * Author : 동재완
+ */
 @Slf4j
+@Service
 @Transactional
 @RequiredArgsConstructor
-@Service
 public class ManagerBoardService {
 
     private final ManagerBoardRepository managerBoardRepository;

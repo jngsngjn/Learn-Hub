@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.ManagerTeacherDto;
 import project.homelearn.dto.manager.enroll.TeacherEnrollDto;
 import project.homelearn.dto.manager.manage.teacher.SpecificTeacherDto;
@@ -108,11 +109,20 @@ public class ManagerTeacherController {
     /**
      * 특정 강사 페이지
      * 1. 일반 정보 ✅ viewTeacherBasic()
-     * 2. 강사가 배정되지 않은 교육 과정
+     * 2. 강사가 배정되지 않은 교육 과정 ✅ viewTeacherWithoutCurriculum()
      */
     @GetMapping("/teacher/basic/{teacherId}")
     public ResponseEntity<?> viewTeacherBasic(@PathVariable("teacherId") Long teacherId) {
         SpecificTeacherDto result = teacherService.getTeacherBasic(teacherId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/teacher/without-curriculum")
+    public ResponseEntity<?> viewTeacherWithoutCurriculum() {
+        List<CurriculumWithoutTeacherDto> result = teacherService.getCurriculumWithoutTeacher();
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

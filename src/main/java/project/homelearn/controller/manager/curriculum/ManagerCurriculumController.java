@@ -6,14 +6,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.manager.dashboard.CurriculumDto;
 import project.homelearn.dto.manager.dashboard.ScheduleDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
+import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.service.manager.ManagerCalendarService;
 import project.homelearn.service.manager.ManagerCurriculumService;
 
 import java.security.Principal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
+
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
 
 @Slf4j
 @RestController
@@ -27,6 +34,21 @@ public class ManagerCurriculumController {
     @GetMapping
     public String manager() {
         return "Hello, manager!";
+    }
+
+    /**
+     * 교육과정 전체 페이지
+     * Author : 김승민
+     * */
+    @GetMapping("/manage-curriculums/{type}") // NCP or AWS
+    public ResponseEntity<?> viewCurriculumList(@PathVariable("type") CurriculumType type) {
+        List<CurriculumDto> result = curriculumService.getCurriculumList(type);
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
     }
 
     // 교육 과정 등록
@@ -80,12 +102,12 @@ public class ManagerCurriculumController {
      * 특정 교육 과정 페이지
      * Author : 정성진
      * 1. 교육 과정 일반 정보 ✅ viewCurriculumBasic()
-     * 2. 출결 현황
+     * 2. 출결 현황 ✅ viewCurriculumAttendance()
      * 3. 강사 정보 ✅ viewCurriculumTeacher()
      * 4. 캘린더 ✅ viewCurriculumCalendar()
      * 5. 설문 조사 ✅ viewCurriculumSurvey()
      */
-    @GetMapping("/curriculum/basic/{curriculumId}")
+    @GetMapping("/curriculum/{curriculumId}/basic")
     public ResponseEntity<?> viewCurriculumBasic(@PathVariable("curriculumId") Long curriculumId) {
         CurriculumProgressDto result = curriculumService.getCurriculumProgress(curriculumId);
         if (result == null) {
@@ -94,7 +116,23 @@ public class ManagerCurriculumController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/curriculum/teacher/{curriculumId}")
+    @GetMapping("/curriculum/{curriculumId}/attendance")
+    public ResponseEntity<?> viewCurriculumAttendance(@PathVariable("curriculumId") Long curriculumId) {
+        LocalDate date = LocalDate.now();
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+        if (dayOfWeek == SATURDAY || dayOfWeek == SUNDAY) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT); // 409
+        }
+
+        CurriculumAttendanceDto result = curriculumService.getCurriculumAttendance(curriculumId);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/curriculum/{curriculumId}/teacher")
     public ResponseEntity<?> viewCurriculumTeacher(@PathVariable("curriculumId") Long curriculumId) {
         CurriculumTeacherDto result = curriculumService.getCurriculumTeacherInfo(curriculumId);
         if (result == null) {
@@ -103,7 +141,7 @@ public class ManagerCurriculumController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/curriculum/calendar/{curriculumId}")
+    @GetMapping("/curriculum/{curriculumId}/calendar")
     public ResponseEntity<?> viewCurriculumCalendar(@PathVariable("curriculumId") Long curriculumId) {
         List<ScheduleDto> result = calendarService.getCurriculumSchedules(curriculumId);
         if (result == null) {
@@ -112,7 +150,7 @@ public class ManagerCurriculumController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/curriculum/survey/{curriculumId}")
+    @GetMapping("/curriculum/{curriculumId}/survey")
     public ResponseEntity<?> viewCurriculumSurvey(@PathVariable("curriculumId") Long curriculumId) {
         CurriculumSurveyDto survey = curriculumService.getCurriculumSurvey(curriculumId);
         if (survey == null) {

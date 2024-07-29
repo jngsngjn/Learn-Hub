@@ -11,6 +11,9 @@ import project.homelearn.dto.manager.board.BoardReadDto;
 import project.homelearn.dto.manager.board.BoardUpdateDto;
 import project.homelearn.service.manager.ManagerBoardService;
 
+/**
+ * Author : 동재완
+ */
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ import java.util.List;
 public class ManagerBoardController {
 
     private final ManagerBoardService managerBoardService;
+
 
     //생성
     @PostMapping("/notification-boards")
@@ -32,6 +36,7 @@ public class ManagerBoardController {
         }
     }
 
+
     //조회
     @GetMapping("/notification-boards")
     public ResponseEntity<?> readBoard(@RequestParam(name = "page", defaultValue = "0") int page) {
@@ -44,6 +49,7 @@ public class ManagerBoardController {
         }
     }
 
+
     //수정
     @PatchMapping("/notification-boards/{id}")
     public ResponseEntity<?> updateBoard(@PathVariable("id") Long id,
@@ -55,6 +61,7 @@ public class ManagerBoardController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     //삭제
     @DeleteMapping("/notification-boards")

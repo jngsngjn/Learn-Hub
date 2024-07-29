@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.lang.Math.*;
 import static project.homelearn.entity.student.AttendanceType.ABSENT;
 
 @Slf4j
@@ -41,7 +42,7 @@ public class AttendanceService {
 
     // 출석현황
     // 해당날짜에 출석, 지각, 결석인지 Key : Value 로 return
-    public StudentAttendanceDto getStudentAttendance(Long studentId){
+    public StudentAttendanceDto getStudentAttendance(Long studentId) {
         Map<LocalDate, AttendanceType> dateAttendanceType = new ConcurrentHashMap<>();
         List<Attendance> attendances = attendanceRepository.findByUserId(studentId);
 
@@ -68,7 +69,7 @@ public class AttendanceService {
             return 100.0;
         }
         else {
-            return Math.round(result * 10) / 10.0;
+            return round(result * 10) / 10.0;
         }
     }
 }

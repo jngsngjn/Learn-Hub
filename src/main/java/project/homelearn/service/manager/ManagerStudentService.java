@@ -8,10 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.enroll.StudentEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumProgressDto;
+import project.homelearn.dto.manager.manage.student.ManagerStudentDto;
 import project.homelearn.dto.manager.manage.student.SpecificStudentDto;
 import project.homelearn.dto.manager.manage.student.StudentUpdateDto;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -19,7 +19,6 @@ import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.EnrollList;
 import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.repository.curriculum.CurriculumRepository;
-import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.StudentRepository;
@@ -43,15 +42,13 @@ public class ManagerStudentService {
     private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
     private final LoginHistoryRepository loginHistoryRepository;
-    private final ManagerInquiryRepository managerInquiryRepository;
 
     /**
     * 학생조회
     * Author : 김승민
     * */
-
-    //필터링 x : 전체 학생 조회
-    public Page<ManagerStudentDto> getStudents(int size, int page){
+    // 필터링 x : 전체 학생 조회
+    public Page<ManagerStudentDto> getStudents(int size, int page) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> studentPage = studentRepository.findAllByOrderByCreatedDateDesc(pageable);
 
@@ -61,8 +58,8 @@ public class ManagerStudentService {
         return new PageImpl<>(studentDto, pageable, studentPage.getTotalElements());
     }
 
-    //필터링 o : 교육과정명 기준 학생 조회
-    public Page<ManagerStudentDto> getStudentsWithCurriculumName(int size, int page, String curriculumName){
+    // 필터링 o : 교육과정명 기준 학생 조회
+    public Page<ManagerStudentDto> getStudentsWithCurriculumName(int size, int page, String curriculumName) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> studentPage = studentRepository.findByCurriculumName(pageable, curriculumName);
 
@@ -73,8 +70,8 @@ public class ManagerStudentService {
     }
 
 
-    //필터링 o : 기수 + 교육과정명 기준 학생 조회
-    public Page<ManagerStudentDto> getStudentsWithCurriculumNameAndCurriculumTh(int size, int page, String curriculumName, Long curriculumTh){
+    // 필터링 o : 기수 + 교육과정명 기준 학생 조회
+    public Page<ManagerStudentDto> getStudentsWithCurriculumNameAndCurriculumTh(int size, int page, String curriculumName, Long curriculumTh) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> studentPage = studentRepository.findByCurriculumThAndCurriculumName(pageable, curriculumName, curriculumTh);
 
@@ -84,7 +81,7 @@ public class ManagerStudentService {
         return new PageImpl<>(studentDto, pageable, studentPage.getTotalElements());
     }
 
-    //학생 DTO 매핑 메소드
+    // 학생 DTO 매핑 메소드
     private List<ManagerStudentDto> getManagerStudentDto(Page<Student> studentPage, List<LoginHistory> todayLoginHistory) {
         // 오늘 로그인한 학생 ID 목록을 집합으로 생성
         Set<Long> studentIdsWithLoginToday = todayLoginHistory.stream()
@@ -106,20 +103,12 @@ public class ManagerStudentService {
                 .collect(Collectors.toList());
     }
 
-    //로그인 기록이 오늘이랑 일치하는지 판단
+    // 로그인 기록이 오늘이랑 일치하는지 판단
     private List<LoginHistory> getTodayLoginHistory() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
         return loginHistoryRepository.findByLoginDateTimeBetween(startOfDay, endOfDay);
     }
-
-    //학생 1명 상세보기
-    //public StudentDetailsDto viewStudent(Long studentId){
-        //Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Invalid student ID"));
-
-        //return null;
-    //}
-
 
     /**
      * 학생 등록

@@ -16,6 +16,7 @@ public class UserService {
 
     private final EnrollListRepository enrollListRepository;
 
+    // 회원가입 전 코드 인증
     public boolean verifyCode(EmailCodeDto emailCodeDto) {
         String email = emailCodeDto.getEmail();
         String code = emailCodeDto.getCode();

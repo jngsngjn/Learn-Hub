@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
-import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
+import project.homelearn.entity.user.User;
 
 @Entity
 @Getter @Setter
@@ -19,8 +19,8 @@ public class TeacherNotification {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curriculum_id", nullable = false)
-    private Curriculum curriculum;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
