@@ -24,6 +24,10 @@ public class Subject extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Column(name = "image_name")
     private String imageName;
 
