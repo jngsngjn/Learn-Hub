@@ -11,20 +11,20 @@ import project.homelearn.dto.manager.board.BoardReadDto;
 import project.homelearn.dto.manager.board.BoardUpdateDto;
 import project.homelearn.service.manager.ManagerBoardService;
 
+
+import java.util.List;
+
 /**
  * Author : 동재완
  */
-import java.util.List;
-
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/managers")
 public class ManagerBoardController {
 
     private final ManagerBoardService managerBoardService;
 
-
-    //생성
+    // 생성
     @PostMapping("/notification-boards")
     public ResponseEntity<?> writeBoard(@Valid @RequestBody BoardCreateDto boardCreateDto) {
         boolean result = managerBoardService.createManagerBoard(boardCreateDto);
@@ -36,8 +36,7 @@ public class ManagerBoardController {
         }
     }
 
-
-    //조회
+    // 조회
     @GetMapping("/notification-boards")
     public ResponseEntity<?> readBoard(@RequestParam(name = "page", defaultValue = "0") int page) {
         Page<BoardReadDto> moList = managerBoardService.getManagerBoards(page, 5);
@@ -49,8 +48,7 @@ public class ManagerBoardController {
         }
     }
 
-
-    //수정
+    // 수정
     @PatchMapping("/notification-boards/{id}")
     public ResponseEntity<?> updateBoard(@PathVariable("id") Long id,
                                          @Valid @RequestBody BoardUpdateDto boardUpdateDto) {
@@ -62,8 +60,7 @@ public class ManagerBoardController {
         }
     }
 
-
-    //삭제
+    // 삭제
     @DeleteMapping("/notification-boards")
     public ResponseEntity<?> deleteBoards(@RequestBody List<Long> ids) {
 
