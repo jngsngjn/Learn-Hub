@@ -26,7 +26,7 @@ public class StudentBoardController {
     // 글 등록
     @PostMapping
     public ResponseEntity<?> writeBoard(Principal principal,
-                                        @Valid @RequestBody FreeBoardWriteDto boardDto) {
+                                        @Valid @ModelAttribute FreeBoardWriteDto boardDto) {
         String username = principal.getName();
 
         boardService.writeBoard(username, boardDto);
@@ -36,7 +36,7 @@ public class StudentBoardController {
     // 글 수정
     @PatchMapping("/{boardId}")
     public ResponseEntity<?> modifyBoard(@PathVariable("boardId") Long boardId, Principal principal,
-                                         @Valid @RequestBody FreeBoardWriteDto boardDto) {
+                                         @Valid @ModelAttribute FreeBoardWriteDto boardDto) {
         String username = principal.getName();
         boolean result = boardService.modifyBoard(boardId, username, boardDto);
 

@@ -1,5 +1,6 @@
 package project.homelearn.service.common;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -51,7 +52,7 @@ public class StorageService {
         objectMetadata.setContentType(file.getContentType());
 
         try (InputStream inputStream = file.getInputStream()) {
-            fullPath = filePath + "/" + uploadFileName;
+            fullPath = filePath + uploadFileName;
 
             // S3에 폴더 및 파일 업로드
             amazonS3Client.putObject(new PutObjectRequest(bucketName, fullPath, inputStream, objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
@@ -87,5 +88,14 @@ public class StorageService {
             contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
         }
         return contentType;
+    }
+
+    public void deleteFile(String filePath) {
+        try {
+            amazonS3Client.deleteObject(bucketName, filePath);
+            log.info("File deleted successfully from S3: {}", filePath);
+        } catch (AmazonServiceException e) {
+            log.error("Failed to delete file from S3: {}", filePath, e);
+        }
     }
 }

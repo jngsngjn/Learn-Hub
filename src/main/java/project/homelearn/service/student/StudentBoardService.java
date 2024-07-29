@@ -4,16 +4,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.student.board.FreeBoardWriteDto;
 import project.homelearn.entity.board.FreeBoard;
 import project.homelearn.entity.board.comment.FreeBoardComment;
+import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.FreeBoardCommentRepository;
 import project.homelearn.repository.board.FreeBoardRepository;
 import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.repository.user.UserRepository;
+import project.homelearn.service.common.StorageService;
+
+import static project.homelearn.config.storage.StorageConstants.*;
+import static project.homelearn.entity.curriculum.CurriculumType.NCP;
 
 /**
  * Author : 정성진
@@ -24,6 +31,7 @@ import project.homelearn.repository.user.UserRepository;
 @RequiredArgsConstructor
 public class StudentBoardService {
 
+    private final StorageService storageService;
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final FreeBoardRepository boardRepository;
@@ -36,17 +44,52 @@ public class StudentBoardService {
         board.setUser(student);
         board.setTitle(boardDto.getTitle());
         board.setContent(boardDto.getContent());
+
+        MultipartFile image = boardDto.getImage();
+        if (image != null) {
+            String folderPath = readyUploadImage(student);
+            FileDto fileDto = storageService.uploadFile(image, folderPath);
+            board.setImageName(fileDto.getUploadFileName());
+            board.setImagePath(fileDto.getFilePath());
+        }
+
         boardRepository.save(board);
+    }
+
+    private String readyUploadImage(User student) {
+        Long th = student.getCurriculum().getTh();
+        CurriculumType type = student.getCurriculum().getType();
+        String folderPath;
+        if (type.equals(NCP)) {
+            folderPath = NCP_STORAGE_PREFIX + th + FREE_BOARD_STORAGE;
+        } else {
+            folderPath = AWS_STORAGE_PREFIX + th + FREE_BOARD_STORAGE;
+        }
+        return folderPath;
     }
 
     public boolean modifyBoard(Long boardId, String username, FreeBoardWriteDto boardDto) {
         FreeBoard board = boardRepository.findById(boardId).orElseThrow();
-        User user = board.getUser();
-        if (!user.getUsername().equals(username)) {
+        User student = board.getUser();
+        if (!student.getUsername().equals(username)) {
             return false;
         }
         board.setTitle(boardDto.getTitle());
         board.setContent(boardDto.getContent());
+
+        String previousImage = board.getImagePath();
+        if (previousImage != null) {
+            storageService.deleteFile(previousImage);
+        }
+
+        MultipartFile image = boardDto.getImage();
+        if (image != null) {
+            String folderPath = readyUploadImage(student);
+            FileDto fileDto = storageService.uploadFile(image, folderPath);
+            board.setImageName(fileDto.getUploadFileName());
+            board.setImagePath(fileDto.getFilePath());
+        }
+
         return true;
     }
 

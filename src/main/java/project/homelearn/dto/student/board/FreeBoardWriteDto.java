@@ -2,6 +2,7 @@ package project.homelearn.dto.student.board;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class FreeBoardWriteDto {
@@ -12,7 +13,5 @@ public class FreeBoardWriteDto {
     @NotBlank
     private String content;
 
-    /*
-    이미지 저장 추가해야 함
-     */
+    private MultipartFile image;
 }
