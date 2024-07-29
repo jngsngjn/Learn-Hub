@@ -15,11 +15,17 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.multipart.MultipartFile;
+import project.homelearn.config.storage.FolderType;
 import project.homelearn.dto.common.FileDto;
+import project.homelearn.entity.curriculum.CurriculumType;
+import project.homelearn.entity.user.User;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
+
+import static project.homelearn.config.storage.StorageConstants.*;
+import static project.homelearn.entity.curriculum.CurriculumType.NCP;
 
 /**
  * Author : 정성진
@@ -54,10 +60,10 @@ public class StorageService {
         try (InputStream inputStream = file.getInputStream()) {
             fullPath = filePath + uploadFileName;
 
-            // S3에 폴더 및 파일 업로드
+            // S3에 파일 업로드
             amazonS3Client.putObject(new PutObjectRequest(bucketName, fullPath, inputStream, objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error uploading file : ", e);
         }
 
         return FileDto.builder()
@@ -97,5 +103,26 @@ public class StorageService {
         } catch (AmazonServiceException e) {
             log.error("Failed to delete file from S3: {}", filePath, e);
         }
+    }
+
+    public String getFolderPath(User user, FolderType folderType) {
+        Long th = user.getCurriculum().getTh();
+        CurriculumType curriculumType = user.getCurriculum().getType();
+
+        StringBuilder folderPath = new StringBuilder();
+        if (curriculumType.equals(NCP)) {
+            folderPath.append(NCP_STORAGE_PREFIX).append(th);
+        } else {
+            folderPath.append(AWS_STORAGE_PREFIX).append(th);
+        }
+
+        switch (folderType) {
+            case FREE_BOARD -> folderPath.append(FREE_BOARD_STORAGE);
+            case SUBJECT -> folderPath.append(SUBJECT_STORAGE);
+            case HOMEWORK -> folderPath.append(HOMEWORK_STORAGE);
+            default -> folderPath.append(PROFILE_STORAGE);
+        }
+
+        return folderPath.toString();
     }
 }

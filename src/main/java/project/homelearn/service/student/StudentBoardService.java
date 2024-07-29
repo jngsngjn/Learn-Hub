@@ -10,7 +10,6 @@ import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.student.board.FreeBoardWriteDto;
 import project.homelearn.entity.board.FreeBoard;
 import project.homelearn.entity.board.comment.FreeBoardComment;
-import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.FreeBoardCommentRepository;
@@ -19,8 +18,7 @@ import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.common.StorageService;
 
-import static project.homelearn.config.storage.StorageConstants.*;
-import static project.homelearn.entity.curriculum.CurriculumType.NCP;
+import static project.homelearn.config.storage.FolderType.FREE_BOARD;
 
 /**
  * Author : 정성진
@@ -47,25 +45,13 @@ public class StudentBoardService {
 
         MultipartFile image = boardDto.getImage();
         if (image != null) {
-            String folderPath = readyUploadImage(student);
+            String folderPath = storageService.getFolderPath(student, FREE_BOARD);
             FileDto fileDto = storageService.uploadFile(image, folderPath);
             board.setImageName(fileDto.getUploadFileName());
             board.setImagePath(fileDto.getFilePath());
         }
 
         boardRepository.save(board);
-    }
-
-    private String readyUploadImage(User student) {
-        Long th = student.getCurriculum().getTh();
-        CurriculumType type = student.getCurriculum().getType();
-        String folderPath;
-        if (type.equals(NCP)) {
-            folderPath = NCP_STORAGE_PREFIX + th + FREE_BOARD_STORAGE;
-        } else {
-            folderPath = AWS_STORAGE_PREFIX + th + FREE_BOARD_STORAGE;
-        }
-        return folderPath;
     }
 
     public boolean modifyBoard(Long boardId, String username, FreeBoardWriteDto boardDto) {
@@ -77,14 +63,15 @@ public class StudentBoardService {
         board.setTitle(boardDto.getTitle());
         board.setContent(boardDto.getContent());
 
-        String previousImage = board.getImagePath();
-        if (previousImage != null) {
-            storageService.deleteFile(previousImage);
-        }
-
         MultipartFile image = boardDto.getImage();
         if (image != null) {
-            String folderPath = readyUploadImage(student);
+            // 사진 수정 시 기존 사진이 있다면 삭제
+            String previousImage = board.getImagePath();
+            if (previousImage != null) {
+                storageService.deleteFile(previousImage);
+            }
+
+            String folderPath = storageService.getFolderPath(student, FREE_BOARD);
             FileDto fileDto = storageService.uploadFile(image, folderPath);
             board.setImageName(fileDto.getUploadFileName());
             board.setImagePath(fileDto.getFilePath());
@@ -99,6 +86,11 @@ public class StudentBoardService {
 
         if (!writer.equals(username)) {
             return false;
+        }
+
+        String image = board.getImagePath();
+        if (image != null) {
+            storageService.deleteFile(image);
         }
 
         boardRepository.deleteById(boardId);
