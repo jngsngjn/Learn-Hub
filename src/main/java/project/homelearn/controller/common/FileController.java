@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.homelearn.service.common.StorageService;
 
-import static project.homelearn.config.storage.StorageConstants.ATTACH_FILE_PATTERN;
-import static project.homelearn.config.storage.StorageConstants.IMAGE_FILE_PATTERN;
-
 /**
  * Author : 정성진
  */
@@ -34,10 +31,9 @@ public class FileController {
     private String bucketName;
 
     // 이미지 렌더링
-    @GetMapping(IMAGE_FILE_PATTERN) // "/image/**"
+    @GetMapping("/image/**")
     public ResponseEntity<InputStreamResource> getImage(HttpServletRequest request) {
-        String filePath = storageService.getFilePath(IMAGE_FILE_PATTERN, request);
-
+        String filePath = storageService.getFilePath("/image/**", request);
         S3Object s3Object = amazonS3Client.getObject(bucketName, filePath);
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
@@ -46,9 +42,9 @@ public class FileController {
     }
 
     // 첨부파일 다운로드
-    @GetMapping(ATTACH_FILE_PATTERN) // "/attach-file/**"
+    @GetMapping("/attach-file/**")
     public ResponseEntity<InputStreamResource> getAttachedFile(HttpServletRequest request) {
-        String filePath = storageService.getFilePath(ATTACH_FILE_PATTERN, request);
+        String filePath = storageService.getFilePath("/attach-file/**", request);
         S3Object s3Object = amazonS3Client.getObject(bucketName, filePath);
         String contentType = storageService.getContentType(s3Object, filePath);
 
