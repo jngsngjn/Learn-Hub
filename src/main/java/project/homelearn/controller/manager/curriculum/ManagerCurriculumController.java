@@ -44,7 +44,7 @@ public class ManagerCurriculumController {
     public ResponseEntity<?> viewCurriculumList(@PathVariable("type") CurriculumType type) {
         List<CurriculumDto> result = curriculumService.getCurriculumList(type);
         if (result.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("교육과정 없음",HttpStatus.NOT_FOUND);
         }
         else {
             return new ResponseEntity<>(result, HttpStatus.OK);

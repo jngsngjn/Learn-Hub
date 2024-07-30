@@ -18,10 +18,8 @@ public class ManagerTeacherDto {
     @NotBlank
     private String name;
 
-    @NotNull
     private Long curriculumTh;
 
-    @NotBlank
     private String curriculumName;
 
     @NotBlank
