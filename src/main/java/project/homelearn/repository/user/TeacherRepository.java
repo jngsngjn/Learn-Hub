@@ -20,4 +20,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Teacher
     //필터링 o : 배정안된 강사만 (혹시 몰라서 만들었는데)
     @Query("SELECT t FROM Teacher t JOIN FETCH t.curriculum c WHERE c.id = NULL")
     Page<Teacher> findByCurriculumIdIsNull(Pageable pageable);
+
+    @Query("select t From Teacher t join fetch t.curriculum c where t.username =:username")
+    Teacher findByUsernameFetch(@Param("username") String username);
 }
