@@ -23,7 +23,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Teacher
     Page<Teacher> findByCurriculumIdIsNull(Pageable pageable);
 
     @Query("select t From Teacher t join fetch t.curriculum c where t.username =:username")
-    Teacher findByUsernameFetch(@Param("username") String username);
+    Teacher findByUsernameAndCurriculum(@Param("username") String username);
 
     @Query("select t.username from Teacher t where t.curriculum =:curriculum")
     String findUsernameByCurriculum(@Param("curriculum") Curriculum curriculum);

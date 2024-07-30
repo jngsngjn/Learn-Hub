@@ -26,7 +26,7 @@ public class LectureService {
     private final TeacherRepository teacherRepository;
 
     public void enrollLecture(String username, LectureEnrollDto lectureDto) {
-        Curriculum curriculum = teacherRepository.findByUsernameFetch(username).getCurriculum();
+        Curriculum curriculum = teacherRepository.findByUsernameAndCurriculum(username).getCurriculum();
 
         Lecture lecture = new Lecture();
         lecture.setTitle(lectureDto.getTitle());
