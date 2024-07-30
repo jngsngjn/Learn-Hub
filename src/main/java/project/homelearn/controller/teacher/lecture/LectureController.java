@@ -33,16 +33,24 @@ public class LectureController {
 
     // 강의 수정
     @PatchMapping("/{lectureId}")
-    public ResponseEntity<?> modifyLecture(@PathVariable("lectureId") Long lectureId,
+    public ResponseEntity<?> modifyLecture(@PathVariable("lectureId") Long lectureId, Principal principal,
                                            @Valid @RequestBody LectureEnrollDto lectureDto) {
-        lectureService.modifyLecture(lectureId, lectureDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        String username = principal.getName();
+        boolean result = lectureService.modifyLecture(username, lectureId, lectureDto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     // 강의 삭제
-    @PatchMapping("/{lectureId}")
-    public ResponseEntity<?> deleteLecture(@PathVariable("lectureId") Long lectureId) {
-        lectureService.deleteLecture(lectureId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping("/{lectureId}")
+    public ResponseEntity<?> deleteLecture(@PathVariable("lectureId") Long lectureId, Principal principal) {
+        String username = principal.getName();
+        boolean result = lectureService.deleteLecture(username, lectureId);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

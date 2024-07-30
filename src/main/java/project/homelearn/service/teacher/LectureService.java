@@ -12,6 +12,9 @@ import project.homelearn.repository.curriculum.LectureRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
 import project.homelearn.repository.user.TeacherRepository;
 
+/**
+ * Author : 정성진
+ */
 @Slf4j
 @Service
 @Transactional
@@ -39,8 +42,15 @@ public class LectureService {
         lectureRepository.save(lecture);
     }
 
-    public void modifyLecture(Long lectureId, LectureEnrollDto lectureDto) {
-        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow();
+    public boolean modifyLecture(String username, Long lectureId, LectureEnrollDto lectureDto) {
+        Lecture lecture = lectureRepository.findLectureAndCurriculum(lectureId);
+        Curriculum curriculum = lecture.getCurriculum();
+
+        String writer = teacherRepository.findUsernameByCurriculum(curriculum);
+        if (!writer.equals(username)) {
+            return false;
+        }
+
         lecture.setTitle(lectureDto.getTitle());
         lecture.setDescription(lectureDto.getDescription());
         lecture.setYoutubeLink(lectureDto.getYoutubeLink());
@@ -50,9 +60,19 @@ public class LectureService {
             Subject subject = subjectRepository.findById(subjectId).orElseThrow();
             lecture.setSubject(subject);
         }
+        return true;
     }
 
-    public void deleteLecture(Long lectureId) {
+    public boolean deleteLecture(String username, Long lectureId) {
+        Lecture lecture = lectureRepository.findLectureAndCurriculum(lectureId);
+        Curriculum curriculum = lecture.getCurriculum();
+
+        String writer = teacherRepository.findUsernameByCurriculum(curriculum);
+        if (!writer.equals(username)) {
+            return false;
+        }
+
         lectureRepository.deleteById(lectureId);
+        return true;
     }
 }

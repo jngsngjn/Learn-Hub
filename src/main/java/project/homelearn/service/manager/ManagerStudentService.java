@@ -115,13 +115,17 @@ public class ManagerStudentService {
      * Author : 정성진
      */
     public boolean enrollStudent(StudentEnrollDto studentEnrollDto) {
+        Curriculum curriculum = curriculumRepository.findByFullName(studentEnrollDto.getCurriculumFullName());
+        if (curriculum == null) {
+            log.error("curriculum is null");
+            return false;
+        }
+
         String email = studentEnrollDto.getEmail();
         String code = emailService.sendCode(email);
         if (code == null) {
             return false;
         }
-
-        Curriculum curriculum = curriculumRepository.findByFullName(studentEnrollDto.getCurriculumFullName());
 
         EnrollList enrollList = new EnrollList();
         enrollList.setName(studentEnrollDto.getName());

@@ -7,6 +7,7 @@ import project.homelearn.entity.BaseEntity;
 import project.homelearn.entity.calendar.ManagerCalendar;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.survey.Survey;
+import project.homelearn.entity.teacher.TeacherBoard;
 import project.homelearn.entity.user.EnrollList;
 import project.homelearn.entity.user.User;
 import project.homelearn.entity.vote.Vote;
@@ -68,4 +69,7 @@ public class Curriculum extends BaseEntity {
 
     @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ManagerCalendar> managerCalendars = new ArrayList<>();
+
+    @OneToMany(mappedBy = "curriculum", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TeacherBoard> teacherBoards = new ArrayList<>();
 }
