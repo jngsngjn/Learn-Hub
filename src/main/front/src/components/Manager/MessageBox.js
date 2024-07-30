@@ -1,6 +1,5 @@
 import React from 'react';
 import './MessageBox.css';
-
 const MessageBox = () => {
   return (
     <section className="message-box-wrapper">

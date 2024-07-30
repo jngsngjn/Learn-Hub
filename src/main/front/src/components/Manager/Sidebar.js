@@ -22,9 +22,9 @@ const Sidebar = () => {
         <span className="date">{currentDate}</span>
       </div>
       <ul className="menu">
-        <li><Link to="/" className="sidebar-link">대시보드</Link></li>
-        <li><Link to="/manager-curriculum" className="sidebar-link">교육 과정</Link></li> {/* 수정된 부분 */}
-        <li><Link to="/student-management" className="sidebar-link">학생 관리</Link></li>
+        <li><Link to="/manager" className="sidebar-link">대시보드</Link></li>
+        <li><Link to="/manager/manager-curriculum" className="sidebar-link">교육 과정</Link></li>
+        <li><Link to="/manager/student-management" className="sidebar-link">학생 관리</Link></li>
         <li><span className="sidebar-link">강사 관리</span></li>
         <li><span className="sidebar-link">공지사항</span></li>
         <li className="dropdown">

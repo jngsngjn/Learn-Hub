@@ -6,6 +6,7 @@ import Main from "./pages/Main/Main";
 import Login from "./components/Login/Login";
 import Signup from "./components/Login/Register";
 import LoginEmail from "./components/Login/Login_email";
+import ManagerMain from "./pages/Manager/ManagerMain";
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/email" element={<LoginEmail />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/manager/*" element={<ManagerMain />} />
       </Routes>
       <Footer />
     </BrowserRouter>
