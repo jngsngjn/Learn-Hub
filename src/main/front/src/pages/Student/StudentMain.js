@@ -1,7 +1,7 @@
 import React from "react";
 import "./StudentMain.css";
 import RandomVideo from "../../components/Lectures/RandomVideo";
-import LectuerVideo from "../../components/Lectures/LectureVideo";
+//import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetFetch from "../../hooks/useGetFetch";
