@@ -11,8 +11,11 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
 
 const StudentMain = () => {
+  const navigate = useNavigate();
+
   const { data: recentLecture, error: recentLectureError } = useGetFetch(
     "/data/student/recentLecture.json",
     ""
@@ -54,6 +57,28 @@ const StudentMain = () => {
     return <div>Error loading data</div>;
   }
 
+  //임시 이동 페이지 - hook 분리?
+  const goToPage = async () => {
+    const token = localStorage.getItem("access");
+
+    if (token) {
+      const response = await fetch("/api/endpoint", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        navigate("/경로");
+      } else {
+        console.error("Failed to fetch");
+      }
+    } else {
+      console.error("cannot find token");
+    }
+  };
+
   return (
     <div className="page_body">
       <div className="side_bar">
@@ -64,7 +89,14 @@ const StudentMain = () => {
         <div className="divide_right_container">
           <div className="left_container">
             <div className="recent_lecture_container">
-              <h3 className="components_title">최근 학습 강의</h3>
+              <div className="title_box">
+                <h3 className="components_title" onClick={goToPage}>
+                  최근 학습 강의
+                </h3>
+                <span className="go_to_main_lecture_page show-more-button">
+                  학습 목록 ⟩
+                </span>
+              </div>
               <div className="recent_contents_box">
                 <h3 className="recent_lecture_type">{recentLecture.subject}</h3>
                 <div className="recent_video_box">
@@ -83,7 +115,6 @@ const StudentMain = () => {
                           textSize: "30px",
                         })}
                       />
-                      <div></div>
                     </div>
                   </div>
                 </div>
@@ -93,12 +124,16 @@ const StudentMain = () => {
               <h3 className="components_title">오늘의 IT</h3>
               <div className="random_video_box">{/* <RandomVideo /> */}</div>
               <h3 className="components_title">보충 강의</h3>
-              <div className="lecture_video_box">{/* <LectureVideo /> */}</div>
+              <div className="lecture_videohttp://localhost:3000/_box">
+                {/* <LectureVideo /> */}
+              </div>
             </div>
             <div className="question_container">
               <div className="title_box">
                 <h3 className="components_title">질문사항</h3>
-                <span className="go_to_subject_page">더보기 ⟩</span>
+                <span className="go_to_subject_page show-more-button">
+                  더보기 ⟩
+                </span>
               </div>
               <div className="question_list_container">
                 {question?.map((el, idx) => (
@@ -128,7 +163,9 @@ const StudentMain = () => {
             <div className="badge_container">
               <div className="title_box">
                 <h3 className="components_title">배지</h3>
-                <span className="go_to_badge_page">더보기 ⟩</span>
+                <span className="go_to_badge_page show-more-button">
+                  더보기 ⟩
+                </span>
               </div>
               <div className="badge_list_box">
                 {badge.map((el, idx) => (
@@ -189,7 +226,9 @@ const StudentMain = () => {
                     <span className="notice_date">{el.writeDate}</span>
                   </div>
                 ))}
-                <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
+                <span className="go_to_admin_notice_page show-more-button">
+                  자세히 보기 ⟩
+                </span>
               </div>
               <div className="teacher_notice_container">
                 <h3 className="notice_components_title">강사 공지사항</h3>
@@ -202,7 +241,9 @@ const StudentMain = () => {
                     <span className="notice_date">{notice.writeDate}</span>
                   </div>
                 ))}
-                <span className="go_to_teacher_notice_page">자세히 보기 ⟩</span>
+                <span className="go_to_teacher_notice_page show-more-button">
+                  자세히 보기 ⟩
+                </span>
               </div>
             </div>
           </div>

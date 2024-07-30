@@ -8,7 +8,7 @@ const LectureVideo = () => {
 
   useEffect(() => {
     // const token = "";
-    fetch("/data/student/lectureVideo.json", {
+    fetch("/data/student/subLectureVideo.json", {
       method: "GET",
       // headers: {
       //   "Content-Type": "application/json;charset=utf-8",
