@@ -130,7 +130,7 @@ const Calendar = () => {
   };
 
   return (
-    <div className="calendar-container">
+    <section className="calendar-container">
       <div className="calendar">
         <div className="calendar-header">
           <button onClick={() => handleMonthChange(-1)}>&lt;</button> {/* 이전 달로 이동 */}
@@ -217,7 +217,7 @@ const Calendar = () => {
           </div>
         </div>
       </Modal>
-    </div>
+    </section>
   );
 };
 

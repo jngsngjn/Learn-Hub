@@ -17,27 +17,32 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar">
-      <div className="date-container">
-        <span className="date">{currentDate}</span>
-      </div>
-      <ul className="menu">
-        <li><Link to="/manager" className="sidebar-link">대시보드</Link></li>
-        <li><Link to="/manager/manager-curriculum" className="sidebar-link">교육 과정</Link></li>
-        <li><Link to="/manager/student-management" className="sidebar-link">학생 관리</Link></li>
-        <li><span className="sidebar-link">강사 관리</span></li>
-        <li><span className="sidebar-link">공지사항</span></li>
-        <li className="dropdown">
-          <div className="dropdown-header" onClick={toggleDropdown}>
-            문의
-            <span className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`}>▼</span>
-          </div>
-          <ul className={`submenu ${dropdownOpen ? 'open' : ''}`}>
-            <li>학생 문의</li>
-            <li>강사 문의</li>
+    <div className="sidebar_container">
+      <div className="sidebar_content">
+        <div className="date-container">
+          <span className="date">{currentDate}</span>
+        </div>
+        <div className="sidebar_link">
+          <ul className="menu">
+            <li><Link to="/manager" className="sidebar-link">대시보드</Link></li>
+            <li><Link to="/manager/manager-curriculum" className="sidebar-link">교육 과정</Link></li>
+            <li><Link to="/manager/student-management" className="sidebar-link">학생 관리</Link></li>
+            <li><span className="sidebar-link">강사 관리</span></li>
+            <li><span className="sidebar-link">공지사항</span></li>
+            <li className="dropdown">
+              <div className="dropdown-header" onClick={toggleDropdown}>
+                문의
+                <span className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`}>▼</span>
+              </div>
+              <ul className={`submenu ${dropdownOpen ? 'open' : ''}`}>
+                <li>학생 문의</li>
+                <li>강사 문의</li>
+              </ul>
+            </li>
           </ul>
-        </li>
-      </ul>
+        </div>
+      </div>
+      <div className="sidebar_line"></div>
     </div>
   );
 };

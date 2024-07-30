@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import './Curriculum_Management.css';
 import './Modal.css';
 
-const curriculums = [
-  { id: 1, name: '네이버 클라우드 데브옵스 과정', batch: '1기', students: '10/20', teacher: '신지원' },
-  { id: 2, name: '네이버 클라우드 데브옵스 과정', batch: '2기', students: '10/20', teacher: '신지원' },
-  { id: 3, name: 'AWS 클라우드 데브옵스 과정', batch: '1기', students: '10/20', teacher: '신지원' },
-  { id: 4, name: 'AWS 클라우드 데브옵스 과정', batch: '2기', students: '10/20', teacher: '신지원' },
-];
-
 const CurriculumManagement = () => {
+  const [curriculums, setCurriculums] = useState([
+    { id: 1, name: '네이버 클라우드 데브옵스 과정', batch: '1기', students: '10/20', teacher: '신지원' },
+    { id: 2, name: '네이버 클라우드 데브옵스 과정', batch: '2기', students: '10/20', teacher: '신지원' },
+    { id: 3, name: 'AWS 클라우드 데브옵스 과정', batch: '1기', students: '10/20', teacher: '신지원' },
+    { id: 4, name: 'AWS 클라우드 데브옵스 과정', batch: '2기', students: '10/20', teacher: '신지원' },
+  ]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newCurriculum, setNewCurriculum] = useState({
     name: '네이버 클라우드 데브옵스 과정',
@@ -27,9 +27,18 @@ const CurriculumManagement = () => {
   const handleCourseChange = (courseName) => {
     setNewCurriculum({ ...newCurriculum, name: courseName });
   };
-
+   //추가 할때 데이터 값 받아오기
   const handleAddCurriculum = () => {
-    // Add the new curriculum to the list (backend integration would go here)
+    const newId = curriculums.length + 1;
+    const newCurriculumItem = {
+      id: newId,
+      name: newCurriculum.name,
+      batch: `${newCurriculum.batch}기`,
+      students: '0/20',
+      teacher: newCurriculum.teacher,
+    };
+
+    setCurriculums([...curriculums, newCurriculumItem]);
     setIsModalOpen(false);
     setNewCurriculum({
       name: '네이버 클라우드 데브옵스 과정',

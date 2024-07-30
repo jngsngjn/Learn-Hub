@@ -1,44 +1,41 @@
-.sidebar {
-  width: 200px;
-  background-color: #f0f0f0;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+.sidebar_container {
+  display: flex;
+}
+
+.sidebar_content {
+  width: 300px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  top: 0;
-  bottom: 0;
+  margin-top: 50px;
+  gap: 30px;
+}
+
+.sidebar_link {
+  width: 200px;
+  margin: 0 auto;
 }
 
 .date-container {
-  margin-bottom: 20px;
+  margin: 0 auto;
 }
 
 .date {
-  background-color: #fff;
-  padding: 5px 10px;
-  border-radius: 15px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.sidebar h2 {
+  background: #F4F5F7;
+  border-radius: 10px;
+  border: 1px solid #757575;
   font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
+  padding: 5px;
 }
 
 .menu {
   list-style-type: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
+  margin: 0 auto;
 }
 
 .menu li {
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 24px;
   color: #555;
   padding: 10px 10px;
   width: 100%;
@@ -50,9 +47,9 @@
 }
 
 .dropdown .dropdown-header {
-  display: flex;
   justify-content: space-between;
   align-items: center;
+  display: flex;
 }
 
 .dropdown-arrow {
@@ -68,7 +65,7 @@
 .submenu {
   list-style-type: none;
   padding-left: 20px;
-  margin-top: 5px;
+  margin-top: 10px;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
@@ -79,7 +76,7 @@
 }
 
 .submenu li {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   cursor: pointer;
   font-size: 16px;
   color: #777;
@@ -90,11 +87,15 @@
   color: #000;
 }
 
-.sidebar .menu .sidebar-link {
+.sidebar_link .menu .sidebar-link {
   text-decoration: none;
   color: inherit;
 }
 
 .sidebar .menu .sidebar-link:hover {
   color: #000;
+}
+
+.sidebar_line {
+  border: 1px solid #dddddd;
 }

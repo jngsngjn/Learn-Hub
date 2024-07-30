@@ -1,17 +1,13 @@
 .calendar-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  overflow: hidden;
-  font-size: 14px;
-  width: 600px;
-  margin: 0 auto;
+  border: 1px solid #757575;
+    background-color: #E8E8E9;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
+    padding-top: 40px;
 }
 
 .calendar {
   width: 100%;
-  padding: 10px;
-  margin: 10px;
 }
 
 .calendar-header {
