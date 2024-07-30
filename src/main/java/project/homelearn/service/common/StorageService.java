@@ -78,7 +78,7 @@ public class StorageService {
         return UUID.randomUUID() + "." + ext;
     }
 
-    public String getFilePath(String pattern, HttpServletRequest request) {
+    public String getExtractPathWithinPattern(String pattern, HttpServletRequest request) {
         String fullPath = request.getRequestURI();
         AntPathMatcher pathMatcher = new AntPathMatcher();
         return pathMatcher.extractPathWithinPattern(pattern, fullPath);

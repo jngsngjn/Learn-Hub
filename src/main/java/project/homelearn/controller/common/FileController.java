@@ -33,7 +33,7 @@ public class FileController {
     // 이미지 렌더링
     @GetMapping("/image/**")
     public ResponseEntity<InputStreamResource> getImage(HttpServletRequest request) {
-        String filePath = storageService.getFilePath("/image/**", request);
+        String filePath = storageService.getExtractPathWithinPattern("/image/**", request);
         S3Object s3Object = amazonS3Client.getObject(bucketName, filePath);
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
@@ -44,7 +44,7 @@ public class FileController {
     // 첨부파일 다운로드
     @GetMapping("/attach-file/**")
     public ResponseEntity<InputStreamResource> getAttachedFile(HttpServletRequest request) {
-        String filePath = storageService.getFilePath("/attach-file/**", request);
+        String filePath = storageService.getExtractPathWithinPattern("/attach-file/**", request);
         S3Object s3Object = amazonS3Client.getObject(bucketName, filePath);
         String contentType = storageService.getContentType(s3Object, filePath);
 

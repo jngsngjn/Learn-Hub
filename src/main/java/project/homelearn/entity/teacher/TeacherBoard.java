@@ -1,32 +1,33 @@
-package project.homelearn.entity.curriculum;
+package project.homelearn.entity.teacher;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import project.homelearn.entity.BaseEntity;
+import project.homelearn.entity.curriculum.Curriculum;
 
 @Entity
 @Getter @Setter
-@Table(name = "subject_board")
-public class SubjectBoard extends BaseEntity {
+@Table(name = "teacher_board")
+public class TeacherBoard extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id", nullable = false)
-    private Subject subject;
+    @JoinColumn(name = "curriculum_id", nullable = false)
+    private Curriculum curriculum;
 
     @Column(nullable = false)
     private String title;
 
     @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "view_count", nullable = false)
-    private int viewCount = 0;
+    @Column(nullable = false)
+    private boolean emergency;
 
     @Column(name = "upload_file_name")
     private String uploadFileName;
