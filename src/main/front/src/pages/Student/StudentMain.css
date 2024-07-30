@@ -111,18 +111,18 @@
   position: relative;
 }
 
-.current_progress {
+/* .current_progress {
   font-weight: bold;
   font-size: 30px;
   margin: 0;
   position: relative;
   z-index: 1;
-}
+} */
 
-.progress_bar {
+/* .progress_bar {
   width: 100px;
   height: 100px;
-}
+} */
 
 .video_container h3 {
   margin: 0.6em;

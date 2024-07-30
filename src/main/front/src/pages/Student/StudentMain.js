@@ -7,6 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetFetch from "../../hooks/useGetFetch";
 import {
   CircularProgressbarWithChildren,
+  CircularProgressbar,
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -71,21 +72,18 @@ const StudentMain = () => {
                   <p className="recent_video_title">{recentLecture.title}</p>
                   <div className="progress_bar">
                     <div className="progress_container">
-                      <CircularProgressbarWithChildren
+                      <CircularProgressbar
                         value={recentLecture.progress}
-                        maxValue={100}
+                        text={`${recentLecture.progress}%`}
                         styles={buildStyles({
-                          pathColor: "#3e98c7",
-                          trailColor: "#green",
+                          textColor: "#74b49b",
+                          pathColor: "#A7D7C5",
+                          trailColor: "#F4F9F4",
+                          strokeLinecap: "butt",
+                          textSize: "30px",
                         })}
-                      >
-                        <div>
-                          <p className="current_progress">
-                            {recentLecture.progress}%
-                          </p>
-                        </div>
-                      </CircularProgressbarWithChildren>
-                      ;
+                      />
+                      <div></div>
                     </div>
                   </div>
                 </div>
