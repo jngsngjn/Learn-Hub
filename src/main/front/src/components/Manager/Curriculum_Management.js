@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Curriculum_Management.css';
+import './Modal.css';
 
 const curriculums = [
   { id: 1, name: '네이버 클라우드 데브옵스 과정', batch: '1기', students: '10/20', teacher: '신지원' },
@@ -88,7 +89,7 @@ const CurriculumManagement = () => {
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <button className="close-button" onClick={() => setIsModalOpen(false)}>×</button>
+            <button className="modal-close" onClick={() => setIsModalOpen(false)}>×</button>
             <span className="curriculum-submit">교육 과정 등록</span>
             <div className="course-selection">
               <button className={`course-button ${newCurriculum.name === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => handleCourseChange('네이버 클라우드 데브옵스 과정')}>네이버 클라우드</button>

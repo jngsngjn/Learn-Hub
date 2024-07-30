@@ -41,7 +41,7 @@
   position: relative;
   background-color: #ffffff;
   border-radius: 20px;
-  border: 2px solid #757575;
+  border: 3px solid #757575;
   padding: 15px;
   display: flex;
   flex-direction: column;
@@ -75,7 +75,7 @@
 }
 
 .survey-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: #757575;
   margin: 0;
@@ -87,38 +87,32 @@
 .survey-status {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
+
 }
 
 .survey-check {
-  font-size: 10px;
+  font-size: 15px;
   color: #757575;
   border: 1px solid #757575;
   border-radius: 50%;
   padding: 5px;
   text-align: center;
-  width: 30px;
-  height: 30px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .survey-participants {
-  font-size: 16px;
+  font-size: 18px;
   color: #757575;
   margin: 0;
   display: flex;
   align-items: center;
   text-align:center;
 }
-
-.survey-participants {
-  color: #666;
-  font-size: 18px;
-  margin-top:10px;
-}
-
 .survey-participants i {
   margin-right: 10px;
 }

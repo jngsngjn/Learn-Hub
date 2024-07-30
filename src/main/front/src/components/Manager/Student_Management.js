@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import './Student_Management.css';
-
 const initialStudents = [
   { 번호: 1, 교육과정명: 'AWS', 기수: '1기', 이름: '신수정', 성별: '여', 이메일: 'betwiwd25@gmail.com', 전화번호: '010-5092-2594', 출석여부: '결석' },
   { 번호: 2, 교육과정명: '네이버 데브옵스', 기수: '2기', 이름: '대성진', 성별: '남', 이메일: 'wjdtjdwl58@gmail.com', 전화번호: '010-3102-9650', 출석여부: '출석' },
