@@ -68,7 +68,6 @@
   width: 35em;
   height: 13.75em;
   margin-bottom: 1.25em;
-  padding: 1.5em 1.5em 0.5em 1.8em;
   border: 3px solid #74b49b;
   border-radius: 20px;
   background-color: #fafafa;
@@ -76,11 +75,12 @@
   flex-direction: column;
   justify-content: space-between;
   margin: 0 auto;
+  padding: 28px;
 }
 
 .recent_lecture_type {
-  width: 32px;
-  height: 32px;
+  font-size: 32px;
+  margin-bottom: 35px;
 }
 
 .recent_video_box {
@@ -94,7 +94,6 @@
   width: 60px;
   display: inline-block;
   cursor: pointer;
-  padding-top: 2px;
 }
 
 .recent_video_title {
@@ -121,24 +120,8 @@
 }
 
 .progress_bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 4px solid transparent;
-  box-sizing: border-box;
-  mask: radial-gradient(farthest-side, transparent calc(100% - 4px), black 0);
-  -webkit-mask: radial-gradient(
-    farthest-side,
-    transparent calc(100% -1px),
-    black 0
-  );
-  background: conic-gradient(
-    #74b49b calc(var(--progress) * 1%),
-    transparent calc(var(--progress) * 1%)
-  );
+  width: 100px;
+  height: 100px;
 }
 
 .video_container h3 {
