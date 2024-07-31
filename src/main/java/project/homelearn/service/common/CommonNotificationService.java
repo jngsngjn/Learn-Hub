@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.entity.inquiry.ManagerInquiry;
+import project.homelearn.entity.inquiry.TeacherInquiry;
 import project.homelearn.entity.notification.student.StudentNotification;
 import project.homelearn.entity.notification.student.StudentNotificationType;
 import project.homelearn.entity.notification.teacher.TeacherNotification;
@@ -46,5 +47,16 @@ public class CommonNotificationService {
             notification.setType(TeacherNotificationType.MANAGER_REPLY_TO_INQUIRY);
             teacherNotificationRepository.save(notification);
         }
+    }
+
+    //강사가 학생의 문의에 답변했을 때 해당 인원에게 알림
+    public void notifyTeacherResponse(TeacherInquiry teacherInquiry) {
+        User user = userRepository.findUserByTeacherInquiry(teacherInquiry);
+
+        StudentNotification notification = new StudentNotification();
+        notification.setUser(user);
+        notification.setTeacherInquiry(teacherInquiry);
+        notification.setType(StudentNotificationType.TEACHER_REPLY_TO_INQUIRY);
+        studentNotificationRepository.save(notification);
     }
 }

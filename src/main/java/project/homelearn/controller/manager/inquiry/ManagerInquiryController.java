@@ -79,7 +79,7 @@ public class ManagerInquiryController {
                                          @PathVariable("inquiryId") Long inquiryId) {
         boolean result = managerInquiryService.addResponse(managerResponseDto, inquiryId);
         if (result) {
-            return ResponseEntity.status(HttpStatus.OK).body(managerResponseDto); // 응답 바디에 dto 넣는 이유가 뭐죠?
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
