@@ -181,7 +181,6 @@ public class StudentQuestionBoardService {
         return true;
     }
 
-    //AI 댓글 등록
 
     //질문 게시판 글 스크랩 = 나도 궁금해
 
