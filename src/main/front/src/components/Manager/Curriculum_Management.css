@@ -1,10 +1,10 @@
-.curriculum-submit{
-    display:flex;
-    justify-content:center;
-    font-size:25px;
-    font-weight:bold;
-    margin-top:30px;
-    margin-bottom:30px;
+.curriculum-submit {
+  display: flex;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .button-container {
@@ -127,6 +127,7 @@
   display: flex;
   justify-content: center;
   gap: 20px;
+  margin: 20px 20px;
 }
 
 .course-button {
@@ -142,27 +143,74 @@
   color: white;
 }
 
-.input-group {
+.curriculum-input-group {
+ position: relative;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-.input-group label {
-  font-size: 14px;
+.curriculum-input-group label {
+  display: flex;
+  width: 310px;
+  font-size: 20px;
+  font-weight: bold;
   color: #757575;
 }
 
-.input-group input {
-  width: 100%;
+.curriculum-input-group input {
+  margin: 20px 20px;
+  width: 60%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
+.color-input-select {
+  position: absolute;
+  right: 130px;
+  top: 60%;
+  transform: translateY(-50%);
+}
+
+.color-input-container input {
+  width: 70%;
+  margin-right: 10px;
+  pointer-events: none;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  cursor:pointer;
+}
+
+.color-picker-modal-overlay {
+  position: fixed;
+  top: 240px;
+  left: 600px;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.color-picker-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border:1px solid #757575;
+}
+
 .modal-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 30px;
 }
 
 .modal-button {

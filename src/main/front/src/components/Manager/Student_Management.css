@@ -153,12 +153,12 @@
 }
 
 .status.present {
-  color: #757575;
+  color: #047404;
   font-weight: bold;
 }
 
 .status.absent {
-  color: #757575;
+  color: #F02121;
   font-weight: bold;
 }
 
