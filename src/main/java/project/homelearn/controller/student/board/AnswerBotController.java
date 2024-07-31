@@ -19,16 +19,25 @@ import project.homelearn.dto.chatgpt.ChatGPTResponseDto;
 @RequiredArgsConstructor
 public class AnswerBotController {
 
+    @Value("${openai.api.key}")
+    private String openAikey;
+
     @Value("${openai.model}")
     private String openaiModel;
 
     @Value("${openai.api.url}")
     private String openaiUrl;
 
-    private final RestTemplate restTemplate;
 
     @GetMapping("/chat")
     public ResponseEntity<?> chat(@RequestParam(name = "prompt") String prompt) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getInterceptors().add(((request, body, execution) -> {
+            request.getHeaders().add("Authorization", "Bearer " + openAikey);
+            return execution.execute(request, body);
+        }));
+
         ChatGPTRequestDto request = new ChatGPTRequestDto(openaiModel, prompt);
         ChatGPTResponseDto chatGPTResponse = restTemplate.postForObject(openaiUrl, request, ChatGPTResponseDto.class);
 
