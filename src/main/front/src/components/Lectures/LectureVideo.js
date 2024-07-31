@@ -2,29 +2,25 @@ import React, { useState, useEffect } from "react";
 import "./LectureVideo.css";
 
 const LectureVideo = () => {
-  const [lectureUrl, setLectureUrl] = useState("");
+  const [links, setLinks] = useState("");
+  const [subLecture, setSubLecture] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // const token = "";
-    // fetch("/data/student/subLectureVideo.json", {
-    //   method: "GET",
-    //   // headers: {
-    //   //   "Content-Type": "application/json;charset=utf-8",
-    //   //   "access": ${token},
-    //   // },
-    // })
-    fetch("/test")
+    fetch("http://localhost:8080/test")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }
-        console.log(res);
         return res.json();
       })
       .then((data) => {
-        setLectureUrl(data.youtubeLink);
+        if (data && typeof data.link === "string") {
+          setLinks(data.link);
+        } else {
+          throw new Error("Invalid data format");
+        }
         setLoading(false);
       })
       .catch((error) => {
@@ -33,14 +29,12 @@ const LectureVideo = () => {
       });
   }, []);
 
-  const extractVideoId = (url) => {
-    const match = url.match(
-      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=|video\/|playlist\?list=)?([a-zA-Z0-9_-]{11})|youtu\.be\/([a-zA-Z0-9_-]{11})/
+  const extractVideoId = (link) => {
+    const match = link.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
-    return match ? match[1] || match[2] : null;
+    return match ? match[1] : null;
   };
-
-  const videoId = extractVideoId(lectureUrl);
 
   if (loading) {
     return <p>비디오 로딩 중...</p>;
@@ -49,6 +43,12 @@ const LectureVideo = () => {
   if (error) {
     return <p>오류 발생: {error.message}</p>;
   }
+
+  if (!links) {
+    return <p>비디오를 찾을 수 없습니다.</p>;
+  }
+
+  const videoId = extractVideoId(links);
 
   return (
     <div className="lecture_container">
