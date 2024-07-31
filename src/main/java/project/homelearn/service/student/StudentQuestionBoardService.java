@@ -24,6 +24,7 @@ import project.homelearn.service.common.StorageService;
 import java.security.Principal;
 
 import static project.homelearn.config.storage.FolderType.FREE_BOARD;
+import static project.homelearn.config.storage.FolderType.QUESTION_BOARD;
 
 @Slf4j
 @Service
@@ -54,7 +55,7 @@ public class StudentQuestionBoardService {
 
         MultipartFile image = questionBoardWriteDto.getImage();
         if (image != null) {
-            String folderPath = storageService.getFolderPath(student, FREE_BOARD);
+            String folderPath = storageService.getFolderPath(student, QUESTION_BOARD);
             FileDto fileDto = storageService.uploadFile(image, folderPath);
             questionBoard.setImageName(fileDto.getUploadFileName());
             questionBoard.setImagePath(fileDto.getFilePath());
@@ -99,7 +100,7 @@ public class StudentQuestionBoardService {
                 storageService.deleteFile(previousImage);
             }
 
-            String folderPath = storageService.getFolderPath(student, FREE_BOARD);
+            String folderPath = storageService.getFolderPath(student, QUESTION_BOARD);
             FileDto fileDto = storageService.uploadFile(image, folderPath);
             questionBoard.setImageName(fileDto.getUploadFileName());
             questionBoard.setImagePath(fileDto.getFilePath());
