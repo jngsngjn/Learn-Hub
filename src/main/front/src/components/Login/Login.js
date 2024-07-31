@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
 import './Login.css';
 
 function Login() {
@@ -10,7 +11,15 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('로그인 시도:', { username, password, rememberMe });
+    if (!username && !password) {
+      swal("입력 오류", "아이디와 비밀번호를 입력하세요.", "warning");
+    } else if (!username) {
+      swal("입력 오류", "아이디를 입력하세요.", "warning");
+    } else if (!password) {
+      swal("입력 오류", "비밀번호를 입력하세요.", "warning");
+    } else {
+      console.log('로그인 시도:', { username, password, rememberMe });
+    }
   };
 
   const handleSignup = () => {
