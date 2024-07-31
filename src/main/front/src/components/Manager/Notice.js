@@ -44,6 +44,11 @@ const Notice = () => {
     setCurrentNotice((prev) => ({ ...prev, noticeFile: file ? file.name : '' }));
   };
 
+  const handleFileDelete = () => {
+    setSelectedFile(null);
+    setCurrentNotice((prev) => ({ ...prev, noticeFile: '' }));
+  };
+
   const handleSaveNotice = () => {
     if (isNoticeEditing) {
       setNotices((prev) =>
@@ -122,15 +127,7 @@ const Notice = () => {
           </div>
           <div className="notice-modal-body">
             <div className="modal-header-row">
-              <div className="modal-title-group">
-                <label>제목</label>
-                <input
-                  type="text"
-                  name="noticeTitle"
-                  value={currentNotice.noticeTitle}
-                  onChange={handleNoticeChange}
-                />
-              </div>
+              <div className="modal-title-label">제목</div>
               <div className="modal-emergency-group">
                 <label className="emergency-checkbox">
                   <input
@@ -143,6 +140,13 @@ const Notice = () => {
                 </label>
               </div>
             </div>
+            <input
+              type="text"
+              name="noticeTitle"
+              value={currentNotice.noticeTitle}
+              onChange={handleNoticeChange}
+              className="notice-title-input"
+            />
             <label>내용</label>
             <textarea
               name="noticeContent"
@@ -152,7 +156,17 @@ const Notice = () => {
             <label>파일 첨부</label>
             <div className="notice-file-upload">
               <input id="notice-file-upload" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
-              <input type="text" value={currentNotice.noticeFile} readOnly />
+              <div className="file-input-container">
+                <input type="text" value={currentNotice.noticeFile} readOnly />
+                {currentNotice.noticeFile && (
+                  <button
+                    className="notice-file-delete-button"
+                    onClick={handleFileDelete}
+                  >
+                    삭제
+                  </button>
+                )}
+              </div>
               <label htmlFor="notice-file-upload" className="notice-custom-file-upload">
                 <span>파일 첨부</span>
               </label>
@@ -162,6 +176,7 @@ const Notice = () => {
             <button className="notice-submit-button" onClick={handleSaveNotice}>
               {isNoticeEditing ? '공지 사항 수정' : '공지 사항 등록'}
             </button>
+            <button className="notice-cancel-button" onClick={handleCloseNoticeModal}>등록취소</button>
             {isNoticeEditing && (
               <button className="notice-delete-button" onClick={handleDeleteNotices}>공지 사항 삭제</button>
             )}

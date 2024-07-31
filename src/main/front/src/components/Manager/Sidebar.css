@@ -46,15 +46,21 @@
   color: #000;
 }
 
-.dropdown .dropdown-header {
+.dropdown-header {
   justify-content: space-between;
   align-items: center;
   display: flex;
+  font-size: 24px;
+  color: #555;
+  padding: 10px 10px;
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
 .dropdown-arrow {
-  font-size: 12px;
+  font-size: 20px;
   margin-left: 5px;
+  cursor: pointer;
   transition: transform 0.3s ease;
 }
 
@@ -99,3 +105,4 @@
 .sidebar_line {
   border: 1px solid #dddddd;
 }
+

@@ -232,8 +232,24 @@
   gap: 10px;
 }
 
-.notice-file-upload input[type="text"] {
+.file-input-container {
+  position: relative;
   flex: 1;
+}
+
+.file-input-container input[type="text"] {
+  width: 100%;
+  padding-right: 60px;
+}
+
+.notice-file-delete-button {
+  position: absolute;
+  top: 13px;
+  right: 12px;
+  border:none;
+  background:#fff;
+  cursor: pointer;
+  color: red;
 }
 
 .notice-file-upload label {
@@ -250,6 +266,7 @@
   background-color: #757575;
   color: white;
 }
+
 .modal-header-row {
   display: flex;
   justify-content: space-between;
