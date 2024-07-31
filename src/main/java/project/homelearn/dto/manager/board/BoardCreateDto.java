@@ -3,6 +3,7 @@ package project.homelearn.dto.manager.board;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class BoardCreateDto {
@@ -15,7 +16,9 @@ public class BoardCreateDto {
 
     @NotNull
     private Boolean emergency;
-    
+
+    private MultipartFile file;
+
     /*
     POST 메소드 생성 요청
     localhost:8080/managers/notification-boards

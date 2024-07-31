@@ -3,7 +3,7 @@ package project.homelearn.config.storage;
 public abstract class StorageConstants {
     public static final String NCP_STORAGE_URL = "https://kr.object.ncloudstorage.com/";
 
-    public static final String ANNOUNCEMENT_STORAGE = "manager/announcement";
+    public static final String ANNOUNCEMENT_STORAGE = "manager/announcement/";
     public static final String NCP_STORAGE_PREFIX = "curriculum/ncp/";
     public static final String AWS_STORAGE_PREFIX = "curriculum/aws/";
 

@@ -8,11 +8,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import project.homelearn.config.storage.StorageConstants;
+import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.manager.board.BoardCreateDto;
 import project.homelearn.dto.manager.board.BoardReadDto;
 import project.homelearn.dto.manager.board.BoardUpdateDto;
+import project.homelearn.entity.manager.Manager;
 import project.homelearn.entity.manager.ManagerBoard;
 import project.homelearn.repository.board.ManagerBoardRepository;
+import project.homelearn.service.common.StorageService;
 
 import java.util.List;
 
@@ -26,14 +31,25 @@ import java.util.List;
 public class ManagerBoardService {
 
     private final ManagerBoardRepository managerBoardRepository;
+    private final StorageService storageService;
 
-    //생성 서비스
-    public boolean createManagerBoard(BoardCreateDto managerBoardDto) {
+    // 생성 서비스
+    public boolean createManagerBoard(BoardCreateDto managerBoardWriteDto) {
         try {
             ManagerBoard board = new ManagerBoard();
-            board.setTitle(managerBoardDto.getTitle());
-            board.setContent(managerBoardDto.getContent());
-            board.setEmergency(managerBoardDto.getEmergency());
+            board.setTitle(managerBoardWriteDto.getTitle());
+            board.setContent(managerBoardWriteDto.getContent());
+            board.setEmergency(managerBoardWriteDto.getEmergency());
+
+            MultipartFile file = managerBoardWriteDto.getFile();
+            if(file != null && !file.isEmpty()) {
+                FileDto fileDto = storageService.uploadFile(file, StorageConstants.ANNOUNCEMENT_STORAGE);
+
+                board.setUploadFileName(fileDto.getOriginalFileName());
+                board.setStoreFileName(fileDto.getUploadFileName());
+                board.setFilePath(fileDto.getFilePath());
+            }
+
             managerBoardRepository.save(board);
             System.out.println("board = " + board);
             return true;
@@ -43,7 +59,7 @@ public class ManagerBoardService {
         }
     }
 
-    //조회를 위한 DTO변환
+    // 조회를 위한 DTO변환
     private static List<BoardReadDto> getAllManagerBoards(Page<ManagerBoard> managerBoards) {
         return managerBoards.stream()
                 .map(managerBoard -> new BoardReadDto(
@@ -54,7 +70,7 @@ public class ManagerBoardService {
                 )).toList();
     }
 
-    //변환된 DTO 조회 서비스
+    // 변환된 DTO 조회 서비스
     public Page<BoardReadDto> getManagerBoards(int page, int size) {
         Page<ManagerBoard> managerBoards;
         Pageable pageable = PageRequest.of(page, size);
@@ -68,7 +84,7 @@ public class ManagerBoardService {
         }
     }
 
-    //수정 서비스
+    // 수정 서비스
     public boolean updateManagerBoard(Long id, BoardUpdateDto boardUpdateDto) {
         try {
             ManagerBoard board = managerBoardRepository.findById(id)
@@ -76,6 +92,17 @@ public class ManagerBoardService {
             board.setTitle(boardUpdateDto.getTitle());
             board.setContent(boardUpdateDto.getContent());
             board.setEmergency(boardUpdateDto.getEmergency());
+
+            MultipartFile file = boardUpdateDto.getFile();
+            if(file != null && !file.isEmpty()) {
+                if(board.getFilePath() != null){
+                    storageService.deleteFile(board.getFilePath());
+                }
+                FileDto fileDto = storageService.uploadFile(file, StorageConstants.ANNOUNCEMENT_STORAGE);
+                board.setUploadFileName(fileDto.getOriginalFileName());
+                board.setStoreFileName(fileDto.getUploadFileName());
+                board.setFilePath(fileDto.getFilePath());
+            }
             managerBoardRepository.save(board);
 
             return true;
@@ -85,14 +112,34 @@ public class ManagerBoardService {
         }
     }
 
-    //삭제 서비스
+    // 삭제 서비스
     public boolean deleteManagerBoards(List<Long> ids) {
+
         try {
+            List<ManagerBoard> boards = managerBoardRepository.findAllById(ids);
+            for (ManagerBoard board : boards) {
+                String file = board.getFilePath();
+                if (file != null) {
+                    storageService.deleteFile(file);
+                }
+            }
             managerBoardRepository.deleteAllById(ids);
             return true;
         } catch (Exception e) {
             log.error("Error deleting manager board", e);
             return false;
         }
+
     }
+//            if (ids != null && !ids.isEmpty()) {
+//                managerBoardRepository.deleteAllById(ids);
+//
+//                List<ManagerBoard> boards = managerBoardRepository.findAllById(ids);
+//                for (ManagerBoard board : boards) {
+//                    String file = board.getFilePath();
+//                    if (file != null) {
+//                        storageService.deleteFile(file);
+//                    }
+//                }
+//            }
 }

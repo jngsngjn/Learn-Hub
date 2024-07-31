@@ -3,6 +3,7 @@ package project.homelearn.dto.manager.board;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class BoardUpdateDto {
@@ -18,6 +19,12 @@ public class BoardUpdateDto {
 
     @NotNull
     private Boolean emergency;
+
+    private MultipartFile file;
+
+    //private String uploadFileName;
+
+    //private String storeFileName;
 
     /*
     PATCH 메소드 수정 요청
