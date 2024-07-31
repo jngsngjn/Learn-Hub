@@ -57,16 +57,16 @@ const StudentMain = () => {
     return <div>Error loading data</div>;
   }
 
-  //임시 이동 페이지 - hook 분리?
+  //임시 이동 페이지 - hook 분리? 임시 강의페이지
   const goToPage = async () => {
     const token = localStorage.getItem("access");
 
     if (token) {
-      const response = await fetch("/api/endpoint", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await fetch("/data/student/stu", {
+        // method: "GET",
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       });
 
       if (response.ok) {

@@ -8,13 +8,14 @@ const LectureVideo = () => {
 
   useEffect(() => {
     // const token = "";
-    fetch("/data/student/subLectureVideo.json", {
-      method: "GET",
-      // headers: {
-      //   "Content-Type": "application/json;charset=utf-8",
-      //   Authorization: `Bearer ${token}`,
-      // },
-    })
+    // fetch("/data/student/subLectureVideo.json", {
+    //   method: "GET",
+    //   // headers: {
+    //   //   "Content-Type": "application/json;charset=utf-8",
+    //   //   "access": ${token},
+    //   // },
+    // })
+    fetch("/test")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
