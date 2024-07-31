@@ -69,7 +69,7 @@ const StudentManagement = () => {
   return (
     <div className="student-management">
       <h1>학생 관리</h1>
-      <div className="controls">
+      <div className="student-controls">
         <div className="program-buttons">
           <button className={selectedCourse === 'AWS' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS</button>
           <button className={selectedCourse === '네이버 데브옵스' ? 'selected' : ''} onClick={() => handleCourseChange('네이버 데브옵스')}>네이버 데브옵스</button>
@@ -124,7 +124,7 @@ const StudentManagement = () => {
           </tbody>
         </table>
       </div>
-      <div className="actions">
+      <div className="student-actions">
         <button onClick={() => setIsModalOpen(true)}>학생 등록</button>
         <button onClick={handleDeleteStudent}>학생 삭제</button>
       </div>

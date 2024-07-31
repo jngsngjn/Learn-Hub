@@ -7,6 +7,10 @@ import SettingList from '../../components/Manager/Survey';
 import MessageBox from '../../components/Manager/MessageBox';
 import StudentManagement from '../../components/Manager/Student_Management';
 import CurriculumManagement from '../../components/Manager/Curriculum_Management';
+import TeacherManagement from '../../components/Manager/Teacher_Management';
+import Notice from '../../components/Manager/Notice';
+import StudentContact from '../../components/Manager/Student_Contact';
+import TeacherContact from '../../components/Manager/Teacher_Contact';
 import './ManagerMain.css';
 
 function Dashboard() {
@@ -33,6 +37,10 @@ function ManagerMain() {
             <Route path="/" element={<Dashboard />} />
             <Route path="student-management" element={<StudentManagement />} />
             <Route path="manager-curriculum" element={<CurriculumManagement />} />
+            <Route path="teacher-management" element={<TeacherManagement />} />
+            <Route path="notice" element={<Notice />} />
+            <Route path="contact-student" element={<StudentContact />} />
+            <Route path="contact-teacher" element={<TeacherContact />} />
           </Routes>
         </div>
       </div>

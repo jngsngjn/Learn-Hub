@@ -1,14 +1,14 @@
-.student-management {
+.teacher-management {
   width: 1300px;
   min-width: 1300px;
   max-width: 1300px;
 }
 
-.student-management h1 {
+.teacher-management h1 {
   margin-bottom: 20px;
 }
 
-.add_title {
+.teacher-add-title {
   display: flex;
   justify-content: center;
   margin: 30px 40px;
@@ -17,7 +17,7 @@
   color: #757575;
 }
 
-.student-controls {
+.teacher-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -27,12 +27,12 @@
   width: 100%;
 }
 
-.program-buttons {
+.teacher-program-buttons {
   display: flex;
   gap: 10px;
 }
 
-.program-buttons button {
+.teacher-program-buttons button {
   padding: 10px 20px;
   border: 1px solid #ddd;
   background-color: white;
@@ -40,24 +40,24 @@
   border-radius: 4px;
 }
 
-.program-buttons button.selected {
+.teacher-program-buttons button.selected {
   background-color: #757575;
   color: white;
 }
 
-.program-buttons button:hover {
+.teacher-program-buttons button:hover {
   background-color: #B4B4B8;
   color: white;
 }
 
-.student-controls input {
+.teacher-controls input {
   padding: 8px;
   border: 1px solid #757575;
   border-radius: 20px;
   background: #F4F5F7;
 }
 
-.student-controls select {
+.teacher-controls select {
   width: 200px;
   border: 1px solid #757575;
   border-radius: 20px;
@@ -66,26 +66,26 @@
   padding-left: 10px;
 }
 
-.search-container {
+.teacher-search-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.search-wrapper {
+.teacher-search-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.search-icon {
+.teacher-search-icon {
   position: absolute;
   right: 10px;
   font-size: 16px;
   color: #757575;
 }
 
-.refresh-button {
+.teacher-refresh-button {
   padding: 8px 10px;
   border: 1px solid #ddd;
   border-radius: 50%;
@@ -93,37 +93,41 @@
   cursor: pointer;
 }
 
-.refresh-button:hover {
+.teacher-refresh-button:hover {
   background-color: #ddd;
 }
 
-.student-management table {
+.teacher-table-container {
+  width: 100%;
+}
+
+.teacher-table-container table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 8px;
 }
 
-.student-management th, .student-management td {
+.teacher-table-container th, .teacher-table-container td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
   background-color: #F4F5F7;
 }
 
-.student-management th {
+.teacher-table-container th {
   background-color: #E3E1D9;
 }
 
-.student-management tr:nth-child(even) {
+.teacher-table-container tr:nth-child(even) {
   background-color: #F4F5F7;
 }
 
-.student-management tr:hover {
+.teacher-table-container tr:hover {
   background-color: #B4B4B8;
   cursor: pointer;
 }
 
-.student-management th {
+.teacher-table-container th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
@@ -131,16 +135,16 @@
   color: white;
 }
 
-.student-actions {
+.teacher-actions {
   margin-top: 20px;
   display: flex;
   justify-content: end;
   width: 100%;
-  gap:20px;
 }
 
-.student-actions button {
+.teacher-actions button {
   padding: 10px 20px;
+  margin-right: 10px;
   border: 1px solid #757575;
   background-color: #f4f5f7;
   color: #757575;
@@ -148,33 +152,23 @@
   cursor: pointer;
 }
 
-.student-actions button:hover {
+.teacher-actions button:hover {
   background-color: #B4B4B8;
 }
 
-.status.present {
-  color: #047404;
-  font-weight: bold;
-}
-
-.status.absent {
-  color: #F02121;
-  font-weight: bold;
-}
-
-.form-container {
+.teacher-form-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.course-selection {
+.teacher-course-selection {
   display: flex;
   gap: 20px;
   justify-content: center;
 }
 
-.course-button {
+.teacher-course-button {
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -182,19 +176,24 @@
   padding: 10px;
 }
 
-.course-button.selected {
+.teacher-course-button.selected {
   border-color: #757575;
   color: #fff;
   background: #757575;
 }
 
-.generation-selection {
+.teacher-course-button:hover {
+  background-color: #B4B4B8;
+  color: white;
+}
+
+.teacher-generation-selection {
   display: flex;
   justify-content: center;
   margin-top: 10px;
 }
 
-.generation-selection select {
+.teacher-generation-selection select {
   width: 200px;
   border: 1px solid #757575;
   border-radius: 20px;
@@ -204,38 +203,7 @@
   height: 35px;
 }
 
-.gender-selection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 15px;
-}
-
-.gender-buttons {
-  display: flex;
-  gap: 20px;
-}
-
-.gender-button {
-  font-size: 15px;
-  font-weight: bold;
-  background-color: #f4f4f4;
-  border: 1px solid #D9D9D9;
-  border-radius: 8px;
-  padding: 20px 20px;
-  cursor: pointer;
-}
-
-.gender-button.selected {
-  background-color: #757575;
-  color: white;
-}
-
-.gender-button:hover {
-  background-color: #ddd;
-}
-
-.student-input-group {
+.teacher-input-group {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -244,7 +212,7 @@
   margin: 0 auto;
 }
 
-.student-input-group label {
+.teacher-input-group label {
   margin-bottom: 5px;
   margin-left: 60px;
   align-self: flex-start;
@@ -253,7 +221,7 @@
   color: #757575;
 }
 
-.student-input-group input {
+.teacher-input-group input {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -261,67 +229,13 @@
   max-width: 400px;
 }
 
-.file-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 120px;
-}
-
-.custom-file-upload {
-  display: inline-block;
-  padding: 10px 20px;
-  cursor: pointer;
-  background-color: #757575;
-  color: white;
-  border-radius: 8px;
-}
-
-.custom-file-upload:hover {
-  background-color: #ddd;
-  color: #757575;
-}
-
-.file-preview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.file-preview i {
-  font-size: 48px;
-  color: #757575;
-}
-
-.file-preview span {
-  margin-top: 5px;
-  font-size: 14px;
-  color: #757575;
-}
-
-.file-remove-button {
-  margin-top: 10px;
-  padding: 5px 10px;
-  background-color: #757575;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.file-remove-button:hover {
-  background-color: #ddd;
-  color: #757575;
-}
-
-.student-modal-actions {
+.teacher-modal-actions {
   display: flex;
   justify-content: center;
   gap: 20px;
 }
 
-.student-modal-button {
+.add-teacher-modal-button {
   padding: 10px 20px;
   border: none;
   background-color: #757575;
@@ -330,25 +244,7 @@
   cursor: pointer;
 }
 
-.student-modal-button:hover {
+.add-teacher-modal-button:hover {
   background-color: #ddd;
-  color: #757575;
-}
-
-.gender-label {
-  margin-bottom: 10px;
-  margin-right: 250px;
-  align-self: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: #757575;
-}
-
-.excel-label {
-  margin-bottom: 10px;
-  margin-right: 150px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
   color: #757575;
 }

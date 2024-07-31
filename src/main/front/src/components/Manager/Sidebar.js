@@ -27,16 +27,16 @@ const Sidebar = () => {
             <li><Link to="/manager" className="sidebar-link">대시보드</Link></li>
             <li><Link to="/manager/manager-curriculum" className="sidebar-link">교육 과정</Link></li>
             <li><Link to="/manager/student-management" className="sidebar-link">학생 관리</Link></li>
-            <li><span className="sidebar-link">강사 관리</span></li>
-            <li><span className="sidebar-link">공지사항</span></li>
+            <li><Link to="/manager/teacher-management" className="sidebar-link">강사 관리</Link></li>
+            <li><Link to="/manager/notice" className="sidebar-link">공지사항</Link></li>
             <li className="dropdown">
               <div className="dropdown-header" onClick={toggleDropdown}>
                 문의
                 <span className={`dropdown-arrow ${dropdownOpen ? 'open' : ''}`}>▼</span>
               </div>
               <ul className={`submenu ${dropdownOpen ? 'open' : ''}`}>
-                <li>학생 문의</li>
-                <li>강사 문의</li>
+                <li><Link to="/manager/contact-student" className="sidebar-link">학생 문의</Link></li>
+                <li><Link to="/manager/contact-teacher" className="sidebar-link">강사 문의</Link></li>
               </ul>
             </li>
           </ul>
