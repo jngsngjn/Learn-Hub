@@ -49,4 +49,54 @@ public class TeacherHomeworkService {
         }
         homeworkRepository.save(homework);
     }
+
+    public boolean modifyHomework(Long homeworkId, String username, HomeworkEnrollDto homeworkDto) {
+        Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeworkId);
+        Curriculum curriculum = homework.getCurriculum();
+
+        String writer = teacherRepository.findUsernameByCurriculum(curriculum);
+        if (!writer.equals(username)) {
+            return false;
+        }
+
+        homework.setTitle(homeworkDto.getTitle());
+        homework.setDescription(homeworkDto.getDescription());
+        homework.setDeadline(homeworkDto.getDeadLine());
+
+        MultipartFile file = homeworkDto.getFile();
+        if (file != null) {
+            String previousFile = homework.getFilePath();
+            if (previousFile != null) {
+                storageService.deleteFile(previousFile);
+            }
+
+            Teacher teacher = teacherRepository.findByUsername(username);
+            String folderPath = storageService.getFolderPath(teacher, HOMEWORK);
+
+            FileDto fileDto = storageService.uploadFile(file, folderPath);
+            homework.setUploadFileName(fileDto.getOriginalFileName());
+            homework.setStoreFileName(fileDto.getUploadFileName());
+            homework.setFilePath(fileDto.getFilePath());
+        }
+        // 기존 사진이 있었을 때 삭제하는 로직 추가해야 함
+        return true;
+    }
+
+    public boolean deleteHomework(Long homeworkId, String username) {
+        Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeworkId);
+        Curriculum curriculum = homework.getCurriculum();
+
+        String writer = teacherRepository.findUsernameByCurriculum(curriculum);
+        if (!writer.equals(username)) {
+            return false;
+        }
+
+        String file = homework.getFilePath();
+        if (file != null) {
+            storageService.deleteFile(file);
+        }
+
+        homeworkRepository.deleteById(homeworkId);
+        return true;
+    }
 }
