@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- * 교육과정 배정 안된 강사들은..?
- */
 @Data
 @AllArgsConstructor
 public class ManagerTeacherDto {

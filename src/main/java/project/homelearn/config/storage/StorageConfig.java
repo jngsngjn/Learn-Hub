@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static project.homelearn.config.storage.StorageConstants.NCP_STORAGE_URL;
+import static project.homelearn.config.storage.StorageConstants.REGION_NAME;
+
 @Configuration
 public class StorageConfig {
 
@@ -20,13 +23,11 @@ public class StorageConfig {
 
     @Bean
     public AmazonS3Client amazonS3Client() {
-        String endPoint = "https://kr.object.ncloudstorage.com";
-        String regionName = "kr-standard";
 
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
         return (AmazonS3Client) AmazonS3ClientBuilder
                 .standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(NCP_STORAGE_URL, REGION_NAME))
                 .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
                 .build();
     }

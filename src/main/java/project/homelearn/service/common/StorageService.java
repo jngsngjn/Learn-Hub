@@ -78,7 +78,7 @@ public class StorageService {
         return UUID.randomUUID() + "." + ext;
     }
 
-    public String getFilePath(String pattern, HttpServletRequest request) {
+    public String getExtractPathWithinPattern(String pattern, HttpServletRequest request) {
         String fullPath = request.getRequestURI();
         AntPathMatcher pathMatcher = new AntPathMatcher();
         return pathMatcher.extractPathWithinPattern(pattern, fullPath);
@@ -118,6 +118,7 @@ public class StorageService {
 
         switch (folderType) {
             case FREE_BOARD -> folderPath.append(FREE_BOARD_STORAGE);
+            case QUESTION_BOARD -> folderPath.append(QUESTION_BOARD_STORAGE);
             case SUBJECT -> folderPath.append(SUBJECT_STORAGE);
             case HOMEWORK -> folderPath.append(HOMEWORK_STORAGE);
             default -> folderPath.append(PROFILE_STORAGE);

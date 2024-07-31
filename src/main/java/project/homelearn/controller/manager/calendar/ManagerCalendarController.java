@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.calendar.ManagerScheduleAddDto;
 import project.homelearn.service.manager.ManagerCalendarService;
 
+/**
+ * Author : 정성진
+ */
 @Slf4j
 @RestController
 @RequestMapping("/managers")
