@@ -16,6 +16,9 @@ import project.homelearn.repository.user.UserRepository;
 
 import static project.homelearn.entity.user.Role.*;
 
+/**
+ * Author : 정성진
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor

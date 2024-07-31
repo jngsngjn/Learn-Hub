@@ -25,10 +25,10 @@ public class ManagerBoard extends BaseEntity {
     private boolean emergency;
 
     @Column(name = "upload_file_name")
-    private String uploadFileName;
+    private String uploadFileName; // 원본 이름
 
     @Column(name = "store_file_name")
-    private String storeFileName;
+    private String storeFileName; // UUID 이름
 
     @Column(name = "file_path")
     private String filePath;

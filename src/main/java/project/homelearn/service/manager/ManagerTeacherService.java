@@ -59,7 +59,7 @@ public class ManagerTeacherService {
     }
 
     //배정안되어 있는 강사들만 조회
-    public Page<ManagerTeacherDto> getTeachersCurriculumIsNull(int size, int page){
+    public Page<ManagerTeacherDto> getTeachersCurriculumIsNull(int size, int page) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Teacher> teacherPage = teacherRepository.findByCurriculumIdIsNull(pageable);
 
@@ -88,13 +88,23 @@ public class ManagerTeacherService {
      * Author : 정성진
      */
     public boolean enrollTeacher(TeacherEnrollDto teacherEnrollDto) {
+        Curriculum curriculum = curriculumRepository.findByFullName(teacherEnrollDto.getCurriculumFullName());
+        if (curriculum == null) {
+            log.error("curriculum is null.");
+            return false;
+        }
+
+        boolean exists = teacherRepository.existsByCurriculum(curriculum);
+        if (exists) {
+            log.error("커리큘럼에 이미 배정된 강사가 있습니다.");
+            return false;
+        }
+
         String email = teacherEnrollDto.getEmail();
         String code = emailService.sendCode(email);
         if (code == null) {
             return false;
         }
-
-        Curriculum curriculum = curriculumRepository.findByFullName(teacherEnrollDto.getCurriculumFullName());
 
         EnrollList enrollList = new EnrollList();
         enrollList.setName(teacherEnrollDto.getName());
