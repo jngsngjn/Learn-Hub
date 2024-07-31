@@ -59,7 +59,7 @@ const CurriculumManagement = () => {
 
   return (
     <div className="curriculum-management">
-      <span className="curriculum-title">교육 과정</span>
+      <h1>교육 과정</h1>
       <div className="button-container">
         <button className="curriculum-add-button" onClick={() => setIsModalOpen(true)}>교육 과정 추가</button>
       </div>
