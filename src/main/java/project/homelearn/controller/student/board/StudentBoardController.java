@@ -130,4 +130,6 @@ public class StudentBoardController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    // 조회수 증가
 }

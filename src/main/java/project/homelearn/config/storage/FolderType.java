@@ -2,5 +2,5 @@ package project.homelearn.config.storage;
 
 public enum FolderType {
 
-    FREE_BOARD, SUBJECT, HOMEWORK, PROFILE
+    FREE_BOARD, QUESTION_BOARD, SUBJECT, HOMEWORK, PROFILE
 }
