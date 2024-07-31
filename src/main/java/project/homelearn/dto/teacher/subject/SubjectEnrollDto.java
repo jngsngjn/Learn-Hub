@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class SubjectCreateDto {
+public class SubjectEnrollDto {
 
     @NotBlank
     private String name;

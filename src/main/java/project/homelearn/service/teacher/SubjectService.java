@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
-import project.homelearn.dto.teacher.subject.SubjectCreateDto;
+import project.homelearn.dto.teacher.subject.SubjectEnrollDto;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.Subject;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.repository.curriculum.SubjectRepository;
@@ -25,7 +26,7 @@ public class SubjectService {
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
 
-    public void createSubject(String username, SubjectCreateDto subjectDto) {
+    public void createSubject(String username, SubjectEnrollDto subjectDto) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
 
         Subject subject = new Subject();
@@ -42,4 +43,33 @@ public class SubjectService {
         }
         subjectRepository.save(subject);
     }
+
+    public boolean modifySubject(Long subjectId, String username, SubjectEnrollDto subjectDto) {
+        Subject subject = subjectRepository.findSubjectAndCurriculum(subjectId);
+        Curriculum curriculum = subject.getCurriculum();
+
+        String writer = teacherRepository.findUsernameByCurriculum(curriculum);
+        if (!writer.equals(username)) {
+            return false;
+        }
+
+        subject.setName(subjectDto.getName());
+        subject.setDescription(subjectDto.getDescription());
+
+        String previousImage = subject.getImageName();
+
+        MultipartFile image = subjectDto.getImage();
+        return false;
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
