@@ -5,11 +5,7 @@ import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetFetch from "../../hooks/useGetFetch";
-import {
-  CircularProgressbarWithChildren,
-  CircularProgressbar,
-  buildStyles,
-} from "react-circular-progressbar";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
 
@@ -57,27 +53,27 @@ const StudentMain = () => {
     return <div>Error loading data</div>;
   }
 
-  //임시 이동 페이지 - hook 분리? 임시 강의페이지
-  const goToPage = async () => {
-    const token = localStorage.getItem("access");
+  //임시 이동 페이지 - hook 분리?
+  // const goToPage = async () => {
+  //   // const token = localStorage.getItem("access");
 
-    if (token) {
-      const response = await fetch("/data/student/stu", {
-        // method: "GET",
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-      });
-
-      if (response.ok) {
-        navigate("/경로");
-      } else {
-        console.error("Failed to fetch");
-      }
-    } else {
-      console.error("cannot find token");
-    }
-  };
+  //   // if (token) {
+  //   //   const response = await fetch("/data/student/mainLecture.json", {
+  //   //     // method: "GET",
+  //   //     // headers: {
+  //   //     //   access: token,
+  //   //     // },
+  //   //   });
+  //   const response = await fetch("/data/student/mainLecture.json");
+  //   if (response.ok) {
+  //     navigate("/students/lecture");
+  //   } else {
+  //     console.error("Failed to fetch");
+  //   }
+  //   // } else {
+  //   //   console.error("cannot find token");
+  //   // }
+  // };
 
   return (
     <div className="page_body">
@@ -90,10 +86,13 @@ const StudentMain = () => {
           <div className="left_container">
             <div className="recent_lecture_container">
               <div className="title_box">
-                <h3 className="components_title" onClick={goToPage}>
-                  최근 학습 강의
-                </h3>
-                <span className="go_to_main_lecture_page show-more-button">
+                <h3 className="components_title">최근 학습 강의</h3>
+                <span
+                  className="go_to_main_lecture_page show-more-button"
+                  onClick={() => {
+                    navigate("/students/lecture");
+                  }}
+                >
                   학습 목록 ⟩
                 </span>
               </div>
@@ -131,7 +130,12 @@ const StudentMain = () => {
             <div className="question_container">
               <div className="title_box">
                 <h3 className="components_title">질문사항</h3>
-                <span className="go_to_subject_page show-more-button">
+                <span
+                  className="go_to_subject_page show-more-button"
+                  onClick={() => {
+                    navigate("/students/inquiry");
+                  }}
+                >
                   더보기 ⟩
                 </span>
               </div>
@@ -189,7 +193,14 @@ const StudentMain = () => {
             <div className="subject_container">
               <div className="title_box">
                 <h3 className="components_title"> 과제 목록</h3>
-                <span>더보기</span>
+                <span
+                  className="go_to_subject_page show-more-button"
+                  onClick={() => {
+                    navigate("/students/subject");
+                  }}
+                >
+                  더보기
+                </span>
               </div>
               <div className="subject_list_container">
                 {subject.map((el, idx) => (
