@@ -105,6 +105,7 @@ public class ManagerCurriculumService {
         }
 
         createFolder(baseFolder + FREE_BOARD_STORAGE);
+        createFolder(baseFolder + QUESTION_BOARD_STORAGE);
         createFolder(baseFolder + SUBJECT_STORAGE);
         createFolder(baseFolder + HOMEWORK_STORAGE);
         createFolder(baseFolder + PROFILE_STORAGE);

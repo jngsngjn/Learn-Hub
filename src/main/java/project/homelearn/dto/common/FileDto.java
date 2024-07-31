@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class FileDto {
 
-    private String originalFileName;
-    private String uploadFileName;
-    private String filePath;
+    private String originalFileName; // 사용자가 올린 원본 이름
+    private String uploadFileName; // UUID
+    private String filePath; // 경로
 }

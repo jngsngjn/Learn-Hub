@@ -84,6 +84,12 @@ public class JwtFilter extends OncePerRequestFilter {
             user.setRole(ROLE_MANAGER);
         }
 
+        if (role.equals(ROLE_TEACHER)) {
+            user = new Manager();
+            user.setUsername(jwtService.getUsername(accessToken));
+            user.setRole(ROLE_TEACHER);
+        }
+
         // 임시 세션에 저장
         CustomUserDetails customUserDetails = new CustomUserDetails(user);
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());

@@ -25,6 +25,9 @@ public class SubjectBoard extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "view_count", nullable = false)
+    private int viewCount = 0;
+
     @Column(name = "upload_file_name")
     private String uploadFileName;
 

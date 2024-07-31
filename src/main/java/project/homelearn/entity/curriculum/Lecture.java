@@ -21,7 +21,7 @@ public class Lecture extends BaseEntity {
     private Curriculum curriculum;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id", nullable = false)
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
     @Column(nullable = false)
