@@ -25,4 +25,10 @@ public class BoardReadDto {
     GET 메소드 조회 요청
     localhost:8080/managers/notification-boards?page=? -> page=1 ~ 20.. 값 입력 (한 페이지씩 입력)
      */
+
+    /*
+    POST
+    DELETE 메소드 요청
+    localhost:8080/managers/notification-boards/? -> ? 원하는 ID값 입력해서 삭제
+     */
 }
