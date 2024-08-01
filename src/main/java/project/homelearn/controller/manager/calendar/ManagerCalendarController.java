@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.calendar.ManagerScheduleAddDto;
+import project.homelearn.dto.manager.calendar.ManagerScheduleEnrollDto;
 import project.homelearn.service.manager.ManagerCalendarService;
 
 /**
@@ -22,8 +22,8 @@ public class ManagerCalendarController {
 
     // 일정 등록
     @PostMapping
-    public ResponseEntity<?> enrollSchedule(@Valid @RequestBody ManagerScheduleAddDto managerScheduleAddDto) {
-        boolean result = calendarService.addSchedule(managerScheduleAddDto);
+    public ResponseEntity<?> enrollSchedule(@Valid @RequestBody ManagerScheduleEnrollDto managerScheduleEnrollDto) {
+        boolean result = calendarService.addSchedule(managerScheduleEnrollDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -34,8 +34,8 @@ public class ManagerCalendarController {
     // 일정 수정
     @PatchMapping("/{calendarId}")
     public ResponseEntity<?> modifySchedule(@PathVariable("calendarId") Long calendarId,
-                                            @Valid @RequestBody ManagerScheduleAddDto managerScheduleAddDto) {
-        boolean result = calendarService.updateSchedule(calendarId, managerScheduleAddDto);
+                                            @Valid @RequestBody ManagerScheduleEnrollDto managerScheduleEnrollDto) {
+        boolean result = calendarService.updateSchedule(calendarId, managerScheduleEnrollDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

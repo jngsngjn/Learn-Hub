@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import project.homelearn.entity.user.User;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter @Setter
@@ -20,15 +20,12 @@ public class TeacherCalendar {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Enumerated(EnumType.STRING)
-    private TeacherCalendarColor color;
-
     @Column(nullable = false)
     private String title;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 }
