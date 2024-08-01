@@ -79,7 +79,6 @@ function MyFroalaEditor() {
 
     return (
         <div>
-
             <FroalaEditorComponent
                 tag="textarea"
                 ref={editorRef}
@@ -87,12 +86,8 @@ function MyFroalaEditor() {
                 model={value}
                 onModelChange={handleContentChange}
             />
-
-
         </div>
     );
 }
-
-
 
 export default MyFroalaEditor;
