@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
-import { CirclePicker } from 'react-color'; // 색상 선택
+import React, { useState, useEffect } from 'react';
+import { CirclePicker } from 'react-color';
+import axios from 'axios';
 import './Curriculum_Management.css';
 import './Modal.css';
 
-const CurriculumManagement = () => {
-  const [curriculums, setCurriculums] = useState([
-    { id: 1, name: '네이버 클라우드 데브옵스 과정', batch: '1기', students: '10/20', teacher: '신지원' },
-    { id: 2, name: '네이버 클라우드 데브옵스 과정', batch: '2기', students: '10/20', teacher: '신지원' },
-    { id: 3, name: 'AWS 클라우드 데브옵스 과정', batch: '1기', students: '10/20', teacher: '신지원' },
-    { id: 4, name: 'AWS 클라우드 데브옵스 과정', batch: '2기', students: '10/20', teacher: '신지원'  },
-  ]);
+axios.defaults.baseURL = 'http://localhost:8080';
 
+const CurriculumManagement = () => {
+  const [curriculums, setCurriculums] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [newCurriculum, setNewCurriculum] = useState({
-    name: '네이버 클라우드 데브옵스 과정',
+    full_name: '',
     startDate: '',
     endDate: '',
     color: '#FF0000',
     teacher: '',
   });
+
+  const getToken = () => {
+    return localStorage.getItem('token');
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +28,7 @@ const CurriculumManagement = () => {
   };
 
   const handleCourseChange = (courseName) => {
-    setNewCurriculum({ ...newCurriculum, name: courseName });
+    setNewCurriculum({ ...newCurriculum, full_name: courseName });
   };
 
   const handleColorChange = (color) => {
@@ -35,50 +36,51 @@ const CurriculumManagement = () => {
     setIsColorPickerOpen(false);
   };
 
-  const handleAddCurriculum = () => {
+  const handleAddCurriculum = async () => {
     const newCurriculumItem = {
-      name: newCurriculum.name,
+      full_name: newCurriculum.full_name,
       startDate: newCurriculum.startDate,
       endDate: newCurriculum.endDate,
       color: newCurriculum.color,
       teacher: newCurriculum.teacher,
     };
 
-    console.log('Sending request to /managers/manage-curriculums/enroll');
-    fetch('http://localhost:3000/managers/manage-curriculums/enroll', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newCurriculumItem),
-    })
-      .then(response => {
-        if (response.ok) {
-          console.log('Request successful');
-          setIsModalOpen(false);
-          fetchCurriculums();
-        } else {
-          console.error('Request failed');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
+    try {
+      const token = getToken();
+      const response = await axios.post('/managers/manage-curriculums/enroll', newCurriculumItem, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-
+      if (response.status === 200) {
+        setIsModalOpen(false);
+        fetchCurriculums();
+      } else {
+        console.error('교육 과정 등록 실패');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
-  // 교육 과정 목록을 가져오는 함수
-  const fetchCurriculums = () => {
-    fetch('/managers/manage-curriculums/NCP') // 또는 'AWS'
-      .then(response => response.json())
-      .then(data => {
-        setCurriculums(data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
+  const fetchCurriculums = async (type = 'NCP') => {
+    try {
+      const token = getToken();
+      const response = await axios.get(`/managers/manage-curriculums/${type}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+      setCurriculums(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+
+  useEffect(() => {
+    fetchCurriculums();
+  }, []);
 
   return (
     <div className="curriculum-management">
@@ -88,13 +90,12 @@ const CurriculumManagement = () => {
       </div>
       <div className="curriculum-container">
         <div className="curriculum-column">
-          <img src="/path/to/naver-logo.png" alt="Naver" className="curriculum-logo" />
           <div className="curriculum-list">
-            {curriculums.filter(curriculum => curriculum.name.includes('네이버')).map(curriculum => (
+            {curriculums.filter(curriculum => curriculum.full_name.includes('네이버')).map(curriculum => (
               <div key={curriculum.id} className="curriculum-card">
                 <div className="curriculum-header">
-                  <span className="curriculum-batch" style={{ backgroundColor: curriculum.color }}>{curriculum.batch}</span>
-                  <span className="curriculum-name">{curriculum.name}</span>
+                  <span className="curriculum-th" style={{ backgroundColor: curriculum.color }}>{curriculum.th}</span>
+                  <span className="curriculum-full_name">{curriculum.full_name}</span>
                 </div>
                 <div className="curriculum-footer">
                   <span className="curriculum-teacher">강사 {curriculum.teacher}</span>
@@ -107,13 +108,12 @@ const CurriculumManagement = () => {
           </div>
         </div>
         <div className="curriculum-column">
-          <img src="/path/to/aws-logo.png" alt="AWS" className="curriculum-logo" />
           <div className="curriculum-list">
-            {curriculums.filter(curriculum => curriculum.name.includes('AWS')).map(curriculum => (
+            {curriculums.filter(curriculum => curriculum.full_name.includes('AWS')).map(curriculum => (
               <div key={curriculum.id} className="curriculum-card">
                 <div className="curriculum-header">
-                  <span className="curriculum-batch" style={{ backgroundColor: curriculum.color }}>{curriculum.batch}</span>
-                  <span className="curriculum-name">{curriculum.name}</span>
+                  <span className="curriculum-th" style={{ backgroundColor: curriculum.color }}>{curriculum.th}</span>
+                  <span className="curriculum-full_name">{curriculum.full_name}</span>
                 </div>
                 <div className="curriculum-footer">
                   <span className="curriculum-teacher">강사 {curriculum.teacher}</span>
@@ -132,8 +132,8 @@ const CurriculumManagement = () => {
             <button className="modal-close" onClick={() => setIsModalOpen(false)}>×</button>
             <span className="curriculum-submit">교육 과정 등록</span>
             <div className="course-selection">
-              <button className={`course-button ${newCurriculum.name === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => handleCourseChange('네이버 클라우드 데브옵스 과정')}>네이버 클라우드</button>
-              <button className={`course-button ${newCurriculum.name === 'AWS 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => handleCourseChange('AWS 클라우드 데브옵스 과정')}>AWS</button>
+              <button className={`course-button ${newCurriculum.full_name === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => handleCourseChange('네이버 클라우드 데브옵스 과정')}>네이버 클라우드</button>
+              <button className={`course-button ${newCurriculum.full_name === 'AWS 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => handleCourseChange('AWS 클라우드 데브옵스 과정')}>AWS</button>
             </div>
             <div className="curriculum-input-group">
               <label>시작일</label>
@@ -146,12 +146,11 @@ const CurriculumManagement = () => {
             <div className="curriculum-input-group">
               <label>기수 색상</label>
               <input
-                                type="text"
-                                value={newCurriculum.name}
-                                readOnly
-                              />
+                type="text"
+                value={newCurriculum.color}
+                readOnly
+              />
               <div className="color-input-select" onClick={() => setIsColorPickerOpen(true)}>
-
                 <div className="color-box" style={{ backgroundColor: newCurriculum.color }}></div>
               </div>
             </div>

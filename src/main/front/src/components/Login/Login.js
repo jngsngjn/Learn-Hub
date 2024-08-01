@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
+import axios from 'axios';
 import './Login.css';
 
 function Login() {
@@ -9,7 +10,7 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!username && !password) {
       swal("입력 오류", "아이디와 비밀번호를 입력하세요.", "warning");
@@ -19,6 +20,26 @@ function Login() {
       swal("입력 오류", "비밀번호를 입력하세요.", "warning");
     } else {
       console.log('로그인 시도:', { username, password, rememberMe });
+      try {
+        const response = await axios.post('http://localhost:8080/api/auth/login', {
+          username,
+          password,
+        });
+        console.log('응답:', response);
+
+        if (response.status === 200) {
+          const token = response.data.token;
+          console.log('토큰:', token);
+          localStorage.setItem('token', token); // 토큰을 로컬 스토리지에 저장
+          swal("로그인 성공", "성공적으로 로그인되었습니다.", "success");
+          navigate('/'); // 로그인 후 메인 페이지로 이동
+        } else {
+          swal("로그인 실패", "아이디 또는 비밀번호가 잘못되었습니다.", "error");
+        }
+      } catch (error) {
+        console.error('로그인 오류:', error);
+        swal("로그인 실패", "아이디 또는 비밀번호가 잘못되었습니다.", "error");
+      }
     }
   };
 
