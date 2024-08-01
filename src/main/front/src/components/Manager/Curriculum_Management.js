@@ -36,25 +36,48 @@ const CurriculumManagement = () => {
   };
 
   const handleAddCurriculum = () => {
-    const newId = curriculums.length + 1;
     const newCurriculumItem = {
-      id: newId,
       name: newCurriculum.name,
-      batch: `${curriculums.filter(curriculum => curriculum.name === newCurriculum.name).length + 1}기`,
+      startDate: newCurriculum.startDate,
+      endDate: newCurriculum.endDate,
       color: newCurriculum.color,
-      students: '0/20',
       teacher: newCurriculum.teacher,
     };
 
-    setCurriculums([...curriculums, newCurriculumItem]);
-    setIsModalOpen(false);
-    setNewCurriculum({
-      name: '네이버 클라우드 데브옵스 과정',
-      startDate: '',
-      endDate: '',
-      color: '#FF0000',
-      teacher: '',
-    });
+    console.log('Sending request to /managers/manage-curriculums/enroll');
+    fetch('http://localhost:3000/managers/manage-curriculums/enroll', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newCurriculumItem),
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log('Request successful');
+          setIsModalOpen(false);
+          fetchCurriculums();
+        } else {
+          console.error('Request failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+
+  };
+
+  // 교육 과정 목록을 가져오는 함수
+  const fetchCurriculums = () => {
+    fetch('/managers/manage-curriculums/NCP') // 또는 'AWS'
+      .then(response => response.json())
+      .then(data => {
+        setCurriculums(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (

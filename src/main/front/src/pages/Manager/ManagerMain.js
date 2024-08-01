@@ -35,9 +35,9 @@ function ManagerMain() {
         <div className="content-area">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="manager-students" element={<StudentManagement />} />
-            <Route path="manager-curriculums" element={<CurriculumManagement />} />
-            <Route path="manager-teachers" element={<TeacherManagement />} />
+            <Route path="manage-students" element={<StudentManagement />} />
+            <Route path="manage-curriculums" element={<CurriculumManagement />} />
+            <Route path="manage-teachers" element={<TeacherManagement />} />
             <Route path="notice" element={<Notice />} />
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />

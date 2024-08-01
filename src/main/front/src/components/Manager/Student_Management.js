@@ -44,19 +44,64 @@ const StudentManagement = () => {
 
   // 학생 추가
   const handleAddStudent = () => {
-    setStudents([...students, { ...newStudent, id: students.length + 1 }]);
-    setNewStudent({
-      name: '',
-      gender: '남',
-      email: '',
-      phone: '',
-      curriculum: 'AWS',
-      th: '1기',
-      attendance: '결석',
-    });
-    setIsModalOpen(false);
-    setSelectedFile(null);
+    fetch('/managers/manage-students/enroll', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newStudent),
+    })
+      .then(response => {
+        if (response.ok) {
+          // 성공적으로 등록된 경우
+          setIsModalOpen(false);
+          // 새로운 학생 목록을 가져오기
+          fetchStudents();
+        } else {
+          // 등록 실패
+          console.error('학생 등록 실패');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
+
+  // 학생 목록을 가져오는 함수
+  const fetchStudents = () => {
+    fetch('/managers/manage-students')
+      .then(response => response.json())
+      .then(data => {
+        setStudents(data.content); // 페이지네이션된 데이터의 경우
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+//  엑셀 파일로 가져오는 함수
+//  const handleFileUpload = () => {
+//    const formData = new FormData();
+//    formData.append('file', selectedFile);
+//
+//    fetch('/managers/manage-students/enroll-file', {
+//      method: 'POST',
+//      body: formData,
+//    })
+//      .then(response => {
+//        if (response.ok) {
+//          // 성공적으로 등록된 경우
+//          setSelectedFile(null);
+//          // 새로운 학생 목록을 가져오기
+//          fetchStudents();
+//        } else {
+//          // 등록 실패
+//          console.error('학생 일괄 등록 실패');
+//        }
+//      })
+//      .catch(error => {
+//        console.error('Error:', error);
+//      });
+//  };
 
   // 입력 변경
   const handleInputChange = (e) => setNewStudent({ ...newStudent, [e.target.name]: e.target.value });
