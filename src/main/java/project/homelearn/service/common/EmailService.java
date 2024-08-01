@@ -1,4 +1,4 @@
-package project.homelearn.service.manager;
+package project.homelearn.service.common;
 
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import project.homelearn.config.common.MailType;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static project.homelearn.config.common.MailType.*;
 
 @Slf4j
 @Service
@@ -29,7 +32,7 @@ public class EmailService {
     private static final int ALPHABET_COUNT = 3;
     private static final int DIGIT_COUNT = 3;
 
-    public String sendCode(String to) {
+    public String sendCode(String to, MailType type) {
         String code = generateCode();
 
         try {
@@ -39,11 +42,20 @@ public class EmailService {
             // 이메일 템플릿에 인증 코드 변수 설정
             Context context = new Context();
             context.setVariable("code", code);
-            String html = templateEngine.process("email/codeEmail", context);
+
+            String html = "";
+            if (type.equals(ENROLL)) {
+                html = templateEngine.process("email/codeEmailBeforeRegister", context);
+                helper.setSubject("[Home Learn] 회원가입 인증 코드");
+            }
+
+            if (type.equals(RESET_PW)) {
+                html = templateEngine.process("email/codeEmailFindPassword", context);
+                helper.setSubject("[Home Learn] 비밀번호 재설정 인증 코드");
+            }
 
             // 이메일 설정
             helper.setTo(to);
-            helper.setSubject("[Home Learn] 회원가입 인증 코드");
             helper.setText(html, true);
 
             // 이메일 전송

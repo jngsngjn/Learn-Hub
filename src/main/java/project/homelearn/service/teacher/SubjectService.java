@@ -57,8 +57,6 @@ public class SubjectService {
             return false;
         }
 
-        Teacher teacher = teacherRepository.findByUsername(username);
-
         subject.setName(subjectDto.getName());
         subject.setDescription(subjectDto.getDescription());
 
@@ -68,12 +66,13 @@ public class SubjectService {
         // 사진 첨부 O
         if (image != null) {
             // 사진 수정 시 기존 사진이 있다면 삭제
-
             if (previousImage != null) {
                 storageService.deleteFile(previousImage);
             }
 
+            Teacher teacher = teacherRepository.findByUsername(username);
             String folderPath = storageService.getFolderPath(teacher, SUBJECT);
+
             FileDto fileDto = storageService.uploadFile(image, folderPath);
             subject.setImageName(fileDto.getUploadFileName());
             subject.setImagePath(fileDto.getFilePath());
@@ -85,7 +84,6 @@ public class SubjectService {
             subject.setImageName(null);
             subject.setImagePath(null);
         }
-
         return true;
     }
 

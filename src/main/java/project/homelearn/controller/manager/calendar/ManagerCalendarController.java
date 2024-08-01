@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.calendar.ManagerScheduleAddDto;
+import project.homelearn.dto.manager.calendar.ManagerScheduleEnrollDto;
 import project.homelearn.service.manager.ManagerCalendarService;
 
 /**
@@ -14,16 +14,16 @@ import project.homelearn.service.manager.ManagerCalendarService;
  */
 @Slf4j
 @RestController
-@RequestMapping("/managers")
+@RequestMapping("/managers/calendar")
 @RequiredArgsConstructor
 public class ManagerCalendarController {
 
     private final ManagerCalendarService calendarService;
 
     // 일정 등록
-    @PostMapping("/calendar")
-    public ResponseEntity<?> enrollSchedule(@Valid @RequestBody ManagerScheduleAddDto managerScheduleAddDto) {
-        boolean result = calendarService.addSchedule(managerScheduleAddDto);
+    @PostMapping
+    public ResponseEntity<?> enrollSchedule(@Valid @RequestBody ManagerScheduleEnrollDto managerScheduleEnrollDto) {
+        boolean result = calendarService.addSchedule(managerScheduleEnrollDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -32,10 +32,10 @@ public class ManagerCalendarController {
     }
 
     // 일정 수정
-    @PatchMapping("/calendar/{id}")
-    public ResponseEntity<?> modifySchedule(@PathVariable("id") Long id,
-                                            @Valid @RequestBody ManagerScheduleAddDto managerScheduleAddDto) {
-        boolean result = calendarService.updateSchedule(id, managerScheduleAddDto);
+    @PatchMapping("/{calendarId}")
+    public ResponseEntity<?> modifySchedule(@PathVariable("calendarId") Long calendarId,
+                                            @Valid @RequestBody ManagerScheduleEnrollDto managerScheduleEnrollDto) {
+        boolean result = calendarService.updateSchedule(calendarId, managerScheduleEnrollDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -44,9 +44,9 @@ public class ManagerCalendarController {
     }
 
     // 일정 삭제
-    @DeleteMapping("/calendar/{id}")
-    public ResponseEntity<?> deleteSchedule(@PathVariable("id") Long id) {
-        boolean result = calendarService.deleteSchedule(id);
+    @DeleteMapping("/{calendarId}")
+    public ResponseEntity<?> deleteSchedule(@PathVariable("calendarId") Long calendarId) {
+        boolean result = calendarService.deleteSchedule(calendarId);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

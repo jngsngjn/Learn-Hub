@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.common.EmailCodeDto;
+import project.homelearn.dto.common.account.EmailCodeDto;
 import project.homelearn.dto.common.register.RegisterDto;
 import project.homelearn.dto.common.register.RegisterInfoDto;
 import project.homelearn.entity.student.Student;

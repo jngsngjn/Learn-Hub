@@ -6,14 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.inquiry.ManagerInquiryDto;
-import project.homelearn.dto.manager.inquiry.ManagerResponseDto;
+import project.homelearn.dto.common.inquiry.InquiryWriteDto;
 import project.homelearn.dto.teacher.inquiry.TeacherInquiryDto;
 import project.homelearn.dto.teacher.inquiry.TeacherResponseDto;
-import project.homelearn.entity.inquiry.TeacherInquiry;
-import project.homelearn.service.manager.ManagerInquiryService;
 import project.homelearn.service.teacher.TeacherInquiryService;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -26,6 +24,18 @@ import java.util.List;
 public class TeacherInquiryController {
 
     private final TeacherInquiryService teacherInquiryService;
+
+    @PostMapping("/send-inquiries")
+    public ResponseEntity<?> sendInquiry(Principal principal,
+                                         @Valid @ModelAttribute InquiryWriteDto writeDto) {
+        String username = principal.getName();
+        boolean result = teacherInquiryService.writeInquiryToManager(username, writeDto);
+
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
     @GetMapping("/student-inquiries")
     public ResponseEntity<?> studentList() {

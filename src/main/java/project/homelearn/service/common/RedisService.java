@@ -1,9 +1,10 @@
-package project.homelearn.service.jwt;
+package project.homelearn.service.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import project.homelearn.service.jwt.JwtService;
 
 import java.time.Duration;
 
@@ -36,5 +37,30 @@ public class RedisService {
     public void deleteByRefreshToken(String refreshToken) {
         String username = jwtService.getUsername(refreshToken);
         deleteRefreshToken(username);
+    }
+
+    public void saveEmailCode(String email, String code, Duration duration) {
+        valueOperations.set(email, code, duration);
+    }
+
+    public String getCodeByEmail(String email) {
+        return valueOperations.get(email);
+    }
+
+    public void deleteEmailCode(String email) {
+        redisTemplate.delete(email);
+    }
+
+    public void markUserAsVerified(String username, Duration duration) {
+        valueOperations.set("verified:" + username, "true", duration);
+    }
+
+    public boolean isUserVerified(String username) {
+        String value = valueOperations.get("verified:" + username);
+        return "true".equals(value);
+    }
+
+    public void deleteVerification(String username) {
+        redisTemplate.delete("verified:" + username);
     }
 }

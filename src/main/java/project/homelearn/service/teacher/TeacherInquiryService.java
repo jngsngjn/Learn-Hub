@@ -4,14 +4,15 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import project.homelearn.dto.manager.inquiry.ManagerInquiryDto;
-import project.homelearn.dto.manager.inquiry.ManagerResponseDto;
+import project.homelearn.dto.common.inquiry.InquiryWriteDto;
 import project.homelearn.dto.teacher.inquiry.TeacherInquiryDto;
 import project.homelearn.dto.teacher.inquiry.TeacherResponseDto;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
-import project.homelearn.entity.user.Role;
+import project.homelearn.entity.user.User;
+import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import project.homelearn.repository.inquiry.TeacherInquiryRepository;
+import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.common.CommonNotificationService;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,8 @@ public class TeacherInquiryService {
 
     private final CommonNotificationService commonNotificationService;
     private final TeacherInquiryRepository teacherInquiryRepository;
+    private final ManagerInquiryRepository managerInquiryRepository;
+    private final UserRepository userRepository;
 
     // 문의내역 리스트(학생)
     public List<TeacherInquiryDto> getInquiryListDefaultFromStudents() {
@@ -61,7 +64,7 @@ public class TeacherInquiryService {
         return null;
     }
 
-    // 매니저가 문의 내역 답변달기
+    // 매니저가 문의 내역 답변달기 ??
     public boolean addResponse(TeacherResponseDto teacherResponseDto, Long inquiryId) {
         Optional<TeacherInquiry> teacherInquiry = teacherInquiryRepository.findById(inquiryId);
 
@@ -75,6 +78,24 @@ public class TeacherInquiryService {
             return true;
         }
         return false;
+    }
+
+    // 매니저에게 문의 작성
+    public boolean writeInquiryToManager(String username, InquiryWriteDto writeDto){
+        try{
+            ManagerInquiry managerInquiry = new ManagerInquiry();
+            User teacher = userRepository.findByUsername(username);
+            managerInquiry.setUser(teacher);
+            managerInquiry.setTitle(writeDto.getTitle());
+            managerInquiry.setContent(writeDto.getContent());
+
+            managerInquiryRepository.save(managerInquiry);
+            return true;
+        }
+        catch (Exception e){
+            log.error("Error creating inquiry to manager", e);
+            return false;
+        }
     }
 
     // 리스트 Dto 변환 메소드

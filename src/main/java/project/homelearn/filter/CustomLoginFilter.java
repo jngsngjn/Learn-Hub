@@ -20,7 +20,7 @@ import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtService;
-import project.homelearn.service.jwt.RedisService;
+import project.homelearn.service.common.RedisService;
 
 import java.time.*;
 
@@ -74,7 +74,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
          */
         response.setHeader(ACCESS_TOKEN_HEADER_NAME, "Bearer " + access);
         response.addCookie(cookieService.createRefreshCookie(REFRESH_TOKEN_COOKIE_NAME, refresh));
-        response.setHeader("Role", role);
+        response.setHeader("role", role);
         response.setStatus(HttpStatus.OK.value());
 
         User user = userRepository.findByUsername(username);
