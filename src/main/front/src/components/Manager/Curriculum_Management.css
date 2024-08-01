@@ -84,14 +84,14 @@
   width: 70px;
 }
 
-.curriculum-full_name {
+.curriculum-type {
   font-size: 18px;
   color: #757575;
   font-weight: bold;
   cursor: pointer;
 }
 
-.curriculum-full_name:hover {
+.curriculum-type:hover {
   color: #000;
 }
 
