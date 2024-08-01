@@ -52,8 +52,8 @@ const CurriculumManagement = () => {
 
     try {
       const token = getToken();
-      console.log('Token:', token);
-      console.log('New Curriculum Item:', newCurriculumItem);
+      console.log(token);
+      console.log(newCurriculumItem);
 
       const response = await axios.post('/managers/manage-curriculums/enroll', newCurriculumItem, {
         headers: { access: token },
@@ -74,7 +74,6 @@ const CurriculumManagement = () => {
   const fetchCurriculums = async (type) => {
     try {
       const token = getToken();
-
       const response = await axios.get(`/managers/manage-curriculums/${type}`, {
         headers: { access: token },
       });
