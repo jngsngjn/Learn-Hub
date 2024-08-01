@@ -33,7 +33,7 @@ public class TeacherInquiryService {
     private final ManagerInquiryRepository managerInquiryRepository;
     private final UserRepository userRepository;
 
-    // 문의내역 리스트(학생)
+    // 문의 내역 리스트(학생)
     public List<TeacherInquiryDto> getInquiryListDefaultFromStudents() {
         List<TeacherInquiry> teacherInquiries = teacherInquiryRepository.findStudentInquiriesAllDefault();
 
@@ -45,7 +45,7 @@ public class TeacherInquiryService {
         return teacherInquiryRepository.countInquiryWithOutResponse();
     }
 
-    // 문의 내역 상세보기
+    // 문의 내역 상세 조회
     public TeacherInquiryDto getOneManagerInquiryDtoById(Long inquiryId) {
         Optional<TeacherInquiry> teacherInquiry = teacherInquiryRepository.findById(inquiryId);
 
@@ -64,8 +64,8 @@ public class TeacherInquiryService {
         return null;
     }
 
-    // 매니저가 문의 내역 답변달기 ??
-    public boolean addResponse(TeacherResponseDto teacherResponseDto, Long inquiryId) {
+    // 학생 문의에 답변
+    public boolean addResponseToStudent(TeacherResponseDto teacherResponseDto, Long inquiryId) {
         Optional<TeacherInquiry> teacherInquiry = teacherInquiryRepository.findById(inquiryId);
 
         if (teacherInquiry.isPresent()) {
@@ -74,7 +74,7 @@ public class TeacherInquiryService {
             inquiry.setResponseDate(LocalDateTime.now());
             teacherInquiryRepository.save(inquiry);
 
-            commonNotificationService.notifyTeacherResponse(inquiry); // 학생 또는 강사에게 알림
+            commonNotificationService.notifyTeacherResponse(inquiry); // 학생에게 알림
             return true;
         }
         return false;

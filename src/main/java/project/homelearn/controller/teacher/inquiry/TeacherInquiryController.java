@@ -25,6 +25,7 @@ public class TeacherInquiryController {
 
     private final TeacherInquiryService teacherInquiryService;
 
+    // 1:1 문의 작성 : 강사 -> 매니저
     @PostMapping("/send-inquiries")
     public ResponseEntity<?> sendInquiry(Principal principal,
                                          @Valid @ModelAttribute InquiryWriteDto writeDto) {
@@ -37,6 +38,7 @@ public class TeacherInquiryController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    // 학생 문의 내역 조회
     @GetMapping("/student-inquiries")
     public ResponseEntity<?> studentList() {
 
@@ -48,6 +50,7 @@ public class TeacherInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    // 학생 문의 내역 상세 조회
     @GetMapping("/inquiries/{inquiryId}")
     public ResponseEntity<?> viewInquiry(@PathVariable("inquiryId") Long inquiryId) {
         TeacherInquiryDto result = teacherInquiryService.getOneManagerInquiryDtoById(inquiryId);
@@ -57,10 +60,11 @@ public class TeacherInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    // 학생 문의에 답변
     @PostMapping("/inquiries/{inquiryId}/add-response")
-    public ResponseEntity<?> addResponse(@Valid @RequestBody TeacherResponseDto teacherResponseDto,
-                                         @PathVariable("inquiryId") Long inquiryId) {
-        boolean result = teacherInquiryService.addResponse(teacherResponseDto, inquiryId);
+    public ResponseEntity<?> addResponseToStudent(@Valid @RequestBody TeacherResponseDto teacherResponseDto,
+                                                  @PathVariable("inquiryId") Long inquiryId) {
+        boolean result = teacherInquiryService.addResponseToStudent(teacherResponseDto, inquiryId);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
