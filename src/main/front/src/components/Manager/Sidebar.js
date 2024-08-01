@@ -27,7 +27,7 @@ const Sidebar = () => {
             <li><Link to="/managers" className="sidebar-link">대시보드</Link></li>
             <li><Link to="/managers/manage-curriculums" className="sidebar-link">교육 과정</Link></li>
             <li><Link to="/managers/manage-students" className="sidebar-link">학생 관리</Link></li>
-            <li><Link to="/managers/manage-teachers" className="sidebar-link">강사 관리</Link></li>
+            <li><Link to="/managers/froala" className="sidebar-link">강사 관리</Link></li>
             <li><Link to="/managers/notice" className="sidebar-link">공지사항</Link></li>
             <li className="dropdown">
               <div className="dropdown-header" onClick={toggleDropdown}>
