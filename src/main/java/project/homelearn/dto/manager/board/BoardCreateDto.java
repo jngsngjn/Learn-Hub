@@ -20,13 +20,14 @@ public class BoardCreateDto {
     private MultipartFile file;
 
     /*
-    POST 메소드 생성 요청
-    localhost:8080/managers/notification-boards
-    BODY요청 페이지에서 row 선택 후 textarea에 밑에 값 입력(json요청)
-    {
-        "title" : "대성진은",
-        "content" : "GOAT..",
-        "emergency" : false
-    }
+    JSON 요청 BODY 체크 후, form-data 선택. Key값과 Value값으로 요청
+    요청 경로 : localhost:8080/managers/notification-boards
+    POST 요청
+    key         value
+    title       제목
+    content     내용
+    emergency   true(긴급 O) or false(긴급 X)
+    file        추가 할 파일 선택(넣어도되고 안넣으면 null)
+    %null로 하고 싶다면 file 입력할 필요없음
      */
 }

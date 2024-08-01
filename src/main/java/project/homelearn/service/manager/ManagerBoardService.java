@@ -14,7 +14,6 @@ import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.manager.board.BoardCreateDto;
 import project.homelearn.dto.manager.board.BoardReadDto;
 import project.homelearn.dto.manager.board.BoardUpdateDto;
-import project.homelearn.entity.manager.Manager;
 import project.homelearn.entity.manager.ManagerBoard;
 import project.homelearn.repository.board.ManagerBoardRepository;
 import project.homelearn.service.common.StorageService;
@@ -42,7 +41,7 @@ public class ManagerBoardService {
             board.setEmergency(managerBoardWriteDto.getEmergency());
 
             MultipartFile file = managerBoardWriteDto.getFile();
-            if(file != null && !file.isEmpty()) {
+            if (file != null && !file.isEmpty()) {
                 FileDto fileDto = storageService.uploadFile(file, StorageConstants.ANNOUNCEMENT_STORAGE);
 
                 board.setUploadFileName(fileDto.getOriginalFileName());
@@ -88,23 +87,33 @@ public class ManagerBoardService {
     public boolean updateManagerBoard(Long id, BoardUpdateDto boardUpdateDto) {
         try {
             ManagerBoard board = managerBoardRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Error getting manager board" + id));
+                    .orElseThrow(() -> new RuntimeException("Error getting manager board with id" + id));
             board.setTitle(boardUpdateDto.getTitle());
             board.setContent(boardUpdateDto.getContent());
             board.setEmergency(boardUpdateDto.getEmergency());
 
             MultipartFile file = boardUpdateDto.getFile();
-            if(file != null && !file.isEmpty()) {
-                if(board.getFilePath() != null){
-                    storageService.deleteFile(board.getFilePath());
+            String previousFilePath = board.getFilePath();
+
+            //파일 삭제 조건 (먼저 파일을 삭제한 후 새 파일을 업로드하는 순서로 처리)
+            if (boardUpdateDto.isUseDefaultFile() || (file != null && !file.isEmpty())) {
+                if (previousFilePath != null) {
+                   storageService.deleteFile(previousFilePath);
+                   board.setUploadFileName(null);
+                   board.setStoreFileName(null);
+                   board.setFilePath(null);
                 }
+            }
+
+            //새 파일 업로드 조건
+            if (file != null && !file.isEmpty()) {
                 FileDto fileDto = storageService.uploadFile(file, StorageConstants.ANNOUNCEMENT_STORAGE);
                 board.setUploadFileName(fileDto.getOriginalFileName());
                 board.setStoreFileName(fileDto.getUploadFileName());
                 board.setFilePath(fileDto.getFilePath());
             }
-            managerBoardRepository.save(board);
 
+            managerBoardRepository.save(board);
             return true;
         } catch (Exception e) {
             log.error("Error updating manager board", e);
@@ -129,17 +138,6 @@ public class ManagerBoardService {
             log.error("Error deleting manager board", e);
             return false;
         }
-
     }
-//            if (ids != null && !ids.isEmpty()) {
-//                managerBoardRepository.deleteAllById(ids);
-//
-//                List<ManagerBoard> boards = managerBoardRepository.findAllById(ids);
-//                for (ManagerBoard board : boards) {
-//                    String file = board.getFilePath();
-//                    if (file != null) {
-//                        storageService.deleteFile(file);
-//                    }
-//                }
-//            }
+
 }
