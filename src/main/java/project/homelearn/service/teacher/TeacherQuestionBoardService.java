@@ -116,6 +116,19 @@ public class TeacherQuestionBoardService {
         return true;
     }
 
+    //댓글 수 증가
+    public void incrementCommentCount(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        questionBoard.setCommentCount(questionBoard.getCommentCount() + 1);
+    }
+
+    //댓글 수 감소
+    public void decrementCommentCount(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        questionBoard.setCommentCount(questionBoard.getCommentCount() - 1);
+    }
+
+    // 답변없는 게시물 탐색 스케줄링
     @Scheduled(fixedRate = 3600000) // 1시간마다 실행
     public void checkForUnansweredQuestions() {
         List<QuestionBoard> unansweredQuestions = findUnansweredQuestionsWithin12Hours();
@@ -135,6 +148,7 @@ public class TeacherQuestionBoardService {
         log.info("스케줄링 호출");
     }
 
+    // AI 답변 받아오기
     private String getAIResponse(String prompt) {
         String url = "http://localhost:8080/bot/chat?prompt=" + prompt; // AnswerBotController 엔드포인트 URL
         log.info("request url: " + url);
