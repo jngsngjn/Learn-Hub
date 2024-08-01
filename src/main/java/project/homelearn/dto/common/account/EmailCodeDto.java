@@ -1,11 +1,13 @@
-package project.homelearn.dto.common;
+package project.homelearn.dto.common.account;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class EmailCodeDto {
 
+    @Email
     @NotBlank
     private String email;
 

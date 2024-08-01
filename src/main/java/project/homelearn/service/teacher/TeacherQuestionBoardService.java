@@ -22,7 +22,7 @@ public class TeacherQuestionBoardService {
     private final QuestionBoardCommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    //댓글 작성 = 답변달기
+    // 댓글 작성 = 답변달기
     public void writeComment(Long questionBoardId, String username, CommentWriteDto commentDto) {
         User user = userRepository.findByUsername(username);
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
@@ -34,7 +34,7 @@ public class TeacherQuestionBoardService {
         commentRepository.save(comment);
     }
 
-    //댓글 수정
+    // 댓글 수정
     public boolean modifyComment(Long commentId, String username, CommentWriteDto commentDto) {
         QuestionBoardComment comment = commentRepository.findById(commentId).orElseThrow();
         String writer = comment.getUser().getUsername();
@@ -45,7 +45,7 @@ public class TeacherQuestionBoardService {
         return true;
     }
 
-    //댓글 삭제
+    // 댓글 삭제
     public boolean deleteComment(Long questionBoardId, Long commentId, String username) {
         QuestionBoard board = questionBoardRepository.findById(questionBoardId).orElseThrow();
         String boardWriter = board.getUser().getUsername();
@@ -65,7 +65,7 @@ public class TeacherQuestionBoardService {
         return true;
     }
 
-    //대댓글 작성
+    // 대댓글 작성
     public void writeReplyComment(Long commentId, String username, CommentWriteDto commentDto) {
         User user = userRepository.findByUsername(username);
         QuestionBoardComment parentComment = commentRepository.findById(commentId).orElseThrow();
@@ -83,7 +83,7 @@ public class TeacherQuestionBoardService {
         commentRepository.save(reply);
     }
 
-    //대댓글 수정
+    // 대댓글 수정
     public boolean modifyReplyComment(Long replyId, String username, CommentWriteDto commentDto) {
         QuestionBoardComment reply = commentRepository.findById(replyId).orElseThrow();
         String writer = reply.getUser().getUsername();

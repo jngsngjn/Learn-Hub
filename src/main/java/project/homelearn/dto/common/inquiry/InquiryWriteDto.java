@@ -11,5 +11,4 @@ public class InquiryWriteDto {
 
     @NotBlank
     private String content;
-
 }
