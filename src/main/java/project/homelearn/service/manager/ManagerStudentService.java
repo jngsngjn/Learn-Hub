@@ -22,6 +22,7 @@ import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.StudentRepository;
+import project.homelearn.service.common.EmailService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +30,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static project.homelearn.config.common.MailType.ENROLL;
 
 @Slf4j
 @Service
@@ -122,7 +125,7 @@ public class ManagerStudentService {
         }
 
         String email = studentEnrollDto.getEmail();
-        String code = emailService.sendCode(email);
+        String code = emailService.sendCode(email, ENROLL);
         if (code == null) {
             return false;
         }

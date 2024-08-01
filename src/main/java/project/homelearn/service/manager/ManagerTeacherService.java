@@ -19,9 +19,12 @@ import project.homelearn.entity.user.EnrollList;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.TeacherRepository;
+import project.homelearn.service.common.EmailService;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static project.homelearn.config.common.MailType.ENROLL;
 
 @Slf4j
 @Service
@@ -101,7 +104,7 @@ public class ManagerTeacherService {
         }
 
         String email = teacherEnrollDto.getEmail();
-        String code = emailService.sendCode(email);
+        String code = emailService.sendCode(email, ENROLL);
         if (code == null) {
             return false;
         }

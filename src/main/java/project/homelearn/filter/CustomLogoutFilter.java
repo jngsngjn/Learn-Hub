@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.GenericFilterBean;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtService;
-import project.homelearn.service.jwt.RedisService;
+import project.homelearn.service.common.RedisService;
 
 import java.io.IOException;
 
