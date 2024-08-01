@@ -56,4 +56,6 @@ public class StudentInquiryController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    // 학생 -> 매니저 문의?
 }

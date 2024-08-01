@@ -64,6 +64,8 @@ public class StudentBoardService {
         board.setContent(boardDto.getContent());
 
         MultipartFile image = boardDto.getImage();
+
+        // 사진 첨부 O
         if (image != null) {
             // 사진 수정 시 기존 사진이 있다면 삭제
             String previousImage = board.getImagePath();
@@ -77,6 +79,9 @@ public class StudentBoardService {
             board.setImagePath(fileDto.getFilePath());
         }
 
+        /*
+        기존 사진을 삭제하는 로직 필요
+         */
         return true;
     }
 

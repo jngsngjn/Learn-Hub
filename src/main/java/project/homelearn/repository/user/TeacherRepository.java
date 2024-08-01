@@ -29,4 +29,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Teacher
     String findUsernameByCurriculum(@Param("curriculum") Curriculum curriculum);
 
     boolean existsByCurriculum(Curriculum curriculum);
+
+    Teacher findByUsername(String username);
 }

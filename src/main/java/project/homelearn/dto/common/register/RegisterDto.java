@@ -1,5 +1,6 @@
 package project.homelearn.dto.common.register;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class RegisterDto {
     @NotBlank
     private String phone;
 
+    @Email
     @NotBlank
     private String email;
 }

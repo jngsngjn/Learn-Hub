@@ -3,8 +3,12 @@ package project.homelearn.entity.homework;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 import project.homelearn.entity.BaseEntity;
 import project.homelearn.entity.user.User;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter @Setter
@@ -35,4 +39,17 @@ public class StudentHomework extends BaseEntity {
 
     @Column(name = "file_path")
     private String filePath;
+
+    @Lob
+    @Column(columnDefinition = "TEXT", insertable = false)
+    private String response;
+
+    @Column(name = "response_date", insertable = false)
+    @UpdateTimestamp
+    private LocalDateTime responseDate;
+
+    public String getFormattedResponseDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return responseDate != null ? responseDate.format(formatter) : null;
+    }
 }
