@@ -11,6 +11,7 @@ import project.homelearn.dto.teacher.board.TeacherBoardCreateDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.entity.teacher.TeacherBoard;
+import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.TeacherBoardRepository;
 import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.service.common.StorageService;
@@ -53,7 +54,6 @@ public class TeacherBoardService {
 
             teacherBoardRepository.save(teacherBoard);
 
-            teacherBoardRepository.save(teacherBoard);
             return true;
 
         } catch (Exception e) {
@@ -61,4 +61,34 @@ public class TeacherBoardService {
             return false;
         }
     }
+
+    // 공지 수정
+    public boolean modifyTeacherBoard(Long boardId, String username, TeacherBoardCreateDto teacherBoardCreateDto) {
+        TeacherBoard teacherBoard = teacherBoardRepository.findById(boardId).orElseThrow();
+        User teacher = teacherRepository.findByUsername(username);
+        MultipartFile file = teacherBoardCreateDto.getUploadFile();
+
+        if(!teacher.getUsername().equals(username)) {
+            return false;
+        }
+
+            if(file != null) {
+                if (teacherBoard.getFilePath() != null) {
+                    storageService.deleteFile(teacherBoard.getFilePath());
+                }
+                    String folderPath = storageService.getFolderPath(teacher, FolderType.SUBJECT);
+                    FileDto fileDto = storageService.uploadFile(file, folderPath);
+                    teacherBoard.setFilePath(fileDto.getFilePath());
+                    teacherBoard.setStoreFileName(fileDto.getUploadFileName());
+            }
+
+        teacherBoard.setTitle(teacherBoardCreateDto.getTitle());
+        teacherBoard.setContent(teacherBoardCreateDto.getContent());
+        teacherBoard.setEmergency(teacherBoardCreateDto.getEmergency());
+
+        teacherBoardRepository.save(teacherBoard);
+
+        return true;
+    }
+
 }
