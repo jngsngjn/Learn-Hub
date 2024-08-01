@@ -13,6 +13,9 @@ import project.homelearn.dto.common.register.RegisterInfoDto;
 import project.homelearn.service.common.RegisterService;
 import project.homelearn.service.common.UserService;
 
+/**
+ * Author : 정성진
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
