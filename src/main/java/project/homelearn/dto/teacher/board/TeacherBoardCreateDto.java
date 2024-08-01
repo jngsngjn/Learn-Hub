@@ -15,8 +15,6 @@ public class TeacherBoardCreateDto {
 
     private Boolean emergency;
 
-//    private String uploadFileName;
-
     private MultipartFile uploadFile;
 }
 
@@ -27,6 +25,6 @@ localhost:8080/teachers/boards
     "title" : "공지사항1",
     "content" : "공지사항입니다만?",
     "emergency" : false,
-    "uploadFileName" : "text.txt"
+    "uploadFile" : 올리고 싶은 파일
 }
 */
