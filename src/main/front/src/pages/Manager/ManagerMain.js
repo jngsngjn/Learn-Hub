@@ -35,12 +35,12 @@ function ManagerMain() {
         <div className="content-area">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="student-management" element={<StudentManagement />} />
-            <Route path="manager-curriculum" element={<CurriculumManagement />} />
-            <Route path="teacher-management" element={<TeacherManagement />} />
+            <Route path="manager-students" element={<StudentManagement />} />
+            <Route path="manager-curriculums" element={<CurriculumManagement />} />
+            <Route path="manager-teachers" element={<TeacherManagement />} />
             <Route path="notice" element={<Notice />} />
-            <Route path="contact-student" element={<StudentContact />} />
-            <Route path="contact-teacher" element={<TeacherContact />} />
+            <Route path="contact-students" element={<StudentContact />} />
+            <Route path="contact-teachers" element={<TeacherContact />} />
           </Routes>
         </div>
       </div>
