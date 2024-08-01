@@ -35,6 +35,7 @@ public class TeacherBoardController {
         }
     }
 
+
     // 공지 수정
     @PatchMapping("/{boardId}")
     public ResponseEntity<?> modifyBoard (@PathVariable("boardId") Long boardId, Principal principal,
@@ -48,5 +49,18 @@ public class TeacherBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+
+    //  공지 삭제
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<?> deleteBoard (@PathVariable("boardId") Long boardId, Principal principal) {
+        String username = principal.getName();
+        boolean result = teacherBoardService.deleteTeacherBoard(boardId, username);
+
+        if(result){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

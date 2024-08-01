@@ -47,7 +47,7 @@ public class TeacherBoardService {
 
             if (file != null) {
                 String folderPath = storageService.getFolderPath(teacher, FolderType.SUBJECT);
-                 FileDto fileDto = storageService.uploadFile(file, folderPath);
+                FileDto fileDto = storageService.uploadFile(file, folderPath);
                 teacherBoard.setFilePath(fileDto.getFilePath());
                 teacherBoard.setStoreFileName(fileDto.getUploadFileName());
             }
@@ -70,17 +70,15 @@ public class TeacherBoardService {
 
         if(!teacher.getUsername().equals(username)) {
             return false;
-        }
-
-            if(file != null) {
-                if (teacherBoard.getFilePath() != null) {
-                    storageService.deleteFile(teacherBoard.getFilePath());
-                }
-                    String folderPath = storageService.getFolderPath(teacher, FolderType.SUBJECT);
-                    FileDto fileDto = storageService.uploadFile(file, folderPath);
-                    teacherBoard.setFilePath(fileDto.getFilePath());
-                    teacherBoard.setStoreFileName(fileDto.getUploadFileName());
+        }else if(file != null) {
+            if (teacherBoard.getFilePath() != null) {
+                storageService.deleteFile(teacherBoard.getFilePath());
             }
+            String folderPath = storageService.getFolderPath(teacher, FolderType.SUBJECT);
+            FileDto fileDto = storageService.uploadFile(file, folderPath);
+            teacherBoard.setFilePath(fileDto.getFilePath());
+            teacherBoard.setStoreFileName(fileDto.getUploadFileName());
+        }
 
         teacherBoard.setTitle(teacherBoardCreateDto.getTitle());
         teacherBoard.setContent(teacherBoardCreateDto.getContent());
@@ -90,5 +88,23 @@ public class TeacherBoardService {
 
         return true;
     }
+
+    // 공지 지우기
+    public boolean deleteTeacherBoard(Long boardId, String username) {
+        TeacherBoard teacherBoard = teacherBoardRepository.findById(boardId).orElseThrow();
+        User teacher = teacherRepository.findByUsername(username);
+        String file = teacherBoardRepository.findById(boardId).get().getFilePath();
+
+        if (!teacher.getUsername().equals(username)) {
+            return false;
+        }
+        if (teacherBoard.getFilePath() != null) {
+            storageService.deleteFile(teacherBoard.getFilePath());
+        }
+
+        teacherBoardRepository.deleteById(boardId);
+        return true;
+    }
+
 
 }
