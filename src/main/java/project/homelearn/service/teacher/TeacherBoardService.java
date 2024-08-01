@@ -64,35 +64,42 @@ public class TeacherBoardService {
 
     // 공지 수정
     public boolean modifyTeacherBoard(Long boardId, String username, TeacherBoardCreateDto teacherBoardCreateDto) {
-        TeacherBoard teacherBoard = teacherBoardRepository.findById(boardId).orElseThrow();
-        User teacher = teacherRepository.findByUsername(username);
-        MultipartFile file = teacherBoardCreateDto.getUploadFile();
+        try {
+            TeacherBoard teacherBoard = teacherBoardRepository.findById(boardId).orElseThrow();
+            Teacher teacher = teacherRepository.findByUsername(username);
+            MultipartFile file = teacherBoardCreateDto.getUploadFile();
 
-        if (!teacher.getUsername().equals(username)) {
-            return false;
-        } else {
-            if (file != null && file.getSize() > 0) {
-                if (teacherBoard.getFilePath() != null) {
-                    storageService.deleteFile(teacherBoard.getFilePath());
-                }
-                String folderPath = storageService.getFolderPath(teacher, FolderType.SUBJECT);
-                FileDto fileDto = storageService.uploadFile(file, folderPath);
-                teacherBoard.setFilePath(fileDto.getFilePath());
-                teacherBoard.setStoreFileName(fileDto.getUploadFileName());
+            if (!teacher.getUsername().equals(username)) {
+                return false;
             } else {
-                teacherBoard.setFilePath(null);
+                if (file != null && file.getSize() > 0) {
+                    if (teacherBoard.getFilePath() != null) {
+                        storageService.deleteFile(teacherBoard.getFilePath());
+                    }
+
+                    String folderPath = storageService.getFolderPath(teacher, FolderType.SUBJECT);
+                    FileDto fileDto = storageService.uploadFile(file, folderPath);
+                    teacherBoard.setFilePath(fileDto.getFilePath());
+                    teacherBoard.setStoreFileName(fileDto.getUploadFileName());
+                } else {
+                    teacherBoard.setFilePath(null);
+                    teacherBoard.setStoreFileName(null);
+                }
             }
+
+            teacherBoard.setTitle(teacherBoardCreateDto.getTitle());
+            teacherBoard.setContent(teacherBoardCreateDto.getContent());
+            teacherBoard.setEmergency(teacherBoardCreateDto.getEmergency());
+
+            teacherBoardRepository.save(teacherBoard);
+
+            return true;
+        } catch (Exception e) {
+            log.error("Error occurred when modifying teacher board", e);
+            return false;
         }
-
-
-        teacherBoard.setTitle(teacherBoardCreateDto.getTitle());
-        teacherBoard.setContent(teacherBoardCreateDto.getContent());
-        teacherBoard.setEmergency(teacherBoardCreateDto.getEmergency());
-
-        teacherBoardRepository.save(teacherBoard);
-
-        return true;
     }
+
 
     // 공지 지우기
     public boolean deleteTeacherBoard(Long boardId, String username) {
