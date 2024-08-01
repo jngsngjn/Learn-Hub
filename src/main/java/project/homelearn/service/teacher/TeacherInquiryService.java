@@ -5,13 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.homelearn.dto.common.inquiry.InquiryWriteDto;
-import project.homelearn.dto.manager.inquiry.ManagerInquiryDto;
-import project.homelearn.dto.manager.inquiry.ManagerResponseDto;
 import project.homelearn.dto.teacher.inquiry.TeacherInquiryDto;
 import project.homelearn.dto.teacher.inquiry.TeacherResponseDto;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
-import project.homelearn.entity.user.Role;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import project.homelearn.repository.inquiry.TeacherInquiryRepository;
@@ -67,7 +64,7 @@ public class TeacherInquiryService {
         return null;
     }
 
-    // 매니저가 문의 내역 답변달기
+    // 매니저가 문의 내역 답변달기 ??
     public boolean addResponse(TeacherResponseDto teacherResponseDto, Long inquiryId) {
         Optional<TeacherInquiry> teacherInquiry = teacherInquiryRepository.findById(inquiryId);
 
@@ -83,8 +80,8 @@ public class TeacherInquiryService {
         return false;
     }
 
-    //매니저에게 문의 작성
-    public boolean writeInquiry(String username, InquiryWriteDto writeDto){
+    // 매니저에게 문의 작성
+    public boolean writeInquiryToManager(String username, InquiryWriteDto writeDto){
         try{
             ManagerInquiry managerInquiry = new ManagerInquiry();
             User teacher = userRepository.findByUsername(username);
