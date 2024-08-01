@@ -19,11 +19,11 @@ public class TeacherCalendarController {
 
     private final TeacherCalendarService calendarService;
 
-    // 일정 등록
-    @PostMapping
-    public ResponseEntity<?> enrollSchedule() {
-
-    }
+//    // 일정 등록
+//    @PostMapping
+//    public ResponseEntity<?> enrollSchedule() {
+//
+//    }
 
     // 일정 수정
 
