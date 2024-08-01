@@ -49,7 +49,7 @@ public class CommonNotificationService {
         }
     }
 
-    //강사가 학생의 문의에 답변했을 때 해당 인원에게 알림
+    // 강사가 학생의 문의에 답변했을 때 해당 인원에게 알림
     public void notifyTeacherResponse(TeacherInquiry teacherInquiry) {
         User user = userRepository.findUserByTeacherInquiry(teacherInquiry);
 
