@@ -74,7 +74,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
          */
         response.setHeader(ACCESS_TOKEN_HEADER_NAME, "Bearer " + access);
         response.addCookie(cookieService.createRefreshCookie(REFRESH_TOKEN_COOKIE_NAME, refresh));
-        response.setHeader("Role", role);
+        response.setHeader("role", role);
         response.setStatus(HttpStatus.OK.value());
 
         User user = userRepository.findByUsername(username);
