@@ -68,17 +68,22 @@ public class TeacherBoardService {
         User teacher = teacherRepository.findByUsername(username);
         MultipartFile file = teacherBoardCreateDto.getUploadFile();
 
-        if(!teacher.getUsername().equals(username)) {
+        if (!teacher.getUsername().equals(username)) {
             return false;
-        }else if(file != null) {
-            if (teacherBoard.getFilePath() != null) {
-                storageService.deleteFile(teacherBoard.getFilePath());
+        } else {
+            if (file != null && file.getSize() > 0) {
+                if (teacherBoard.getFilePath() != null) {
+                    storageService.deleteFile(teacherBoard.getFilePath());
+                }
+                String folderPath = storageService.getFolderPath(teacher, FolderType.SUBJECT);
+                FileDto fileDto = storageService.uploadFile(file, folderPath);
+                teacherBoard.setFilePath(fileDto.getFilePath());
+                teacherBoard.setStoreFileName(fileDto.getUploadFileName());
+            } else {
+                teacherBoard.setFilePath(null);
             }
-            String folderPath = storageService.getFolderPath(teacher, FolderType.SUBJECT);
-            FileDto fileDto = storageService.uploadFile(file, folderPath);
-            teacherBoard.setFilePath(fileDto.getFilePath());
-            teacherBoard.setStoreFileName(fileDto.getUploadFileName());
         }
+
 
         teacherBoard.setTitle(teacherBoardCreateDto.getTitle());
         teacherBoard.setContent(teacherBoardCreateDto.getContent());
