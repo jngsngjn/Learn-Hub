@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.homelearn.dto.common.EmailCodeDto;
+import project.homelearn.dto.common.account.EmailCodeDto;
 import project.homelearn.dto.common.register.RegisterInfoDto;
 import project.homelearn.service.common.RegisterService;
 import project.homelearn.service.common.UserService;
@@ -27,7 +27,7 @@ public class CodeVerifyController {
     // 회원가입 전 코드 인증
     @PostMapping("/code-verify")
     public ResponseEntity<?> verifyCode(@Valid @RequestBody EmailCodeDto emailCodeDto) {
-        boolean result = userService.verifyCode(emailCodeDto);
+        boolean result = userService.verifyCodeBeforeRegister(emailCodeDto);
 
         if (result) {
             RegisterInfoDto registerInfo = registerService.getRegisterInfo(emailCodeDto);

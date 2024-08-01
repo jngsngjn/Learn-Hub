@@ -20,7 +20,7 @@ import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtService;
-import project.homelearn.service.jwt.RedisService;
+import project.homelearn.service.common.RedisService;
 
 import java.time.*;
 

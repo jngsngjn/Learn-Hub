@@ -20,7 +20,7 @@ import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtService;
-import project.homelearn.service.jwt.RedisService;
+import project.homelearn.service.common.RedisService;
 
 @Configuration
 @EnableWebSecurity
@@ -49,9 +49,8 @@ public class SecurityConfig {
         http.httpBasic(auth -> auth.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/register/**").permitAll()
+                .requestMatchers("/", "/login", "/register/**", "/account/**").permitAll()
                 .requestMatchers("/code-verify","/reissue", "/csrf-token").permitAll()
-                .requestMatchers("/find-id").permitAll()
                 .requestMatchers("/manager/**").hasRole("MANAGER")
                 .requestMatchers("/teacher/**").hasRole("TEACHER")
                 .requestMatchers("/student/**").hasRole("STUDENT")
