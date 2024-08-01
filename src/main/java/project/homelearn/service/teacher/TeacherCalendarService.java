@@ -4,16 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.repository.board.SubjectBoardRepository;
+import project.homelearn.repository.calendar.TeacherCalendarRepository;
 
-/**
- * Author : 정성진
- */
 @Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SubjectBoardService {
+public class TeacherCalendarService {
 
-    private final SubjectBoardRepository boardRepository;
+    private final TeacherCalendarRepository calendarRepository;
+
 }
