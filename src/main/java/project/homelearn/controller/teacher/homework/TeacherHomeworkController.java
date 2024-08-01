@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.teacher.homework.HomeworkEnrollDto;
+import project.homelearn.dto.teacher.homework.HomeworkFeedbackDto;
 import project.homelearn.service.teacher.TeacherHomeworkService;
 
 import java.security.Principal;
@@ -22,7 +23,7 @@ public class TeacherHomeworkController {
 
     private final TeacherHomeworkService homeworkService;
 
-    // 과제 등록
+    // 과제 등록 *알림
     @PostMapping
     public ResponseEntity<?> enrollHomework(Principal principal,
                                             @Valid @ModelAttribute HomeworkEnrollDto homeworkDto) {
@@ -47,6 +48,44 @@ public class TeacherHomeworkController {
     public ResponseEntity<?> deleteHomework(Principal principal,
                                             @PathVariable("homeworkId") Long homeworkId) {
         boolean result = homeworkService.deleteHomework(homeworkId, principal.getName());
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    // 피드백 등록 *테스트 해야 함
+    @PostMapping("/{homeworkId}/students/{studentHomeworkId}")
+    public ResponseEntity<?> feedbackHomework(Principal principal,
+                                              @PathVariable("homeworkId") Long homeworkId,
+                                              @PathVariable("studentHomeworkId") Long studentHomeworkId,
+                                              @Valid @ModelAttribute HomeworkFeedbackDto homeworkDto) {
+        boolean result = homeworkService.feedbackHomework(homeworkId, studentHomeworkId, principal.getName(), homeworkDto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    // 피드백 수정 *테스트 해야 함
+    @PatchMapping("/{homeworkId}/students/{studentHomeworkId}")
+    public ResponseEntity<?> modifyFeedbackHomework(Principal principal,
+                                              @PathVariable("homeworkId") Long homeworkId,
+                                              @PathVariable("studentHomeworkId") Long studentHomeworkId,
+                                              @Valid @ModelAttribute HomeworkFeedbackDto homeworkDto) {
+        boolean result = homeworkService.modifyFeedbackHomework(homeworkId, studentHomeworkId, principal.getName(), homeworkDto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    // 피드백 삭제 *테스트 해야 함
+    @DeleteMapping("/{homeworkId}/students/{studentHomeworkId}")
+    public ResponseEntity<?> deleteFeedbackHomework(Principal principal,
+                                              @PathVariable("homeworkId") Long homeworkId,
+                                              @PathVariable("studentHomeworkId") Long studentHomeworkId) {
+        boolean result = homeworkService.deleteFeedbackHomework(homeworkId, studentHomeworkId, principal.getName());
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }

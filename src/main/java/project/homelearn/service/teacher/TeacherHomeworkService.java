@@ -7,12 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.teacher.homework.HomeworkEnrollDto;
+import project.homelearn.dto.teacher.homework.HomeworkFeedbackDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.homework.Homework;
+import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.repository.homework.HomeworkRepository;
+import project.homelearn.repository.homework.StudentHomeworkRepository;
 import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.service.common.StorageService;
+
+import java.time.LocalDateTime;
 
 import static project.homelearn.config.storage.FolderType.HOMEWORK;
 
@@ -28,6 +33,7 @@ public class TeacherHomeworkService {
     private final StorageService storageService;
     private final TeacherRepository teacherRepository;
     private final HomeworkRepository homeworkRepository;
+    private final StudentHomeworkRepository studentHomeworkRepository;
 
     public void enrollHomework(String username, HomeworkEnrollDto homeworkDto) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
@@ -97,6 +103,38 @@ public class TeacherHomeworkService {
         }
 
         homeworkRepository.deleteById(homeworkId);
+        return true;
+    }
+
+    public boolean feedbackHomework(Long homeworkId, Long studentHomeworkId, String username, HomeworkFeedbackDto homeworkDto) {
+        Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeworkId);
+        Curriculum curriculum = homework.getCurriculum();
+
+        String writer = teacherRepository.findUsernameByCurriculum(curriculum);
+        if (!writer.equals(username)) {
+            return false;
+        }
+
+        StudentHomework studentHomework = studentHomeworkRepository.findById(studentHomeworkId).orElseThrow();
+        studentHomework.setResponse(homeworkDto.getResponse());
+        studentHomework.setResponseDate(LocalDateTime.now());
+        return true;
+    }
+
+    public boolean modifyFeedbackHomework(Long homeworkId, Long studentHomeworkId, String username, HomeworkFeedbackDto homeworkDto) {
+        return feedbackHomework(homeworkId, studentHomeworkId, username, homeworkDto);
+    }
+
+    public boolean deleteFeedbackHomework(Long homeworkId, Long studentHomeworkId, String username) {
+        Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeworkId);
+        Curriculum curriculum = homework.getCurriculum();
+
+        String writer = teacherRepository.findUsernameByCurriculum(curriculum);
+        if (!writer.equals(username)) {
+            return false;
+        }
+
+        studentHomeworkRepository.deleteById(studentHomeworkId);
         return true;
     }
 }
