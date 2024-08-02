@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.dashboard.ScheduleDto;
 import project.homelearn.dto.manager.calendar.ManagerScheduleEnrollDto;
+import project.homelearn.dto.teacher.dashboard.ManagerScheduleDto;
 import project.homelearn.entity.calendar.ManagerCalendar;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.repository.calendar.ManagerCalendarRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
+import project.homelearn.repository.user.TeacherRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerCalendarService {
 
+    private final TeacherRepository teacherRepository;
     private final CurriculumRepository curriculumRepository;
     private final ManagerCalendarRepository managerCalendarRepository;
 
@@ -99,5 +102,10 @@ public class ManagerCalendarService {
 
     public List<ScheduleDto> getAllSchedules() {
         return managerCalendarRepository.findAllSchedules();
+    }
+
+    public List<ManagerScheduleDto> getAllManagerSchedules(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        return managerCalendarRepository.findManagerSchedule(curriculum);
     }
 }

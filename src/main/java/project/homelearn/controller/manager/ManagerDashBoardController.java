@@ -10,16 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.homelearn.dto.manager.dashboard.CurriculumDto;
 import project.homelearn.dto.manager.dashboard.ScheduleDto;
+import project.homelearn.dto.manager.dashboard.SurveyDto;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.entity.user.Role;
 import project.homelearn.service.manager.ManagerCalendarService;
 import project.homelearn.service.manager.ManagerCurriculumService;
 import project.homelearn.service.manager.ManagerInquiryService;
+import project.homelearn.service.manager.ManagerSurveyService;
 
 import java.util.List;
 
 /**
- * 미완성
  * Author : 정성진
  */
 @Slf4j
@@ -28,9 +29,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerDashBoardController {
 
+    private final ManagerSurveyService surveyService;
+    private final ManagerInquiryService inquiryService;
     private final ManagerCalendarService calendarService;
     private final ManagerCurriculumService curriculumService;
-    private final ManagerInquiryService managerInquiryService;
 
     // 대시보드 캘린더 조회
     @GetMapping("/calendar")
@@ -53,7 +55,7 @@ public class ManagerDashBoardController {
     // 1:1 문의 개수 조회 (미답변)
     @GetMapping("/inquiry/{type}") // ROLE_STUDENT or ROLE_TEACHER
     public ResponseEntity<?> viewInquiryCountStudent(@PathVariable("type") Role role) {
-        Integer result = managerInquiryService.getInquiryCount(role);
+        Integer result = inquiryService.getInquiryCount(role);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -61,4 +63,12 @@ public class ManagerDashBoardController {
     }
 
     // 최근 설문 2개 조회
+    @GetMapping("/survey")
+    public ResponseEntity<?> viewRecentSurvey() {
+        List<SurveyDto> result = surveyService.getRecentSurvey();
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

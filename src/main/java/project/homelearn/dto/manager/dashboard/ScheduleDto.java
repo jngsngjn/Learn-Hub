@@ -20,7 +20,6 @@ public class ScheduleDto {
     @NotNull
     private LocalDate startDate;
 
-    @NotNull
     private LocalDate endDate;
 
     private String color;

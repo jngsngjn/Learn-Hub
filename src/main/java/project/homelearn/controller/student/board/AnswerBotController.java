@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import project.homelearn.dto.chatgpt.ChatGPTRequestDto;
 import project.homelearn.dto.chatgpt.ChatGPTResponseDto;
+import project.homelearn.dto.student.board.CommentWriteDto;
 
 @RestController
 @RequestMapping("/bot")
@@ -32,6 +33,8 @@ public class AnswerBotController {
     @GetMapping("/chat")
     public ResponseEntity<?> chat(@RequestParam(name = "prompt") String prompt) {
 
+        log.info("Received prompt: {}", prompt);
+
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getInterceptors().add(((request, body, execution) -> {
             request.getHeaders().add("Authorization", "Bearer " + openAikey);
@@ -43,6 +46,6 @@ public class AnswerBotController {
 
         //댓글 DB에 저장하게끔 하도록 생각할것
 
-        return new ResponseEntity<>(chatGPTResponse.getChoices().get(0).getQuestion().getQuestion(),HttpStatus.OK);
+        return new ResponseEntity<>(chatGPTResponse,HttpStatus.OK);
     }
 }

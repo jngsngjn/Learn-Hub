@@ -52,3 +52,6 @@ logs
 
 node_modules
 bower_components
+
+### dotenv ###
+.env

@@ -14,6 +14,7 @@ import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.manager.board.BoardCreateDto;
 import project.homelearn.dto.manager.board.BoardReadDto;
 import project.homelearn.dto.manager.board.BoardUpdateDto;
+import project.homelearn.dto.teacher.dashboard.ManagerBoardDto;
 import project.homelearn.entity.manager.ManagerBoard;
 import project.homelearn.repository.board.ManagerBoardRepository;
 import project.homelearn.service.common.StorageService;
@@ -29,8 +30,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerBoardService {
 
-    private final ManagerBoardRepository managerBoardRepository;
     private final StorageService storageService;
+    private final ManagerBoardRepository managerBoardRepository;
 
     // 생성 서비스
     public boolean createManagerBoard(BoardCreateDto managerBoardWriteDto) {
@@ -50,7 +51,6 @@ public class ManagerBoardService {
             }
 
             managerBoardRepository.save(board);
-            System.out.println("board = " + board);
             return true;
         } catch (Exception e) {
             log.error("Error creating manager board", e);
@@ -140,4 +140,7 @@ public class ManagerBoardService {
         }
     }
 
+    public List<ManagerBoardDto> viewManagerBoardRecent() {
+        return managerBoardRepository.findManagerBoardRecent4();
+    }
 }

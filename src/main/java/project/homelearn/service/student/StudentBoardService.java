@@ -41,14 +41,20 @@ public class StudentBoardService {
         FreeBoard board = new FreeBoard();
         board.setUser(student);
         board.setTitle(boardDto.getTitle());
-        board.setContent(boardDto.getContent());
 
         MultipartFile image = boardDto.getImage();
         if (image != null) {
             String folderPath = storageService.getFolderPath(student, FREE_BOARD);
             FileDto fileDto = storageService.uploadFile(image, folderPath);
             board.setImageName(fileDto.getUploadFileName());
-            board.setImagePath(fileDto.getFilePath());
+
+            String filePath = fileDto.getFilePath();
+            board.setImagePath(filePath);
+
+            String contentWithImagePath = boardDto.getContent().replace("<img src=\"\" />", "<img src=\"/image/" + filePath + "\" />");
+            board.setContent(contentWithImagePath);
+        } else {
+            board.setContent(boardDto.getContent());
         }
 
         boardRepository.save(board);
