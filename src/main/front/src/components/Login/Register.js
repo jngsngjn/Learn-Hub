@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Register.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 function Register() {
   const location = useLocation();
@@ -73,15 +74,18 @@ function Register() {
         name,
         phone,
         email,
+        gender,
         username,
         password
       });
       if (response.status === 200) {
-        console.log('회원가입 성공');
-        navigate('/login');
+        swal("회원가입 성공", "회원가입이 성공적으로 완료되었습니다.", "success").then(() => {
+          navigate('/login');
+        });
       }
     } catch (error) {
       console.error('회원가입 실패:', error);
+      swal("회원가입 실패", "회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.", "error");
     }
   };
 
