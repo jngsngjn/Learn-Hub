@@ -113,12 +113,6 @@
 }
 
 /* 질문 게시판  */
-/* 
-.inquiry_list_container {
-  height: 599px;
-  border: 1px solid black;
-  margin: 50px 0;
-} */
 
 .inquiry_list {
   width: 100%;
@@ -195,18 +189,24 @@
 }
 
 .lecture_video_container {
-  width: 1200px;
+  width: 1400px; /*피그마는 1200px 인데 좁아보여서 바꿔봄*/
   height: 453px;
-  border: 1px solid black;
   margin: 75px 25px 0 25px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  grid-template-rows: repeat(2, 1fr); /* 2 rows */
-  gap: 75px;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 65px 75px;
 }
 
 .lecture_video {
-  width: 350px;
-  height: 189px;
-  border: 1px solid green;
+  width: 400px; /*피그마는 350px 188.86px*/
+  height: 210px;
+}
+
+.lecture_video iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  border: none;
 }

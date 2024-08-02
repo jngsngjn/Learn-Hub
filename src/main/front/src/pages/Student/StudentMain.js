@@ -18,37 +18,37 @@ const StudentMain = () => {
     data: recentLecture,
     loading: recentLectureLoading,
     error: recentLectureError,
-  } = useGetFetch("/data/student/recentLecture.json", "");
+  } = useGetFetch("/data/student/mainpage/recentLecture.json", "");
 
   const {
     data: question,
     loading: questionLoading,
     error: questionError,
-  } = useGetFetch("/data/student/question.json", []);
+  } = useGetFetch("/data/student/mainpage/question.json", []);
 
   const {
     data: subject,
     loading: subjectLoading,
     error: subjectError,
-  } = useGetFetch("/data/student/subject.json", []);
+  } = useGetFetch("/data/student/mainpage/subject.json", []);
 
   const {
     data: badge,
     loading: badgeLoading,
     error: badgeError,
-  } = useGetFetch("/data/student/badge.json", []);
+  } = useGetFetch("/data/student/mainpage/badge.json", []);
 
   const {
     data: adminNotice,
     loading: adminNoticeLoading,
     error: adminNoticeError,
-  } = useGetFetch("/data/student/adminNotice.json", []);
+  } = useGetFetch("/data/student/mainpage/adminNotice.json", []);
 
   const {
     data: teacherNotice,
     loading: teacherNoticeLoading,
     error: teacherNoticeError,
-  } = useGetFetch("/data/student/teacherNotice.json", []);
+  } = useGetFetch("/data/student/mainpage/teacherNotice.json", []);
 
   if (
     recentLectureLoading ||

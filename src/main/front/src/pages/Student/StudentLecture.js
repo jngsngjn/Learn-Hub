@@ -1,6 +1,29 @@
+import { useNavigate } from "react-router-dom";
 import "./StudentLecture.css";
+import useGetFetch from "../../hooks/useGetFetch";
 
 const StudentLecture = () => {
+  const navigate = useNavigate();
+
+  function getYoutubeEmbedUrl(url) {
+    const videoId = url.split("v=")[1]?.split("&")[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+
+  const {
+    data: mainLectures,
+    loading: mainLecturesLoading,
+    error: mainLecturesError,
+  } = useGetFetch("/data/student/mainLecture/mainLecture.json", "");
+
+  if (mainLecturesLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (mainLecturesError) {
+    return <div>Error loading lectures</div>;
+  }
+
   return (
     <div className="student_lecture_container">
       <div className="side_bar">
@@ -71,12 +94,21 @@ const StudentLecture = () => {
             </div>
           </div>
           <div className="lecture_video_container">
-            <div className="lecture_video"></div>
-            <div className="lecture_video"></div>
-            <div className="lecture_video"></div>
-            <div className="lecture_video"></div>
-            <div className="lecture_video"></div>
-            <div className="lecture_video"></div>
+            {mainLectures &&
+              mainLectures.lectures &&
+              mainLectures.lectures.map((el, idx) => (
+                <div className="lecture_video" key={idx}>
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={getYoutubeEmbedUrl(el.links)}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title={el.title}
+                  ></iframe>
+                </div>
+              ))}
           </div>
         </div>
       </div>
