@@ -32,7 +32,7 @@ public class CurriculumEnrollDto {
   "type": "NCP",
   "startDate": "2024-02-22",
   "endDate": "2024-10-22",
-  "color": "blue"
+  "color": "#ASFSAF"
 }
 
 강사 등록 시
