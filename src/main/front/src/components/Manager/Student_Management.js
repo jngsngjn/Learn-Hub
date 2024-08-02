@@ -65,22 +65,23 @@ const StudentManagement = () => {
   const handleAddStudent = async () => {
     try {
       const token = getToken();
-      console.log('토큰:', token);
+      const formData = new FormData();
 
-      const studentData = {
-        name: newStudent.name,
-        gender: newStudent.gender,
-        email: newStudent.email,
-        phone: newStudent.phone,
-        curriculumFullName: `${newStudent.curriculum} ${newStudent.generation}`
-      };
+      formData.append('file', selectedFile);
+      formData.append('name', newStudent.name);
+      formData.append('gender', newStudent.gender);
+      formData.append('email', newStudent.email);
+      formData.append('phone', newStudent.phone);
+      formData.append('curriculum', newStudent.curriculum);
+      formData.append('generation', newStudent.generation);
 
-      console.log('전송할 학생 데이터:', studentData);
-
-      const response = await axios.post('/managers/manage-students/enroll', studentData, {
-        headers: { access: token },
+      const response = await axios.post('/managers/manage-students/enroll-file', formData, {
+        headers: {
+          access: token,
+          'Content-Type': 'multipart/form-data'
+        },
       });
-      console.log('Response:', response);
+
       if (response.status === 200) {
         setIsModalOpen(false);
         fetchStudents();
@@ -88,9 +89,10 @@ const StudentManagement = () => {
         console.error('학생 등록 실패');
       }
     } catch (error) {
-      console.error('이건 오류메시지:', error);
+      console.error('학생 등록 에러:', error);
     }
   };
+
 
   const handleFileUpload = async () => {
     if (!selectedFile) {
@@ -270,7 +272,6 @@ const StudentManagement = () => {
           <div className="student-modal-actions">
             <button className="student-modal-button" onClick={handleAddStudent}>학생 등록</button>
             <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
-            <button className="student-modal-button" onClick={handleFileUpload}>파일 업로드</button>
           </div>
         </div>
       </Modal>
