@@ -8,10 +8,12 @@ function Register() {
   const nameFromState = location.state?.name || '';
   const emailFromState = location.state?.email || '';
   const phoneFromState = location.state?.phone || '';
+  const genderFromState = location.state?.gender || '';
 
   const [name, setName] = useState(nameFromState);
   const [email, setEmail] = useState(emailFromState);
   const [phone, setPhone] = useState(phoneFromState);
+  const [gender, setGender] = useState(genderFromState);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

@@ -31,8 +31,9 @@ function LoginEmail() {
     try {
       const response = await axios.post('http://localhost:8080/code-verify', { email, code: verificationCode });
       if (response.status === 200) {
-        const { name, phone } = response.data;
-        navigate('/signup', { state: { email, name, phone } });
+        const { name, phone, gender } = response.data; // gender 추가
+        console.log('Received data:', { email, name, phone, gender }); // 콘솔에 출력
+        navigate('/signup', { state: { email, name, phone, gender } }); // gender 전달
       } else {
         swal({
           icon: 'error',
