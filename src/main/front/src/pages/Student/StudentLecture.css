@@ -8,7 +8,7 @@
 
 /* 사이드 바 스타일 */
 .side_bar {
-  width: 515px;
+  width: 514px;
   padding: 3em;
   background-color: #fff;
   border-right: 0.0625em solid #a7d7c5;
@@ -19,7 +19,7 @@
 .main_container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 1300px;
   padding: 100px 68px 75px 68px;
   background-color: #fff;
   box-shadow: 0 0 0.625em rgba(0, 0, 0, 0.1);
@@ -54,7 +54,8 @@
 
 .board_container {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: flex-start;
   padding: 75px 0 75px 0;
   gap: 50px;
   border-bottom: 1px solid gray;
@@ -79,13 +80,18 @@
 
 .go_to_show_more_page {
   font-size: 24px;
+  cursor: pointer;
 }
+
 .inquiry_list_container,
 .subject_list_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 599px;
-  /* border: 1px solid black; */
   margin-top: 50px;
 }
+
 /* 과목 게시판 내부 */
 .subject_list {
   width: 100%;
@@ -127,6 +133,7 @@
 
 .inquiry_title_box {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   font-size: 15px;
 }
@@ -140,14 +147,28 @@
 
 .inquiry_content_box {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-.inquiry_list_title {
-  font-size: 15px;
+.inquiry_subject_name {
+  font-size: 20px;
 }
-.inquiry_text_content {
+
+.inquiry_list_title {
+  width: 340px;
   font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inquiry_text_content {
+  width: 340px;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 강의 영상  */
@@ -189,19 +210,19 @@
 }
 
 .lecture_video_container {
-  width: 1400px; /*피그마는 1200px 인데 좁아보여서 바꿔봄*/
+  width: 1100px; /*피그마는 1200px 인데 좁아보여서 바꿔봄*/
   height: 453px;
-  margin: 75px 25px 0 25px;
+  margin: 75px 0;
   display: grid;
   justify-items: center;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 65px 75px;
+  gap: 50px;
 }
 
 .lecture_video {
-  width: 400px; /*피그마는 350px 188.86px*/
-  height: 210px;
+  width: 340px; /*피그마는 350px 188.86px*/
+  height: 200px;
 }
 
 .lecture_video iframe {

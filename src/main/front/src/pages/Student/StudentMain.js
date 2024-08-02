@@ -10,10 +10,6 @@ import { useNavigate } from "react-router-dom";
 const StudentMain = () => {
   const navigate = useNavigate();
 
-  const handleMovePage = (url) => {
-    navigate(url);
-  };
-
   const {
     data: recentLecture,
     loading: recentLectureLoading,
@@ -86,7 +82,7 @@ const StudentMain = () => {
                 <h3 className="components_title">최근 학습 강의</h3>
                 <span
                   className="go_to_lecture_page navigate_button"
-                  onClick={() => handleMovePage("/students/lecture")}
+                  onClick={() => navigate("/students/lecture")}
                 >
                   학습 목록 ⟩
                 </span>

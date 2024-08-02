@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import "./StudentLecture.css";
 import useGetFetch from "../../hooks/useGetFetch";
+import { useEffect } from "react";
 
 const StudentLecture = () => {
   const navigate = useNavigate();
 
-  function getYoutubeEmbedUrl(url) {
-    const videoId = url.split("v=")[1]?.split("&")[0];
-    return `https://www.youtube.com/embed/${videoId}`;
-  }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const {
     data: mainLectures,
@@ -16,13 +16,41 @@ const StudentLecture = () => {
     error: mainLecturesError,
   } = useGetFetch("/data/student/mainLecture/mainLecture.json", "");
 
-  if (mainLecturesLoading) {
-    return <div>Loading...</div>;
+  const {
+    data: subjectBoards,
+    loading: subjectBoardsLoading,
+    error: subjectBoardsError,
+  } = useGetFetch("/data/student/mainLecture/subjectBoard.json", []);
+
+  const {
+    data: inquiryBoards,
+    loading: inquiryBoardsLoading,
+    error: inquiryBoardsError,
+  } = useGetFetch("/data/student/mainLecture/inquiryBoard.json", []);
+
+  if (mainLecturesLoading || subjectBoardsLoading || inquiryBoardsLoading) {
+    return <div>데이터를 불러오는 중입니다.</div>;
   }
 
-  if (mainLecturesError) {
-    return <div>Error loading lectures</div>;
+  if (mainLecturesError || subjectBoardsError || inquiryBoardsError) {
+    return <div>데이터를 불러오는데 오류가 발생했습니다.</div>;
   }
+
+  const getYoutubeEmbedUrl = (url) => {
+    const videoId = url.split("v=")[1]?.split("&")[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  };
+
+  const formatFilePath = (filePath) => {
+    const lastDotIndex = filePath.lastIndexOf(".");
+    const fileName = filePath.slice(
+      Math.max(0, lastDotIndex - 5),
+      lastDotIndex
+    );
+
+    const fileExtension = filePath.slice(lastDotIndex);
+    return `${fileName}${fileExtension}`;
+  };
 
   return (
     <div className="student_lecture_container">
@@ -34,11 +62,13 @@ const StudentLecture = () => {
           <img
             className="lecture_type_image"
             alt="과목이미지"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv_al5pqaDdDHWONxiCA-B1mjpNdbA8fEe8g&s"
+            src={mainLectures.imgPath}
           />
           <div className="lecture_description_box">
-            <h1 className="lecture_type_name">JAVA</h1>
-            <p className="lecture_type_description">아따 대충 자바요</p>
+            <h1 className="lecture_type_name">{mainLectures.title}</h1>
+            <p className="lecture_type_description">
+              {mainLectures.description}
+            </p>
           </div>
         </div>
         {/* 게시판  */}
@@ -46,42 +76,57 @@ const StudentLecture = () => {
           <div className="subject_board_container">
             <div className="board_title_box">
               <h3 className="board_title">과목 게시판</h3>
-              <span className="go_to_show_more_page">더보기 ⟩</span>
+              <span
+                className="go_to_show_more_page"
+                onClick={() => navigate("students/subjectBoard")}
+              >
+                더보기 ⟩
+              </span>
             </div>
             <div className="subject_list_container">
-              <div className="subject_list">
-                <div className="subject_title_box">
-                  <h4 className="subject_title">1주차 수업 자로</h4>
-                  <span className="subject_write_date">2024.08.01</span>
+              {subjectBoards.slice(0, 4).map((el, idx) => (
+                <div className="subject_list" key={idx}>
+                  <div className="subject_title_box">
+                    <h4 className="subject_title">{el.title}</h4>
+                    <span className="subject_write_date">{el.writeDate}</span>
+                  </div>
+                  <div className="subject_content_box">
+                    <span className="subject_text_content">{el.content}</span>
+                    <span className="subject_file_name">{el.filePath}</span>
+                  </div>
                 </div>
-                <div className="subject_content_box">
-                  <span className="subject_text_content">
-                    1주차 수업 자료입니다.
-                  </span>
-                  <span className="subject_file_name">1주차 수업자료.zip</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="inquiry_board_container">
             <div className="board_title_box">
               <h3 className="board_title">질문 게시판</h3>
-              <span className="go_to_show_more_page">더보기 ⟩</span>
+              <span
+                className="go_to_show_more_page"
+                onClick={() => navigate("students/inquiryBoard")}
+              >
+                더보기 ⟩
+              </span>
             </div>
             <div className="inquiry_list_container">
-              <div className="inquiry_list">
-                <div className="inquiry_title_box">
-                  <div className="inquiry_type">질문</div>
-                  <h4 className="inquiry_list_title">1주차 수업 자로</h4>
-                  <span className="inquiry_write_date">2024.08.01</span>
+              {inquiryBoards.slice(0, 4).map((el, idx) => (
+                <div className="inquiry_list" key={idx}>
+                  <div className="inquiry_title_box">
+                    <div className="inquiry_type">{el.type}</div>
+                    <h4 className="inquiry_list_title">{el.content}</h4>
+                    <span className="inquiry_write_date">{el.writeDate}</span>
+                  </div>
+                  <div className="inquiry_content_box">
+                    <span className="inquiry_subject_name">
+                      {el.subjectName}
+                    </span>
+                    <span className="inquiry_text_content">{el.content} </span>
+                    <span className="inquiry_file_name">
+                      {formatFilePath(el.filePath)}
+                    </span>
+                  </div>
                 </div>
-                <div className="inquiry_content_box">
-                  <span className="inquiry_text_content">
-                    1주차 수업 자료입니다.
-                  </span>
-                  <span className="inquiry_file_name">1주차 수업자료.zip</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -94,6 +139,7 @@ const StudentLecture = () => {
             </div>
           </div>
           <div className="lecture_video_container">
+            {/* api 요청 회수때문에 주석처리 */}
             {mainLectures &&
               mainLectures.lectures &&
               mainLectures.lectures.map((el, idx) => (
