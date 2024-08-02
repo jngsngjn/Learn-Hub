@@ -9,11 +9,10 @@ import project.homelearn.entity.survey.SurveyContent;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.repository.survey.SurveyContentRepository;
 import project.homelearn.repository.user.UserRepository;
-
 import static project.homelearn.entity.survey.QuestionType.RATING;
 import static project.homelearn.entity.survey.QuestionType.TEXT;
-import static project.homelearn.entity.user.Role.ROLE_MANAGER;
 import static project.homelearn.entity.user.Role.ROLE_TEACHER;
+import static project.homelearn.entity.user.Role.ROLE_MANAGER;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -47,7 +46,6 @@ public class DataInitializer implements CommandLineRunner {
             teacher.setRole(ROLE_TEACHER);
             userRepository.save(teacher);
         }
-
         if (surveyContentRepository.count() == 0) {
             SurveyContent survey1 = new SurveyContent("교육 내용에 대한 이해도", RATING);
             SurveyContent survey2 = new SurveyContent("강사님의 교육 열의 및 준비성의 만족도", RATING);
@@ -63,6 +61,5 @@ public class DataInitializer implements CommandLineRunner {
             surveyContentRepository.save(survey5);
             surveyContentRepository.save(survey6);
         }
-
     }
 }

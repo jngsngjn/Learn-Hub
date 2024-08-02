@@ -182,6 +182,18 @@ public class StudentQuestionBoardService {
         return true;
     }
 
+    //댓글 수 증가
+    public void incrementCommentCount(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        questionBoard.setCommentCount(questionBoard.getCommentCount() + 1);
+    }
+
+    //댓글 수 감소
+    public void decrementCommentCount(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        questionBoard.setCommentCount(questionBoard.getCommentCount() - 1);
+    }
+
 
     //질문 게시판 글 스크랩 = 나도 궁금해
 

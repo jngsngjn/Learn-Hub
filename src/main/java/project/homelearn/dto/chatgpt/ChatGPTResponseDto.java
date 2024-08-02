@@ -17,6 +17,6 @@ public class ChatGPTResponseDto {
     @NoArgsConstructor
     public static class Choice {
         private int index;
-        private StudentQuestionDto question;
+        private StudentQuestionDto message;
     }
 }
