@@ -64,6 +64,7 @@ public class StudentQuestionBoardController {
                                           @Valid @RequestBody CommentWriteDto commentDto) {
         String username = principal.getName();
         studentQuestionBoardService.writeComment(questionBoardId, username, commentDto);
+        studentQuestionBoardService.incrementCommentCount(questionBoardId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -89,6 +90,7 @@ public class StudentQuestionBoardController {
         boolean result = studentQuestionBoardService.deleteComment(questionBoardId, commentId, username);
 
         if (result) {
+            studentQuestionBoardService.decrementCommentCount(questionBoardId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -98,9 +100,11 @@ public class StudentQuestionBoardController {
     @PostMapping("/{questionBoardId}/comments/{commentId}")
     public ResponseEntity<?> writeReplyComment(Principal principal,
                                                @PathVariable("commentId") Long commentId,
-                                               @Valid @RequestBody CommentWriteDto commentDto) {
+                                               @Valid @RequestBody CommentWriteDto commentDto,
+                                               @PathVariable("questionBoardId")Long questionBoardId) {
         String username = principal.getName();
         studentQuestionBoardService.writeReplyComment(commentId, username, commentDto);
+        studentQuestionBoardService.incrementCommentCount(questionBoardId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -119,13 +123,14 @@ public class StudentQuestionBoardController {
 
     //대댓글 삭제
     @DeleteMapping("/{questionBoardId}/comments/{commentId}/replies/{replyId}")
-    public ResponseEntity<?> deleteReplyComment(@PathVariable("questionBoardId") Long boardId,
+    public ResponseEntity<?> deleteReplyComment(@PathVariable("questionBoardId") Long questionBoardId,
                                                 @PathVariable("replyId") Long replyId,
                                                 Principal principal) {
         String username = principal.getName();
-        boolean result = studentQuestionBoardService.deleteComment(boardId, replyId, username);
+        boolean result = studentQuestionBoardService.deleteComment(questionBoardId, replyId, username);
 
         if (result) {
+            studentQuestionBoardService.decrementCommentCount(questionBoardId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentQuestionDto {
     private String role;
-    private String question;
+    private String content;
 }
