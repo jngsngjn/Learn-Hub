@@ -57,8 +57,8 @@ const StudentManagement = () => {
 
   const filteredStudents = students.filter(student =>
     student.name.includes(searchTerm) &&
-    (selectedCourse === '전체' || student.curriculum === selectedCourse) &&
-    (selectedGeneration === '전체' || student.generation === selectedGeneration)
+    (selectedCourse === '전체' || student.curriculumName === selectedCourse) &&
+    (selectedGeneration === '전체' || student.curriculumTh === selectedGeneration)
   );
 
   const handleAddStudent = async () => {
@@ -168,18 +168,18 @@ const StudentManagement = () => {
           </thead>
           <tbody>
             {filteredStudents.map((student, index) => (
-              <tr key={index} onClick={() => handleRowClick(student.id)} className={selectedStudents.includes(student.id) ? 'selected' : ''}>
+              <tr key={index} onClick={() => handleRowClick(student.studentId)} className={selectedStudents.includes(student.studentId) ? 'selected' : ''}>
                 <td>
-                  <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => handleCheckboxChange(student.id)} onClick={(e) => e.stopPropagation()} />
+                  <input type="checkbox" checked={selectedStudents.includes(student.studentId)} onChange={() => handleCheckboxChange(student.studentId)} onClick={(e) => e.stopPropagation()} />
                 </td>
-                <td>{student.id}</td>
-                <td>{student.curriculum}</td>
-                <td>{student.generation}</td>
+                <td>{student.studentId}</td>
+                <td>{student.curriculumName}</td>
+                <td>{student.curriculumTh}</td>
                 <td>{student.name}</td>
-                <td>{student.gender}</td>
+                <td>{student.gender === 'MALE' ? '남' : '여'}</td>
                 <td>{student.email}</td>
                 <td>{student.phone}</td>
-                <td>{student.attendance === '출석' ? <span className="status present">✔</span> : <span className="status absent">✘</span>}</td>
+                <td>{student.isAttend ? <span className="status present">✔</span> : <span className="status absent">✘</span>}</td>
               </tr>
             ))}
           </tbody>
