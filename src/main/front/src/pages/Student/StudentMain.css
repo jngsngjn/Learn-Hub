@@ -1,4 +1,4 @@
-.page_body {
+.student_dashboard_body {
   display: flex;
   flex-direction: row;
   width: 100vw;
@@ -9,7 +9,7 @@
 /* 사이드 바 스타일 */
 
 .side_bar {
-  width: 515px;
+  width: 514px;
   padding: 3em;
   background-color: #fff;
   border-right: 0.0625em solid #a7d7c5;
@@ -18,18 +18,18 @@
 
 /* 메인 스타일 */
 
-.main_container {
+.dashboard_main_container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding: 36px;
+  width: 1400px;
+  padding: 100px 36px;
   background-color: #fff;
   box-shadow: 0 0 0.625em rgba(0, 0, 0, 0.1);
 }
 
 .page_title {
   font-size: 48px;
-  padding: 50px 36px 50px 36px;
+  padding: 0 0 50px 0;
   color: #74b49b;
 }
 
@@ -50,8 +50,9 @@
 
 .divide_right_container {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 50px;
 }
 
 /* .left_container,
@@ -63,7 +64,7 @@
 
 .recent_lecture_container {
   width: 620px;
-  height: 23.125em;
+  height: 370px;
   padding: 0.9375em;
   border: 0.0625em solid #74b49b;
   border-radius: 0.5em;
@@ -267,11 +268,12 @@
 /* 학생 메인페이지 오른쪽 스타일 */
 
 .calander-container {
-  width: 100%;
+  width: 620px;
+
   background-color: #f4f9f4;
   border: 0.0625em solid #74b49b;
   border-radius: 0.5em;
-  max-width: 620px;
+  /* max-width: 620px; */
   height: 46.875em;
   text-align: center;
   padding: 1.875em;
@@ -299,13 +301,14 @@
   margin-top: 50px;
 }
 
-.subject_list_container {
+.dashboard_subject_list_container {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   margin: 1em 0;
 }
 
-.list_box {
+.dashboard_subject_list_box {
   width: 250px;
   height: 390px;
   padding: 1.7em 1em;

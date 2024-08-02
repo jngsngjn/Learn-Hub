@@ -69,11 +69,11 @@ const StudentMain = () => {
   }
 
   return (
-    <div className="page_body">
+    <div className="student_dashboard_body">
       <div className="side_bar">
         <h3>옆 카테고리 컴포넌트 자리</h3>
       </div>
-      <div className="main_container">
+      <div className="dashboard_main_container">
         <h1 className="page_title">대시보드</h1>
         <div className="divide_right_container">
           <div className="left_container">
@@ -117,7 +117,9 @@ const StudentMain = () => {
             <div className="question_container">
               <div className="title_box">
                 <h3 className="components_title">질문사항</h3>
-                <span className="go_to_subject_page">더보기 ⟩</span>
+                <span className="go_to_inquiry_page navigate_button">
+                  더보기 ⟩
+                </span>
               </div>
               <div className="question_list_container">
                 {question?.map((el, idx) => (
@@ -147,7 +149,9 @@ const StudentMain = () => {
             <div className="badge_container">
               <div className="title_box">
                 <h3 className="components_title">배지</h3>
-                <span className="go_to_badge_page">더보기 ⟩</span>
+                <span className="go_to_badge_page navigate_button">
+                  더보기 ⟩
+                </span>
               </div>
               <div className="badge_list_box">
                 {badge.map((el, idx) => (
@@ -171,11 +175,13 @@ const StudentMain = () => {
             <div className="subject_container">
               <div className="title_box">
                 <h3 className="components_title"> 과제 목록</h3>
-                <span>더보기</span>
+                <span className="go_to_subject_page navigate_button">
+                  더보기
+                </span>
               </div>
-              <div className="subject_list_container">
+              <div className="dashboard_subject_list_container">
                 {subject.map((el, idx) => (
-                  <div className="list_box" key={idx}>
+                  <div className="dashboard_subject_list_box" key={idx}>
                     <h3>과제</h3>
                     <h4 className="subject_name">{el.title}</h4>
                     <p className="subject_description">{el.content}</p>
@@ -190,7 +196,9 @@ const StudentMain = () => {
                       <p className="subejct_deadline">
                         ~ {el.timeout[0]?.timeline}
                       </p>
-                      <p className="go_to_subject_page">자세히 보기 ⟩</p>
+                      <p className="go_to_subject_page navigate_button">
+                        자세히 보기 ⟩
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -208,7 +216,9 @@ const StudentMain = () => {
                     <span className="notice_date">{el.writeDate}</span>
                   </div>
                 ))}
-                <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
+                <span className="go_to_admin_notice_page navigate_button">
+                  자세히 보기 ⟩
+                </span>
               </div>
               <div className="teacher_notice_container">
                 <h3 className="notice_components_title">강사 공지사항</h3>
@@ -221,7 +231,9 @@ const StudentMain = () => {
                     <span className="notice_date">{notice.writeDate}</span>
                   </div>
                 ))}
-                <span className="go_to_teacher_notice_page">자세히 보기 ⟩</span>
+                <span className="go_to_teacher_notice_page navigate_button">
+                  자세히 보기 ⟩
+                </span>
               </div>
             </div>
           </div>
