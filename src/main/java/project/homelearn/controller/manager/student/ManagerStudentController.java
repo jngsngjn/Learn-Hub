@@ -70,7 +70,7 @@ public class ManagerStudentController {
      * 엑셀 파일로 학생 대량 등록
      */
     @PostMapping("/manage-students/enroll-file")
-    public ResponseEntity<?> enrollStudentByFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> enrollStudentByFile(MultipartFile file) {
         boolean result = excelService.importStudentFile(file);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -78,7 +78,6 @@ public class ManagerStudentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
 
     /**
      * Author : 정성진
