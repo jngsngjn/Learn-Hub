@@ -1,12 +1,19 @@
 import React from "react";
 import "./StudentMain.css";
-import RandomVideo from "../../components/Lectures/RandomVideo";
+// import RandomVideo from "../../components/Lectures/RandomVideo";
 //import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetFetch from "../../hooks/useGetFetch";
+import { useNavigate } from "react-router-dom";
 
 const StudentMain = () => {
+  const navigate = useNavigate();
+
+  const handleMovePage = (url) => {
+    navigate(url);
+  };
+
   const {
     data: recentLecture,
     loading: recentLectureLoading,
@@ -75,7 +82,15 @@ const StudentMain = () => {
         <div className="divide_right_container">
           <div className="left_container">
             <div className="recent_lecture_container">
-              <h3 className="components_title">최근 학습 강의</h3>
+              <div className="title_box">
+                <h3 className="components_title">최근 학습 강의</h3>
+                <span
+                  className="go_to_lecture_page navigate_button"
+                  onClick={() => handleMovePage("/students/lecture")}
+                >
+                  학습 목록 ⟩
+                </span>
+              </div>
               <div className="recent_contents_box">
                 <h3 className="recent_lecture_type">{recentLecture.subject}</h3>
                 <div className="recent_video_box">

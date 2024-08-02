@@ -10,25 +10,29 @@ import ManagerMain from "./pages/Manager/ManagerMain";
 import ViewBoardImage from "./components/Test/ViewBoardImage";
 import ImageBoard from "./components/Editor/ImageBoard";
 import StudentMain from "./pages/Student/StudentMain";
+import StudentLecture from "./pages/Student/StudentLecture";
+import StudentSubject from "./pages/Student/StudentSubject";
 
 const Router = () => {
-    return (
-        <BrowserRouter>
-            <Nav/>
-            <Routes>
-                <Route path="/" element={<Navigate replace to="/login"/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/signup" element={<Signup/>}/>
-                <Route path="/email" element={<LoginEmail/>}/>
-                <Route path="/main" element={<Main/>}/>
-                <Route path="/managers/*" element={<ManagerMain/>}/>
-                <Route path="/students/*" elememnt={<StudentMain/>}/>
-                <Route path="/image-board" element={<ImageBoard/>}/>
-                <Route path="/test-view" element={<ViewBoardImage/>}/>
-            </Routes>
-            <Footer/>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/email" element={<LoginEmail />} />
+        <Route path="/main" element={<Main />} />
+        <Route path="/managers/*" element={<ManagerMain />} />
+        <Route path="/students" element={<StudentMain />} />
+        <Route path="/students/lecture" element={<StudentLecture />} />
+        <Route path="/students/subject" element={<StudentSubject />} />
+        <Route path="/image-board" element={<ImageBoard />} />
+        <Route path="/test-view" element={<ViewBoardImage />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
+  );
 };
 
 export default Router;

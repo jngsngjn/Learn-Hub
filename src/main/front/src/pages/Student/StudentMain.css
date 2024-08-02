@@ -33,6 +33,16 @@
   color: #74b49b;
 }
 
+.title_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigate_button {
+  cursor: pointer;
+}
+
 .show-more-button {
   font-size: 18px;
   cursor: pointer;
@@ -287,12 +297,6 @@
   border-radius: 10px;
   padding: 2em;
   margin-top: 50px;
-}
-
-.title_box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .subject_list_container {
