@@ -6,26 +6,26 @@ import './Student_Management.css';
 axios.defaults.baseURL = 'http://localhost:8080';
 
 const StudentManagement = () => {
-  const [students, setStudents] = useState([]); // 학생 목록
-  const [searchTerm, setSearchTerm] = useState(''); // 검색어
-  const [selectedCourse, setSelectedCourse] = useState('전체'); // 선택 교육 과정
-  const [selectedGeneration, setSelectedGeneration] = useState('전체'); // 선택된 기수
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림
+  const [students, setStudents] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCourse, setSelectedCourse] = useState('전체');
+  const [selectedGeneration, setSelectedGeneration] = useState('전체');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [newStudent, setNewStudent] = useState({
     name: '',
     gender: '',
     email: '',
     phone: '',
-    curriculum: '', // 추가
-    generation: '', // 추가
+    curriculum: '',
+    generation: '',
     curriculumFullName: '',
   });
-  const [selectedFile, setSelectedFile] = useState(null); // 선택된 파일
-  const [selectedStudents, setSelectedStudents] = useState([]); // 선택된 학생 번호
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const getToken = () => localStorage.getItem('access-token');
 
   useEffect(() => {
-    fetchStudents(); //  학생 목록 가져오기
+    fetchStudents();
   }, []);
 
   const fetchStudents = async () => {
@@ -37,38 +37,35 @@ const StudentManagement = () => {
       setStudents(response.data.content || []);
     } catch (error) {
       console.error('응답에러:', error);
-      setStudents([]); // 오류 발생 시 빈 배열로 설정
+      setStudents([]);
     }
   };
 
-  const handleSearch = (event) => setSearchTerm(event.target.value); // 검색어 변경
+  const handleSearch = (event) => setSearchTerm(event.target.value);
   const handleCourseChange = (course) => {
-    const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS 데브옵스 과정';
+    const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS';
     setSelectedCourse(course);
     setNewStudent({ ...newStudent, curriculum: fullCourseName });
-  }; // 교육 과정 변경
+  };
 
-  const handleGenerationChange = (event) => setSelectedGeneration(event.target.value); // 기수 변경
+  const handleGenerationChange = (event) => setSelectedGeneration(event.target.value);
   const handleRefresh = () => {
     setSearchTerm('');
     setSelectedCourse('전체');
     setSelectedGeneration('전체');
-  }; // 검색 및 필터 초기화
+  };
 
-  // 필터링된 학생 목록
   const filteredStudents = students.filter(student =>
     student.name.includes(searchTerm) &&
     (selectedCourse === '전체' || student.curriculum === selectedCourse) &&
     (selectedGeneration === '전체' || student.generation === selectedGeneration)
   );
 
-  // 학생 추가
   const handleAddStudent = async () => {
     try {
       const token = getToken();
       console.log('토큰:', token);
 
-      // 데이터 형식 변환
       const studentData = {
         name: newStudent.name,
         gender: newStudent.gender,
@@ -94,18 +91,14 @@ const StudentManagement = () => {
     }
   };
 
-  // 성별 선택 핸들러
   const handleGenderChange = (gender) => {
     setNewStudent({ ...newStudent, gender: gender === '남' ? 'MALE' : 'FEMALE' });
   };
 
-  // 입력 변경
   const handleInputChange = (e) => setNewStudent({ ...newStudent, [e.target.name]: e.target.value });
 
-  // 파일 선택
   const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
 
-  // 학생 삭제
   const handleDeleteStudent = async () => {
     try {
       const token = getToken();
@@ -122,17 +115,14 @@ const StudentManagement = () => {
     }
   };
 
-  // 체크박스 변경
   const handleCheckboxChange = (studentId) => setSelectedStudents(
     selectedStudents.includes(studentId)
       ? selectedStudents.filter(id => id !== studentId)
       : [...selectedStudents, studentId]
   );
 
-  // 행 클릭
   const handleRowClick = (studentId) => handleCheckboxChange(studentId);
 
-  // 파일 제거
   const handleRemoveFile = () => setSelectedFile(null);
 
   return (
@@ -147,6 +137,8 @@ const StudentManagement = () => {
             <option value="1기">1기</option>
             <option value="2기">2기</option>
             <option value="3기">3기</option>
+            <option value="4기">4기</option>
+            <option value="5기">5기</option>
           </select>
         </div>
         <div className="search-container">
@@ -217,7 +209,7 @@ const StudentManagement = () => {
           </div>
           <div className="course-selection">
             <button className={`course-button ${newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: '네이버 클라우드 데브옵스 과정' })}>네이버 클라우드 데브옵스 과정</button>
-            <button className={`course-button ${newStudent.curriculum === 'AWS 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS 데브옵스 과정' })}>AWS 데브옵스 과정</button>
+            <button className={`course-button ${newStudent.curriculum === 'AWS' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS' })}>AWS</button>
           </div>
           <div className="generation-selection">
             <select name="generation" value={newStudent.generation} onChange={handleInputChange}>
