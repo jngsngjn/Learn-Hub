@@ -8,12 +8,12 @@ const useGetFetch = (url, initialState) => {
 
   useEffect(() => {
     axios
-      // .get(url, {
+      // .get( url, {
       //   headers: {
-      //     Authorization: `Bearer ${access}`,
+      //     acceess: `Bearer ${access}`,
       //   },
       // })
-      .get(url)
+      .get("http://localhost:3000/" +url)
       .then((res) => {
         setData(res.data);
       })

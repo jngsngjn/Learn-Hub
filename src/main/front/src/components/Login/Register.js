@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import './Register.css';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import "./Register.css";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Register() {
-  const [name, setName] = useState('안성민');
-  const [phone, setPhone] = useState('010-9722-5739');
-  const [email, setEmail] = useState('smahn4069@gmail.com');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const [usernameValid, setUsernameValid] = useState(false);
@@ -36,49 +36,59 @@ function Register() {
   }, [password]);
 
   const validateUsername = (username) => {
-    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z\d]{6,12}$/; /*{영문}{숫자} 6~12자리 */
+    const usernameRegex =
+      /^(?=.*[a-zA-Z])[a-zA-Z\d]{6,12}$/; /*{영문}{숫자} 6~12자리 */
     setUsernameValid(usernameRegex.test(username));
   };
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/; /*{대문}{특수문자}{영문} 10~18자리 */
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/; /*{대문}{특수문자}{영문} 10~18자리 */
     setPasswordValid(passwordRegex.test(password));
   };
 
   const checkUsernameAvailability = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/register/id-duplicate-check', { username });
+      const response = await axios.post(
+        "http://localhost:8080/register/id-duplicate-check",
+        { username }
+      );
       setUsernameAvailable(response.status === 200);
     } catch (error) {
-      console.error('아이디 중복 에러:', error);
+      console.error("아이디 중복 에러:", error);
       setUsernameAvailable(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!passwordMatch || !usernameAvailable || !usernameValid || !passwordValid) {
+    if (
+      !passwordMatch ||
+      !usernameAvailable ||
+      !usernameValid ||
+      !passwordValid
+    ) {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/register', {
+      const response = await axios.post("http://localhost:8080/register", {
         name,
         phone,
         email,
         username,
-        password
+        password,
       });
       if (response.status === 200) {
-        console.log('회원가입 성공');
-        navigate('/login');
+        console.log("회원가입 성공");
+        navigate("/login");
       }
     } catch (error) {
-      console.error('회원가입 실패:', error);
+      console.error("회원가입 실패:", error);
     }
   };
 
   const handlePreviousStep = () => {
-    navigate('/email');
+    navigate("/email");
   };
 
   return (
@@ -86,7 +96,9 @@ function Register() {
       <form onSubmit={handleSubmit}>
         <h2 className="signup-title">회원가입</h2>
         <div className="signup-input-group">
-          <label htmlFor="name" className="signup-label">이름</label>
+          <label htmlFor="name" className="signup-label">
+            이름
+          </label>
           <div className="signup-input-wrapper">
             <input
               className="signup-input"
@@ -99,7 +111,9 @@ function Register() {
           </div>
         </div>
         <div className="signup-input-group">
-          <label htmlFor="phone" className="signup-label">전화번호</label>
+          <label htmlFor="phone" className="signup-label">
+            전화번호
+          </label>
           <div className="signup-input-wrapper">
             <input
               className="signup-input"
@@ -112,7 +126,9 @@ function Register() {
           </div>
         </div>
         <div className="signup-input-group">
-          <label htmlFor="email" className="signup-label">이메일</label>
+          <label htmlFor="email" className="signup-label">
+            이메일
+          </label>
           <div className="signup-input-wrapper">
             <input
               className="signup-input"
@@ -125,7 +141,9 @@ function Register() {
           </div>
         </div>
         <div className="signup-input-group">
-          <label htmlFor="username" className="signup-label">아이디</label>
+          <label htmlFor="username" className="signup-label">
+            아이디
+          </label>
           <input
             className="signup-input"
             type="text"
@@ -136,17 +154,25 @@ function Register() {
           />
           <div className="user-id-check">
             {username && !usernameValid && (
-              <span className="not-available">아이디는 영문자와 숫자를 포함하여 6-12자리여야 합니다</span>
+              <span className="not-available">
+                아이디는 영문자와 숫자를 포함하여 6-12자리여야 합니다
+              </span>
             )}
             {username && usernameValid && (
-              <span className={usernameAvailable ? 'available' : 'not-available'}>
-                {usernameAvailable ? '사용 가능한 아이디입니다' : '이미 사용 중인 아이디입니다'}
+              <span
+                className={usernameAvailable ? "available" : "not-available"}
+              >
+                {usernameAvailable
+                  ? "사용 가능한 아이디입니다"
+                  : "이미 사용 중인 아이디입니다"}
               </span>
             )}
           </div>
         </div>
         <div className="signup-input-group">
-          <label htmlFor="password" className="signup-label">비밀번호</label>
+          <label htmlFor="password" className="signup-label">
+            비밀번호
+          </label>
           <input
             className="signup-input"
             type="password"
@@ -157,12 +183,16 @@ function Register() {
           />
           <div className="password-check">
             {password && !passwordValid && (
-              <span className="not-available">비밀번호는 대문자와 특수문자를 포함하여 10-18자리여야 합니다</span>
+              <span className="not-available">
+                비밀번호는 대문자와 특수문자를 포함하여 10-18자리여야 합니다
+              </span>
             )}
           </div>
         </div>
         <div className="signup-input-group">
-          <label htmlFor="confirm-password" className="signup-label">비밀번호 확인</label>
+          <label htmlFor="confirm-password" className="signup-label">
+            비밀번호 확인
+          </label>
           <input
             className="signup-input"
             type="password"
@@ -173,15 +203,25 @@ function Register() {
           />
           <div className="password-match-message">
             {confirmPassword && (
-              <span className={passwordMatch ? 'match' : 'no-match'}>
-                {passwordMatch ? '비밀번호가 일치합니다' : '비밀번호가 일치하지 않습니다'}
+              <span className={passwordMatch ? "match" : "no-match"}>
+                {passwordMatch
+                  ? "비밀번호가 일치합니다"
+                  : "비밀번호가 일치하지 않습니다"}
               </span>
             )}
           </div>
         </div>
         <div className="signup-button-group">
-          <button className="signup-prev-button" type="button" onClick={handlePreviousStep}>이전 단계</button>
-          <button className="signup-button" type="submit">회원가입</button>
+          <button
+            className="signup-prev-button"
+            type="button"
+            onClick={handlePreviousStep}
+          >
+            이전 단계
+          </button>
+          <button className="signup-button" type="submit">
+            회원가입
+          </button>
         </div>
       </form>
     </div>

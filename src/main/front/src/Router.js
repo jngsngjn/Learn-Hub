@@ -9,6 +9,7 @@ import LoginEmail from "./components/Login/Login_email";
 import ManagerMain from "./pages/Manager/ManagerMain";
 import ViewBoardImage from "./components/Test/ViewBoardImage";
 import ImageBoard from "./components/Editor/ImageBoard";
+import StudentMain from "./pages/Student/StudentMain";
 
 const Router = () => {
     return (
@@ -21,6 +22,7 @@ const Router = () => {
                 <Route path="/email" element={<LoginEmail/>}/>
                 <Route path="/main" element={<Main/>}/>
                 <Route path="/managers/*" element={<ManagerMain/>}/>
+                <Route path="/students/*" elememnt={<StudentMain/>}/>
                 <Route path="/image-board" element={<ImageBoard/>}/>
                 <Route path="/test-view" element={<ViewBoardImage/>}/>
             </Routes>
