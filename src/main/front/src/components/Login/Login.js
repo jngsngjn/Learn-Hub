@@ -36,7 +36,7 @@ function Login() {
             console.log(token);
             localStorage.setItem('access-token', token); // 토큰을 로컬 스토리지에 저장
             swal("로그인 성공", "성공적으로 로그인되었습니다.", "success");
-            navigate('/managers'); // 로그인 후 메인 페이지로 이동
+            navigate('/managers'); // 로그인 후 매니저페이지 로 이동 수정필요
          } else {
           swal("로그인 실패", "아이디 또는 비밀번호가 잘못되었습니다.", "error");
         }

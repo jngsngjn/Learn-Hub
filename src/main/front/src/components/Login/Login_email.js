@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
+import axios from 'axios';
 import './Login_email.css';
 
 function LoginEmail() {
@@ -7,16 +9,27 @@ function LoginEmail() {
   const [verificationCode, setVerificationCode] = useState('');
   const navigate = useNavigate();
 
-  const handleEmailVerification = () => {
-    console.log('이메일 인증 요청:', { email });
-  };
-
-  const handleCodeVerification = () => {
-    console.log('코드 인증 요청:', { verificationCode });
-  };
-
-  const handleNextStep = () => {
-    navigate('/signup');
+  const handleNextStep = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/code-verify', { email, code: verificationCode });
+      if (response.status === 200) {
+        const { name, phone } = response.data;
+        navigate('/signup', { state: { email, name, phone } });
+      } else {
+        swal({
+          icon: 'error',
+          title: '인증 오류',
+          text: '인증 코드가 올바르지 않습니다.',
+        });
+      }
+    } catch (error) {
+      console.error('인증 오류:', error);
+      swal({
+        icon: 'error',
+        title: '오류 발생',
+        text: '코드 인증 중 오류가 발생했습니다.',
+      });
+    }
   };
 
   const handlePreviousStep = () => {
@@ -50,7 +63,6 @@ function LoginEmail() {
               value={verificationCode}
               onChange={(e) => setVerificationCode(e.target.value)}
             />
-
           </div>
         </div>
         <div className="login-email-button-group">

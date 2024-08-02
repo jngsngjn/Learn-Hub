@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './Register.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 function Register() {
-  const [name, setName] = useState('안성민');
-  const [phone, setPhone] = useState('010-9722-5739');
-  const [email, setEmail] = useState('smahn4069@gmail.com');
+  const location = useLocation();
+  const emailFromState = location.state?.email || '';
+  const nameFromState = location.state?.name || '';
+  const phoneFromState = location.state?.phone || '';
+
+  const [name, setName] = useState(nameFromState);
+  const [phone, setPhone] = useState(phoneFromState);
+  const [email, setEmail] = useState(emailFromState);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,12 +41,12 @@ function Register() {
   }, [password]);
 
   const validateUsername = (username) => {
-    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z\d]{6,12}$/; /*{영문}{숫자} 6~12자리 */
+    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z\d]{6,12}$/;
     setUsernameValid(usernameRegex.test(username));
   };
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/; /*{대문}{특수문자}{영문} 10~18자리 */
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
     setPasswordValid(passwordRegex.test(password));
   };
 
