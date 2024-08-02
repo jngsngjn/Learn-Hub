@@ -42,13 +42,14 @@ const StudentManagement = () => {
   };
 
   const handleSearch = (event) => setSearchTerm(event.target.value);
+
   const handleCourseChange = (course) => {
-    const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS';
-    setSelectedCourse(course);
-    setNewStudent({ ...newStudent, curriculum: fullCourseName });
+    const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS 데브옵스 과정';
+    setSelectedCourse(fullCourseName);
   };
 
   const handleGenerationChange = (event) => setSelectedGeneration(event.target.value);
+
   const handleRefresh = () => {
     setSearchTerm('');
     setSelectedCourse('전체');
@@ -58,7 +59,7 @@ const StudentManagement = () => {
   const filteredStudents = students.filter(student =>
     student.name.includes(searchTerm) &&
     (selectedCourse === '전체' || student.curriculumName === selectedCourse) &&
-    (selectedGeneration === '전체' || student.curriculumTh === selectedGeneration)
+    (selectedGeneration === '전체' || student.curriculumTh === parseInt(selectedGeneration))
   );
 
   const handleAddStudent = async () => {
@@ -130,8 +131,8 @@ const StudentManagement = () => {
       <h1>학생 관리</h1>
       <div className="student-controls">
         <div className="program-buttons">
-          <button className={selectedCourse === 'NCP' ? 'selected' : ''} onClick={() => handleCourseChange('NCP')}>NCP</button>
-          <button className={selectedCourse === 'AWS' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS</button>
+          <button className={selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('NCP')}>NCP</button>
+          <button className={selectedCourse === 'AWS 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS</button>
           <select value={selectedGeneration} onChange={handleGenerationChange}>
             <option value="전체">전체</option>
             <option value="1기">1기</option>
@@ -209,13 +210,15 @@ const StudentManagement = () => {
           </div>
           <div className="course-selection">
             <button className={`course-button ${newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: '네이버 클라우드 데브옵스 과정' })}>네이버 클라우드 데브옵스 과정</button>
-            <button className={`course-button ${newStudent.curriculum === 'AWS' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS' })}>AWS</button>
+            <button className={`course-button ${newStudent.curriculum === 'AWS 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS 데브옵스 과정' })}>AWS 데브옵스 과정</button>
           </div>
           <div className="generation-selection">
             <select name="generation" value={newStudent.generation} onChange={handleInputChange}>
               <option value="1기">1기</option>
               <option value="2기">2기</option>
               <option value="3기">3기</option>
+              <option value="4기">4기</option>
+              <option value="5기">5기</option>
             </select>
           </div>
           <div className="student-input-group">
