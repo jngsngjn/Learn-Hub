@@ -95,7 +95,7 @@ const StudentLecture = () => {
               <h3 className="board_title">과목 게시판</h3>
               <span
                 className="go_to_show_more_page"
-                onClick={() => navigate("students/subjectBoard")}
+                onClick={() => navigate("/students/subjectBoard")}
               >
                 더보기 ⟩
               </span>
@@ -120,7 +120,7 @@ const StudentLecture = () => {
               <h3 className="board_title">질문 게시판</h3>
               <span
                 className="go_to_show_more_page"
-                onClick={() => navigate("students/inquiryBoard")}
+                onClick={() => navigate("/students/inquiryBoard")}
               >
                 더보기 ⟩
               </span>

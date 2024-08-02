@@ -11,7 +11,9 @@ import ViewBoardImage from "./components/Test/ViewBoardImage";
 import ImageBoard from "./components/Editor/ImageBoard";
 import StudentMain from "./pages/Student/StudentMain";
 import StudentLecture from "./pages/Student/StudentLecture";
-import StudentSubject from "./pages/Student/StudentSubject";
+import StudentAssignment from "./pages/Student/StudentAssignment";
+import StudentSubjectBoard from "./pages/Student/StudentSubjectBoard";
+import StudentInquiryBoard from "./pages/Student/StudentInquiryBoard";
 
 const Router = () => {
   return (
@@ -26,7 +28,15 @@ const Router = () => {
         <Route path="/managers/*" element={<ManagerMain />} />
         <Route path="/students" element={<StudentMain />} />
         <Route path="/students/lecture" element={<StudentLecture />} />
-        <Route path="/students/subject" element={<StudentSubject />} />
+        <Route
+          path="/students/subjectBoard"
+          element={<StudentSubjectBoard />}
+        />
+        <Route
+          path="/students/inquiryBoard"
+          element={<StudentInquiryBoard />}
+        />
+        <Route path="/students/assignment" element={<StudentAssignment />} />
         <Route path="/image-board" element={<ImageBoard />} />
         <Route path="/test-view" element={<ViewBoardImage />} />
       </Routes>
