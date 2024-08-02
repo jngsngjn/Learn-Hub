@@ -4,43 +4,50 @@ import axios from 'axios';
 import './Curriculum_Management.css';
 import './Modal.css';
 
+// 기본 API URL 설정
 axios.defaults.baseURL = 'http://localhost:8080';
 
 const CurriculumManagement = () => {
-  const [curriculums, setCurriculums] = useState([]);
+  const [ncpCurriculums, setNcpCurriculums] = useState([]);
+  const [awsCurriculums, setAwsCurriculums] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [newCurriculum, setNewCurriculum] = useState({
     type: '',
     startDate: '',
     endDate: '',
-    color: '#FF0000',
-    teacher: '',
+    color: '',
+    teacherId: '',
   });
 
+  // 토큰을 가져온다(access-toke으로 설정함)
   const getToken = () => localStorage.getItem('access-token');
 
+  // 입력 값 변경 시
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCurriculum({ ...newCurriculum, [name]: value });
   };
 
+  // 교육 과정 변경 시
   const handleCourseChange = (courseName) => {
     setNewCurriculum({ ...newCurriculum, type: courseName });
   };
 
+  // 색상 선택
   const handleColorChange = (color) => {
     setNewCurriculum({ ...newCurriculum, color: color.hex });
     setIsColorPickerOpen(false);
   };
 
+  // 과정 추가
   const handleAddCurriculum = async () => {
     const newCurriculumItem = {
       type: newCurriculum.type,
       startDate: newCurriculum.startDate,
       endDate: newCurriculum.endDate,
       color: newCurriculum.color,
-      teacherId: newCurriculum.teacher,
+      teacherId: newCurriculum.teacherId,
     };
 
     try {
@@ -54,7 +61,7 @@ const CurriculumManagement = () => {
 
       if (response.status === 200) {
         setIsModalOpen(false);
-        fetchCurriculums();
+        fetchCurriculums(newCurriculum.type); // 목록 갱신
       } else {
         console.error('교육 과정 등록 실패');
       }
@@ -63,35 +70,44 @@ const CurriculumManagement = () => {
     }
   };
 
-  const fetchCurriculums = async (type = 'NCP') => {
+  // NCP AWS 교육 과정 목록 가져오기
+  const fetchCurriculums = async (type) => {
     try {
       const token = getToken();
-      console.log(token);
-
       const response = await axios.get(`/managers/manage-curriculums/${type}`, {
         headers: { access: token },
       });
-      setCurriculums(response.data || []);
+
+      console.log(`${type} 데이터:`, response.data);
+
+      if (type === 'NCP') {
+        setNcpCurriculums(response.data || []);
+      } else if (type === 'AWS') {
+        setAwsCurriculums(response.data || []);
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('에러 메시지:', error);
     }
   };
 
+  // 과정 목록을 가져옴
   useEffect(() => {
-    fetchCurriculums();
+    fetchCurriculums('NCP');
+    fetchCurriculums('AWS');
   }, []);
 
-  const renderCurriculumList = (filterType) => (
-    curriculums.filter(curriculum => (curriculum.type || '').includes(filterType)).map(curriculum => (
+  //과정 목록 렌더링
+  const renderCurriculumList = (curriculums) => (
+    curriculums.map(curriculum => (
       <div key={curriculum.id} className="curriculum-card">
         <div className="curriculum-header">
-          <span className="curriculum-th" style={{ backgroundColor: curriculum.color }}>{curriculum.th}</span>
-          <span className="curriculum-type">{curriculum.type}</span>
+          <span className="curriculum-th" style={{ backgroundColor: curriculum.color }}>{curriculum.th}기</span>
+          <span className="curriculum-type">{curriculum.name}</span>
         </div>
         <div className="curriculum-footer">
-          <span className="curriculum-teacher">강사 {curriculum.teacher}</span>
+          <span className="curriculum-teacher">강사 {curriculum.teacherId}</span>
           <span className="curriculum-students">
-            <i className="fas fa-user"></i> {curriculum.students}
+            <i className="fas fa-user"></i> {curriculum.students || '0'}
           </span>
         </div>
       </div>
@@ -106,13 +122,15 @@ const CurriculumManagement = () => {
       </div>
       <div className="curriculum-container">
         <div className="curriculum-column">
+          <h2>NCP 과정</h2>
           <div className="curriculum-list">
-            {renderCurriculumList('NCP')}
+            {renderCurriculumList(ncpCurriculums)}
           </div>
         </div>
         <div className="curriculum-column">
+          <h2>AWS 과정</h2>
           <div className="curriculum-list">
-            {renderCurriculumList('AWS')}
+            {renderCurriculumList(awsCurriculums)}
           </div>
         </div>
       </div>
@@ -153,7 +171,7 @@ const CurriculumManagement = () => {
             )}
             <div className="curriculum-input-group">
               <label>강사</label>
-              <input type="text" name="teacher" value={newCurriculum.teacher} onChange={handleInputChange} />
+              <input type="text" name="teacherId" value={newCurriculum.teacherId} onChange={handleInputChange} />
             </div>
             <div className="modal-actions">
               <button className="modal-button" onClick={handleAddCurriculum}>교육 과정 등록</button>
