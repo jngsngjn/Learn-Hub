@@ -293,4 +293,8 @@ public class ManagerCurriculumService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public List<CurriculumTypeAndTh> getCurriculumTypeAndTh() {
+        return curriculumRepository.findCurriculumTypeAndTh();
+    }
 }
