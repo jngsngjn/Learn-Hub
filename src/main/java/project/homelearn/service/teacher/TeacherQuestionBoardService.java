@@ -3,14 +3,22 @@ package project.homelearn.service.teacher;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import project.homelearn.dto.chatgpt.ChatGPTResponseDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
+import project.homelearn.dto.teacher.AiCommentWriteDto;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.user.UserRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -31,6 +39,17 @@ public class TeacherQuestionBoardService {
         comment.setUser(user);
         comment.setQuestionBoard(questionBoard);
         comment.setContent(commentDto.getContent());
+        commentRepository.save(comment);
+    }
+
+    //AI 자동응답 작성
+    public void autoWriteComment(AiCommentWriteDto aiCommentWriteDto) {
+        QuestionBoard questionBoard = questionBoardRepository.findById(aiCommentWriteDto.getQuestionBoardId()).orElseThrow();
+
+        QuestionBoardComment comment = new QuestionBoardComment();
+        comment.setUser(null);
+        comment.setQuestionBoard(questionBoard);
+        comment.setContent(aiCommentWriteDto.getContent());
         commentRepository.save(comment);
     }
 
