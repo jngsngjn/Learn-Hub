@@ -3,6 +3,7 @@ package project.homelearn.repository.curriculum.querydsl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumIdAndThDto;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumTypeAndTh;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
 import project.homelearn.dto.manager.manage.curriculum.QCurriculumIdAndThDto;
 import project.homelearn.entity.curriculum.CurriculumType;
@@ -58,5 +59,34 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
         curriculumWithoutTeacherDtos.add(new CurriculumWithoutTeacherDto(AWS, aws));
 
         return curriculumWithoutTeacherDtos;
+    }
+
+    @Override
+    public List<CurriculumTypeAndTh> findCurriculumTypeAndTh() {
+        CurriculumTypeAndTh ncp = new CurriculumTypeAndTh();
+        ncp.setType(NCP);
+
+        List<Long> ncpThs = queryFactory
+                .select(curriculum.th)
+                .from(curriculum)
+                .where(curriculum.type.eq(NCP))
+                .fetch();
+        ncp.setTh(ncpThs);
+
+        CurriculumTypeAndTh aws = new CurriculumTypeAndTh();
+        aws.setType(AWS);
+
+        List<Long> awsThs = queryFactory
+                .select(curriculum.th)
+                .from(curriculum)
+                .where(curriculum.type.eq(AWS))
+                .fetch();
+        aws.setTh(awsThs);
+
+        List<CurriculumTypeAndTh> result = new ArrayList<>();
+        result.add(ncp);
+        result.add(aws);
+
+        return result;
     }
 }

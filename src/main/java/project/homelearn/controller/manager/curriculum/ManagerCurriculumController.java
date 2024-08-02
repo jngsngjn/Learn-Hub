@@ -28,12 +28,17 @@ import static java.time.DayOfWeek.SUNDAY;
 @RequiredArgsConstructor
 public class ManagerCurriculumController {
 
-    private final ManagerCurriculumService curriculumService;
     private final ManagerCalendarService calendarService;
+    private final ManagerCurriculumService curriculumService;
 
     @GetMapping
     public String manager() {
         return "Hello, manager!";
+    }
+
+    @GetMapping("/enroll-ready")
+    public List<CurriculumTypeAndTh> readyEnroll() {
+        return curriculumService.getCurriculumTypeAndTh();
     }
 
     /**
@@ -44,9 +49,8 @@ public class ManagerCurriculumController {
     public ResponseEntity<?> viewCurriculumList(@PathVariable("type") CurriculumType type) {
         List<CurriculumDto> result = curriculumService.getCurriculumList(type);
         if (result.isEmpty()) {
-            return new ResponseEntity<>("교육과정 없음",HttpStatus.NOT_FOUND);
-        }
-        else {
+            return new ResponseEntity<>("교육과정 없음", HttpStatus.NOT_FOUND);
+        } else {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
     }

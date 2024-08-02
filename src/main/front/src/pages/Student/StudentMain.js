@@ -1,46 +1,58 @@
 import React from "react";
 import "./StudentMain.css";
 import RandomVideo from "../../components/Lectures/RandomVideo";
-import LectureVideo from "../../components/Lectures/LectureVideo";
+//import LectureVideo from "../../components/Lectures/LectureVideo";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetFetch from "../../hooks/useGetFetch";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import { useNavigate } from "react-router-dom";
 
 const StudentMain = () => {
-  const navigate = useNavigate();
+  const {
+    data: recentLecture,
+    loading: recentLectureLoading,
+    error: recentLectureError,
+  } = useGetFetch("/data/student/recentLecture.json", "");
 
-  const { data: recentLecture, error: recentLectureError } = useGetFetch(
-    "/data/student/recentLecture.json",
-    ""
-  );
+  const {
+    data: question,
+    loading: questionLoading,
+    error: questionError,
+  } = useGetFetch("/data/student/question.json", []);
 
-  const { data: question, error: questionError } = useGetFetch(
-    "/data/student/question.json",
-    []
-  );
+  const {
+    data: subject,
+    loading: subjectLoading,
+    error: subjectError,
+  } = useGetFetch("/data/student/subject.json", []);
 
-  const { data: subject, error: subjectError } = useGetFetch(
-    "/data/student/subject.json",
-    []
-  );
+  const {
+    data: badge,
+    loading: badgeLoading,
+    error: badgeError,
+  } = useGetFetch("/data/student/badge.json", []);
 
-  const { data: badge, error: badgeError } = useGetFetch(
-    "/data/student/badge.json",
-    []
-  );
+  const {
+    data: adminNotice,
+    loading: adminNoticeLoading,
+    error: adminNoticeError,
+  } = useGetFetch("/data/student/adminNotice.json", []);
 
-  const { data: adminNotice, error: adminNoticeError } = useGetFetch(
-    "/data/student/adminNotice.json",
-    []
-  );
+  const {
+    data: teacherNotice,
+    loading: teacherNoticeLoading,
+    error: teacherNoticeError,
+  } = useGetFetch("/data/student/teacherNotice.json", []);
 
-  const { data: teacherNotice, error: teacherNoticeError } = useGetFetch(
-    "/data/student/teacherNotice.json",
-    []
-  );
+  if (
+    recentLectureLoading ||
+    questionLoading ||
+    subjectLoading ||
+    badgeLoading ||
+    adminNoticeLoading ||
+    teacherNoticeLoading
+  ) {
+    return <div>Loading...</div>;
+  }
 
   if (
     recentLectureError ||
@@ -53,28 +65,6 @@ const StudentMain = () => {
     return <div>Error loading data</div>;
   }
 
-  //임시 이동 페이지 - hook 분리?
-  // const goToPage = async () => {
-  //   // const token = localStorage.getItem("access");
-
-  //   // if (token) {
-  //   //   const response = await fetch("/data/student/mainLecture.json", {
-  //   //     // method: "GET",
-  //   //     // headers: {
-  //   //     //   access: token,
-  //   //     // },
-  //   //   });
-  //   const response = await fetch("/data/student/mainLecture.json");
-  //   if (response.ok) {
-  //     navigate("/students/lecture");
-  //   } else {
-  //     console.error("Failed to fetch");
-  //   }
-  //   // } else {
-  //   //   console.error("cannot find token");
-  //   // }
-  // };
-
   return (
     <div className="page_body">
       <div className="side_bar">
@@ -85,36 +75,20 @@ const StudentMain = () => {
         <div className="divide_right_container">
           <div className="left_container">
             <div className="recent_lecture_container">
-              <div className="title_box">
-                <h3 className="components_title">최근 학습 강의</h3>
-                <span
-                  className="go_to_main_lecture_page show-more-button"
-                  onClick={() => {
-                    navigate("/students/lecture");
-                  }}
-                >
-                  학습 목록 ⟩
-                </span>
-              </div>
+              <h3 className="components_title">최근 학습 강의</h3>
               <div className="recent_contents_box">
                 <h3 className="recent_lecture_type">{recentLecture.subject}</h3>
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_video_title">{recentLecture.title}</p>
-                  <div className="progress_bar">
-                    <div className="progress_container">
-                      <CircularProgressbar
-                        value={recentLecture.progress}
-                        text={`${recentLecture.progress}%`}
-                        styles={buildStyles({
-                          textColor: "#74b49b",
-                          pathColor: "#A7D7C5",
-                          trailColor: "#F4F9F4",
-                          strokeLinecap: "butt",
-                          textSize: "30px",
-                        })}
-                      />
-                    </div>
+                  <div className="progress_container">
+                    <div
+                      className="progress_bar"
+                      style={{ "--progress": `${recentLecture.progress}` }}
+                    ></div>
+                    <p className="current_progress">
+                      {recentLecture.progress}%
+                    </p>
                   </div>
                 </div>
               </div>
@@ -123,21 +97,12 @@ const StudentMain = () => {
               <h3 className="components_title">오늘의 IT</h3>
               <div className="random_video_box">{/* <RandomVideo /> */}</div>
               <h3 className="components_title">보충 강의</h3>
-              <div className="lecture_videohttp://localhost:3000/_box">
-                {/* <LectureVideo /> */}
-              </div>
+              <div className="lecture_video_box">{/* <LectuerVideo /> */}</div>
             </div>
             <div className="question_container">
               <div className="title_box">
                 <h3 className="components_title">질문사항</h3>
-                <span
-                  className="go_to_subject_page show-more-button"
-                  onClick={() => {
-                    navigate("/students/inquiry");
-                  }}
-                >
-                  더보기 ⟩
-                </span>
+                <span className="go_to_subject_page">더보기 ⟩</span>
               </div>
               <div className="question_list_container">
                 {question?.map((el, idx) => (
@@ -167,9 +132,7 @@ const StudentMain = () => {
             <div className="badge_container">
               <div className="title_box">
                 <h3 className="components_title">배지</h3>
-                <span className="go_to_badge_page show-more-button">
-                  더보기 ⟩
-                </span>
+                <span className="go_to_badge_page">더보기 ⟩</span>
               </div>
               <div className="badge_list_box">
                 {badge.map((el, idx) => (
@@ -193,14 +156,7 @@ const StudentMain = () => {
             <div className="subject_container">
               <div className="title_box">
                 <h3 className="components_title"> 과제 목록</h3>
-                <span
-                  className="go_to_subject_page show-more-button"
-                  onClick={() => {
-                    navigate("/students/subject");
-                  }}
-                >
-                  더보기
-                </span>
+                <span>더보기</span>
               </div>
               <div className="subject_list_container">
                 {subject.map((el, idx) => (
@@ -237,9 +193,7 @@ const StudentMain = () => {
                     <span className="notice_date">{el.writeDate}</span>
                   </div>
                 ))}
-                <span className="go_to_admin_notice_page show-more-button">
-                  자세히 보기 ⟩
-                </span>
+                <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
               </div>
               <div className="teacher_notice_container">
                 <h3 className="notice_components_title">강사 공지사항</h3>
@@ -252,9 +206,7 @@ const StudentMain = () => {
                     <span className="notice_date">{notice.writeDate}</span>
                   </div>
                 ))}
-                <span className="go_to_teacher_notice_page show-more-button">
-                  자세히 보기 ⟩
-                </span>
+                <span className="go_to_teacher_notice_page">자세히 보기 ⟩</span>
               </div>
             </div>
           </div>

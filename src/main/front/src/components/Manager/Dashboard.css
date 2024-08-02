@@ -1,0 +1,26 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.dashboard-item {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.dashboard-item ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.dashboard-item li {
+  margin-bottom: 10px;
+}
+
+.message-count {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
