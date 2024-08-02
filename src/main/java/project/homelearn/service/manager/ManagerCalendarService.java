@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.manager.dashboard.ScheduleDto;
 import project.homelearn.dto.manager.calendar.ManagerScheduleEnrollDto;
-import project.homelearn.dto.teacher.dashboard.ManagerScheduleDto;
+import project.homelearn.dto.manager.dashboard.ManagerScheduleDto;
+import project.homelearn.dto.teacher.dashboard.ScheduleDto;
 import project.homelearn.entity.calendar.ManagerCalendar;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.repository.calendar.ManagerCalendarRepository;
@@ -96,15 +96,15 @@ public class ManagerCalendarService {
         calendar.setEndDate(endDate);
     }
 
-    public List<ScheduleDto> getCurriculumSchedules(Long id) {
+    public List<ManagerScheduleDto> getCurriculumSchedules(Long id) {
         return managerCalendarRepository.findCurriculumSchedules(id);
     }
 
-    public List<ScheduleDto> getAllSchedules() {
+    public List<ManagerScheduleDto> getAllSchedules() {
         return managerCalendarRepository.findAllSchedules();
     }
 
-    public List<ManagerScheduleDto> getAllManagerSchedules(String username) {
+    public List<ScheduleDto> getAllManagerSchedules(String username) {
         Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
         return managerCalendarRepository.findManagerSchedule(curriculum);
     }

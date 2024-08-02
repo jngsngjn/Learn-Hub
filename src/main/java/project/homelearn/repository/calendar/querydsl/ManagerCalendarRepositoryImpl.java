@@ -2,10 +2,10 @@ package project.homelearn.repository.calendar.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import project.homelearn.dto.manager.dashboard.QScheduleDto;
-import project.homelearn.dto.manager.dashboard.ScheduleDto;
-import project.homelearn.dto.teacher.dashboard.ManagerScheduleDto;
-import project.homelearn.dto.teacher.dashboard.QManagerScheduleDto;
+import project.homelearn.dto.manager.dashboard.ManagerScheduleDto;
+import project.homelearn.dto.manager.dashboard.QManagerScheduleDto;
+import project.homelearn.dto.teacher.dashboard.QScheduleDto;
+import project.homelearn.dto.teacher.dashboard.ScheduleDto;
 import project.homelearn.entity.curriculum.Curriculum;
 
 import java.util.List;
@@ -19,9 +19,9 @@ public class ManagerCalendarRepositoryImpl implements ManagerCalendarRepositoryC
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<ScheduleDto> findAllSchedules() {
+    public List<ManagerScheduleDto> findAllSchedules() {
         return queryFactory
-                .select(new QScheduleDto(
+                .select(new QManagerScheduleDto(
                         managerCalendar.id,
                         managerCalendar.title,
                         managerCalendar.startDate,
@@ -33,9 +33,9 @@ public class ManagerCalendarRepositoryImpl implements ManagerCalendarRepositoryC
     }
 
     @Override
-    public List<ScheduleDto> findCurriculumSchedules(Long curriculumId) {
+    public List<ManagerScheduleDto> findCurriculumSchedules(Long curriculumId) {
         return queryFactory
-                .select(new QScheduleDto(
+                .select(new QManagerScheduleDto(
                         managerCalendar.id,
                         managerCalendar.title,
                         managerCalendar.startDate,
@@ -47,9 +47,9 @@ public class ManagerCalendarRepositoryImpl implements ManagerCalendarRepositoryC
     }
 
     @Override
-    public List<ManagerScheduleDto> findManagerSchedule(Curriculum curriculum) {
+    public List<ScheduleDto> findManagerSchedule(Curriculum curriculum) {
         return queryFactory
-                .select(new QManagerScheduleDto(
+                .select(new QScheduleDto(
                         managerCalendar.id,
                         managerCalendar.title,
                         managerCalendar.startDate,

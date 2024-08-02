@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.homelearn.dto.teacher.dashboard.ManagerBoardDto;
-import project.homelearn.dto.teacher.dashboard.ManagerScheduleDto;
+import project.homelearn.dto.teacher.dashboard.ScheduleDto;
 import project.homelearn.dto.teacher.dashboard.NewsDto;
+import project.homelearn.dto.teacher.dashboard.TeacherScheduleDto;
 import project.homelearn.service.manager.ManagerBoardService;
 import project.homelearn.service.manager.ManagerCalendarService;
 import project.homelearn.service.teacher.NewsService;
+import project.homelearn.service.teacher.TeacherCalendarService;
 import project.homelearn.service.teacher.TeacherInquiryService;
 
 import java.io.IOException;
@@ -32,6 +34,7 @@ public class TeacherDashBoardController {
     private final ManagerBoardService boardService;
     private final TeacherInquiryService inquiryService;
     private final ManagerCalendarService managerCalendarService;
+    private final TeacherCalendarService teacherCalendarService;
 
     /**
      * 수강 현황
@@ -68,9 +71,13 @@ public class TeacherDashBoardController {
 
     // 매니저가 등록한 일정 중 강사 교육과정에 대한 일정
     @GetMapping("/calendar/manager")
-    public List<ManagerScheduleDto> viewManagerSchedule(Principal principal) {
+    public List<ScheduleDto> viewManagerSchedule(Principal principal) {
         return managerCalendarService.getAllManagerSchedules(principal.getName());
     }
 
-
+    // 강사 본인이 등록한 일정
+    @GetMapping("/calendar")
+    public TeacherScheduleDto viewSchedule(Principal principal) {
+        return teacherCalendarService.getSchedule(principal.getName());
+    }
 }
