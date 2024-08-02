@@ -52,6 +52,23 @@ const StudentLecture = () => {
     return `${fileName}${fileExtension}`;
   };
 
+  const today = new Date();
+
+  const isOpend = (dateStr) => {
+    const [year, month, day] = dateStr
+      .split(".")
+      .map((num) => parseInt(num, 10));
+    const lectureDate = new Date(year, month - 1, day);
+    return lectureDate <= today;
+  };
+
+  const checkDatesUntilOpen = (dateStr) => {
+    const [y, m, d] = dateStr.split(".").map((num) => parseInt(num, 10));
+    const lectureDate = new Date(y, m - 1, d);
+    const leftTime = lectureDate - today;
+    return Math.ceil(leftTime / (1000 * 60 * 60 * 24));
+  };
+
   return (
     <div className="student_lecture_container">
       <div className="side_bar">
@@ -71,7 +88,7 @@ const StudentLecture = () => {
             </p>
           </div>
         </div>
-        {/* 게시판  */}
+        {/* 게시판 */}
         <div className="board_container">
           <div className="subject_board_container">
             <div className="board_title_box">
@@ -139,22 +156,38 @@ const StudentLecture = () => {
             </div>
           </div>
           <div className="lecture_video_container">
-            {/* api 요청 회수때문에 주석처리 */}
             {mainLectures &&
               mainLectures.lectures &&
-              mainLectures.lectures.map((el, idx) => (
-                <div className="lecture_video" key={idx}>
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={getYoutubeEmbedUrl(el.links)}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    title={el.title}
-                  ></iframe>
-                </div>
-              ))}
+              mainLectures.lectures.map((el, idx) => {
+                const isOpen = isOpend(el.date);
+                const daysRemaining = checkDatesUntilOpen(el.date);
+
+                return (
+                  <div className="lecture_video" key={idx}>
+                    <div
+                      className={`video_wrapper ${
+                        !isOpen ? "not-released" : ""
+                      }`}
+                    >
+                      {!isOpen && (
+                        <div className="show_not_open">
+                          {daysRemaining}일 후 시청 가능합니다.
+                        </div>
+                      )}
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        src={getYoutubeEmbedUrl(el.links)}
+                        frameBorder="0"
+                        allow="clipboard-write; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                        title={el.title}
+                        className={isOpen ? "" : "iframe-container"}
+                      ></iframe>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>
