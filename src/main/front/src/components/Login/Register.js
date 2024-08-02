@@ -5,13 +5,14 @@ import axios from 'axios';
 
 function Register() {
   const location = useLocation();
-  const emailFromState = location.state?.email || '';
   const nameFromState = location.state?.name || '';
+  const emailFromState = location.state?.email || '';
   const phoneFromState = location.state?.phone || '';
 
   const [name, setName] = useState(nameFromState);
-  const [phone, setPhone] = useState(phoneFromState);
   const [email, setEmail] = useState(emailFromState);
+  const [phone, setPhone] = useState(phoneFromState);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
