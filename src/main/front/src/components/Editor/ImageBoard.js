@@ -10,9 +10,10 @@ import 'froala-editor/js/third_party/embedly.min.js';
 import 'font-awesome/css/font-awesome.css';
 import 'froala-editor/js/third_party/font_awesome.min.js';
 
-function MyFroalaEditor() {
+function ImageBoardEditor() {
     const [title, setTitle] = useState('');
     const [value, setValue] = useState('');
+    const [imageFile, setImageFile] = useState(null);
     const editorRef = useRef(null);
 
     const toolbarButtons = {
@@ -23,7 +24,7 @@ function MyFroalaEditor() {
             buttons: ['alignLeft', 'alignCenter', 'alignRight'],
         },
         moreRich: {
-            buttons: ['insertImage', 'insertFile', 'insertHR'],
+            buttons: ['insertImage', 'insertHR'],
         },
         moreMisc: {
             buttons: ['undo', 'redo'],
@@ -34,6 +35,24 @@ function MyFroalaEditor() {
         placeholderText: '내용을 입력하세요.',
         charCounterCount: true,
         toolbarButtons,
+        events: {
+            'image.beforeUpload': function (files) {
+                if (files.length) {
+                    const file = files[0];
+                    setImageFile(file);
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const result = e.target.result;
+                        editorRef.current.editor.image.insert(result, null, null, editorRef.current.editor.image.get());
+                    };
+                    reader.readAsDataURL(file);
+
+                    // Prevent the default behavior
+                    return false;
+                }
+            }
+        }
     };
 
     const handleTitleChange = (event) => {
@@ -47,9 +66,16 @@ function MyFroalaEditor() {
     const handleButton = () => {
         const formData = new FormData();
         formData.append('title', title);
-        formData.append('content', value);
 
-        fetch("http://localhost:8080/test-editor", {
+        // Remove img src content and set empty img tag
+        const cleanedContent = value.replace(/<img [^>]*src="[^"]*"[^>]*>/gi, '<img src="" />');
+        formData.append('content', cleanedContent);
+
+        if (imageFile) {
+            formData.append('image', imageFile);
+        }
+
+        fetch("http://localhost:8080/test/editor", {
             method: "POST",
             body: formData
         })
@@ -83,4 +109,4 @@ function MyFroalaEditor() {
     );
 }
 
-export default MyFroalaEditor;
+export default ImageBoardEditor;

@@ -11,7 +11,6 @@ import TeacherManagement from '../../components/Manager/Teacher_Management';
 import Notice from '../../components/Manager/Notice';
 import StudentContact from '../../components/Manager/Student_Contact';
 import TeacherContact from '../../components/Manager/Teacher_Contact';
-import Froala from '../../components/Manager/froala';
 import './ManagerMain.css';
 
 function Dashboard() {
@@ -42,7 +41,6 @@ function ManagerMain() {
             <Route path="notice" element={<Notice />} />
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
-            <Route path="froala" element={<Froala />} />
           </Routes>
         </div>
       </div>

@@ -49,7 +49,7 @@ public class SecurityConfig {
         http.httpBasic(auth -> auth.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/register/**", "/account/**", "/test-editor").permitAll()
+                .requestMatchers("/", "/login", "/register/**", "/account/**", "/test/**", "/image/**").permitAll()
                 .requestMatchers("/code-verify","/reissue", "/csrf-token").permitAll()
                 .requestMatchers("/manager/**").hasRole("MANAGER")
                 .requestMatchers("/teacher/**").hasRole("TEACHER")
