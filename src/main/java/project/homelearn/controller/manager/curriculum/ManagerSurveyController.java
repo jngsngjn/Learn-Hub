@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.homelearn.service.manager.ManagerCurriculumService;
+import project.homelearn.service.manager.ManagerSurveyService;
 
 /**
  * Author : 정성진
@@ -17,14 +17,14 @@ import project.homelearn.service.manager.ManagerCurriculumService;
 @RestController
 @RequestMapping("/managers/manage-curriculums")
 @RequiredArgsConstructor
-public class SurveyController {
+public class ManagerSurveyController {
 
-    private final ManagerCurriculumService managerCurriculumService;
+    private final ManagerSurveyService surveyService;
 
     // 설문조사 시작 - 학생에게 알림보내야 함
     @PostMapping("/survey-start/{id}")
     public ResponseEntity<?> startSurvey(@PathVariable("id") Long id) {
-        boolean result = managerCurriculumService.startSurveyProcess(id);
+        boolean result = surveyService.startSurveyProcess(id);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -35,7 +35,7 @@ public class SurveyController {
     // 설문조사 마감
     @PostMapping("/survey-stop/{id}")
     public ResponseEntity<?> stopSurvey(@PathVariable("id") Long id) {
-        boolean result = managerCurriculumService.stopSurveyProcess(id);
+        boolean result = surveyService.stopSurveyProcess(id);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
