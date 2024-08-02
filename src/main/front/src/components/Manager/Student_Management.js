@@ -92,6 +92,33 @@ const StudentManagement = () => {
     }
   };
 
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      return;
+    }
+    try {
+      const token = getToken();
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      const response = await axios.post('/managers/manage-students/enroll-file', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'access': token,
+        },
+      });
+
+      if (response.status === 200) {
+        setSelectedFile(null);
+        fetchStudents();
+      } else {
+        console.error('파일 업로드 실패');
+      }
+    } catch (error) {
+      console.error('파일 업로드 에러:', error);
+    }
+  };
+
   const handleGenderChange = (gender) => {
     setNewStudent({ ...newStudent, gender: gender === '남' ? 'MALE' : 'FEMALE' });
   };
@@ -243,6 +270,7 @@ const StudentManagement = () => {
           <div className="student-modal-actions">
             <button className="student-modal-button" onClick={handleAddStudent}>학생 등록</button>
             <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
+            <button className="student-modal-button" onClick={handleFileUpload}>파일 업로드</button>
           </div>
         </div>
       </Modal>
