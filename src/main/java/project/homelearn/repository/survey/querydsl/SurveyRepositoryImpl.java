@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import project.homelearn.dto.manager.dashboard.SurveyDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumSurveyDto;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static project.homelearn.entity.curriculum.QCurriculum.curriculum;
@@ -48,35 +50,46 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
     @Override
     public List<SurveyDto> findRecentSurveyDto() {
         List<Tuple> tuples = queryFactory
-                .select(survey.id, survey.curriculum.th, survey.title, survey.isFinished, survey.isFinished)
+                .select(survey.id, survey.curriculum.id, survey.curriculum.th, survey.title, survey.isFinished)
                 .from(survey)
                 .join(survey.curriculum, curriculum)
                 .orderBy(survey.id.desc())
                 .limit(2)
                 .fetch();
 
-        if (tuples == null) {
-            return null;
+        if (tuples == null || tuples.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        Tuple tuple1 = tuples.get(0);
-        Tuple tuple2 = tuples.get(1);
-        Long surveyId1 = tuple1.get(survey.id);
-        Long surveyId2 = tuple2.get(survey.id);
+        List<SurveyDto> result = new ArrayList<>();
 
-        SurveyDto survey1 = new SurveyDto();
-        survey1.setId(surveyId1);
-        survey1.setTitle(tuple1.get(survey.title));
-        survey1.setTh(tuple1.get(survey.curriculum.th));
-        survey1.setIsCompleted(tuple1.get(survey.isFinished));
+        for (Tuple tuple : tuples) {
+            Long surveyId = tuple.get(survey.id);
+            Long curriculumId = tuple.get(survey.curriculum.id);
 
-        SurveyDto survey2 = new SurveyDto();
-        survey2.setId(surveyId2);
-        survey2.setTitle(tuple2.get(survey.title));
-        survey2.setTh(tuple2.get(survey.curriculum.th));
-        survey2.setIsCompleted(tuple2.get(survey.isFinished));
+            Long participants = queryFactory
+                    .select(student.count())
+                    .from(student)
+                    .where(student.curriculum.id.eq(curriculumId), student.surveyCompleted.eq(true))
+                    .fetchOne();
 
+            Long total = queryFactory
+                    .select(student.count())
+                    .from(student)
+                    .where(student.curriculum.id.eq(curriculumId))
+                    .fetchOne();
 
-        return List.of();
+            SurveyDto surveyDto = new SurveyDto();
+            surveyDto.setId(surveyId);
+            surveyDto.setTitle(tuple.get(survey.title));
+            surveyDto.setTh(tuple.get(survey.curriculum.th));
+            surveyDto.setIsCompleted(tuple.get(survey.isFinished));
+            surveyDto.setParticipants(participants);
+            surveyDto.setTotal(total);
+
+            result.add(surveyDto);
+        }
+
+        return result;
     }
 }

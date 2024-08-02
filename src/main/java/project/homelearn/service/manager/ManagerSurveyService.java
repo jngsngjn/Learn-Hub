@@ -70,6 +70,6 @@ public class ManagerSurveyService {
     }
 
     public List<SurveyDto> getRecentSurvey() {
-
+        return surveyRepository.findRecentSurveyDto();
     }
 }

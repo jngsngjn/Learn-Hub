@@ -18,15 +18,32 @@ public class SurveyDto {
     private String title;
 
     @NotNull
-    private Integer participants;
+    private Long participants;
 
     @NotNull
-    private Integer total;
+    private Long total;
 
     @NotNull
     private Boolean isCompleted;
 }
 
 /*
-
+[
+    {
+        "id": 2,
+        "th": 2,
+        "title": "네이버 클라우드 데브옵스 과정 만족도 설문 조사 1차",
+        "participants": 0,
+        "total": 0,
+        "isCompleted": false
+    },
+    {
+        "id": 1,
+        "th": 1,
+        "title": "네이버 클라우드 데브옵스 과정 만족도 설문 조사 1차",
+        "participants": 1,
+        "total": 1,
+        "isCompleted": false
+    }
+]
  */

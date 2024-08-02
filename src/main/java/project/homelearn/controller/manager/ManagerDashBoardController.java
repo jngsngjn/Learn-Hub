@@ -21,7 +21,6 @@ import project.homelearn.service.manager.ManagerSurveyService;
 import java.util.List;
 
 /**
- * 미완성
  * Author : 정성진
  */
 @Slf4j
