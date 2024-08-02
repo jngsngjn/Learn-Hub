@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import project.homelearn.dto.manager.dashboard.SurveyDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumSurveyDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static project.homelearn.entity.curriculum.QCurriculum.curriculum;
@@ -56,17 +55,28 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
                 .limit(2)
                 .fetch();
 
-        for (Tuple tuple : tuples) {
-            SurveyDto surveyDto = new SurveyDto();
-            surveyDto.setId(tuple.get(survey.id));
-            surveyDto.setTitle(tuple.get(survey.title));
-            surveyDto.setTh(tuple.get(survey.curriculum.th));
-            surveyDto.setIsCompleted(tuple.get(survey.isFinished));
+        if (tuples == null) {
+            return null;
         }
 
+        Tuple tuple1 = tuples.get(0);
+        Tuple tuple2 = tuples.get(1);
+        Long surveyId1 = tuple1.get(survey.id);
+        Long surveyId2 = tuple2.get(survey.id);
+
+        SurveyDto survey1 = new SurveyDto();
+        survey1.setId(surveyId1);
+        survey1.setTitle(tuple1.get(survey.title));
+        survey1.setTh(tuple1.get(survey.curriculum.th));
+        survey1.setIsCompleted(tuple1.get(survey.isFinished));
+
+        SurveyDto survey2 = new SurveyDto();
+        survey2.setId(surveyId2);
+        survey2.setTitle(tuple2.get(survey.title));
+        survey2.setTh(tuple2.get(survey.curriculum.th));
+        survey2.setIsCompleted(tuple2.get(survey.isFinished));
 
 
-        List<SurveyDto> result = new ArrayList<>();
         return List.of();
     }
 }
