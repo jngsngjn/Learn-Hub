@@ -351,3 +351,32 @@
   font-weight: bold;
   color: #757575;
 }
+
+.file-line {
+  border-radius:10px;
+  height: 5px;
+  background: #000;
+}
+.student-modal-file{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+}
+.student-modal-file-button{
+    border:none;
+    border-radius:10px;
+    padding:10px 10px;
+    width:120px;
+    background-color: #757575;
+    color: white;
+}
+
+.student-modal-file-button:hover{
+  background-color: #ddd;
+  color: #757575;
+}
+
+.upload-progress-container{
+    display:flex;
+    justify-content:center;
+}

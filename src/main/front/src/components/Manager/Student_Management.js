@@ -21,6 +21,7 @@ const StudentManagement = () => {
     curriculumFullName: '',
   });
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const getToken = () => localStorage.getItem('access-token');
 
@@ -36,7 +37,7 @@ const StudentManagement = () => {
       });
       setStudents(response.data.content || []);
     } catch (error) {
-      console.error('응답에러:', error);
+      console.error('응답 에러:', error);
       setStudents([]);
     }
   };
@@ -106,10 +107,15 @@ const StudentManagement = () => {
           'Content-Type': 'multipart/form-data',
           'access': token,
         },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+        },
       });
 
       if (response.status === 200) {
         setSelectedFile(null);
+        setUploadProgress(0);
         fetchStudents();
       } else {
         console.error('파일 업로드 실패');
@@ -139,7 +145,7 @@ const StudentManagement = () => {
       fetchStudents();
       setSelectedStudents([]);
     } catch (error) {
-      console.error('오류메시지:', error);
+      console.error('삭제 에러:', error);
     }
   };
 
@@ -151,7 +157,10 @@ const StudentManagement = () => {
 
   const handleRowClick = (studentId) => handleCheckboxChange(studentId);
 
-  const handleRemoveFile = () => setSelectedFile(null);
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setUploadProgress(0);
+  };
 
   return (
     <div className="student-management">
@@ -235,6 +244,19 @@ const StudentManagement = () => {
               </>
             )}
           </div>
+          <div className="upload-progress-container">
+          {selectedFile && (
+            <div className="upload-progress">
+              <progress value={uploadProgress} max="100" />
+              <span>{uploadProgress}%</span>
+            </div>
+          )}
+          </div>
+          <div className="student-modal-file">
+          <button className="student-modal-file-button" onClick={handleFileUpload}>파일 업로드</button>
+          <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
+          </div>
+          <span className="file-line" />
           <div className="course-selection">
             <button className={`course-button ${newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: '네이버 클라우드 데브옵스 과정' })}>네이버 클라우드 데브옵스 과정</button>
             <button className={`course-button ${newStudent.curriculum === 'AWS 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS 데브옵스 과정' })}>AWS 데브옵스 과정</button>
@@ -270,7 +292,6 @@ const StudentManagement = () => {
           <div className="student-modal-actions">
             <button className="student-modal-button" onClick={handleAddStudent}>학생 등록</button>
             <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
-            <button className="student-modal-button" onClick={handleFileUpload}>파일 업로드</button>
           </div>
         </div>
       </Modal>
