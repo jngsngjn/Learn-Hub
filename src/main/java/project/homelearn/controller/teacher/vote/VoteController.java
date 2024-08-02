@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.teacher.vote.VoteDto;
+import project.homelearn.dto.teacher.vote.VoteCreateDto;
 import project.homelearn.service.teacher.VoteService;
 
 import java.security.Principal;
@@ -16,9 +16,9 @@ public class VoteController {
     private final VoteService voteService;
 
     @PostMapping("/votes")
-    public ResponseEntity<?> createVote(Principal principal, @RequestBody VoteDto voteDto) {
+    public ResponseEntity<?> createVote(Principal principal, @RequestBody VoteCreateDto voteCreateDto) {
         String username = principal.getName();
-        boolean result = voteService.createVote(voteDto, username);
+        boolean result = voteService.createVote(voteCreateDto, username);
 
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
