@@ -4,13 +4,10 @@ import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import project.homelearn.entity.student.Attendance;
-import project.homelearn.entity.student.AttendanceType;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.user.querydsl.AttendanceRepositoryCustom;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public interface AttendanceRepository extends JpaRepository<Attendance, Long>, AttendanceRepositoryCustom {
 
@@ -21,6 +18,5 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long>, A
     int findByStudentId(@Param("studentId") Long studentId);
 
     @Query("select a from Attendance a where a.user.id = :userId")
-    List<Attendance> findByUserId(@Param("userId")Long userId);
-
+    List<Attendance> findByUserId(@Param("userId") Long userId);
 }

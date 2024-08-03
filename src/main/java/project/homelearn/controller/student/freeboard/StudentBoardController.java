@@ -1,4 +1,4 @@
-package project.homelearn.controller.student.board;
+package project.homelearn.controller.student.freeboard;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
