@@ -5,11 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import project.homelearn.entity.board.QuestionBoard;
+import project.homelearn.repository.board.querydsl.QuestionBoardRepositoryCustom;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface QuestionBoardRepository extends JpaRepository<QuestionBoard, Long> {
+public interface QuestionBoardRepository extends JpaRepository<QuestionBoard, Long>, QuestionBoardRepositoryCustom {
 
     List<QuestionBoard> findByCreatedDateBeforeAndCommentsIsNull(LocalDateTime dateTime);
 

@@ -17,16 +17,17 @@ import java.security.Principal;
  * */
 @Slf4j
 @RestController
-@RequestMapping("/students/questionBoards")
+@RequestMapping("/students/question-boards")
 @RequiredArgsConstructor
 public class StudentQuestionBoardController {
 
     private final StudentQuestionBoardService studentQuestionBoardService;
 
-    //글 등록
+    // 글 등록
     @PostMapping
     public ResponseEntity<?> writeQuestionBoard(Principal principal,
                                                 @Valid @ModelAttribute QuestionBoardWriteDto questionBoardWriteDto) {
+        System.out.println("StudentQuestionBoardController.writeQuestionBoard");
         String username = principal.getName();
         studentQuestionBoardService.writeQuestionBoard(username, questionBoardWriteDto);
 
@@ -45,7 +46,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //글 수정
+    // 글 수정
     @PatchMapping("/{questionBoardId}")
     public ResponseEntity<?> modifyQuestionBoard(@PathVariable("questionBoardId") Long questionBoardId, Principal principal,
                                                  @Valid @ModelAttribute QuestionBoardWriteDto questionBoardWriteDto) {
@@ -58,7 +59,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //댓글 작성
+    // 댓글 작성
     @PostMapping("/{questionBoardId}/comments")
     public ResponseEntity<?> writeComment(@PathVariable("questionBoardId") Long questionBoardId, Principal principal,
                                           @Valid @RequestBody CommentWriteDto commentDto) {
@@ -68,7 +69,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //댓글 수정
+    // 댓글 수정
     @PatchMapping("/{questionBoardId}/comments/{commentId}")
     public ResponseEntity<?> modifyComment(Principal principal,
                                            @PathVariable("commentId") Long commentId,
@@ -81,7 +82,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //댓글 삭제
+    // 댓글 삭제
     @DeleteMapping("/{questionBoardId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable("questionBoardId") Long questionBoardId,
                                            @PathVariable("commentId") Long commentId,
@@ -96,7 +97,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //대댓글 작성
+    // 대댓글 작성
     @PostMapping("/{questionBoardId}/comments/{commentId}")
     public ResponseEntity<?> writeReplyComment(Principal principal,
                                                @PathVariable("commentId") Long commentId,
@@ -108,7 +109,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //대댓글 수정
+    // 대댓글 수정
     @PatchMapping("/{questionBoardId}/comments/{commentId}/replies/{replyId}")
     public ResponseEntity<?> modifyReplyComment(Principal principal,
                                                 @PathVariable("commentId") Long replyId,
@@ -121,7 +122,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //대댓글 삭제
+    // 대댓글 삭제
     @DeleteMapping("/{questionBoardId}/comments/{commentId}/replies/{replyId}")
     public ResponseEntity<?> deleteReplyComment(@PathVariable("questionBoardId") Long questionBoardId,
                                                 @PathVariable("replyId") Long replyId,
@@ -136,11 +137,11 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //질문 게시판 글 스크랩 = 나도 궁금해
+    // 질문 게시판 글 스크랩 = 나도 궁금해
 
-    //조회수 증가
+    // 조회수 증가
 
-    //글 상세보기
+    // 글 상세보기
 
-    //게시글 리스트
+    // 게시글 리스트
 }

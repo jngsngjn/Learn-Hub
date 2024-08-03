@@ -34,10 +34,7 @@ public class TeacherDashBoardController {
     private final ManagerCalendarService managerCalendarService;
     private final TeacherCalendarService teacherCalendarService;
     private final TeacherAttendanceService attendanceService;
-
-    /**
-     * 최근 질문 5개
-     */
+    private final TeacherQuestionBoardService questionService;
 
     // 수강 현황 - 출석 현황
     @GetMapping("/attendance-state")
@@ -68,15 +65,10 @@ public class TeacherDashBoardController {
         return homeworkService.getHomeworkState(principal.getName());
     }
 
-    // IT 뉴스 2개
-    @GetMapping("/news")
-    public List<NewsDto> viewNews() {
-        try {
-            return newsService.fetchLatestNews();
-        } catch (IOException e) {
-            log.error("Error fetching news", e);
-            return List.of();
-        }
+    // 최근 질문 5개
+    @GetMapping("/questions")
+    public List<QuestionTop5Dto> viewQuestionTop5(Principal principal) {
+        return questionService.getQuestionTop5(principal.getName());
     }
 
     // 학생 1:1 문의 개수
@@ -105,5 +97,16 @@ public class TeacherDashBoardController {
     @GetMapping("/calendar")
     public TeacherScheduleDto viewSchedule(Principal principal) {
         return teacherCalendarService.getSchedule(principal.getName());
+    }
+
+    // IT 뉴스 2개
+    @GetMapping("/news")
+    public List<NewsDto> viewNews() {
+        try {
+            return newsService.fetchLatestNews();
+        } catch (IOException e) {
+            log.error("Error fetching news", e);
+            return List.of();
+        }
     }
 }
