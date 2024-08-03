@@ -66,7 +66,7 @@ const StudentSubjectBoard = () => {
                 <td
                   className="writed_subject_board_title_one"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigate(`students/subjectBoard/${el.id}`)}
+                  onClick={() => navigate(`/students/subjectBoard/${el.id}`)}
                 >
                   {el.title}
                 </td>

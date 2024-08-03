@@ -14,6 +14,8 @@ import StudentLecture from "./pages/Student/StudentLecture";
 import StudentAssignment from "./pages/Student/StudentAssignment";
 import StudentSubjectBoard from "./pages/Student/StudentSubjectBoard";
 import StudentInquiryBoard from "./pages/Student/StudentInquiryBoard";
+import StudentAssignmentDetail from "./pages/Student/StudentAssignmentDetail";
+import StudentInquiryDetail from "./pages/Student/StudentInquiryDetail";
 
 const Router = () => {
   return (
@@ -36,7 +38,15 @@ const Router = () => {
           path="/students/inquiryBoard"
           element={<StudentInquiryBoard />}
         />
+        <Route
+          path="/students/inquiryDetail/:id"
+          element={<StudentInquiryDetail />}
+        />
         <Route path="/students/assignment" element={<StudentAssignment />} />
+        <Route
+          path="/students/assignmentDetail/:id"
+          element={<StudentAssignmentDetail />}
+        />
         <Route path="/image-board" element={<ImageBoard />} />
         <Route path="/test-view" element={<ViewBoardImage />} />
       </Routes>

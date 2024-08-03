@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 const StudentMain = () => {
   const navigate = useNavigate();
@@ -91,13 +92,21 @@ const StudentMain = () => {
                 <h3 className="recent_lecture_type">{recentLecture.subject}</h3>
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
-                  <p className="recent_video_title">{recentLecture.title}</p>
-                  <div className="progress_container">
-                    <div
-                      className="progress_bar"
-                      style={{ "--progress": `${recentLecture.progress}` }}
-                    ></div>
-                    <p className="current_progress">
+                  <p className="recent_lecture_video_title">
+                    {recentLecture.title}
+                  </p>
+                  <div className="recent_lecture_progress_container">
+                    <CircularProgressbar
+                      value={recentLecture.progress}
+                      // text={`${recentLecture.progress}%`}
+                      styles={buildStyles({
+                        // textSize: "30px",
+                        pathColor: "#A7D7C5",
+                        textColor: "#5C8D89",
+                        trailColor: "#d6d6d6",
+                      })}
+                    />
+                    <p className="recent_lecture_percentage">
                       {recentLecture.progress}%
                     </p>
                   </div>

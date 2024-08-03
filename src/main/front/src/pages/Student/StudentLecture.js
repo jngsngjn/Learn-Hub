@@ -90,7 +90,7 @@ const StudentLecture = () => {
         </div>
         {/* 게시판 */}
         <div className="board_container">
-          <div className="subject_board_container">
+          <div className="lecture_subject_board_container">
             <div className="board_title_box">
               <h3 className="board_title">과목 게시판</h3>
               <span
@@ -102,7 +102,11 @@ const StudentLecture = () => {
             </div>
             <div className="subject_list_container">
               {subjectBoards.slice(0, 4).map((el, idx) => (
-                <div className="subject_list" key={idx}>
+                <div
+                  className="subject_list"
+                  key={idx}
+                  onClick={() => navigate(`/students/subjectBoard/${el.id}`)}
+                >
                   <div className="subject_title_box">
                     <h4 className="subject_title">{el.title}</h4>
                     <span className="subject_write_date">{el.writeDate}</span>
@@ -127,7 +131,11 @@ const StudentLecture = () => {
             </div>
             <div className="inquiry_list_container">
               {inquiryBoards.slice(0, 4).map((el, idx) => (
-                <div className="inquiry_list" key={idx}>
+                <div
+                  className="inquiry_list"
+                  key={idx}
+                  onClick={() => navigate(`/students/inquiryDetail/${el.id}`)}
+                >
                   <div className="inquiry_title_box">
                     <div className="inquiry_type">{el.type}</div>
                     <h4 className="inquiry_list_title">{el.content}</h4>
