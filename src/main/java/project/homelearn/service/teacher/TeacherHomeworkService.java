@@ -2,6 +2,8 @@ package project.homelearn.service.teacher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +11,7 @@ import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.teacher.dashboard.HomeworkStateDto;
 import project.homelearn.dto.teacher.homework.HomeworkEnrollDto;
 import project.homelearn.dto.teacher.homework.HomeworkFeedbackDto;
+import project.homelearn.dto.teacher.homework.HomeworkTabDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
@@ -34,11 +37,11 @@ import static project.homelearn.config.storage.FolderType.HOMEWORK;
 public class TeacherHomeworkService {
 
     private final StorageService storageService;
+    private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final HomeworkRepository homeworkRepository;
-    private final StudentHomeworkRepository studentHomeworkRepository;
     private final CurriculumRepository curriculumRepository;
-    private final StudentRepository studentRepository;
+    private final StudentHomeworkRepository studentHomeworkRepository;
 
     public void enrollHomework(String username, HomeworkEnrollDto homeworkDto) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
@@ -147,5 +150,12 @@ public class TeacherHomeworkService {
         Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
         Integer totalCount = studentRepository.findStudentCountByCurriculum(curriculum);
         return homeworkRepository.findHomeworkStateDto(curriculum, totalCount);
+    }
+
+    public Page<HomeworkTabDto> getHomeworks(String username, int page, int size, String status) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        return homeworkRepository.findHomeworks(curriculum, pageRequest, status);
     }
 }
