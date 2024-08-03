@@ -1,4 +1,4 @@
-package project.homelearn.controller.student.board;
+package project.homelearn.controller.student.question;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import project.homelearn.dto.chatgpt.ChatGPTRequestDto;
 import project.homelearn.dto.chatgpt.ChatGPTResponseDto;
-import project.homelearn.dto.student.board.CommentWriteDto;
 
 @RestController
 @RequestMapping("/bot")

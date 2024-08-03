@@ -6,14 +6,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
+import project.homelearn.dto.teacher.dashboard.HomeworkStateDto;
 import project.homelearn.dto.teacher.homework.HomeworkEnrollDto;
 import project.homelearn.dto.teacher.homework.HomeworkFeedbackDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.teacher.Teacher;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.homework.HomeworkRepository;
 import project.homelearn.repository.homework.StudentHomeworkRepository;
+import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.service.common.StorageService;
 
@@ -34,6 +37,8 @@ public class TeacherHomeworkService {
     private final TeacherRepository teacherRepository;
     private final HomeworkRepository homeworkRepository;
     private final StudentHomeworkRepository studentHomeworkRepository;
+    private final CurriculumRepository curriculumRepository;
+    private final StudentRepository studentRepository;
 
     public void enrollHomework(String username, HomeworkEnrollDto homeworkDto) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
@@ -136,5 +141,11 @@ public class TeacherHomeworkService {
 
         studentHomeworkRepository.deleteById(studentHomeworkId);
         return true;
+    }
+
+    public HomeworkStateDto getHomeworkState(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Integer totalCount = studentRepository.findStudentCountByCurriculum(curriculum);
+        return homeworkRepository.findHomeworkStateDto(curriculum, totalCount);
     }
 }
