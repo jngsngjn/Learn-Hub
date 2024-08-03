@@ -22,7 +22,7 @@ public class QuestionBoardRepositoryImpl implements QuestionBoardRepositoryCusto
     @Override
     public List<QuestionTop5Dto> findQuestionTop5(Curriculum curriculum) {
         List<Tuple> tuples = queryFactory
-                .select(questionBoard.subject.name, questionBoard.title, questionBoard.content, questionBoard.createdDate)
+                .select(questionBoard.id, questionBoard.subject.name, questionBoard.title, questionBoard.content, questionBoard.createdDate)
                 .from(questionBoard)
                 .leftJoin(questionBoard.subject, subject)
                 .where(questionBoard.user.curriculum.eq(curriculum))
@@ -33,6 +33,7 @@ public class QuestionBoardRepositoryImpl implements QuestionBoardRepositoryCusto
         List<QuestionTop5Dto> result = new ArrayList<>();
 
         for (Tuple tuple : tuples) {
+            Long questionId = tuple.get(questionBoard.id);
             String subjectName = tuple.get(questionBoard.subject.name);
             String title = tuple.get(questionBoard.title);
             String content = tuple.get(questionBoard.content);
@@ -40,10 +41,10 @@ public class QuestionBoardRepositoryImpl implements QuestionBoardRepositoryCusto
             LocalDate createdDate = createdDateTime.toLocalDate();
 
             if (subjectName == null || subjectName.isEmpty()) {
-                QuestionTop5Dto dto = new QuestionTop5Dto("기타", title, content, createdDate);
+                QuestionTop5Dto dto = new QuestionTop5Dto(questionId, "기타", title, content, createdDate);
                 result.add(dto);
             } else {
-                QuestionTop5Dto dto = new QuestionTop5Dto(subjectName, title, content, createdDate);
+                QuestionTop5Dto dto = new QuestionTop5Dto(questionId, subjectName, title, content, createdDate);
                 result.add(dto);
             }
         }
