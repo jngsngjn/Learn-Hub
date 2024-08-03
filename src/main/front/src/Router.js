@@ -16,6 +16,7 @@ import StudentSubjectBoard from "./pages/Student/StudentSubjectBoard";
 import StudentInquiryBoard from "./pages/Student/StudentInquiryBoard";
 import StudentAssignmentDetail from "./pages/Student/StudentAssignmentDetail";
 import StudentInquiryDetail from "./pages/Student/StudentInquiryDetail";
+import StudentSubjectBoardDetail from "./pages/Student/StudentSubjectBoardDetail";
 
 const Router = () => {
   return (
@@ -33,6 +34,10 @@ const Router = () => {
         <Route
           path="/students/subjectBoard"
           element={<StudentSubjectBoard />}
+        />
+        <Route
+          path="/Students/SubjectBoardDetail/:id"
+          element={<StudentSubjectBoardDetail />}
         />
         <Route
           path="/students/inquiryBoard"
