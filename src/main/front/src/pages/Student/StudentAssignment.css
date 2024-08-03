@@ -75,6 +75,11 @@
   /* background-color: #f5f5f5; */
 }
 
+.Right_and_left_button.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 /* 진행 중인 과제 내용 */
 .current_proceeding_subject_contents_container {
   width: 1100px;
@@ -123,7 +128,8 @@
 .closed_subject_container {
   margin-top: 50px;
   width: 1300px;
-  height: 550px;
+  height: 1450px;
+  gap: 50px;
   border: 1px solid #5c8d89;
   border-radius: 20px;
   box-shadow: 0.125em 0 0.3125em rgba(0 0, 0, 0.2);
@@ -136,7 +142,6 @@
 .closed_subject_title_box {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 50px;
 }
 
 .closed_subject_box_name {
