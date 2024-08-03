@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from './Modal';
 import './Student_Management.css';
+import swal from 'sweetalert';
 
 axios.defaults.baseURL = 'http://localhost:8080';
 
 const StudentManagement = () => {
   const [students, setStudents] = useState([]);
+  const [curriculums, setCurriculums] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('전체');
   const [selectedGeneration, setSelectedGeneration] = useState('전체');
@@ -27,6 +29,7 @@ const StudentManagement = () => {
 
   useEffect(() => {
     fetchStudents();
+    fetchCurriculums();
   }, []);
 
   const fetchStudents = async () => {
@@ -42,11 +45,26 @@ const StudentManagement = () => {
     }
   };
 
+  const fetchCurriculums = async () => {
+    try {
+      const token = getToken();
+      const response = await axios.get('/managers/enroll-ready', {
+        headers: { access: token },
+      });
+      setCurriculums(response.data || []);
+    } catch (error) {
+      console.error('기수 가져오기 에러:', error);
+      setCurriculums([]);
+    }
+  };
+
   const handleSearch = (event) => setSearchTerm(event.target.value);
 
   const handleCourseChange = (course) => {
     const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS 데브옵스 과정';
     setSelectedCourse(fullCourseName);
+    setSelectedGeneration('전체');
+    setNewStudent({ ...newStudent, curriculum: fullCourseName });
   };
 
   const handleGenerationChange = (event) => setSelectedGeneration(event.target.value);
@@ -73,7 +91,7 @@ const StudentManagement = () => {
         gender: newStudent.gender,
         email: newStudent.email,
         phone: newStudent.phone,
-        curriculumFullName: `${newStudent.curriculum} ${newStudent.generation}`
+        curriculumFullName: `${newStudent.curriculum} ${newStudent.generation}기`
       };
 
       console.log('전송할 학생 데이터:', studentData);
@@ -95,12 +113,16 @@ const StudentManagement = () => {
 
   const handleFileUpload = async () => {
     if (!selectedFile) {
+      console.log('파일이 선택되지 않았습니다.');
       return;
     }
     try {
+      console.log('파일 업로드 시작');
       const token = getToken();
       const formData = new FormData();
       formData.append('file', selectedFile);
+
+      console.log('파일 정보:', selectedFile.name, selectedFile.size, 'bytes');
 
       const response = await axios.post('/managers/manage-students/enroll-file', formData, {
         headers: {
@@ -110,18 +132,36 @@ const StudentManagement = () => {
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
           setUploadProgress(percentCompleted);
+          console.log(`업로드 진행률: ${percentCompleted}%`);
         },
       });
 
-      if (response.status === 200) {
-        setSelectedFile(null);
-        setUploadProgress(0);
-        fetchStudents();
-      } else {
-        console.error('파일 업로드 실패');
-      }
+      console.log('서버 응답:', response);
+
+      setSelectedFile(null);
+      setUploadProgress(0);
+      fetchStudents();
+
+      console.log('파일 업로드 완료');
+
+      swal({
+        title: "업로드 완료!",
+        text: "파일이 성공적으로 업로드되었습니다.",
+        icon: "success",
+        button: "확인",
+      });
+
     } catch (error) {
       console.error('파일 업로드 에러:', error);
+      console.error('에러 상세 정보:', error.response ? error.response.data : '응답 없음');
+      setUploadProgress(0);
+
+      swal({
+        title: "업로드 실패",
+        text: "파일 업로드 중 오류가 발생했습니다.",
+        icon: "error",
+        button: "확인",
+      });
     }
   };
 
@@ -162,20 +202,20 @@ const StudentManagement = () => {
     setUploadProgress(0);
   };
 
+  const filteredGenerations = curriculums.find(curriculum => curriculum.type === (selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'NCP' : 'AWS'))?.th || [];
+
   return (
     <div className="student-management">
       <h1>학생 관리</h1>
       <div className="student-controls">
         <div className="program-buttons">
-          <button className={selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('NCP')}>NCP</button>
-          <button className={selectedCourse === 'AWS 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS</button>
+          <button className={selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('NCP')}>네이버 클라우드 데브옵스 과정</button>
+          <button className={selectedCourse === 'AWS 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS 데브옵스 과정</button>
           <select value={selectedGeneration} onChange={handleGenerationChange}>
             <option value="전체">전체</option>
-            <option value="1기">1기</option>
-            <option value="2기">2기</option>
-            <option value="3기">3기</option>
-            <option value="4기">4기</option>
-            <option value="5기">5기</option>
+            {filteredGenerations.map(th => (
+              <option key={`${th}`} value={th}>{`${th}기`}</option>
+            ))}
           </select>
         </div>
         <div className="search-container">
@@ -245,16 +285,16 @@ const StudentManagement = () => {
             )}
           </div>
           <div className="upload-progress-container">
-          {selectedFile && (
-            <div className="upload-progress">
-              <progress value={uploadProgress} max="100" />
-              <span>{uploadProgress}%</span>
-            </div>
-          )}
+            {selectedFile && (
+              <div className="upload-progress">
+                <progress value={uploadProgress} max="100" />
+                <span>{uploadProgress}%</span>
+              </div>
+            )}
           </div>
           <div className="student-modal-file">
-          <button className="student-modal-file-button" onClick={handleFileUpload}>파일 업로드</button>
-          <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
+            <button className="student-modal-file-button" onClick={handleFileUpload}>파일 업로드</button>
+            <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
           </div>
           <span className="file-line" />
           <div className="course-selection">
@@ -263,11 +303,9 @@ const StudentManagement = () => {
           </div>
           <div className="generation-selection">
             <select name="generation" value={newStudent.generation} onChange={handleInputChange}>
-              <option value="1기">1기</option>
-              <option value="2기">2기</option>
-              <option value="3기">3기</option>
-              <option value="4기">4기</option>
-              <option value="5기">5기</option>
+              {(newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? curriculums.find(curriculum => curriculum.type === 'NCP')?.th : curriculums.find(curriculum => curriculum.type === 'AWS')?.th || []).map(th => (
+                <option key={`${th}`} value={th}>{`${th}기`}</option>
+              ))}
             </select>
           </div>
           <div className="student-input-group">

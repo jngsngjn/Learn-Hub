@@ -38,7 +38,7 @@ function Login() {
           swal("로그인 성공", "성공적으로 로그인되었습니다.", "success");
 
           const userType = response.data.userType; // 서버 응답에서 사용자 유형을 받아옴
-          console.log('사용자 유형:', username);
+          console.log('사용자:', username);
 
           if (username === 'manager') {
             navigate('/managers'); // 매니저 페이지로 이동
