@@ -36,7 +36,7 @@
   height: 550px;
   border: 1px solid #5c8d89;
   border-radius: 20px;
-  box-shadow: 0.125em 0 0.3125em rgba(0 0, 0, 0.2);
+  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.2);
   padding: 45px;
   background-color: rgba(167, 215, 197, 0.25);
   display: flex;
