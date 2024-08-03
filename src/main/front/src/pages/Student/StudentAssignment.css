@@ -1,0 +1,210 @@
+.student_subject_body {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  background-color: #f5f5f5;
+  color: #74b49b;
+}
+
+/* 사이드 바 스타일 */
+.side_bar {
+  width: 514px;
+  padding: 3em;
+  background-color: #fff;
+  border-right: 0.0625em solid #a7d7c5;
+  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.1);
+}
+
+/* 메인 스타일 */
+.student_subject_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1400px;
+  padding: 100px 36px 20px 36px;
+  background-color: #fff;
+  /* border-bottom: 1px solid gray; */
+}
+
+.student_subject_page_title {
+  font-size: 48px;
+  margin-bottom: 100px;
+}
+
+/* 진행중인 과제  */
+.current_proceeding_subject_container {
+  width: 1300px;
+  height: 550px;
+  border: 1px solid #5c8d89;
+  border-radius: 20px;
+  box-shadow: 0.125em 0 0.3125em rgba(0 0, 0, 0.2);
+  padding: 45px;
+  background-color: rgba(167, 215, 197, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.current_proceeding_subject_title_box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.current_proceeding_subject_box_name {
+  color: #5c8d89;
+  font-size: 32px;
+}
+
+.controll_box_with_both_side {
+  display: flex;
+  justify-content: space-between;
+  width: 82px;
+  height: 28px;
+  align-items: center;
+  color: #5c8d89;
+}
+.Right_and_left_button,
+.Right_and_left_button {
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.Right_and_left_button:hover,
+.Right_and_left_button:hover {
+  font-size: 32px;
+  /* background-color: #f5f5f5; */
+}
+
+/* 진행 중인 과제 내용 */
+.current_proceeding_subject_contents_container {
+  width: 1100px;
+  height: 462px;
+  margin: 0 auto;
+  border: 3px solid #a7d7c5;
+  border-radius: 20px;
+  padding: 38px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: black;
+}
+
+.current_proceeding_subject_contents_title_box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.current_proceeding_subject_contents_title {
+  font-size: 36px;
+}
+
+.go_to_proceeding_subject_page {
+  color: #5c8d89;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.current_proceeding_subject_contents {
+  font-size: 24px;
+}
+
+.current_proceeding_subject_contents_additional_data_box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+}
+
+.geen_text {
+  color: #5c8d89;
+}
+
+/* 마감된 과제 컨테이너 */
+.closed_subject_container {
+  margin-top: 50px;
+  width: 1300px;
+  height: 550px;
+  border: 1px solid #5c8d89;
+  border-radius: 20px;
+  box-shadow: 0.125em 0 0.3125em rgba(0 0, 0, 0.2);
+  padding: 45px;
+  background-color: rgba(167, 215, 197, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.closed_subject_title_box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.closed_subject_box_name {
+  color: #5c8d89;
+  font-size: 32px;
+}
+
+.controll_box_with_both_side {
+  display: flex;
+  justify-content: space-between;
+  width: 82px;
+  height: 28px;
+  align-items: center;
+  color: #5c8d89;
+}
+.Right_and_left_button,
+.Right_and_left_button {
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.Right_and_left_button:hover,
+.Right_and_left_button:hover {
+  font-size: 32px;
+  /* background-color: #f5f5f5; */
+}
+
+/* 마감된 과제 리스트들  */
+.closed_subject_contents_container {
+  width: 1100px;
+  height: 462px;
+  margin: 0 auto;
+  border: 3px solid #a7d7c5;
+  border-radius: 20px;
+  padding: 38px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: black;
+}
+
+.closed_subject_contents_title_box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.closed_subject_contents_title {
+  font-size: 36px;
+}
+
+.go_to_closed_subject_page {
+  color: #5c8d89;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.closed_subject_contents {
+  font-size: 24px;
+}
+
+.closed_subject_contents_additional_data_box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+}
+
+.geen_text {
+  color: #5c8d89;
+}

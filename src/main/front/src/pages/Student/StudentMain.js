@@ -175,7 +175,10 @@ const StudentMain = () => {
             <div className="subject_container">
               <div className="title_box">
                 <h3 className="components_title"> 과제 목록</h3>
-                <span className="go_to_subject_page navigate_button">
+                <span
+                  className="go_to_subject_page navigate_button"
+                  onClick={() => navigate("/students/assignment")}
+                >
                   더보기
                 </span>
               </div>
