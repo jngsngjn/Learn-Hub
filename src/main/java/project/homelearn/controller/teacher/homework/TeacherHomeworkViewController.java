@@ -42,4 +42,30 @@ public class TeacherHomeworkViewController {
         int size = 3;
         return homeworkService.getHomeworks(principal.getName(), page, size, "마감");
     }
+
+    /**
+     * 과제 상세 조회
+     *  1. 과제 상세 내용 (제목, 설명, 첨부파일, 등록일, 마감일, 미제출 인원수, 미제출 인원 명단, 제출 인원 수
+     *  2. 제출 내용 (학생 이름, 등록일, 첨부파일, 설명, 피드백, 피드백 날짜)
+     */
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
