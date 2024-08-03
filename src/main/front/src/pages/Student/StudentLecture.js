@@ -55,16 +55,12 @@ const StudentLecture = () => {
   const today = new Date();
 
   const isOpend = (dateStr) => {
-    const [year, month, day] = dateStr
-      .split(".")
-      .map((num) => parseInt(num, 10));
-    const lectureDate = new Date(year, month - 1, day);
+    const lectureDate = new Date(dateStr);
     return lectureDate <= today;
   };
 
   const checkDatesUntilOpen = (dateStr) => {
-    const [y, m, d] = dateStr.split(".").map((num) => parseInt(num, 10));
-    const lectureDate = new Date(y, m - 1, d);
+    const lectureDate = new Date(dateStr);
     const leftTime = lectureDate - today;
     return Math.ceil(leftTime / (1000 * 60 * 60 * 24));
   };
@@ -105,7 +101,9 @@ const StudentLecture = () => {
                 <div
                   className="subject_list"
                   key={idx}
-                  onClick={() => navigate(`/students/subjectBoard/${el.id}`)}
+                  onClick={() =>
+                    navigate(`/students/subjectBoardDetail/${el.id}`)
+                  }
                 >
                   <div className="subject_title_box">
                     <h4 className="subject_title">{el.title}</h4>
@@ -178,9 +176,12 @@ const StudentLecture = () => {
                       }`}
                     >
                       {!isOpen && (
-                        <div className="show_not_open">
-                          {daysRemaining}일 후 시청 가능합니다.
-                        </div>
+                        <>
+                          <div className="show_not_open">
+                            {daysRemaining}일 후 시청 가능합니다.
+                          </div>
+                          <div className="not-released-overlay"></div>
+                        </>
                       )}
                       <iframe
                         width="100%"
