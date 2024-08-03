@@ -1,14 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import "./StudentAssignmentDetail.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useGetFetch from "../../hooks/useGetFetch";
 
 const StudentAssignmentDetail = () => {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const showSubmittedInfo = () => {
+    setIsOpen(!isOpen);
+  };
 
   const { data: subjectBoards, error: subjectBoardsError } = useGetFetch(
     "/data/student/mainLecture/subjectBoard.json",
@@ -60,14 +66,27 @@ const StudentAssignmentDetail = () => {
           제출 &nbsp;
           <span className="tudent_assignment_participants_count">28명</span>
         </div>
-        <table className="subject_board_list_table">
-          <tr className="subject_board_table_tab_names">
-            <th className="submitted_number"> 1</th>
-            <th className="submitted_name">동재완</th>
-            <th className="submitted_date">2024-08-01</th>
-            <th className="submitted_show_more_submitted_info">+</th>
-          </tr>
-        </table>
+        <div className="subject_board_lists_container">
+          <div className="subject_submitted_lists">
+            <p className="submitted_number">1</p>
+            <p className="submitted_name">동재완</p>
+            <p className="submitted_date">2024-08-01</p>
+            <p className="show_more_submitted_info" onClick={showSubmittedInfo}>
+              {isOpen ? "-" : "+"}
+            </p>
+          </div>
+          {isOpen && (
+            <div className="show_more_submitted_detail_info_container">
+              <div className="student_submitted_title_box">
+                <h3 className="student_submitted_title">Spring 과제 제출</h3>
+                <p className="student_submitted_file">SpringAssignment.zip</p>
+              </div>
+              <p className="student_submitted_content">
+                네이버 데브옵스 10기 ㅇㅇㅇ 과제 제출
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

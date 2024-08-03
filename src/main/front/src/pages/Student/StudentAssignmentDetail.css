@@ -66,6 +66,10 @@
   color: #5c8d89;
 }
 
+.student_assignment_participants_count {
+  cursor: pointer;
+}
+
 /* 과제 제출자 리스트 스타일 */
 .student_assignment_participants_list_container {
 }
@@ -81,28 +85,55 @@
   color: #5c8d89;
 }
 
-/* 제출자 테이블 */
-.subject_board_list_table {
+/* 제출자 리스트 */
+.subject_board_lists_container {
   width: 100%;
   border-collapse: collapse;
 }
 
-.subject_board_table_tab_names th {
+.show_more_submitted_detail_info_container {
+  width: 99%;
+  height: 250px;
+  padding: 40px;
+  box-sizing: border-box;
+  border: 1px solid #5c8d89;
+  background-color: rgba(167, 215, 197, 0.25);
+  border-radius: 20px;
+  margin: 0 auto;
+}
+
+.subject_submitted_lists {
+  display: flex;
+  justify-content: space-between;
   padding: 50px;
-  border-bottom: 1px solid #ddd;
   font-size: 32px;
+  border-top: 1px solid #5c8d89;
 }
 
-.subject_board_table_tab_names th.submitted_number,
-.subject_board_table_tab_names th.submitted_name {
-  text-align: left;
+.show_more_submitted_info {
+  cursor: pointer;
+  width: 20px;
 }
 
-.subject_board_table_tab_names th.submitted_date {
-  text-align: right;
-  width: 30px;
+.show_more_submitted_detail_info_container {
+  color: black;
 }
 
-.subject_board_table_tab_names th.submitted_show_more_submitted_info {
-  text-align: right;
+.student_submitted_title_box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.student_submitted_title {
+  font-size: 28px;
+}
+
+.student_submitted_file {
+  color: #757575;
+  font-size: 24px;
+}
+
+.student_submitted_content {
+  font-size: 20px;
 }
