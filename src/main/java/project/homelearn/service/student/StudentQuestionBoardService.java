@@ -82,7 +82,7 @@ public class StudentQuestionBoardService {
         return true;
     }
 
-    // 글 수정
+    // 글 수정 (과목 변경 추가해야 함!)
     public boolean modifyBoard(Long questionBoardId, String username, QuestionBoardWriteDto questionBoardWriteDto) {
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
         User student = questionBoard.getUser();

@@ -7,6 +7,8 @@ import java.time.LocalDate;
 @Data
 public class QuestionTop5Dto {
 
+    private Long questionId;
+
     private String subjectName;
 
     private String title;
@@ -15,7 +17,8 @@ public class QuestionTop5Dto {
 
     private LocalDate createdDate;
 
-    public QuestionTop5Dto(String subjectName, String title, String content, LocalDate createdDate) {
+    public QuestionTop5Dto(Long questionId, String subjectName, String title, String content, LocalDate createdDate) {
+        this.questionId = questionId;
         this.subjectName = subjectName;
         this.title = title;
         this.content = content;
@@ -26,12 +29,14 @@ public class QuestionTop5Dto {
 /*
 [
     {
+        "questionId": "2",
         "subjectName": "java",
         "title": "asdasd",
         "content": "asdasdasdsadasdas",
         "createdDate": "2024-08-03"
     },
     {
+        "questionId": "1",
         "subjectName": "기타",
         "title": "asdasd",
         "content": "asdasdasdsadasdas",
