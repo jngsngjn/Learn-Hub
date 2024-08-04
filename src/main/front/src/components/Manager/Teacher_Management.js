@@ -7,7 +7,6 @@ import swal from 'sweetalert';
 axios.defaults.baseURL = 'http://localhost:8080';
 
 const TeacherManagement = () => {
-  // 강사 목록과 커리큘럼 목록, 검색어 상태를 관리하는 state
   const [teachers, setTeachers] = useState([]);
   const [curriculums, setCurriculums] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,13 +24,13 @@ const TeacherManagement = () => {
   const [selectedTeachers, setSelectedTeachers] = useState([]);
   const getToken = () => localStorage.getItem('access-token');
 
-  // 컴포넌트가 마운트될 때 강사와 커리큘럼 데이터를 가져옴
+  // 강사와 커리큘럼 데이터를 가져옴
   useEffect(() => {
     fetchTeachers();
     fetchCurriculums();
   }, []);
 
-  // 강사 목록을 서버에서 가져오는 함수
+  // 강사 목록 서버에서 가져오기
   const fetchTeachers = async () => {
     try {
       const token = getToken();
@@ -46,7 +45,7 @@ const TeacherManagement = () => {
     }
   };
 
-  // 커리큘럼 목록을 서버에서 가져오는 함수
+  // 커리큘럼 목록
   const fetchCurriculums = async () => {
     try {
       const token = getToken();
@@ -60,10 +59,10 @@ const TeacherManagement = () => {
     }
   };
 
-  // 검색어를 업데이트하는 함수
+  // 검색어
   const handleSearch = (event) => setSearchTerm(event.target.value);
 
-  // 선택된 코스를 업데이트하는 함수
+  // 선택된 커리큘럼
   const handleCourseChange = (course) => {
     const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS 데브옵스 과정';
     setSelectedCourse(fullCourseName);
@@ -71,24 +70,24 @@ const TeacherManagement = () => {
     setNewTeacher({ ...newTeacher, curriculum: fullCourseName });
   };
 
-  // 선택된 기수를 업데이트하는 함수
+  // 선택된 기수
   const handleGenerationChange = (event) => setSelectedGeneration(event.target.value);
 
-  // 검색어와 선택된 코스를 초기화하는 함수
+  // 검색어와 선택된 강의
   const handleRefresh = () => {
     setSearchTerm('');
     setSelectedCourse('전체');
     setSelectedGeneration('전체');
   };
 
-  // 필터링된 강사 목록을 반환하는 함수
+  // 필터링된 강사
   const filteredTeachers = (Array.isArray(teachers) ? teachers : []).filter(teacher =>
     (teacher.name?.includes(searchTerm) || teacher.email?.includes(searchTerm)) &&
-    (selectedCourse === '전체' || teacher.curriculum === selectedCourse) &&
-    (selectedGeneration === '전체' || teacher.generation === selectedGeneration)
+    (selectedCourse === '전체' || teacher.curriculumName === selectedCourse) &&
+    (selectedGeneration === '전체' || teacher.curriculumTh === parseInt(selectedGeneration))
   );
 
-  // 새로운 강사를 등록하는 함수
+  // 새로운 강사 등록
   const handleAddTeacher = async () => {
     try {
       const token = getToken();
@@ -115,10 +114,10 @@ const TeacherManagement = () => {
     }
   };
 
-  // 입력 필드 값을 업데이트하는 함수
+  // 입력 필드 값
   const handleInputChange = (e) => setNewTeacher({ ...newTeacher, [e.target.name]: e.target.value });
 
-  // 선택된 강사를 삭제하는 함수
+  // 선택된 강사 삭제
   const handleDeleteTeachers = async () => {
     try {
       const token = getToken();
@@ -135,17 +134,17 @@ const TeacherManagement = () => {
     }
   };
 
-  // 체크박스 상태를 업데이트하는 함수
+  // 체크박스 상태
   const handleCheckboxChange = (teacherId) => setSelectedTeachers(
     selectedTeachers.includes(teacherId)
       ? selectedTeachers.filter(id => id !== teacherId)
       : [...selectedTeachers, teacherId]
   );
 
-  // 행 클릭 시 체크박스 상태를 업데이트하는 함수
+  // 행 클릭
   const handleRowClick = (teacherId) => handleCheckboxChange(teacherId);
 
-  // 선택된 코스의 기수를 필터링하는 함수
+  // 선택된 기수를 필터링
   const filteredGenerations = curriculums.find(curriculum => curriculum.type === (selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'NCP' : 'AWS'))?.th || [];
 
   return (
@@ -193,8 +192,8 @@ const TeacherManagement = () => {
                 </td>
                 <td>{teacher.teacherId}</td>
                 <td>{teacher.name}</td>
-                <td>{teacher.curriculum}</td>
-                <td>{teacher.generation}</td>
+                <td>{teacher.curriculumName}</td>
+                <td>{teacher.curriculumTh}</td>
                 <td>{teacher.email}</td>
                 <td>{teacher.phone}</td>
               </tr>
