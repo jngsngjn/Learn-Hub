@@ -15,7 +15,7 @@ public class HomeworkTabDto {
 
     private String description;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime deadLine;
 
     private Long submitCount;
@@ -33,7 +33,7 @@ public class HomeworkTabDto {
             "homeworkId": 4,
             "title": "title",
             "description": "description",
-            "deadLine": "2024-08-20 10:15:30",
+            "deadLine": "2024-08-20 10:15",
             "submitCount": 0
         }
     ],
