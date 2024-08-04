@@ -3,14 +3,14 @@ package project.homelearn.controller.teacher.homework;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.teacher.homework.HomeworkDetailDto;
+import project.homelearn.dto.teacher.homework.HomeworkSubmitListDto;
 import project.homelearn.dto.teacher.homework.HomeworkTabDto;
 import project.homelearn.service.teacher.TeacherHomeworkService;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Author : 정성진
@@ -45,27 +45,18 @@ public class TeacherHomeworkViewController {
 
     /**
      * 과제 상세 조회
-     *  1. 과제 상세 내용 (제목, 설명, 첨부파일, 등록일, 마감일, 미제출 인원수, 미제출 인원 명단, 제출 인원 수
-     *  2. 제출 내용 (학생 이름, 등록일, 첨부파일, 설명, 피드백, 피드백 날짜)
+     * 1. 과제 상세 내용 ✅
+     * 2. 제출 내용 - List ✅
      */
+    @GetMapping("/{homeworkId}/detail")
+    public HomeworkDetailDto viewHomeworkDetail(Principal principal,
+                                                @PathVariable("homeworkId") Long homeworkId) {
+        return homeworkService.getHomeworkDetail(principal.getName(), homeworkId);
+    }
 
-
-
+    @GetMapping("/{homeworkId}/submit-list")
+    public List<HomeworkSubmitListDto> viewHomeworkSubmitList(Principal principal,
+                                                              @PathVariable("homeworkId") Long homeworkId) {
+        return homeworkService.getHomeworkSubmitList(principal.getName(), homeworkId);
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
