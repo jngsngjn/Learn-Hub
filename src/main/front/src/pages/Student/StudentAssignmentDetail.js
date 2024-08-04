@@ -4,24 +4,25 @@ import { useEffect, useState } from "react";
 import useGetFetch from "../../hooks/useGetFetch";
 
 const StudentAssignmentDetail = () => {
-  const navigate = useNavigate();
+  const a = "b";
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // 상태 변수
+  const [clickIdx, setClickIdx] = useState(null);
 
-  const showSubmittedInfo = () => {
-    setIsOpen(!isOpen);
+  const showSubmittedInfo = (index) => {
+    setClickIdx(clickIdx === index ? null : index);
   };
 
-  const { data: subjectBoards, error: subjectBoardsError } = useGetFetch(
-    "/data/student/mainLecture/subjectBoard.json",
+  const { data: assignments, error: assginmentsError } = useGetFetch(
+    "/data/student/mainLecture/assginmentDetail.json",
     []
   );
 
-  if (subjectBoardsError) {
+  if (assginmentsError) {
     return <div>데이터를 불러오는데 실패하였습니다.</div>;
   }
 
@@ -35,28 +36,43 @@ const StudentAssignmentDetail = () => {
         <div className="student_assignment_board_content_box">
           <div className="student_assignment_board_title_box">
             <span className="student_assignment_title">
-              Spring으로 게시판 생성
+              {assignments?.title}
             </span>
             <span className="assignment_download_file_name">
-              1주차 수업 자료.zip
+              {assignments?.fileName}
             </span>
           </div>
           <div className="student_assignment_board_content">
-            Spring MVC로 CRUD를 고려하여 게시판 생성
+            {assignments?.content}
           </div>
           <div className="student_assignment_board_info_box">
             <div className="important_notice_box">
-              <span className="student_assignment_deadline"> 2024-08-26</span>
+              <span className="student_assignment_deadline">
+                {assignments?.deadline}
+              </span>
               &nbsp;까지 &nbsp;<b>|</b>&nbsp;
               <span>
                 미제출&nbsp;
-                <span className="student_assignment_participants_count">
-                  3명
+                <span
+                  className="student_assignment_participants_count"
+                  onClick={() => setIsOpen(!isOpen)}
+                >
+                  {assignments?.nonParticipants?.length || 0}명
+                  {isOpen && (
+                    <div className="non_participants_list_box">
+                      {assignments?.nonParticipants?.map((el) => (
+                        <p key={el.name} className="non_participants_name">
+                          {el.name}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </span>
               </span>
             </div>
-            <p class="student_assignment_board_writed_date">
-              2024-07-01 &nbsp; <span style={{ color: "black" }}>작성</span>
+            <p className="student_assignment_board_writed_date">
+              {assignments?.writeDate} &nbsp;
+              <span style={{ color: "black" }}>작성</span>
             </p>
           </div>
         </div>
@@ -64,28 +80,41 @@ const StudentAssignmentDetail = () => {
         {/* 과목 게시판 리스트들 */}
         <div className="student_assignment_participants_container">
           제출 &nbsp;
-          <span className="tudent_assignment_participants_count">28명</span>
+          <span className="student_assignment_participants_count">
+            {assignments?.participants?.length || 0}명
+          </span>
         </div>
         <div className="subject_board_lists_container">
-          <div className="subject_submitted_lists">
-            <p className="submitted_number">1</p>
-            <p className="submitted_name">동재완</p>
-            <p className="submitted_date">2024-08-01</p>
-            <p className="show_more_submitted_info" onClick={showSubmittedInfo}>
-              {isOpen ? "-" : "+"}
-            </p>
-          </div>
-          {isOpen && (
-            <div className="show_more_submitted_detail_info_container">
-              <div className="student_submitted_title_box">
-                <h3 className="student_submitted_title">Spring 과제 제출</h3>
-                <p className="student_submitted_file">SpringAssignment.zip</p>
+          {assignments?.participants?.map((participant, idx) => (
+            <div key={participant.studentId}>
+              <div className="subject_submitted_lists">
+                <p className="submitted_number">{idx + 1}</p>
+                <p className="submitted_name">{participant.name}</p>
+                <p className="submitted_date">{participant.submittedDate}</p>
+                <p
+                  className="show_more_submitted_info"
+                  onClick={() => showSubmittedInfo(idx)}
+                >
+                  {clickIdx === idx ? "-" : "+"}
+                </p>
               </div>
-              <p className="student_submitted_content">
-                네이버 데브옵스 10기 ㅇㅇㅇ 과제 제출
-              </p>
+              {clickIdx === idx && (
+                <div className="show_more_submitted_detail_info_container">
+                  <div className="student_submitted_title_box">
+                    <h3 className="student_submitted_title">
+                      {participant.submitTitle}
+                    </h3>
+                    <p className="student_submitted_file">
+                      {participant.fileName}
+                    </p>
+                  </div>
+                  <p className="student_submitted_content">
+                    {participant.content}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          ))}
         </div>
       </div>
     </div>
