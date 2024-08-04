@@ -84,14 +84,17 @@
 }
 
 .subject_board_table_tab_names th:nth-child(1),
-.subject_board_table_tab_names th:nth-child(3),
-.subject_board_table_tab_names th:nth-child(4),
 .subject_board_table_tab_names th:nth-child(5) {
   width: 10%;
 }
 
 .subject_board_table_tab_names th:nth-child(2) {
   width: 40%;
+}
+
+.subject_board_table_tab_names th:nth-child(3),
+.subject_board_table_tab_names th:nth-child(4) {
+  width: 15%;
 }
 
 .writed_subject_board_lists {
@@ -108,5 +111,4 @@
 
 /* .writed_subject_board_title_one {
   cursor: pointer !important;
-  안먹
 } */
