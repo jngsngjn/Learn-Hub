@@ -7,7 +7,7 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());  // 현재 날짜
   const [selectedDate, setSelectedDate] = useState(null);  // 선택된 날짜
   const [events, setEvents] = useState([]);  // 일정 이벤트
-  const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, time: '', color: '#FF9999' });  // 새로운 이벤트 상태
+  const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, color: '#FF9999' });  // 새로운 이벤트 상태
   const [isModalOpen, setIsModalOpen] = useState(false);  // 모달 창 열림
   const [viewEvent, setViewEvent] = useState(null);  // 보기 위한 이벤트
   const [editEvent, setEditEvent] = useState(null);  // 수정 중인 이벤트
@@ -64,13 +64,13 @@ const Calendar = () => {
   };
 
   const handleOpenModal = () => {
-    setNewEvent({ title: '', start: selectedDate, end: selectedDate, time: '', color: '#FF9999' }); // 새로운 이벤트 초기화
+    setNewEvent({ title: '', start: selectedDate, end: selectedDate, color: '#FF9999' }); // 새로운 이벤트 초기화
     setIsModalOpen(true); // 모달 창 열기
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false); // 모달 창 닫기
-    setNewEvent({ title: '', start: null, end: null, time: '', color: '#FF9999' }); // 새로운 이벤트 초기화
+    setNewEvent({ title: '', start: null, end: null, color: '#FF9999' }); // 새로운 이벤트 초기화
     setViewEvent(null);
     setEditEvent(null);
   };
@@ -99,7 +99,7 @@ const Calendar = () => {
   const handleEventClick = (event) => {
     setViewEvent(event); // 보기 위한 이벤트 설정
     setEditEvent(event); // 수정 중인 이벤트 설정
-    setNewEvent(event); // 새로운 이벤트 설정
+    setNewEvent({ ...event, start: new Date(event.start), end: new Date(event.end) }); // 새로운 이벤트 설정
     setIsModalOpen(true); // 모달 창 열기
   };
 
