@@ -117,7 +117,10 @@
   border: 1px solid #5c8d89;
   background-color: rgba(167, 215, 197, 0.25);
   border-radius: 20px;
-  margin: 0 auto;
+  margin: 0 auto 50px auto;
+}
+
+.subject_board_list_one_box {
 }
 
 .subject_submitted_lists {
