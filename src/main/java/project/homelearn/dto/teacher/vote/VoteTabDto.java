@@ -20,3 +20,7 @@ public class VoteTabDto {
 
     private Long voteCount;
 }
+
+/*
+
+ */

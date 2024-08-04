@@ -7,5 +7,7 @@ import project.homelearn.entity.curriculum.Curriculum;
 
 public interface VoteRepositoryCustom {
 
-    Page<VoteTabDto> findVotes(Curriculum curriculum, Pageable pageable, String status);
+    Page<VoteTabDto> findVoteTab(Curriculum curriculum, Pageable pageable, String status);
+
+    Long findCompletedCount(Long voteId);
 }
