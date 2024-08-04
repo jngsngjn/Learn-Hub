@@ -208,7 +208,7 @@ const StudentManagement = () => {
     <div className="student-management">
       <h1>학생 관리</h1>
       <div className="student-controls">
-        <div className="program-buttons">
+        <div className="student-program-buttons">
           <button className={selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('NCP')}>NCP</button>
           <button className={selectedCourse === 'AWS 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS</button>
           <select value={selectedGeneration} onChange={handleGenerationChange}>
@@ -218,17 +218,17 @@ const StudentManagement = () => {
             ))}
           </select>
         </div>
-        <div className="search-container">
-          <div className="search-wrapper">
+        <div className="student-search-container">
+          <div className="student-search-wrapper">
             <input type="text" placeholder="검색" value={searchTerm} onChange={handleSearch} />
-            <i className="fas fa-search search-icon"></i>
+            <i className="fas fa-search student-search-icon"></i>
           </div>
-          <button onClick={handleRefresh} className="refresh-button">
+          <button onClick={handleRefresh} className="student-refresh-button">
             <i className="fas fa-sync"></i>
           </button>
         </div>
       </div>
-      <div className="table-container">
+      <div className="student-table-container">
         <table>
           <thead>
             <tr>
@@ -268,25 +268,25 @@ const StudentManagement = () => {
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <span className="add_title">학생 등록</span>
-        <div className="form-container">
-          <label className="excel-label">엑셀 파일 첨부 </label>
-          <div className="file-upload">
+        <div className="student-form-container">
+          <label className="student-excel-label">엑셀 파일 첨부 </label>
+          <div className="student-file-upload">
             {selectedFile ? (
-              <div className="file-preview">
+              <div className="student-file-preview">
                 <i className="fa-regular fa-file"></i>
                 <span>{selectedFile.name}</span>
-                <button className="file-remove-button" onClick={handleRemoveFile}>삭제</button>
+                <button className="student-file-remove-button" onClick={handleRemoveFile}>삭제</button>
               </div>
             ) : (
               <>
-                <label htmlFor="file-upload" className="custom-file-upload">파일 선택</label>
+                <label htmlFor="file-upload" className="student-custom-file-upload">파일 선택</label>
                 <input id="file-upload" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
               </>
             )}
           </div>
-          <div className="upload-progress-container">
+          <div className="student-upload-progress-container">
             {selectedFile && (
-              <div className="upload-progress">
+              <div className="student-upload-progress">
                 <progress value={uploadProgress} max="100" />
                 <span>{uploadProgress}%</span>
               </div>
@@ -296,12 +296,12 @@ const StudentManagement = () => {
             <button className="student-modal-file-button" onClick={handleFileUpload}>파일 업로드</button>
             <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
           </div>
-          <span className="file-line" />
-          <div className="course-selection">
-            <button className={`course-button ${newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: '네이버 클라우드 데브옵스 과정' })}>NCP</button>
-            <button className={`course-button ${newStudent.curriculum === 'AWS 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS 데브옵스 과정' })}>AWS</button>
+          <span className="student-file-line" />
+          <div className="student-course-selection">
+            <button className={`student-course-button ${newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: '네이버 클라우드 데브옵스 과정' })}>NCP</button>
+            <button className={`student-course-button ${newStudent.curriculum === 'AWS 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS 데브옵스 과정' })}>AWS</button>
           </div>
-          <div className="generation-selection">
+          <div className="student-generation-selection">
             <select name="generation" value={newStudent.generation} onChange={handleInputChange}>
               {(newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? curriculums.find(curriculum => curriculum.type === 'NCP')?.th : curriculums.find(curriculum => curriculum.type === 'AWS')?.th || []).map(th => (
                 <option key={`${th}`} value={th}>{`${th}기`}</option>
@@ -312,11 +312,11 @@ const StudentManagement = () => {
             <label>이름</label>
             <input type="text" name="name" value={newStudent.name} onChange={handleInputChange} />
           </div>
-          <div className="gender-selection">
-            <label className="gender-label">성별</label>
-            <div className="gender-buttons">
-              <button className={`gender-button ${newStudent.gender === 'MALE' ? 'selected' : ''}`} onClick={() => handleGenderChange('남')}>남</button>
-              <button className={`gender-button ${newStudent.gender === 'FEMALE' ? 'selected' : ''}`} onClick={() => handleGenderChange('여')}>여</button>
+          <div className="student-gender-selection">
+            <label className="student-gender-label">성별</label>
+            <div className="student-gender-buttons">
+              <button className={`student-gender-button ${newStudent.gender === 'MALE' ? 'selected' : ''}`} onClick={() => handleGenderChange('남')}>남</button>
+              <button className={`student-gender-button ${newStudent.gender === 'FEMALE' ? 'selected' : ''}`} onClick={() => handleGenderChange('여')}>여</button>
             </div>
           </div>
           <div className="student-input-group">
