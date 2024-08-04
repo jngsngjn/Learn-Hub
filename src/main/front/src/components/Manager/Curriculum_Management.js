@@ -20,7 +20,7 @@ const CurriculumManagement = () => {
     teacherId: '',
   });
 
-  // 토큰을 가져온다(access-toke으로 설정함)
+  // 토큰을 가져온다(access-token으로 설정함)
   const getToken = () => localStorage.getItem('access-token');
 
   // 입력 값 변경 시
@@ -105,9 +105,9 @@ const CurriculumManagement = () => {
           <span className="curriculum-type">{curriculum.name}</span>
         </div>
         <div className="curriculum-footer">
-          <span className="curriculum-teacher">강사 {curriculum.teacherId}</span>
+          <span className="curriculum-teacher">강사 {curriculum.teacherName}</span>
           <span className="curriculum-students">
-            <i className="fas fa-user"></i> {curriculum.students || '0'}
+            <i className="fas fa-user"></i> {curriculum.attendance} / {curriculum.total}
           </span>
         </div>
       </div>
