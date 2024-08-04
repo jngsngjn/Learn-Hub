@@ -234,13 +234,13 @@ const StudentMain = () => {
               </div>
               <div className="teacher_notice_container">
                 <h3 className="notice_components_title">강사 공지사항</h3>
-                {teacherNotice.map((notice) => (
-                  <div key={notice.id} className="notice_list">
-                    <div className={`notice_type ${notice.type}_notice`}>
-                      {notice.type === "alert" ? "긴급" : "공지"}
+                {teacherNotice.map((el, idx) => (
+                  <div key={idx} className="notice_list">
+                    <div className={`notice_type ${el.type}_notice`}>
+                      {el.type === "alert" ? "긴급" : "공지"}
                     </div>
-                    <div className="notice_title">{notice.title}</div>
-                    <span className="notice_date">{notice.writeDate}</span>
+                    <div className="notice_title">{el.title}</div>
+                    <span className="notice_date">{el.writeDate}</span>
                   </div>
                 ))}
                 <span className="go_to_teacher_notice_page navigate_button">

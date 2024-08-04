@@ -63,7 +63,7 @@
 } */
 
 .recent_lecture_container {
-  width: 620px;
+  /* width: 620px; */
   height: 370px;
   padding: 0.9375em;
   border: 0.0625em solid #74b49b;
@@ -82,7 +82,8 @@
 }
 
 .recent_contents_box {
-  width: 35em;
+  /* width: 35em; */
+  width: 100%;
   height: 13.75em;
   margin-bottom: 1.25em;
   border: 3px solid #74b49b;
@@ -141,7 +142,7 @@
 /* 랜덤 영상과 보충 영상 스타일 */
 
 .video_container {
-  width: 620px;
+  /* width: 620px; */
   height: 700px;
   padding: 50px 30px 40px 30px;
   border: 1px solid #74b49b;
@@ -160,7 +161,7 @@
 
 /* 질문 사항 영역 */
 .question_container {
-  width: 620px;
+  /* width: 620px; */
   height: 350px;
   border-radius: 0.5em;
   border: 0.0625em solid #74b49b;
@@ -173,11 +174,11 @@
 }
 
 .question_list_container {
-  width: 550px;
+  /* width: 550px; */
 }
 
 .question_list {
-  width: 100%;
+  /* width: 100%; */
   height: 105px;
   border-radius: 1em;
   border: 3px solid #74b49b;
@@ -232,7 +233,7 @@
 /* 배지 컨테이터 스타일 */
 
 .badge_container {
-  width: 620px;
+  /* width: 620px; */
   height: 200px;
   background-color: #f4f9f4;
   border: 0.0625em solid #74b49b;
@@ -275,7 +276,7 @@
 /* 학생 메인페이지 오른쪽 스타일 */
 
 .calander-container {
-  width: 620px;
+  /* width: 620px; */
 
   background-color: #f4f9f4;
   border: 0.0625em solid #74b49b;
@@ -290,7 +291,7 @@
 }
 
 .calander {
-  width: 100%;
+  /* width: 100%; */
   height: 90%;
   border: 0.0625em solid #a7d7c5;
 }
@@ -299,7 +300,7 @@
 
 .subject_container {
   margin: 1.3em 0;
-  width: 620px;
+  /* width: 620px; */
   height: 540px;
   background-color: #f4f9f4;
   border: 1px solid #74b49b;
@@ -313,12 +314,13 @@
   flex-direction: row;
   justify-content: space-between;
   margin: 1em 0;
+  gap: 50px;
 }
 
 .dashboard_subject_list_box {
   width: 250px;
   height: 390px;
-  padding: 1.7em 1em;
+  padding: 22px 13px;
   border: 3px solid #74b49b;
   border-radius: 10px;
   display: flex;
@@ -342,7 +344,7 @@
 
 .subject_description {
   padding: 2em 1em;
-  color: black;
+  color: rgb(108, 95, 95);
 }
 
 .subject_submit_button {
@@ -360,7 +362,7 @@
 
 .addtional_info_box {
   display: flex;
-  width: 100%;
+  /* width: 100%; */
   justify-content: space-between;
 }
 
@@ -372,20 +374,25 @@
 .notice_container {
   display: flex;
   justify-content: space-between;
-  width: 620px;
+  /* width: 620px; */
   margin-top: 50px;
 }
 
 .notice_container > * {
   width: 285px;
+  /* 여기서 팍 죽네 흠 */
   height: 380px;
   background-color: #f4f9f4;
   border: 1px solid #74b49b;
   border-radius: 10px;
-  padding: 2em;
+  padding: 34px 17px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.admin_notice_container {
+  padding: 34px 17px;
 }
 
 .notice_components_title {
