@@ -86,7 +86,10 @@ const StudentAssignmentDetail = () => {
         </div>
         <div className="subject_board_lists_container">
           {assignments?.participants?.map((participant, idx) => (
-            <div key={participant.studentId} className="subject_board_list_one">
+            <div
+              key={participant.studentId}
+              className="subject_board_list_one_box"
+            >
               <div className="subject_submitted_lists">
                 <p className="submitted_number">{idx + 1}</p>
                 <p className="submitted_name">{participant.name}</p>

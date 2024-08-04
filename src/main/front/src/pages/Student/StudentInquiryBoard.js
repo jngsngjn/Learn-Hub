@@ -11,10 +11,14 @@ const StudentInquiryBoard = () => {
   }, []);
 
   const {
-    data: InquiryBoard,
-    loading: InquiryBoardLoading,
-    error: InquiryBoardError,
+    data: inquiryBoard,
+
+    error: inquiryBoardError,
   } = useGetFetch("/data/student/mainLecture/inquiryBoard.json", []);
+
+  if (inquiryBoardError) {
+    return <div>데이터를 불러오는데 오류가 발생했습니다.</div>;
+  }
 
   return (
     <div className="student_inquiry_board_container">
@@ -51,7 +55,7 @@ const StudentInquiryBoard = () => {
             <th>답변수</th>
             <th>답변 여부</th>
           </tr>
-          {InquiryBoard?.map((el, idx) => (
+          {inquiryBoard?.map((el, idx) => (
             <tr key={idx}>
               <th className="student_inquiry_board_number">{idx}</th>
               <th className="student_inquiry_board_subject_">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./StudentMain.css";
 import RandomVideo from "../../components/Lectures/RandomVideo";
 import LectureVideo from "../../components/Lectures/LectureVideo";
@@ -10,6 +10,40 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 const StudentMain = () => {
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    file: null,
+  });
+  const [selectedFileName, setSelectedFileName] = useState("");
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "file") {
+      setFormData((prevState) => ({ ...prevState, [name]: files[0] }));
+    } else {
+      setFormData((prevState) => ({ ...prevState, [name]: value }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    closeModal();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFileName(file.name);
+      handleChange(e);
+    }
+  };
 
   const {
     data: recentLecture,
@@ -27,7 +61,7 @@ const StudentMain = () => {
     data: subject,
     loading: subjectLoading,
     error: subjectError,
-  } = useGetFetch("/data/student/mainpage/subject.json", []);
+  } = useGetFetch("/data/student/mainpage/assignment.json", []);
 
   const {
     data: badge,
@@ -88,7 +122,14 @@ const StudentMain = () => {
                   학습 목록 ⟩
                 </span>
               </div>
-              <div className="recent_contents_box">
+              <div
+                className="recent_contents_box"
+                onClick={() =>
+                  navigate(
+                    `/students/lecture/${recentLecture.subject}/${recentLecture.id}`
+                  )
+                }
+              >
                 <h3 className="recent_lecture_type">{recentLecture.subject}</h3>
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
@@ -98,9 +139,7 @@ const StudentMain = () => {
                   <div className="recent_lecture_progress_container">
                     <CircularProgressbar
                       value={recentLecture.progress}
-                      // text={`${recentLecture.progress}%`}
                       styles={buildStyles({
-                        // textSize: "30px",
                         pathColor: "#A7D7C5",
                         textColor: "#5C8D89",
                         trailColor: "#d6d6d6",
@@ -132,7 +171,13 @@ const StudentMain = () => {
               </div>
               <div className="question_list_container">
                 {question?.map((el, idx) => (
-                  <div className="question_list" key={idx}>
+                  <div
+                    className="question_list"
+                    key={idx}
+                    onClick={() =>
+                      navigate(`/students/inquiryBoardDetail/${el.id}`)
+                    }
+                  >
                     <div className="question_type_box">
                       <span className="question_type_tag">질문</span>
                       <span className="question_type_nage">{el.type}</span>
@@ -197,7 +242,12 @@ const StudentMain = () => {
                     <h3>과제</h3>
                     <h4 className="subject_name">{el.title}</h4>
                     <p className="subject_description">{el.content}</p>
-                    <button className="subject_submit_button">제출하기</button>
+                    <button
+                      className="subject_submit_button"
+                      onClick={openModal}
+                    >
+                      제출하기
+                    </button>
                     {/* subject response의 timeline이 뭔지 모르겠음 물어보기 */}
                     {/* <div className="show_subject_complete">
                       {subject.timeout.some((el) => el.status === "true")
@@ -205,12 +255,7 @@ const StudentMain = () => {
                         : "제출 여부 ❌"}
                     </div> */}
                     <div className="addtional_info_box">
-                      <p className="subejct_deadline">
-                        ~ {el.timeout[0]?.timeline}
-                      </p>
-                      <p className="go_to_subject_page navigate_button">
-                        자세히 보기 ⟩
-                      </p>
+                      <span className="go_to_subject_page">상세보기 ⟩</span>
                     </div>
                   </div>
                 ))}
@@ -232,8 +277,9 @@ const StudentMain = () => {
                   자세히 보기 ⟩
                 </span>
               </div>
-              <div className="teacher_notice_container">
-                <h3 className="notice_components_title">강사 공지사항</h3>
+
+              <div className="admin_notice_container">
+                <h3 className="notice_components_title">선생님 공지사항</h3>
                 {teacherNotice.map((el, idx) => (
                   <div key={idx} className="notice_list">
                     <div className={`notice_type ${el.type}_notice`}>
@@ -243,14 +289,77 @@ const StudentMain = () => {
                     <span className="notice_date">{el.writeDate}</span>
                   </div>
                 ))}
-                <span className="go_to_teacher_notice_page navigate_button">
-                  자세히 보기 ⟩
-                </span>
+                <div className="r">
+                  <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="modal show">
+          <div className="modal-content" style={{ width: "1100px" }}>
+            <span className="close" onClick={closeModal}>
+              &times;
+            </span>
+            <h1 className="modal_title">과제 제출</h1>
+            <form onSubmit={handleSubmit} className="modal_form_body">
+              <label>
+                <p className="modal_name_tag">제목</p>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  className="modal_input_title"
+                />
+              </label>
+              <label>
+                <p className="modal_content_tag">내용</p>
+                <textarea
+                  name="content"
+                  value={formData.content}
+                  onChange={handleChange}
+                  className="modal_input_content"
+                ></textarea>
+              </label>
+              <label className="modal_file_label">
+                <p className="modal_file_tag">파일 첨부</p>
+                <div className="modal_file_input_wrapper">
+                  <input
+                    type="text"
+                    readOnly
+                    value={selectedFileName}
+                    className="modal_input_file_display"
+                  />
+                  <label className="modal_file_button">
+                    파일 선택
+                    <input
+                      type="file"
+                      name="file"
+                      onChange={handleFileChange}
+                      className="modal_input_file"
+                    />
+                  </label>
+                </div>
+              </label>
+              <div className="modal_submit_button_box">
+                <button type="submit" className="modal_submit_button">
+                  과제 제출
+                </button>
+                <button
+                  type="button"
+                  className="modal_cancel_button"
+                  onClick={closeModal}
+                >
+                  제출 취소
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
