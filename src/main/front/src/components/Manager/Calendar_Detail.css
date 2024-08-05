@@ -1,57 +1,129 @@
-.calendar-detail-container {
-  border: 1px solid #757575;
-  background-color: #E8E8E9;
-  border-radius: 10px;
-  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
-  padding: 20px;
-  max-width: 600px;
-  margin: 40px auto;
+.detail-calendar-detail-page {
+  display: flex;
 }
 
-.calendar-detail-header {
+.detail-calendar-detail-sidebar {
+  flex: 1;
+}
+
+.detail-calendar-detail-container {
+  width: 400px;
+  padding: 20px;
+  background-color: #E8E8E9;
+  border:1px solid #757575;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detail-calendar-detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.calendar-detail-header button {
+.detail-calendar-detail-header h2 {
+  margin: 0;
+}
+
+.detail-calendar-detail-header button {
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   color: #757575;
 }
 
-.calendar-detail-content {
-  font-size: 16px;
-}
-
-.event-color {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-}
-
-.calendar-detail-actions {
+.detail-calendar-detail-content {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+  flex-direction: column;
   gap: 10px;
 }
 
-.calendar-detail-actions button {
-  font-size: 18px;
-  cursor: pointer;
-  background-color: #000000;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  transition: background-color 0.3s ease;
+.detail-event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.calendar-detail-actions button:hover {
-  background-color: #B4B4B8;
+.detail-event-title-container {
+  display: flex;
+  align-items: center;
+}
+
+.detail-event-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.detail-event-title {
+  font-size: 18px;
+  font-weight: bold;
+  cursor:pointer;
+}
+
+.detail-event-title-input,
+.detail-event-date-input,
+.detail-event-content-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.detail-event-dates p {
+  margin: 0;
+}
+
+.detail-event-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.detail-event-actions-edit {
+  display: flex;
+  align-items: center;
+  justify-content:flex-end;
+  gap: 10px;
+}
+.detail-event-actions-edit button{
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.detail-event-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.detail-all-events ul {
+  list-style: none;
+  padding: 0;
+}
+
+.detail-all-events li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.detail-all-events .detail-event-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.detail-all-events .detail-event-title {
+  flex-grow: 1;
+}
+
+.detail-all-events .detail-event-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

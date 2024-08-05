@@ -1,135 +1,132 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // 수정
-import { FaCalendarPlus } from 'react-icons/fa'; // 캘린더 추가 아이콘 가져오기
+import { Link } from 'react-router-dom';
+import { FaCalendarPlus } from 'react-icons/fa';
 import './Calendar.css';
 import Modal from './Modal';
 
 const Calendar = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());  // 현재 날짜
-  const [selectedDate, setSelectedDate] = useState(null);  // 선택된 날짜
-  const [events, setEvents] = useState([]);  // 일정 이벤트
-  const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, color: '#FF9999' });  // 새로운 이벤트 상태
-  const [isModalOpen, setIsModalOpen] = useState(false);  // 모달 창 열림
-  const [viewEvent, setViewEvent] = useState(null);  // 보기 위한 이벤트
-  const [editEvent, setEditEvent] = useState(null);  // 수정 중인 이벤트
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, color: '#FF9999', content: '' });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewEvent, setViewEvent] = useState(null);
+  const [editEvent, setEditEvent] = useState(null);
 
   useEffect(() => {
-    const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || []; // 로컬 스토리지에서 이벤트 가져오기
-    setEvents(storedEvents); // 이벤트 상태 설정
+    const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
+    setEvents(storedEvents);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('calendarEvents', JSON.stringify(events)); // 이벤트가 변경될 때 로컬 스토리지에 저장
+    localStorage.setItem('calendarEvents', JSON.stringify(events));
   }, [events]);
 
-  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate(); // 현재 월의 일 수 계산
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay(); // 현재 월의 첫 번째 요일 계산
+  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
 
   const generateCalendarDates = () => {
     const dates = [];
-    const prevMonthLastDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0); // 이전 달의 마지막 날짜 계산
-    const nextMonthFirstDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1); // 다음 달의 첫 번째 날짜 계산
+    const prevMonthLastDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+    const nextMonthFirstDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
-    // 이전 달의 날짜 추가
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       dates.push({
         date: new Date(prevMonthLastDate.getFullYear(), prevMonthLastDate.getMonth(), prevMonthLastDate.getDate() - i),
-        isCurrentMonth: false // 이전 달의 날짜로 설정
+        isCurrentMonth: false
       });
     }
 
-    // 현재 달의 날짜 추가
     for (let i = 1; i <= daysInMonth; i++) {
       dates.push({
         date: new Date(currentDate.getFullYear(), currentDate.getMonth(), i),
-        isCurrentMonth: true // 현재 달의 날짜로 설정
+        isCurrentMonth: true
       });
     }
 
-    // 다음 달의 날짜 추가
     const remainingDays = 7 - (dates.length % 7);
     if (remainingDays < 7) {
       for (let i = 0; i < remainingDays; i++) {
         dates.push({
           date: new Date(nextMonthFirstDate.getFullYear(), nextMonthFirstDate.getMonth(), i + 1),
-          isCurrentMonth: false // 다음 달의 날짜로 설정
+          isCurrentMonth: false
         });
       }
     }
 
-    return dates; // 생성된 날짜 반환
+    return dates;
   };
 
   const handleMonthChange = (direction) => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1)); // 월 변경
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1));
   };
 
   const handleOpenModal = () => {
-    setNewEvent({ title: '', start: selectedDate, end: selectedDate, color: '#FF9999' }); // 새로운 이벤트 초기화
-    setIsModalOpen(true); // 모달 창 열기
+    setNewEvent({ title: '', start: selectedDate, end: selectedDate, color: '#FF9999', content: '' });
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); // 모달 창 닫기
-    setNewEvent({ title: '', start: null, end: null, color: '#FF9999' }); // 새로운 이벤트 초기화
+    setIsModalOpen(false);
+    setNewEvent({ title: '', start: null, end: null, color: '#FF9999', content: '' });
     setViewEvent(null);
     setEditEvent(null);
   };
 
   const handleSaveEvent = () => {
     if (newEvent.title && newEvent.start && newEvent.end) {
-      if (editEvent) { // 수정 중인 이벤트인 경우
-        setEvents(events.map(event => (event.id === editEvent.id ? newEvent : event))); // 업데이트
-      } else { // 새로운 이벤트인 경우
-        setEvents([...events, { ...newEvent, id: Date.now() }]); // 이벤트 추가
+      if (editEvent) {
+        setEvents(events.map(event => (event.id === editEvent.id ? newEvent : event)));
+      } else {
+        setEvents([...events, { ...newEvent, id: Date.now() }]);
       }
-      handleCloseModal(); // 모달 창 닫기
+      handleCloseModal();
     }
   };
 
   const handleDeleteEvent = () => {
-    setEvents(events.filter(event => event.id !== viewEvent.id)); // 이벤트 삭제
-    handleCloseModal(); // 모달 창 닫기
+    setEvents(events.filter(event => event.id !== viewEvent.id));
+    handleCloseModal();
   };
 
   const handleDateClick = (date) => {
-    const adjustedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())); // 날짜 클릭 시 UTC로 변환
-    setSelectedDate(adjustedDate); // 선택된 날짜 설정
+    const adjustedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    setSelectedDate(adjustedDate);
   };
 
   const getEventsForDate = (date) => {
     return events.filter(event =>
       new Date(event.start).toDateString() === date.toDateString() ||
       (new Date(event.start) <= date && new Date(event.end) >= date)
-    ); // 특정 날짜에 해당하는 이벤트 반환
+    );
   };
 
   const isCurrentDate = (date) => {
     const today = new Date();
     return date && date.getDate() === today.getDate() &&
            date.getMonth() === today.getMonth() &&
-           date.getFullYear() === today.getFullYear(); // 오늘 날짜인지 확인
+           date.getFullYear() === today.getFullYear();
   };
 
   const getEventStyle = (event, day) => {
     const startDate = new Date(event.start);
     const endDate = new Date(event.end);
-    const span = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1; // 이벤트 기간 계산
+    const span = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
     if (startDate.toDateString() === day.toDateString()) {
       if (startDate.toDateString() !== endDate.toDateString()) {
-        return { gridColumn: `span ${span}` }; // 여러 칸에 걸치는 이벤트 스타일 설정
+        return { gridColumn: `span ${span}` };
       }
     }
-    return {}; // 단일 칸 이벤트 스타일 설정
+    return {};
   };
 
   return (
     <section className="calendar-container">
       <div className="calendar">
         <div className="calendar-header">
-          <button onClick={() => handleMonthChange(-1)}>&lt;</button> {/* 이전 달로 이동 */}
-          <h2>{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월</h2> {/* 현재 년도와 월 표시 */}
-          <button onClick={() => handleMonthChange(1)}>&gt;</button> {/* 다음 달로 이동 */}
+          <button onClick={() => handleMonthChange(-1)}>&lt;</button>
+          <h2>{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월</h2>
+          <button onClick={() => handleMonthChange(1)}>&gt;</button>
         </div>
         <div className="add-list">
           <button onClick={() => setCurrentDate(new Date())}>
@@ -143,7 +140,7 @@ const Calendar = () => {
         <div className="calendar-body">
           <div className="weekdays">
             {['일', '월', '화', '수', '목', '금', '토'].map(day => (
-              <div key={day}>{day}</div> // 요일 표시
+              <div key={day}>{day}</div>
             ))}
           </div>
           <div className="days">
@@ -160,7 +157,7 @@ const Calendar = () => {
               >
                 <span className="day-number">{day.date.getDate()}</span>
                 <div className="events-indicator">
-                  {getEventsForDate(day.date).map(event => (
+                  {getEventsForDate(day.date).slice(0, 2).map(event => (
                     <Link key={event.id} to={`/managers/calendar/${event.id}`} className="event-bar" style={{ backgroundColor: event.color, ...getEventStyle(event, day.date) }}>
                       <span className="event-title">{event.title}</span>
                     </Link>
@@ -180,19 +177,19 @@ const Calendar = () => {
               type="text"
               placeholder="일정 제목"
               value={newEvent.title}
-              onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} // 제목 입력
+              onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
             />
             <label>시작일</label>
             <input
               type="date"
               value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
-              onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })} // 시작일 입력
+              onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
             />
             <label>종료일</label>
             <input
               type="date"
               value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
-              onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })} // 종료일 입력
+              onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
             />
             <div className="color-picker">
               {['#FF9999', '#99FF99', '#9999FF'].map(color => (
@@ -200,7 +197,7 @@ const Calendar = () => {
                   key={color}
                   className={`color-option ${newEvent.color === color ? 'selected' : ''}`}
                   style={{ backgroundColor: color }}
-                  onClick={() => setNewEvent({ ...newEvent, color })} // 색상 선택
+                  onClick={() => setNewEvent({ ...newEvent, color })}
                 ></div>
               ))}
             </div>
