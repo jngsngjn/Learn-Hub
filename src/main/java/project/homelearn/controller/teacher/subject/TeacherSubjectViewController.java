@@ -23,7 +23,7 @@ public class TeacherSubjectViewController {
     private final TeacherSubjectService subjectService;
 
     /**
-     * 특정 과목 상세 페이지
+     * 과목 상세 페이지
      * 1. 과목 일반 정보 - ✅
      * 2. 과목 게시판 최신 5개 - ✅
      * 3. 질문 게시판 최신 5개 - ✅
@@ -52,7 +52,7 @@ public class TeacherSubjectViewController {
     }
 
     /**
-     * 특정 과목 게시판 페이지
+     * 과목 게시판 페이지
      * 1. 게시글 페이징 (size = 15) - ✅
      */
     @GetMapping("/boards")
@@ -61,12 +61,18 @@ public class TeacherSubjectViewController {
         int size = 15;
         return subjectService.getSubjectBoardPage(subjectId, page, size);
     }
+
+    /**
+     * 과목 게시판 특정 글 페이지
+     * 1. 제목, 조회수, 내용, 파일
+     * 2. 게시글 페이징 (size = 5) - ✅
+     */
+//    @GetMapping("/boards-view")
+
+    @GetMapping("/boards-view-list")
+    public Page<SubjectBoardListDto> viewSubjectBoard(@PathVariable("subjectId") Long subjectId,
+                                                          @RequestParam(name = "page", defaultValue = "0") int page) {
+        int size = 5;
+        return subjectService.getSubjectBoardPage(subjectId, page, size);
+    }
 }
-
-
-
-
-
-
-
-

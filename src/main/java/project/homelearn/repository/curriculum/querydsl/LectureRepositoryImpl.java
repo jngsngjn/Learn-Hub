@@ -44,7 +44,7 @@ public class LectureRepositoryImpl implements LectureRepositoryCustom {
     @Override
     public Page<SubjectBoardListDto> findSubjectBoardPage(Long subjectId, Pageable pageable, String teacherName) {
         List<SubjectBoardListDto> fetch = queryFactory
-                .select(new QSubjectBoardListDto(subjectBoard.id, subjectBoard.title, subjectBoard.createdDate))
+                .select(new QSubjectBoardListDto(subjectBoard.id, subjectBoard.title, subjectBoard.createdDate, subjectBoard.viewCount))
                 .from(subjectBoard)
                 .where(subjectBoard.subject.id.eq(subjectId))
                 .orderBy(subjectBoard.createdDate.desc())

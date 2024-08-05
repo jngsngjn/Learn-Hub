@@ -10,29 +10,33 @@ import java.time.LocalDateTime;
 
 // response
 @Data
-public class SubjectBoardListDto {
-
-    @NotNull
-    private Long boardId;
+public class SubjectBoardViewDto {
 
     @NotBlank
     private String title;
 
     @NotBlank
-    private String writer;
+    private String content;
+
+    private int viewCount;
+
+    @NotBlank
+    private String filePath;
+
+    @NotBlank
+    private String fileName;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime writeDate;
 
-    @NotNull
-    private int viewCount;
-
     @QueryProjection
-    public SubjectBoardListDto(Long boardId, String title, LocalDateTime writeDate, int viewCount) {
-        this.boardId = boardId;
+    public SubjectBoardViewDto(String title, String content, int viewCount, String filePath, String fileName, LocalDateTime writeDate) {
         this.title = title;
-        this.writeDate = writeDate;
+        this.content = content;
         this.viewCount = viewCount;
+        this.filePath = filePath;
+        this.fileName = fileName;
+        this.writeDate = writeDate;
     }
 }
