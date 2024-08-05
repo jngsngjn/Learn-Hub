@@ -3,20 +3,25 @@ package project.homelearn.service.teacher;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import project.homelearn.dto.chatgpt.ChatGPTResponseDto;
+import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.teacher.AiCommentWriteDto;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.user.UserRepository;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -169,8 +174,7 @@ public class TeacherQuestionBoardService {
     //답변없는 게시글 불러오기
     public List<QuestionBoard> findUnansweredQuestionsWithin12Hours() {
         LocalDateTime twelveHoursAgo = LocalDateTime.now().minusHours(12);
-        LocalDateTime testTime = LocalDateTime.now();
-        return questionBoardRepository.findByCreatedDateBeforeAndCommentsIsNull(testTime);
+        return questionBoardRepository.findByCreatedDateBeforeAndCommentsIsNull(twelveHoursAgo);
     }
 
     //조회수 증가
@@ -178,4 +182,47 @@ public class TeacherQuestionBoardService {
     //글 상세보기
 
     //게시글 리스트
+    public Page<QuestionBoardDto> getQuestionBoardList(String filterType, String subjectName, Curriculum curriculum, Pageable pageable) {
+        Page<QuestionBoard> questionBoards;
+
+        // 필터링 타입에 따라 다른 쿼리 메소드 호출
+        switch (filterType) {
+            case "subject": // 과목명 기준 최신순
+                questionBoards = questionBoardRepository.findBySubjectNameAndCurriculum(subjectName, curriculum, pageable);
+                break;
+
+            case "unanswered": // 답변 없는 질문 기준 최신순
+                questionBoards = questionBoardRepository.findByCommentsIsNullAndCurriculum(curriculum, pageable);
+                break;
+
+            case "subjectUnanswered": // 과목명 + 답변 없는 질문 기준 최신순
+                questionBoards = questionBoardRepository.findBySubjectNameAndCommentsIsNullAndCurriculum(subjectName, curriculum, pageable);
+                break;
+
+            default: // 기본값: 최신순
+                questionBoards = questionBoardRepository.findByCreatedDateDesc(curriculum, pageable);
+                break;
+        }
+
+        // Entity -> DTO 변환
+        return questionBoards.map(this::convertToDto);
+    }
+
+    private QuestionBoardDto convertToDto(QuestionBoard questionBoard) {
+
+        //선생님이 글을 달았는지 안달았는지 여부를 추가해야함
+
+        return new QuestionBoardDto(
+                questionBoard.getId(),
+                questionBoard.getSubject().getName(),
+                questionBoard.getTitle(),
+                questionBoard.getUser().getName(),
+                questionBoard.getContent(),
+                questionBoard.getCreatedDate(),
+                questionBoard.getCommentCount(),
+                false
+        );
+    }
+
+    //대시보드 or 과목 상세보기 페이지 -> 최근 5개 리스트
 }
