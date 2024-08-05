@@ -38,7 +38,11 @@ const StudentManagement = () => {
       const response = await axios.get('/managers/manage-students', {
         headers: { access: token },
       });
-      setStudents(response.data.content || []);
+      if (response.data && response.data.content) {
+        setStudents(response.data.content);
+      } else {
+        setStudents([]);
+      }
     } catch (error) {
       console.error('응답 에러:', error);
       setStudents([]);
@@ -51,7 +55,11 @@ const StudentManagement = () => {
       const response = await axios.get('/managers/enroll-ready', {
         headers: { access: token },
       });
-      setCurriculums(response.data || []);
+      if (response.data) {
+        setCurriculums(response.data);
+      } else {
+        setCurriculums([]);
+      }
     } catch (error) {
       console.error('기수 가져오기 에러:', error);
       setCurriculums([]);
@@ -84,7 +92,6 @@ const StudentManagement = () => {
   const handleAddStudent = async () => {
     try {
       const token = getToken();
-      console.log('토큰:', token);
 
       const studentData = {
         name: newStudent.name,
@@ -94,12 +101,9 @@ const StudentManagement = () => {
         curriculumFullName: `${newStudent.curriculum} ${newStudent.generation}기`
       };
 
-      console.log('전송할 학생 데이터:', studentData);
-
       const response = await axios.post('/managers/manage-students/enroll', studentData, {
         headers: { access: token },
       });
-      console.log('Response:', response);
       if (response.status === 200) {
         setIsModalOpen(false);
         fetchStudents();
@@ -117,12 +121,9 @@ const StudentManagement = () => {
       return;
     }
     try {
-      console.log('파일 업로드 시작');
       const token = getToken();
       const formData = new FormData();
       formData.append('file', selectedFile);
-
-      console.log('파일 정보:', selectedFile.name, selectedFile.size, 'bytes');
 
       const response = await axios.post('/managers/manage-students/enroll-file', formData, {
         headers: {
@@ -136,13 +137,9 @@ const StudentManagement = () => {
         },
       });
 
-      console.log('서버 응답:', response);
-
       setSelectedFile(null);
       setUploadProgress(0);
       fetchStudents();
-
-      console.log('파일 업로드 완료');
 
       swal({
         title: "업로드 완료!",
@@ -244,21 +241,27 @@ const StudentManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredStudents.map((student, index) => (
-              <tr key={index} onClick={() => handleRowClick(student.studentId)} className={selectedStudents.includes(student.studentId) ? 'selected' : ''}>
-                <td>
-                  <input type="checkbox" checked={selectedStudents.includes(student.studentId)} onChange={() => handleCheckboxChange(student.studentId)} onClick={(e) => e.stopPropagation()} />
-                </td>
-                <td>{student.studentId}</td>
-                <td>{student.curriculumName}</td>
-                <td>{student.curriculumTh}</td>
-                <td>{student.name}</td>
-                <td>{student.gender === 'MALE' ? '남' : '여'}</td>
-                <td>{student.email}</td>
-                <td>{student.phone}</td>
-                <td>{student.isAttend ? <span className="status present">✔</span> : <span className="status absent">✘</span>}</td>
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student, index) => (
+                <tr key={index} onClick={() => handleRowClick(student.studentId)} className={selectedStudents.includes(student.studentId) ? 'selected' : ''}>
+                  <td>
+                    <input type="checkbox" checked={selectedStudents.includes(student.studentId)} onChange={() => handleCheckboxChange(student.studentId)} onClick={(e) => e.stopPropagation()} />
+                  </td>
+                  <td>{student.studentId}</td>
+                  <td>{student.curriculumName}</td>
+                  <td>{student.curriculumTh}</td>
+                  <td>{student.name}</td>
+                  <td>{student.gender === 'MALE' ? '남' : '여'}</td>
+                  <td>{student.email}</td>
+                  <td>{student.phone}</td>
+                  <td>{student.isAttend ? <span className="status present">✔</span> : <span className="status absent">✘</span>}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="9">학생 데이터가 없습니다.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

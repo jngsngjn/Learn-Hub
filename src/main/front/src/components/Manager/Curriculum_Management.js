@@ -20,7 +20,7 @@ const CurriculumManagement = () => {
     teacherId: '',
   });
 
-  // 토큰을 가져온다(access-token으로 설정함)
+  // 토큰을 가져오기
   const getToken = () => localStorage.getItem('access-token');
 
   // 입력 값 변경 시
@@ -52,9 +52,6 @@ const CurriculumManagement = () => {
 
     try {
       const token = getToken();
-      console.log(token);
-      console.log(newCurriculumItem);
-
       const response = await axios.post('/managers/manage-curriculums/enroll', newCurriculumItem, {
         headers: { access: token },
       });
@@ -78,8 +75,6 @@ const CurriculumManagement = () => {
         headers: { access: token },
       });
 
-      console.log(`${type} 데이터:`, response.data);
-
       if (type === 'NCP') {
         setNcpCurriculums(response.data || []);
       } else if (type === 'AWS') {
@@ -96,7 +91,7 @@ const CurriculumManagement = () => {
     fetchCurriculums('AWS');
   }, []);
 
-  //과정 목록 렌더링
+  // 과정 목록 렌더링
   const renderCurriculumList = (curriculums) => (
     curriculums.map(curriculum => (
       <div key={curriculum.id} className="curriculum-card">
