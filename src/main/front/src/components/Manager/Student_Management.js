@@ -137,16 +137,13 @@ const StudentManagement = () => {
       });
 
       setSelectedFile(null);
-      setUploadProgress(0);
-      setIsProgressModalOpen(false);
-      fetchStudents();
 
-      swal({
-        title: "업로드 완료!",
-        text: "파일이 성공적으로 업로드되었습니다.",
-        icon: "success",
-        button: "확인",
-      });
+      // swal({
+      //   title: "업로드 완료!",
+      //   text: "파일이 성공적으로 업로드되었습니다.",
+      //   icon: "success",
+      //   button: "확인",
+      // });
 
     } catch (error) {
       console.error('파일 업로드 에러:', error);
@@ -329,7 +326,7 @@ const StudentManagement = () => {
             </div>
           </div>
         </Modal>
-        <ProgressModal isOpen={isProgressModalOpen} onClose={() => setIsProgressModalOpen(false)} setUploadProgress={setUploadProgress} />
+        <ProgressModal isOpen={isProgressModalOpen} setUploadProgress={setUploadProgress} />
       </div>
   );
 };
