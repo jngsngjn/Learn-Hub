@@ -71,7 +71,7 @@ const CalendarDetail = () => {
       <div className="detail-calendar-detail-container">
         <div className="detail-calendar-detail-header">
           <h2>일정 관리</h2>
-          <button onClick={() => navigate(-1)}>돌아가기</button>
+          <button onClick={() => navigate("/managers")}>돌아가기</button>
         </div>
         <div className="detail-calendar-detail-content">
           <div className="detail-all-events">
