@@ -17,6 +17,7 @@ import StudentInquiryBoard from "./pages/Student/StudentInquiryBoard";
 import StudentAssignmentDetail from "./pages/Student/StudentAssignmentDetail";
 import StudentInquiryDetail from "./pages/Student/StudentInquiryDetail";
 import StudentSubjectBoardDetail from "./pages/Student/StudentSubjectBoardDetail";
+import StudentLectureList from "./pages/Student/StudentLectureList";
 import StudentLectureDetail from "./pages/Student/StudentLectureDetail";
 
 const Router = () => {
@@ -32,6 +33,7 @@ const Router = () => {
         <Route path="/managers/*" element={<ManagerMain />} />
         <Route path="/students" element={<StudentMain />} />
         <Route path="/students/:subject/board" element={<StudentLecture />} />
+        <Route path="/students/lectureLists" element={<StudentLectureList />} />
         <Route
           path="/students/:subject/lectures/:id"
           element={<StudentLectureDetail />}
