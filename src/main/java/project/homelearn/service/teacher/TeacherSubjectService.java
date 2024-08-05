@@ -154,4 +154,10 @@ public class TeacherSubjectService {
         PageRequest pageRequest = PageRequest.of(page, size);
         return lectureRepository.findSubjectLecturePage(subjectId, pageRequest);
     }
+
+    public Page<SubjectBoardListDto> getSubjectBoardPage(Long subjectId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        String teacherName = teacherRepository.findTeacherNameBySubjectId(subjectId);
+        return lectureRepository.findSubjectBoardPage(subjectId, pageRequest, teacherName);
+    }
 }

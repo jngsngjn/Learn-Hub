@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.dto.teacher.lecture.LectureListDto;
 import project.homelearn.dto.teacher.subject.SubjectBasicDto;
+import project.homelearn.dto.teacher.subject.SubjectBoardListDto;
 import project.homelearn.dto.teacher.subject.SubjectBoardTop5Dto;
 import project.homelearn.service.teacher.TeacherSubjectService;
 
@@ -49,4 +50,23 @@ public class TeacherSubjectViewController {
         int size = 6;
         return subjectService.getSubjectLecturePage(subjectId, page, size);
     }
+
+    /**
+     * 특정 과목 게시판 페이지
+     * 1. 게시글 페이징 (size = 15) - ✅
+     */
+    @GetMapping("/boards")
+    public Page<SubjectBoardListDto> viewSubjectBoardPage(@PathVariable("subjectId") Long subjectId,
+                                                          @RequestParam(name = "page", defaultValue = "0") int page) {
+        int size = 15;
+        return subjectService.getSubjectBoardPage(subjectId, page, size);
+    }
 }
+
+
+
+
+
+
+
+

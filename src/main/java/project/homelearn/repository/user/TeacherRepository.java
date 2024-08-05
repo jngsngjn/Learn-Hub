@@ -31,4 +31,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Teacher
     boolean existsByCurriculum(Curriculum curriculum);
 
     Teacher findByUsername(String username);
+
+    // 과목 ID -> 강사명
+    @Query("select distinct t.name from Teacher t join t.curriculum c join c.subjects s where s.id = :subjectId")
+    String findTeacherNameBySubjectId(@Param("subjectId") Long subjectId);
 }
