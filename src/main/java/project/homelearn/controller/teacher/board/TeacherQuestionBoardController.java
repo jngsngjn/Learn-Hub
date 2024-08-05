@@ -3,10 +3,17 @@ package project.homelearn.controller.teacher.board;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
+import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.user.User;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.service.teacher.TeacherQuestionBoardService;
 
 import java.security.Principal;
@@ -18,6 +25,33 @@ import java.security.Principal;
 public class TeacherQuestionBoardController {
 
     private final TeacherQuestionBoardService teacherQuestionBoardService;
+    private final CurriculumRepository curriculumRepository;
+
+    //게시글 리스트
+    @GetMapping
+    public ResponseEntity<?> getQuestionBoardList(@RequestParam(required = false) String filterType,
+                                                  @RequestParam(required = false) String subjectName,
+                                                  Principal principal,
+                                                  @RequestParam(name = "page", defaultValue = "0") int page){
+        int size = 15;
+
+        String username = principal.getName();
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+
+        if (curriculum == null) {
+            return new ResponseEntity<>("해당 교사의 커리큘럼을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<QuestionBoardDto> questionBoardList = teacherQuestionBoardService.getQuestionBoardList(filterType, subjectName, curriculum, pageable);
+
+        if (questionBoardList.getTotalElements() > 0) {
+            return new ResponseEntity<>(questionBoardList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("등록된 질문이 없습니다.", HttpStatus.NOT_FOUND);
+        }
+    }
 
     //댓글 작성
     @PostMapping("/{questionBoardId}/comments")
@@ -101,5 +135,5 @@ public class TeacherQuestionBoardController {
 
     //글 상세보기
 
-    //게시글 리스트
+
 }

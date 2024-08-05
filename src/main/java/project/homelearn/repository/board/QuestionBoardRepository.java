@@ -35,9 +35,7 @@ public interface QuestionBoardRepository extends JpaRepository<QuestionBoard, Lo
     @Query("select q from QuestionBoard q left join q.comments c join q.subject s where s.name = :subjectName and q.user.curriculum = :curriculum and c.id is null order by q.createdDate desc")
     Page<QuestionBoard> findBySubjectNameAndCommentsIsNullAndCurriculum(@Param("subjectName")String subjectName, @Param("curriculum")Curriculum curriculum, Pageable pageable);
 
-    // 최근 5개 리스트 : 커리큘럼 내에서 대시보드, 과목 상세보기에서 사용
-    @Query("select q from QuestionBoard q where q.user.curriculum = :curriculum order by q.createdDate desc")
-    List<QuestionBoard> findTop5ByCurriculumOrderByCreatedDateDesc(@Param("curriculum")Curriculum curriculum, Pageable pageable);
-
-
+    // 강사님의 댓글이 있는지 없는지
+    @Query("select case when count(c) > 0 then true else false end from QuestionBoardComment c where c.questionBoard = :questionBoard and c.user.role = project.homelearn.entity.user.Role.ROLE_TEACHER")
+    boolean hasTeacherComment(@Param("questionBoard") QuestionBoard questionBoard);
 }

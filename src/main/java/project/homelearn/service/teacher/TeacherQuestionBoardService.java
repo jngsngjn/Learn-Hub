@@ -186,23 +186,27 @@ public class TeacherQuestionBoardService {
 
     //게시글 리스트
     public Page<QuestionBoardDto> getQuestionBoardList(String filterType, String subjectName, Curriculum curriculum, Pageable pageable) {
+        if (filterType == null) {
+            filterType = "default";
+        }
+
         Page<QuestionBoard> questionBoards;
 
         // 필터링 타입에 따라 다른 쿼리 메소드 호출
         switch (filterType) {
-            case "subject": // 과목명 기준 최신순
+            case "subject":
                 questionBoards = questionBoardRepository.findBySubjectNameAndCurriculum(subjectName, curriculum, pageable);
                 break;
 
-            case "unanswered": // 답변 없는 질문 기준 최신순
+            case "unanswered":
                 questionBoards = questionBoardRepository.findByCommentsIsNullAndCurriculum(curriculum, pageable);
                 break;
 
-            case "subjectUnanswered": // 과목명 + 답변 없는 질문 기준 최신순
+            case "subjectUnanswered":
                 questionBoards = questionBoardRepository.findBySubjectNameAndCommentsIsNullAndCurriculum(subjectName, curriculum, pageable);
                 break;
 
-            default: // 기본값: 최신순
+            default:
                 questionBoards = questionBoardRepository.findByCreatedDateDesc(curriculum, pageable);
                 break;
         }
@@ -214,6 +218,7 @@ public class TeacherQuestionBoardService {
     private QuestionBoardDto convertToDto(QuestionBoard questionBoard) {
 
         //선생님이 글을 달았는지 안달았는지 여부를 추가해야함
+        boolean isCommentHere = questionBoardRepository.hasTeacherComment(questionBoard);
 
         return new QuestionBoardDto(
                 questionBoard.getId(),
@@ -223,12 +228,9 @@ public class TeacherQuestionBoardService {
                 questionBoard.getContent(),
                 questionBoard.getCreatedDate(),
                 questionBoard.getCommentCount(),
-                false
+                isCommentHere
         );
     }
-
-    //대시보드 or 과목 상세보기 페이지 -> 최근 5개 리스트
-    // 게시글 리스트
 
     // 최근 질문 5개
     public List<QuestionTop5Dto> getQuestionTop5(String username) {
