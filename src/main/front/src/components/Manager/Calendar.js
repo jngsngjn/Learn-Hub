@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // 수정
 import { FaCalendarPlus } from 'react-icons/fa'; // 캘린더 추가 아이콘 가져오기
 import './Calendar.css';
 import Modal from './Modal';
@@ -96,13 +97,6 @@ const Calendar = () => {
     setSelectedDate(adjustedDate); // 선택된 날짜 설정
   };
 
-  const handleEventClick = (event) => {
-    setViewEvent(event); // 보기 위한 이벤트 설정
-    setEditEvent(event); // 수정 중인 이벤트 설정
-    setNewEvent({ ...event, start: new Date(event.start), end: new Date(event.end) }); // 새로운 이벤트 설정
-    setIsModalOpen(true); // 모달 창 열기
-  };
-
   const getEventsForDate = (date) => {
     return events.filter(event =>
       new Date(event.start).toDateString() === date.toDateString() ||
@@ -167,9 +161,9 @@ const Calendar = () => {
                 <span className="day-number">{day.date.getDate()}</span>
                 <div className="events-indicator">
                   {getEventsForDate(day.date).map(event => (
-                    <div key={event.id} className="event-bar" style={{ backgroundColor: event.color, ...getEventStyle(event, day.date) }} onClick={() => handleEventClick(event)}>
+                    <Link key={event.id} to={`/managers/calendar/${event.id}`} className="event-bar" style={{ backgroundColor: event.color, ...getEventStyle(event, day.date) }}>
                       <span className="event-title">{event.title}</span>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
