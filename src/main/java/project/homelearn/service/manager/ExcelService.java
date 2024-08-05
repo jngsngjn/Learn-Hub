@@ -28,10 +28,15 @@ public class ExcelService {
 
     @Async
     public void importStudentFile(MultipartFile file) {
+
         try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
             int totalRows = sheet.getPhysicalNumberOfRows() - 1; // header row 제외
             int currentRowNum = 0;
+            int successCount = 0;
+
+            // 총 학생 수 정보를 처음에 전송
+            template.convertAndSend("/topic/progress", new ProgressUpdate(0, totalRows, 0, successCount));
 
             for (Row currentRow : sheet) {
                 if (currentRow.getRowNum() == 0) {
@@ -52,11 +57,13 @@ public class ExcelService {
                     boolean result = managerStudentService.enrollStudent(enrollDto);
                     if (!result) {
                         log.error("Failed to enroll student: {}", enrollDto);
+                    } else {
+                        successCount++;
                     }
 
                     currentRowNum++;
                     int progress = (currentRowNum * 100) / totalRows;
-                    template.convertAndSend("/topic/progress", new ProgressUpdate(progress, totalRows, currentRowNum));
+                    template.convertAndSend("/topic/progress", new ProgressUpdate(progress, totalRows, currentRowNum, successCount));
                 } catch (Exception e) {
                     log.error("Error processing row {}: ", currentRow.getRowNum(), e);
                 }
