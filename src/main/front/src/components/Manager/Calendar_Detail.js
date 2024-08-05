@@ -140,7 +140,7 @@ const CalendarDetail = () => {
                 </div>
               </>
             ) : (
-              <p>일정정보를 확인하세요.</p>
+              <p>일정정보 확인</p>
             )}
           </div>
         </div>

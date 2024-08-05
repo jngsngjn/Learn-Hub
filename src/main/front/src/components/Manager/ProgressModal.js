@@ -46,7 +46,7 @@ const ProgressModal = ({ isOpen, onClose }) => {
                 <h2>파일 업로드 중...</h2>
                 <progress value={uploadProgress} max="100" />
                 <span>{uploadProgress}%</span>
-                <button onClick={onClose}>취소</button>
+                <button className="progress-close-button" onClick={onClose}>취소</button>
             </div>
         </div>
     );
