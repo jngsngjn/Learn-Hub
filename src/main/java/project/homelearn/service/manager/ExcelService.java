@@ -45,6 +45,9 @@ public class ExcelService {
                     String phone = currentRow.getCell(3).getStringCellValue();
                     String curriculumName = currentRow.getCell(4).getStringCellValue();
 
+                    log.info("Processing row {}: name={}, gender={}, email={}, phone={}, curriculumName={}",
+                            currentRow.getRowNum(), name, gender, email, phone, curriculumName);
+
                     StudentEnrollDto enrollDto = new StudentEnrollDto(name, gender, email, phone, curriculumName);
                     boolean result = managerStudentService.enrollStudent(enrollDto);
                     if (!result) {
