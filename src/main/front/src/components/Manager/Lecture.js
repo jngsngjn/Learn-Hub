@@ -1,20 +1,34 @@
-import React, { useState } from 'react'; // useState 훅-*백 연동할때 useEffect 추가 해야될듯*
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Lecture.css';
 
 const Lecture = () => {
-  const [activeButton, setActiveButton] = useState('NCP'); //상태 버튼 변수
+  const [activeButton, setActiveButton] = useState('NCP'); // 버튼 변수
+  const [lectures, setLectures] = useState([]); // 강의 데이터 상태
 
-  const handleButtonClick = (buttonName) => {  //버튼 클릭시 상태 업데이트
-    setActiveButton(buttonName);
+  // 토큰을 가져오기
+  const getToken = () => localStorage.getItem('access-token');
+
+  // 강의 데이터
+  const fetchLectures = async (type) => {
+    try {
+      const token = getToken();
+      const response = await axios.get(`/managers/manage-curriculums/${type}`, {
+        headers: { access: token },
+      });
+      setLectures(response.data || []);
+    } catch (error) {
+      console.error('에러 메시지:', error);
+    }
   };
 
-  const lectures = [ // 임시 데이터값 넣어서 화면단 생성 - 백연동 필요
-    { id: 9, title: '네이버 클라우드 데브옵스 과정', teacher: '신지원', th: '20주차', participants: '28/30' },
-    { id: 10, title: '네이버 클라우드 데브옵스 과정', teacher: '신지원', th: '20주차', participants: '28/30' },
-    { id: 11, title: '네이버 클라우드 데브옵스 과정', teacher: '신지원', th: '20주차', participants: '28/30' },
-    { id: 12, title: '네이버 클라우드 데브옵스 과정', teacher: '신지원', th: '20주차', participants: '28/30' },
-    { id: 13, title: '네이버 클라우드 데브옵스 과정', teacher: '신지원', th: '20주차', participants: '28/30' },
-  ];
+  useEffect(() => {
+    fetchLectures(activeButton); // 컴포넌트가 마운트될 때 데이터를 가져옴
+  }, [activeButton]);
+
+  const handleButtonClick = (buttonName) => {  // 버튼 클릭 시
+    setActiveButton(buttonName);
+  };
 
   return (
     <div className="lecture-progress">
@@ -39,16 +53,15 @@ const Lecture = () => {
         {lectures.map((lecture) => (
           <li key={lecture.id} className="lecture-item">
             <div className="lecture-info">
-              <span className="lecture-id">{lecture.id}기</span>
-              <span className="lecture-title">{lecture.title}</span>
+              <span className="lecture-id">{lecture.th}기</span>
+              <span className="lecture-title">{lecture.name}</span>
             </div>
             <div className="lecture-details">
               <div className="lecture-teacher">
-                <span className="lecture-teacher-name">강사 {lecture.teacher}</span>
-                <span className="lecture-duration">{lecture.th}</span>
+                <span className="lecture-teacher-name">강사 {lecture.teacherName}</span>
               </div>
               <span className="lecture-participants">
-                <i className="fas fa-user"></i> {lecture.participants}
+                <i className="fas fa-user"></i> {lecture.attendance} / {lecture.total}
               </span>
             </div>
           </li>
