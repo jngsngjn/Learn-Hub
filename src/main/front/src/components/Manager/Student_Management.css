@@ -27,12 +27,12 @@
   width: 100%;
 }
 
-.program-buttons {
+.student-program-buttons {
   display: flex;
   gap: 10px;
 }
 
-.program-buttons button {
+.student-program-buttons button {
   padding: 10px 20px;
   border: 1px solid #ddd;
   background-color: white;
@@ -40,12 +40,12 @@
   border-radius: 4px;
 }
 
-.program-buttons button.selected {
+.student-program-buttons button.selected {
   background-color: #757575;
   color: white;
 }
 
-.program-buttons button:hover {
+.student-program-buttons button:hover {
   background-color: #B4B4B8;
   color: white;
 }
@@ -66,26 +66,26 @@
   padding-left: 10px;
 }
 
-.search-container {
+.student-search-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.search-wrapper {
+.student-search-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.search-icon {
+.student-search-icon {
   position: absolute;
   right: 10px;
   font-size: 16px;
   color: #757575;
 }
 
-.refresh-button {
+.student-refresh-button {
   padding: 8px 10px;
   border: 1px solid #ddd;
   border-radius: 50%;
@@ -93,36 +93,40 @@
   cursor: pointer;
 }
 
-.refresh-button:hover {
+.student-refresh-button:hover {
   background-color: #ddd;
 }
 
-.student-management table {
+.student-table-container {
+  width: 100%;
+}
+
+.student-table-container table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 8px;
 }
 
-.student-management th, .student-management td {
+.student-table-container th, .student-table-container td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
   background-color: #F4F5F7;
 }
 
-.student-management th {
+.student-table-container th {
   background-color: #E3E1D9;
 }
 
-.student-management tr:nth-child(even) {
+.student-table-container tr:nth-child(even) {
   background-color: #F4F5F7;
 }
 
-.student-management tr:hover {
+.student-table-container tr:hover {
   background-color: #B4B4B8;
 }
 
-.student-management th {
+.student-table-container th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
@@ -161,19 +165,19 @@
   font-weight: bold;
 }
 
-.form-container {
+.student-form-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.course-selection {
+.student-course-selection {
   display: flex;
   gap: 20px;
   justify-content: center;
 }
 
-.course-button {
+.student-course-button {
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -181,19 +185,19 @@
   padding: 10px;
 }
 
-.course-button.selected {
+.student-course-button.selected {
   border-color: #757575;
   color: #fff;
   background: #757575;
 }
 
-.generation-selection {
+.student-generation-selection {
   display: flex;
   justify-content: center;
   margin-top: 10px;
 }
 
-.generation-selection select {
+.student-generation-selection select {
   width: 200px;
   border: 1px solid #757575;
   border-radius: 20px;
@@ -203,19 +207,19 @@
   height: 35px;
 }
 
-.gender-selection {
+.student-gender-selection {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: 15px;
 }
 
-.gender-buttons {
+.student-gender-buttons {
   display: flex;
   gap: 20px;
 }
 
-.gender-button {
+.student-gender-button {
   font-size: 15px;
   font-weight: bold;
   background-color: #f4f4f4;
@@ -225,12 +229,12 @@
   cursor: pointer;
 }
 
-.gender-button.selected {
+.student-gender-button.selected {
   background-color: #757575;
   color: white;
 }
 
-.gender-button:hover {
+.student-gender-button:hover {
   background-color: #ddd;
 }
 
@@ -260,14 +264,14 @@
   max-width: 400px;
 }
 
-.file-upload {
+.student-file-upload {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 120px;
 }
 
-.custom-file-upload {
+.student-custom-file-upload {
   display: inline-block;
   padding: 10px 20px;
   cursor: pointer;
@@ -276,30 +280,30 @@
   border-radius: 8px;
 }
 
-.custom-file-upload:hover {
+.student-custom-file-upload:hover {
   background-color: #ddd;
   color: #757575;
 }
 
-.file-preview {
+.student-file-preview {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
 }
 
-.file-preview i {
+.student-file-preview i {
   font-size: 48px;
   color: #757575;
 }
 
-.file-preview span {
+.student-file-preview span {
   margin-top: 5px;
   font-size: 14px;
   color: #757575;
 }
 
-.file-remove-button {
+.student-file-remove-button {
   margin-top: 10px;
   padding: 5px 10px;
   background-color: #757575;
@@ -309,7 +313,7 @@
   cursor: pointer;
 }
 
-.file-remove-button:hover {
+.student-file-remove-button:hover {
   background-color: #ddd;
   color: #757575;
 }
@@ -334,7 +338,7 @@
   color: #757575;
 }
 
-.gender-label {
+.student-gender-label {
   margin-bottom: 10px;
   margin-right: 250px;
   align-self: center;
@@ -343,11 +347,42 @@
   color: #757575;
 }
 
-.excel-label {
+.student-excel-label {
   margin-bottom: 10px;
   margin-right: 150px;
   text-align: center;
   font-size: 20px;
   font-weight: bold;
   color: #757575;
+}
+
+.student-file-line {
+  border-radius: 10px;
+  height: 5px;
+  background: #000;
+}
+
+.student-modal-file {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.student-modal-file-button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 10px;
+  width: 120px;
+  background-color: #757575;
+  color: white;
+}
+
+.student-modal-file-button:hover {
+  background-color: #ddd;
+  color: #757575;
+}
+
+.student-upload-progress-container {
+  display: flex;
+  justify-content: center;
 }

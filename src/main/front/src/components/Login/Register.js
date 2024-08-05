@@ -70,14 +70,21 @@ function Register() {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/register', {
+      const registerData = {
+        username,
+        password,
         name,
         phone,
-        email,
-        gender,
-        username,
-        password
-      });
+        email
+      };
+
+      if (gender) {
+        registerData.gender = gender;
+      }
+
+      console.log("회원가입 데이터:", registerData); // 디버깅용 로그
+
+      const response = await axios.post('http://localhost:8080/register', registerData);
       if (response.status === 200) {
         swal("회원가입 성공", "회원가입이 성공적으로 완료되었습니다.", "success").then(() => {
           navigate('/login');
