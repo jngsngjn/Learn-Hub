@@ -1,0 +1,160 @@
+.student_assignment_detail_container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  background-color: #f5f5f5;
+  color: #74b49b;
+}
+
+/* 사이드 바 스타일 */
+.side_bar {
+  width: 514px;
+  padding: 3em;
+  background-color: #fff;
+  border-right: 0.0625em solid #a7d7c5;
+  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.1);
+}
+
+/* 메인 스타일 */
+.assignment_detail_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1400px;
+  padding: 100px 68px 75px 36px;
+  background-color: #fff;
+}
+
+.student_assignment_board_page_title {
+  height: 347px;
+  padding: 100px 0;
+  font-size: 48px;
+}
+
+.student_assignment_board_content_box {
+  color: black;
+  font-size: 32px;
+  border-bottom: 1px solid #5c8d89;
+  padding-bottom: 50px;
+}
+
+.student_assignment_board_title_box {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 50px;
+}
+
+.student_assignment_title {
+  font-size: 36px;
+}
+
+.assignment_download_file_name {
+  font-size: 36px;
+}
+
+.student_assignment_board_content {
+  padding: 50px 72px;
+  height: 193px;
+}
+
+.student_assignment_board_info_box {
+  display: flex;
+  justify-content: space-between;
+}
+.student_assignment_deadline,
+.student_assignment_participants_count,
+.student_assignment_board_writed_date {
+  color: #5c8d89;
+}
+
+.student_assignment_participants_count {
+  cursor: pointer;
+  position: relative;
+}
+
+.non_participants_list_box {
+  border: 1px solid #5c8d89;
+  border-radius: 20px;
+  background-color: white;
+  position: absolute;
+  width: 150px;
+  text-align: center;
+  left: -30px;
+  top: 45px;
+  padding: 10px;
+  right: 0;
+}
+
+.non_participants_name {
+  padding: 7px;
+}
+
+/* 과제 제출자 리스트 스타일 */
+.student_assignment_participants_list_container {
+}
+
+.student_assignment_participants_container {
+  padding: 50px;
+  font-size: 36px;
+  color: black;
+  border-bottom: 1px solid #5c8d89;
+}
+
+.student_assignment_participants_count {
+  color: #5c8d89;
+}
+
+/* 제출자 리스트 */
+.subject_board_lists_container {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.show_more_submitted_detail_info_container {
+  width: 99%;
+  height: 250px;
+  padding: 40px;
+  box-sizing: border-box;
+  border: 1px solid #5c8d89;
+  background-color: rgba(167, 215, 197, 0.25);
+  border-radius: 20px;
+  margin: 0 auto 50px auto;
+}
+
+.subject_board_list_one_box {
+}
+
+.subject_submitted_lists {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px;
+  font-size: 32px;
+  border-top: 1px solid #5c8d89;
+}
+
+.show_more_submitted_info {
+  cursor: pointer;
+  width: 20px;
+}
+
+.show_more_submitted_detail_info_container {
+  color: black;
+}
+
+.student_submitted_title_box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.student_submitted_title {
+  font-size: 28px;
+}
+
+.student_submitted_file {
+  color: #757575;
+  font-size: 24px;
+}
+
+.student_submitted_content {
+  font-size: 20px;
+}

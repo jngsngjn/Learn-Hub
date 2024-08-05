@@ -1,150 +1,231 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Modal from './Modal';
 import './Student_Management.css';
+import swal from 'sweetalert';
 
-const initialStudents = [
-  { id: 1, curriculum: 'AWS', th: '1기', name: '신수정', gender: '여', email: 'betwiwd25@gmail.com', phone: '010-5092-2594', attendance: '결석' },
-  { id: 2, curriculum: '네이버 데브옵스', th: '2기', name: '대성진', gender: '남', email: 'wjdtjdwl58@gmail.com', phone: '010-3102-9650', attendance: '출석' },
-  { id: 3, curriculum: '네이버 데브옵스', th: '3기', name: '안성민', gender: '남', email: 'smahn4069@gmail.com', phone: '010-9722-5739', attendance: '출석' },
-];
+axios.defaults.baseURL = 'http://localhost:8080';
 
 const StudentManagement = () => {
-  const [students, setStudents] = useState(initialStudents); // 학생 목록
-  const [searchTerm, setSearchTerm] = useState(''); // 검색어
-  const [selectedCourse, setSelectedCourse] = useState('전체'); // 선택 교육 과정
-  const [selectedGeneration, setSelectedGeneration] = useState('전체'); // 선택된 기수
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림
+  const [students, setStudents] = useState([]);
+  const [curriculums, setCurriculums] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCourse, setSelectedCourse] = useState('전체');
+  const [selectedGeneration, setSelectedGeneration] = useState('전체');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [newStudent, setNewStudent] = useState({
     name: '',
-    gender: '남',
+    gender: '',
     email: '',
     phone: '',
-    curriculum: 'AWS',
-    th: '1기',
-    attendance: '결석',
-  }); // 새로운 학생 상태
-  const [selectedFile, setSelectedFile] = useState(null); // 선택된 파일
-  const [selectedStudents, setSelectedStudents] = useState([]); // 선택된 학생 번호
+    curriculum: '',
+    generation: '',
+    curriculumFullName: '',
+  });
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [selectedStudents, setSelectedStudents] = useState([]);
+  const getToken = () => localStorage.getItem('access-token');
 
-  const handleSearch = (event) => setSearchTerm(event.target.value); // 검색어 변경
-  const handleCourseChange = (course) => setSelectedCourse(course); // 교육 과정 변경
-  const handleGenerationChange = (event) => setSelectedGeneration(event.target.value); // 기수 변경
+  useEffect(() => {
+    fetchStudents();
+    fetchCurriculums();
+  }, []);
+
+  const fetchStudents = async () => {
+    try {
+      const token = getToken();
+      const response = await axios.get('/managers/manage-students', {
+        headers: { access: token },
+      });
+      if (response.data && response.data.content) {
+        setStudents(response.data.content);
+      } else {
+        setStudents([]);
+      }
+    } catch (error) {
+      console.error('응답 에러:', error);
+      setStudents([]);
+    }
+  };
+
+  const fetchCurriculums = async () => {
+    try {
+      const token = getToken();
+      const response = await axios.get('/managers/enroll-ready', {
+        headers: { access: token },
+      });
+      if (response.data) {
+        setCurriculums(response.data);
+      } else {
+        setCurriculums([]);
+      }
+    } catch (error) {
+      console.error('기수 가져오기 에러:', error);
+      setCurriculums([]);
+    }
+  };
+
+  const handleSearch = (event) => setSearchTerm(event.target.value);
+
+  const handleCourseChange = (course) => {
+    const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS 데브옵스 과정';
+    setSelectedCourse(fullCourseName);
+    setSelectedGeneration('전체');
+    setNewStudent({ ...newStudent, curriculum: fullCourseName });
+  };
+
+  const handleGenerationChange = (event) => setSelectedGeneration(event.target.value);
+
   const handleRefresh = () => {
     setSearchTerm('');
     setSelectedCourse('전체');
     setSelectedGeneration('전체');
-  }; // 검색 및 필터 초기화
+  };
 
-  // 필터링된 학생 목록
   const filteredStudents = students.filter(student =>
     student.name.includes(searchTerm) &&
-    (selectedCourse === '전체' || student.curriculum === selectedCourse) &&
-    (selectedGeneration === '전체' || student.th === selectedGeneration)
+    (selectedCourse === '전체' || student.curriculumName === selectedCourse) &&
+    (selectedGeneration === '전체' || student.curriculumTh === parseInt(selectedGeneration))
   );
 
-  // 학생 추가
-  const handleAddStudent = () => {
-    fetch('/managers/manage-students/enroll', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newStudent),
-    })
-      .then(response => {
-        if (response.ok) {
-          // 성공적으로 등록된 경우
-          setIsModalOpen(false);
-          // 새로운 학생 목록을 가져오기
-          fetchStudents();
-        } else {
-          // 등록 실패
-          console.error('학생 등록 실패');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
+  const handleAddStudent = async () => {
+    try {
+      const token = getToken();
+
+      const studentData = {
+        name: newStudent.name,
+        gender: newStudent.gender,
+        email: newStudent.email,
+        phone: newStudent.phone,
+        curriculumFullName: `${newStudent.curriculum} ${newStudent.generation}기`
+      };
+
+      const response = await axios.post('/managers/manage-students/enroll', studentData, {
+        headers: { access: token },
       });
+      if (response.status === 200) {
+        setIsModalOpen(false);
+        fetchStudents();
+      } else {
+        console.error('학생 등록 실패');
+      }
+    } catch (error) {
+      console.error('이건 오류메시지:', error);
+    }
+  };
+    //파일 업로드
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      console.log('파일이 선택되지 않았습니다.');
+      return;
+    }
+    try {
+      const token = getToken();
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      const response = await axios.post('/managers/manage-students/enroll-file', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'access': token,
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+          console.log(`업로드 진행률: ${percentCompleted}%`);
+        },
+      });
+
+      setSelectedFile(null);
+      setUploadProgress(0);
+      fetchStudents();
+
+      swal({
+        title: "업로드 완료!",
+        text: "파일이 성공적으로 업로드되었습니다.",
+        icon: "success",
+        button: "확인",
+      });
+
+    } catch (error) {
+      console.error('파일 업로드 에러:', error);
+      console.error('에러 상세 정보:', error.response ? error.response.data : '응답 없음');
+      setUploadProgress(0);
+
+      swal({
+        title: "업로드 실패",
+        text: "파일 업로드 중 오류가 발생했습니다.",
+        icon: "error",
+        button: "확인",
+      });
+    }
   };
 
-  // 학생 목록을 가져오는 함수
-  const fetchStudents = () => {
-    fetch('/managers/manage-students')
-      .then(response => response.json())
-      .then(data => {
-        setStudents(data.content); // 페이지네이션된 데이터의 경우
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+  const handleGenderChange = (gender) => {
+    setNewStudent({ ...newStudent, gender: gender === '남' ? 'MALE' : 'FEMALE' });
   };
-//  엑셀 파일로 가져오는 함수
-//  const handleFileUpload = () => {
-//    const formData = new FormData();
-//    formData.append('file', selectedFile);
-//
-//    fetch('/managers/manage-students/enroll-file', {
-//      method: 'POST',
-//      body: formData,
-//    })
-//      .then(response => {
-//        if (response.ok) {
-//          // 성공적으로 등록된 경우
-//          setSelectedFile(null);
-//          // 새로운 학생 목록을 가져오기
-//          fetchStudents();
-//        } else {
-//          // 등록 실패
-//          console.error('학생 일괄 등록 실패');
-//        }
-//      })
-//      .catch(error => {
-//        console.error('Error:', error);
-//      });
-//  };
 
-  // 입력 변경
   const handleInputChange = (e) => setNewStudent({ ...newStudent, [e.target.name]: e.target.value });
-  // 파일 선택
+
   const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
-  // 학생 삭제
-  const handleDeleteStudent = () => setStudents(students.filter(student => !selectedStudents.includes(student.id)));
-  // 체크박스 변경
+
+  const handleDeleteStudent = async () => {
+    try {
+      const token = getToken();
+      const deletePromises = selectedStudents.map(studentId =>
+        axios.delete(`/managers/manage-students/${studentId}`, {
+          headers: { access: token },
+        })
+      );
+      await Promise.all(deletePromises);
+      fetchStudents();
+      setSelectedStudents([]);
+    } catch (error) {
+      console.error('삭제 에러:', error);
+    }
+  };
+
   const handleCheckboxChange = (studentId) => setSelectedStudents(
     selectedStudents.includes(studentId)
       ? selectedStudents.filter(id => id !== studentId)
       : [...selectedStudents, studentId]
   );
-  // 행 클릭
+
   const handleRowClick = (studentId) => handleCheckboxChange(studentId);
-  // 파일 제거
-  const handleRemoveFile = () => setSelectedFile(null);
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setUploadProgress(0);
+  };
+
+  const filteredGenerations = curriculums.find(curriculum => curriculum.type === (selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'NCP' : 'AWS'))?.th || [];
 
   return (
     <div className="student-management">
       <h1>학생 관리</h1>
       <div className="student-controls">
-        <div className="program-buttons">
-          <button className={selectedCourse === '네이버 데브옵스' ? 'selected' : ''} onClick={() => handleCourseChange('네이버 데브옵스')}>네이버 데브옵스</button>
-          <button className={selectedCourse === 'AWS' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS</button>
+        <div className="student-program-buttons">
+          <button className={selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('NCP')}>NCP</button>
+          <button className={selectedCourse === 'AWS 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS</button>
           <select value={selectedGeneration} onChange={handleGenerationChange}>
             <option value="전체">전체</option>
-            <option value="1기">1기</option>
-            <option value="2기">2기</option>
-            <option value="3기">3기</option>
+            {filteredGenerations.map(th => (
+              <option key={`${th}`} value={th}>{`${th}기`}</option>
+            ))}
           </select>
         </div>
-        <div className="search-container">
-          <div className="search-wrapper">
+        <div className="student-search-container">
+          <div className="student-search-wrapper">
             <input type="text" placeholder="검색" value={searchTerm} onChange={handleSearch} />
-            <i className="fas fa-search search-icon"></i>
+            <i className="fas fa-search student-search-icon"></i>
           </div>
-          <button onClick={handleRefresh} className="refresh-button">
+          <button onClick={handleRefresh} className="student-refresh-button">
             <i className="fas fa-sync"></i>
           </button>
         </div>
       </div>
-      <div className="table-container">
+      <div className="student-table-container">
         <table>
           <thead>
             <tr>
@@ -160,21 +241,27 @@ const StudentManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredStudents.map((student, index) => (
-              <tr key={index} onClick={() => handleRowClick(student.id)} className={selectedStudents.includes(student.id) ? 'selected' : ''}>
-                <td>
-                  <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => handleCheckboxChange(student.id)} onClick={(e) => e.stopPropagation()} />
-                </td>
-                <td>{student.id}</td>
-                <td>{student.curriculum}</td>
-                <td>{student.th}</td>
-                <td>{student.name}</td>
-                <td>{student.gender}</td>
-                <td>{student.email}</td>
-                <td>{student.phone}</td>
-                <td>{student.attendance === '출석' ? <span className="status present">✔</span> : <span className="status absent">✘</span>}</td>
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student, index) => (
+                <tr key={index} onClick={() => handleRowClick(student.studentId)} className={selectedStudents.includes(student.studentId) ? 'selected' : ''}>
+                  <td>
+                    <input type="checkbox" checked={selectedStudents.includes(student.studentId)} onChange={() => handleCheckboxChange(student.studentId)} onClick={(e) => e.stopPropagation()} />
+                  </td>
+                  <td>{student.studentId}</td>
+                  <td>{student.curriculumName}</td>
+                  <td>{student.curriculumTh}</td>
+                  <td>{student.name}</td>
+                  <td>{student.gender === 'MALE' ? '남' : '여'}</td>
+                  <td>{student.email}</td>
+                  <td>{student.phone}</td>
+                  <td>{student.isAttend ? <span className="status present">✔</span> : <span className="status absent">✘</span>}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="9">학생 데이터가 없습니다.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -184,42 +271,55 @@ const StudentManagement = () => {
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <span className="add_title">학생 등록</span>
-        <div className="form-container">
-          <label className="excel-label">엑셀 파일 첨부 </label>
-          <div className="file-upload">
+        <div className="student-form-container">
+          <label className="student-excel-label">엑셀 파일 첨부 </label>
+          <div className="student-file-upload">
             {selectedFile ? (
-              <div className="file-preview">
+              <div className="student-file-preview">
                 <i className="fa-regular fa-file"></i>
                 <span>{selectedFile.name}</span>
-                <button className="file-remove-button" onClick={handleRemoveFile}>삭제</button>
+                <button className="student-file-remove-button" onClick={handleRemoveFile}>삭제</button>
               </div>
             ) : (
               <>
-                <label htmlFor="file-upload" className="custom-file-upload">파일 선택</label>
+                <label htmlFor="file-upload" className="student-custom-file-upload">파일 선택</label>
                 <input id="file-upload" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
               </>
             )}
           </div>
-          <div className="course-selection">
-            <button className={`course-button ${newStudent.curriculum === '네이버 데브옵스' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: '네이버 데브옵스' })}>네이버 데브옵스</button>
-            <button className={`course-button ${newStudent.curriculum === 'AWS' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS' })}>AWS</button>
+          <div className="student-upload-progress-container">
+            {selectedFile && (
+              <div className="student-upload-progress">
+                <progress value={uploadProgress} max="100" />
+                <span>{uploadProgress}%</span>
+              </div>
+            )}
           </div>
-          <div className="generation-selection">
-            <select name="th" value={newStudent.th} onChange={handleInputChange}>
-              <option value="1기">1기</option>
-              <option value="2기">2기</option>
-              <option value="3기">3기</option>
+          <div className="student-modal-file">
+            <button className="student-modal-file-button" onClick={handleFileUpload}>파일 업로드</button>
+            <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
+          </div>
+          <span className="student-file-line" />
+          <div className="student-course-selection">
+            <button className={`student-course-button ${newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: '네이버 클라우드 데브옵스 과정' })}>NCP</button>
+            <button className={`student-course-button ${newStudent.curriculum === 'AWS 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, curriculum: 'AWS 데브옵스 과정' })}>AWS</button>
+          </div>
+          <div className="student-generation-selection">
+            <select name="generation" value={newStudent.generation} onChange={handleInputChange}>
+              {(newStudent.curriculum === '네이버 클라우드 데브옵스 과정' ? curriculums.find(curriculum => curriculum.type === 'NCP')?.th : curriculums.find(curriculum => curriculum.type === 'AWS')?.th || []).map(th => (
+                <option key={`${th}`} value={th}>{`${th}기`}</option>
+              ))}
             </select>
           </div>
           <div className="student-input-group">
             <label>이름</label>
             <input type="text" name="name" value={newStudent.name} onChange={handleInputChange} />
           </div>
-          <div className="gender-selection">
-            <label className="gender-label">성별</label>
-            <div className="gender-buttons">
-              <button className={`gender-button ${newStudent.gender === '남' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, gender: '남' })}>남</button>
-              <button className={`gender-button ${newStudent.gender === '여' ? 'selected' : ''}`} onClick={() => setNewStudent({ ...newStudent, gender: '여' })}>여</button>
+          <div className="student-gender-selection">
+            <label className="student-gender-label">성별</label>
+            <div className="student-gender-buttons">
+              <button className={`student-gender-button ${newStudent.gender === 'MALE' ? 'selected' : ''}`} onClick={() => handleGenderChange('남')}>남</button>
+              <button className={`student-gender-button ${newStudent.gender === 'FEMALE' ? 'selected' : ''}`} onClick={() => handleGenderChange('여')}>여</button>
             </div>
           </div>
           <div className="student-input-group">
