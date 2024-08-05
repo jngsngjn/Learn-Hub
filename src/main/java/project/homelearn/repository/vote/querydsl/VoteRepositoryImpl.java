@@ -7,15 +7,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import project.homelearn.dto.teacher.vote.VoteBasicDto;
+import project.homelearn.dto.teacher.vote.VoteDetailDto;
+import project.homelearn.dto.teacher.vote.VoteDetailSub;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.user.User;
+import project.homelearn.entity.vote.StudentVote;
+import project.homelearn.entity.vote.VoteContent;
 import project.homelearn.repository.user.StudentRepository;
-import project.homelearn.service.teacher.TeacherVoteService;
+import project.homelearn.repository.vote.StudentVoteRepository;
+import project.homelearn.repository.vote.VoteContentRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static project.homelearn.entity.vote.QStudentVote.studentVote;
 import static project.homelearn.entity.vote.QVote.vote;
@@ -26,7 +33,8 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
     private final StudentRepository studentRepository;
-    private final TeacherVoteService voteService;
+    private final VoteContentRepository voteContentRepository;
+    private final StudentVoteRepository studentVoteRepository;
 
     @Override
     public Page<VoteTabDto> findVoteTab(Curriculum curriculum, Pageable pageable, String status) {
@@ -94,9 +102,9 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
             return null;
         }
 
-        Long total = studentRepository.findStudentCountByCurriculum(curriculum);
+        Long total = (long) studentRepository.findStudentCountByCurriculum(curriculum);
         Long participantCount = findParticipantCount(voteId);
-        Map<String, Long> voteCountByContent = voteService.getVoteCountByContent(voteId);
+        Map<String, Long> voteCountByContent = getVoteCountByContent(voteId);
 
         return VoteBasicDto
                 .builder()
@@ -112,12 +120,48 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
                 .voteCountByContent(voteCountByContent)
                 .build();
     }
+
+    @Override
+    public VoteDetailDto findVoteDetail(Long voteId) {
+        Map<String, Long> voteCountByContent = getVoteCountByContent(voteId);
+        VoteDetailDto result = new VoteDetailDto();
+        result.setVoteCountByContent(voteCountByContent);
+
+        List<VoteDetailSub> voteDetailSubList = new ArrayList<>();
+
+        List<VoteContent> voteContents = voteContentRepository.findByVoteId(voteId);
+        for (VoteContent voteContent : voteContents) {
+            voteDetailSubList.addAll(createVoteDetailSubList(voteContent));
+        }
+
+        result.setVoteDetailSubList(voteDetailSubList);
+        return result;
+    }
+
+    private List<VoteDetailSub> createVoteDetailSubList(VoteContent voteContent) {
+        List<VoteDetailSub> voteDetailSubList = new ArrayList<>();
+        List<StudentVote> studentVotes = studentVoteRepository.findAllByVoteContentId(voteContent.getId());
+
+        for (StudentVote studentVote : studentVotes) {
+            User student = studentVote.getUser();
+            VoteDetailSub detailSub = new VoteDetailSub();
+            detailSub.setName(student.getName());
+            detailSub.setImagePath(student.getImagePath());
+            detailSub.setContent(voteContent.getContent());
+            voteDetailSubList.add(detailSub);
+        }
+
+        return voteDetailSubList;
+    }
+
+    public Map<String, Long> getVoteCountByContent(Long voteId) {
+        List<VoteContent> voteContents = voteContentRepository.findByVoteId(voteId);
+        Map<String, Long> voteCountByContent = new ConcurrentHashMap<>();
+
+        for (VoteContent voteContent : voteContents) {
+            voteCountByContent.put(voteContent.getContent(), (long) voteContent.getVoteCount());
+        }
+
+        return voteCountByContent;
+    }
 }
-
-
-
-
-
-
-
-

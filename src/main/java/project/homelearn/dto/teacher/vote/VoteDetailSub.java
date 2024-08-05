@@ -7,5 +7,5 @@ public class VoteDetailSub {
 
     private String name;
     private String imagePath;
-    private String voteContent;
+    private String content;
 }

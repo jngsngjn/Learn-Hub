@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface VoteContentRepository extends JpaRepository<VoteContent, Long> {
 
-    @Query("SELECT vc FROM VoteContent vc WHERE vc.vote.id =:voteId")
+    @Query("select vc from VoteContent vc where vc.vote.id =:voteId")
     List<VoteContent> findByVoteId(@Param("voteId") Long voteId);
 }
