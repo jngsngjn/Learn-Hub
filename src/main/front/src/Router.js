@@ -19,6 +19,7 @@ import StudentInquiryDetail from "./pages/Student/StudentInquiryDetail";
 import StudentSubjectBoardDetail from "./pages/Student/StudentSubjectBoardDetail";
 import StudentLectureList from "./pages/Student/StudentLectureList";
 import StudentLectureDetail from "./pages/Student/StudentLectureDetail";
+import StudentDashBoard from "./pages/Student/StudentDashBoard";
 
 const Router = () => {
   return (
@@ -31,6 +32,7 @@ const Router = () => {
         <Route path="/email" element={<LoginEmail />} />
         <Route path="/main" element={<Main />} />
         <Route path="/managers/*" element={<ManagerMain />} />
+
         <Route path="/students" element={<StudentMain />} />
         <Route path="/students/:subject/board" element={<StudentLecture />} />
         <Route path="/students/lectureLists" element={<StudentLectureList />} />
