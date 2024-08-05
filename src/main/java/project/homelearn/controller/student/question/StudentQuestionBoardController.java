@@ -23,7 +23,7 @@ public class StudentQuestionBoardController {
 
     private final StudentQuestionBoardService studentQuestionBoardService;
 
-    // 글 등록
+    // 질문 등록
     @PostMapping
     public ResponseEntity<?> writeQuestionBoard(Principal principal,
                                                 @Valid @ModelAttribute QuestionBoardWriteDto questionBoardWriteDto) {
@@ -34,7 +34,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // 글 삭제
+    // 질문 삭제
     @DeleteMapping("/{questionBoardId}")
     public ResponseEntity<?> deleteQuestionBoard(@PathVariable("questionBoardId") Long questionBoardId, Principal principal) {
         String username = principal.getName();
@@ -46,7 +46,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    // 글 수정
+    // 질문 수정
     @PatchMapping("/{questionBoardId}")
     public ResponseEntity<?> modifyQuestionBoard(@PathVariable("questionBoardId") Long questionBoardId, Principal principal,
                                                  @Valid @ModelAttribute QuestionBoardWriteDto questionBoardWriteDto) {
