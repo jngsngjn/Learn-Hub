@@ -1,0 +1,76 @@
+.subject_lecture_detail_body {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  background-color: #f5f5f5;
+  color: #74b49b;
+}
+
+/* 사이드 바 스타일 */
+/* .side_bar {
+  width: 514px;
+  padding: 3em;
+  background-color: #fff;
+  border-right: 0.0625em solid #a7d7c5;
+  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.1);
+} */
+
+/* 메인 스타일 */
+.subject_lecture_detail_main_container {
+  display: flex;
+  flex-direction: column;
+  width: 1400px;
+  padding: 100px 75px 20px 68px;
+  background-color: #fff;
+}
+
+.subject_lecture_detail_video_container {
+}
+
+.subject_lecture_video_box {
+  width: 1200px;
+  height: 726px;
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: 0 50px 75px 50px;
+}
+
+.subject_lecutre_video_title_box {
+  display: flex;
+  justify-content: space-between;
+  padding: 75px 75px 0 75px;
+  color: black;
+  border-top: 1px solid #5c8d89;
+}
+
+.subject_lecutre_video_title {
+  font-size: 56px;
+  margin-bottom: 75px;
+}
+
+.subject_lecutre_video__type_name {
+  border: 1px solid #5c8d89;
+  color: #5c8d89;
+  width: 150px;
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  font-size: 28px;
+  border-radius: 10px;
+  background-color: rgba(167, 215, 197, 0.25);
+}
+
+.subject_lecutre_video_description_box {
+  padding: 0 75px 50px 75px;
+  font-size: 36px;
+  border-bottom: 1px solid #5c8d89;
+}
+
+.subject_lecutre_video__description {
+  font-size: 36px;
+}
+
+/* 강의 영상 리스트  */
+.lecture_videos_lists_box {
+  padding: 75px;
+}

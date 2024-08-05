@@ -117,7 +117,9 @@ const StudentMain = () => {
                 <h3 className="components_title">최근 학습 강의</h3>
                 <span
                   className="go_to_lecture_page navigate_button"
-                  onClick={() => navigate("/students/lecture")}
+                  onClick={() =>
+                    navigate(`/students/${recentLecture.subject}/board`)
+                  }
                 >
                   학습 목록 ⟩
                 </span>
@@ -126,7 +128,7 @@ const StudentMain = () => {
                 className="recent_contents_box"
                 onClick={() =>
                   navigate(
-                    `/students/lecture/${recentLecture.subject}/${recentLecture.id}`
+                    `/students/${recentLecture.subject}/lectures/${recentLecture.id}`
                   )
                 }
               >
