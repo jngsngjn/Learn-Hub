@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.teacher.calendar.TeacherScheduleEnrollDto;
+import project.homelearn.dto.teacher.dashboard.TeacherScheduleDto;
 import project.homelearn.entity.calendar.TeacherCalendar;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.repository.calendar.TeacherCalendarRepository;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.TeacherRepository;
 
 import java.time.LocalDate;
@@ -23,6 +25,7 @@ public class TeacherCalendarService {
 
     private final TeacherRepository teacherRepository;
     private final TeacherCalendarRepository calendarRepository;
+    private final CurriculumRepository curriculumRepository;
 
     public void addSchedule(String username, TeacherScheduleEnrollDto scheduleDto) {
         TeacherCalendar calendar = new TeacherCalendar();
@@ -70,5 +73,11 @@ public class TeacherCalendarService {
 
         calendarRepository.deleteById(calendarId);
         return true;
+    }
+
+    public TeacherScheduleDto getSchedule(String username) {
+        Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
+        String color = teacher.getCurriculum().getColor();
+        return calendarRepository.findTeacherSchedule(color, teacher);
     }
 }

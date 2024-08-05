@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.homelearn.dto.manager.dashboard.CurriculumDto;
-import project.homelearn.dto.manager.dashboard.ScheduleDto;
+import project.homelearn.dto.manager.dashboard.ManagerScheduleDto;
 import project.homelearn.dto.manager.dashboard.SurveyDto;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.entity.user.Role;
@@ -36,7 +36,7 @@ public class ManagerDashBoardController {
 
     // 대시보드 캘린더 조회
     @GetMapping("/calendar")
-    public List<ScheduleDto> viewAllCalendar() {
+    public List<ManagerScheduleDto> viewAllCalendar() {
         return calendarService.getAllSchedules();
     }
 

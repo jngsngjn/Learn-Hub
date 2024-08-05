@@ -13,12 +13,14 @@ import project.homelearn.dto.chatgpt.ChatGPTResponseDto;
 import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.teacher.AiCommentWriteDto;
+import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.UserRepository;
 
 import java.security.Principal;
@@ -31,11 +33,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherQuestionBoardService {
 
+    private final UserRepository userRepository;
     private final QuestionBoardRepository questionBoardRepository;
     private final QuestionBoardCommentRepository commentRepository;
-    private final UserRepository userRepository;
+    private final CurriculumRepository curriculumRepository;
 
-    //댓글 작성 = 답변달기
+    // 댓글 작성 = 답변달기
     public void writeComment(Long questionBoardId, String username, CommentWriteDto commentDto) {
         User user = userRepository.findByUsername(username);
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
@@ -47,7 +50,7 @@ public class TeacherQuestionBoardService {
         commentRepository.save(comment);
     }
 
-    //AI 자동응답 작성
+    // AI 자동응답 작성
     public void autoWriteComment(AiCommentWriteDto aiCommentWriteDto) {
         QuestionBoard questionBoard = questionBoardRepository.findById(aiCommentWriteDto.getQuestionBoardId()).orElseThrow();
 
@@ -58,7 +61,7 @@ public class TeacherQuestionBoardService {
         commentRepository.save(comment);
     }
 
-    //댓글 수정
+    // 댓글 수정
     public boolean modifyComment(Long commentId, String username, CommentWriteDto commentDto) {
         QuestionBoardComment comment = commentRepository.findById(commentId).orElseThrow();
         String writer = comment.getUser().getUsername();
@@ -69,7 +72,7 @@ public class TeacherQuestionBoardService {
         return true;
     }
 
-    //댓글 삭제
+    // 댓글 삭제
     public boolean deleteComment(Long questionBoardId, Long commentId, String username) {
         QuestionBoard board = questionBoardRepository.findById(questionBoardId).orElseThrow();
         String boardWriter = board.getUser().getUsername();
@@ -89,7 +92,7 @@ public class TeacherQuestionBoardService {
         return true;
     }
 
-    //대댓글 작성
+    // 대댓글 작성
     public void writeReplyComment(Long commentId, String username, CommentWriteDto commentDto) {
         User user = userRepository.findByUsername(username);
         QuestionBoardComment parentComment = commentRepository.findById(commentId).orElseThrow();
@@ -107,7 +110,7 @@ public class TeacherQuestionBoardService {
         commentRepository.save(reply);
     }
 
-    //대댓글 수정
+    // 대댓글 수정
     public boolean modifyReplyComment(Long replyId, String username, CommentWriteDto commentDto) {
         QuestionBoardComment reply = commentRepository.findById(replyId).orElseThrow();
         String writer = reply.getUser().getUsername();
@@ -119,13 +122,13 @@ public class TeacherQuestionBoardService {
         return true;
     }
 
-    //댓글 수 증가
+    // 댓글 수 증가
     public void incrementCommentCount(Long questionBoardId){
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
         questionBoard.setCommentCount(questionBoard.getCommentCount() + 1);
     }
 
-    //댓글 수 감소
+    // 댓글 수 감소
     public void decrementCommentCount(Long questionBoardId){
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
         questionBoard.setCommentCount(questionBoard.getCommentCount() - 1);
@@ -171,15 +174,15 @@ public class TeacherQuestionBoardService {
         return "AI 응답을 가져오지 못했습니다.";
     }
 
-    //답변없는 게시글 불러오기
+    // 답변없는 게시글 불러오기
     public List<QuestionBoard> findUnansweredQuestionsWithin12Hours() {
         LocalDateTime twelveHoursAgo = LocalDateTime.now().minusHours(12);
         return questionBoardRepository.findByCreatedDateBeforeAndCommentsIsNull(twelveHoursAgo);
     }
 
-    //조회수 증가
+    // 조회수 증가
 
-    //글 상세보기
+    // 글 상세보기
 
     //게시글 리스트
     public Page<QuestionBoardDto> getQuestionBoardList(String filterType, String subjectName, Curriculum curriculum, Pageable pageable) {
@@ -225,4 +228,11 @@ public class TeacherQuestionBoardService {
     }
 
     //대시보드 or 과목 상세보기 페이지 -> 최근 5개 리스트
+    // 게시글 리스트
+
+    // 최근 질문 5개
+    public List<QuestionTop5Dto> getQuestionTop5(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        return questionBoardRepository.findQuestionTop5(curriculum);
+    }
 }

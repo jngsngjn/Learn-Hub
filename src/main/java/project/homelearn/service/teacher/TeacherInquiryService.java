@@ -7,11 +7,14 @@ import org.springframework.stereotype.Service;
 import project.homelearn.dto.common.inquiry.InquiryWriteDto;
 import project.homelearn.dto.teacher.inquiry.TeacherInquiryDto;
 import project.homelearn.dto.teacher.inquiry.TeacherResponseDto;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
+import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import project.homelearn.repository.inquiry.TeacherInquiryRepository;
+import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.common.CommonNotificationService;
 
@@ -32,6 +35,7 @@ public class TeacherInquiryService {
     private final TeacherInquiryRepository teacherInquiryRepository;
     private final ManagerInquiryRepository managerInquiryRepository;
     private final UserRepository userRepository;
+    private final TeacherRepository teacherRepository;
 
     // 문의 내역 리스트(학생)
     public List<TeacherInquiryDto> getInquiryListDefaultFromStudents() {
@@ -41,8 +45,11 @@ public class TeacherInquiryService {
     }
 
     // 1:1 문의 개수
-    public Integer getInquiryCount() {
-        return teacherInquiryRepository.countInquiryWithOutResponse();
+    public Integer getStudentInquiryCount(String username) {
+        Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
+        Curriculum curriculum = teacher.getCurriculum();
+
+        return teacherInquiryRepository.findStudentInquiryCount(curriculum);
     }
 
     // 문의 내역 상세 조회

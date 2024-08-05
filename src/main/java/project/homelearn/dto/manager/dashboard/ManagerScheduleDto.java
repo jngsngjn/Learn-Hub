@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 // 캘린더 조회 DTO
 @Data
-public class ScheduleDto {
+public class ManagerScheduleDto {
 
     @NotNull
     private Long id; // PK
@@ -20,13 +20,12 @@ public class ScheduleDto {
     @NotNull
     private LocalDate startDate;
 
-    @NotNull
     private LocalDate endDate;
 
     private String color;
 
     @QueryProjection
-    public ScheduleDto(Long id, String title, LocalDate startDate, LocalDate endDate, String color) {
+    public ManagerScheduleDto(Long id, String title, LocalDate startDate, LocalDate endDate, String color) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
