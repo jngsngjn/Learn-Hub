@@ -61,16 +61,20 @@ const ProgressModal = ({ isOpen, onClose }) => {
     return (
         <div className="progress-modal-overlay">
             <div className="progress-modal">
-                <h2>파일 업로드 중...</h2>
-                <progress value={uploadProgress} max="100" />
-                <span>{uploadProgress}%</span>
-                <br />
-                <span>{currentStudent}/{totalStudents}</span>
-                <br />
-                {isCompleted && (
+
+                {!isCompleted ? (
                     <>
+                        <h2>파일 업로드 중...</h2>
+                        <progress value={uploadProgress} max="100"/>
+                        <span>{uploadProgress}%</span>
+                        <br/>
+                        <span>{currentStudent}/{totalStudents}</span>
+                    </>
+                ) : (
+                    <>
+                        <h2>파일 업로드 완료</h2>
                         <span>총 {totalStudents}명 중 {successCount}명 성공</span>
-                        <br />
+                        <br/>
                         <button onClick={onClose}>닫기</button>
                     </>
                 )}
