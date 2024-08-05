@@ -78,6 +78,9 @@ dependencies {
     // JSoup
     implementation 'org.jsoup:jsoup:1.14.3'
 
+    // web socket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
