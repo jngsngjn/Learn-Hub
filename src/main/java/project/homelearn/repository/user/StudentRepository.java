@@ -54,7 +54,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>, Student
 
     // 커리큘럼 넣으면 커리큘럼의 총 학생 수 반환
     @Query("select count(s) from Student s where s.curriculum =:curriculum")
-    Integer findStudentCountByCurriculum(@Param("curriculum") Curriculum curriculum);
+    Long findStudentCountByCurriculum(@Param("curriculum") Curriculum curriculum);
 
     @Query("select s.name from Student s where s.id =:studentId")
     String findStudentName(@Param("studentId") Long studentId);
