@@ -2,6 +2,8 @@ package project.homelearn.service.teacher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -148,7 +150,8 @@ public class TeacherSubjectService {
         return questionBoardRepository.findQuestionTop5BySubjectId(subjectId);
     }
 
-    public List<LectureListDto> getLectureTop6(Long subjectId) {
-        return lectureRepository.findLectureListTop6(subjectId);
+    public Page<LectureListDto> getSubjectLecturePage(Long subjectId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return lectureRepository.findSubjectLecturePage(subjectId, pageRequest);
     }
 }

@@ -19,7 +19,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/teachers/subjects")
 @RequiredArgsConstructor
-public class SubjectController {
+public class TeacherSubjectController {
 
     private final TeacherSubjectService teacherSubjectService;
 
