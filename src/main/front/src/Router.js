@@ -17,6 +17,7 @@ import StudentInquiryBoard from "./pages/Student/StudentInquiryBoard";
 import StudentAssignmentDetail from "./pages/Student/StudentAssignmentDetail";
 import StudentInquiryDetail from "./pages/Student/StudentInquiryDetail";
 import StudentSubjectBoardDetail from "./pages/Student/StudentSubjectBoardDetail";
+import StudentLectureDetail from "./pages/Student/StudentLectureDetail";
 
 const Router = () => {
   return (
@@ -30,7 +31,11 @@ const Router = () => {
         <Route path="/main" element={<Main />} />
         <Route path="/managers/*" element={<ManagerMain />} />
         <Route path="/students" element={<StudentMain />} />
-        <Route path="/students/lecture" element={<StudentLecture />} />
+        <Route path="/students/:subject/board" element={<StudentLecture />} />
+        <Route
+          path="/students/:subject/lectures/:id"
+          element={<StudentLectureDetail />}
+        />
         <Route
           path="/students/subjectBoard"
           element={<StudentSubjectBoard />}
