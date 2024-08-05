@@ -114,7 +114,7 @@ const StudentManagement = () => {
       console.error('이건 오류메시지:', error);
     }
   };
-
+    //파일 업로드
   const handleFileUpload = async () => {
     if (!selectedFile) {
       console.log('파일이 선택되지 않았습니다.');
