@@ -8,4 +8,6 @@ import java.util.List;
 public interface QuestionBoardRepositoryCustom {
 
     List<QuestionTop5Dto> findQuestionTop5(Curriculum curriculum);
+
+    List<QuestionTop5Dto> findQuestionTop5BySubjectId(Long subjectId);
 }

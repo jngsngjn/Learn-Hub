@@ -18,7 +18,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/teachers/lectures")
 @RequiredArgsConstructor
-public class LectureController {
+public class TeacherLectureController {
 
     private final LectureService lectureService;
 

@@ -1,8 +1,10 @@
 package project.homelearn.dto.teacher.dashboard;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class QuestionTop5Dto {
@@ -15,9 +17,11 @@ public class QuestionTop5Dto {
 
     private String content;
 
-    private LocalDate createdDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDateTime createdDate;
 
-    public QuestionTop5Dto(Long questionId, String subjectName, String title, String content, LocalDate createdDate) {
+    @QueryProjection
+    public QuestionTop5Dto(Long questionId, String subjectName, String title, String content, LocalDateTime createdDate) {
         this.questionId = questionId;
         this.subjectName = subjectName;
         this.title = title;
