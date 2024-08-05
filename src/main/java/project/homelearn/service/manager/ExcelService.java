@@ -23,8 +23,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ExcelService {
 
-    private final ManagerStudentService managerStudentService;
     private final SimpMessagingTemplate template;
+    private final ManagerStudentService managerStudentService;
 
     @Async
     public void importStudentFile(MultipartFile file) {
