@@ -19,11 +19,15 @@ const StudentAssignment = () => {
     error: curAssignmentError,
   } = useGetFetch("/data/student/mainLecture/currentAssignments.json", []);
 
+  console.log(curAssignment);
+
   const {
     data: endAssignments,
     loading: endAssignmentsLoading,
     error: endAssignmentsError,
   } = useGetFetch("/data/student/mainLecture/endAssignments.json", []);
+
+  console.log(endAssignments);
 
   if (curAssignmentLoading || endAssignmentsLoading) {
     return <div>데이터를 불러오는 중입니다.</div>;

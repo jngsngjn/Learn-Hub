@@ -7,7 +7,6 @@ import useGetFetch from "../../hooks/useGetFetch";
 import StudentLectureList from "./StudentLectureList";
 import StudentFreeBoard from "./StudentFreeBoard";
 import StudentQuestionBoard from "./StudentQuestionBoard";
-import StudentAssignmentDetail from "./StudentAssignmentDetail";
 import StudentDashBoard from "./StudentDashBoard";
 
 const StudentMain = () => {
@@ -160,8 +159,8 @@ const StudentMain = () => {
           <Route path="/lectureLists" element={<StudentLectureList />} />
           <Route path="/freeBoard" element={<StudentFreeBoard />} />
           <Route path="/questionBoard" element={<StudentQuestionBoard />} />
-          {/* 아래의 페이지가 강사가 봐야할 학생들의 과제제출 페이지 */}
-          <Route path="/teacherNotice" element={<StudentAssignmentDetail />} />
+          {/* 현재 임시로 선생님 과제 상세 페이지 -> 아래의 페이지가 강사가 봐야할 학생들의 과제제출 페이지 넣을 예정 */}
+          {/* <Route path="/teacherNotice" element={<TeacherAssignmentDetail />} /> */}
           {/* 언젠가 들어올 강사 공지사항 페이지 */}
           {/* <Route path="/teacherNotice" element={< />} /> */}
           {/* 언젠가 들어올 매니저 공지사항 페이지 */}
