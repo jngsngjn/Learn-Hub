@@ -23,15 +23,16 @@ public class ManagerInquiryController {
 
     private final ManagerInquiryService managerInquiryService;
 
+    // 학생 문의 리스트 조회
     @GetMapping("/student-inquiries")
     public ResponseEntity<?> studentList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
                                          @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
         List<ManagerInquiryDto> managerInquiries;
-        if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()){
+        if (curriculumTh != null && curriculumName != null && !curriculumName.isEmpty()) {
             managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameAndThFromStudents(curriculumName,curriculumTh);
         }
-        else if (curriculumName != null && !curriculumName.isEmpty()){
+        else if (curriculumName != null && !curriculumName.isEmpty()) {
             managerInquiries = managerInquiryService.getInquiryListWithCurriculumNameFromStudents(curriculumName);
         }
         else {
@@ -44,6 +45,7 @@ public class ManagerInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    // 강사 문의 리스트 조회
     @GetMapping("/teacher-inquiries")
     public ResponseEntity<?> teacherList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
                                          @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
@@ -65,6 +67,7 @@ public class ManagerInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    // 문의 상세 조회
     @GetMapping("/inquiries/{inquiryId}")
     public ResponseEntity<?> viewInquiry(@PathVariable("inquiryId") Long inquiryId) {
         ManagerInquiryDto result = managerInquiryService.getOneManagerInquiryDtoById(inquiryId);
@@ -74,6 +77,7 @@ public class ManagerInquiryController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    // 문의 답변
     @PostMapping("/inquiries/{inquiryId}/add-response")
     public ResponseEntity<?> addResponse(@Valid @RequestBody ManagerResponseDto managerResponseDto,
                                          @PathVariable("inquiryId") Long inquiryId) {
