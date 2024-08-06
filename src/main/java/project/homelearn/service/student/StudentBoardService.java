@@ -182,7 +182,7 @@ public class StudentBoardService {
     }
 
     // 리스트
-    public Page<FreeBoardDto> getBoardList(Curriculum curriculum, Pageable pageable){
+    public Page<FreeBoardDto> getBoardList(Curriculum curriculum, Pageable pageable) {
 
         Page<FreeBoard> freeBoardPage = boardRepository.findByCreatedDateDesc(curriculum,pageable);
 
@@ -200,7 +200,7 @@ public class StudentBoardService {
     }
 
     // 상세보기
-    public FreeBoardDetailDto getBoard(Long boardId){
+    public FreeBoardDetailDto getBoard(Long boardId) {
         FreeBoard freeBoard = boardRepository.findById(boardId).orElseThrow();
 
         return new FreeBoardDetailDto(
@@ -215,7 +215,7 @@ public class StudentBoardService {
     }
 
     // 댓글 추출
-    public List<FreeBoardCommentDto> getBoardComment(Long boardId){
+    public List<FreeBoardCommentDto> getBoardComment(Long boardId) {
         List<FreeBoardComment> comments = commentRepository.findByFreeBoardCommentIdAndParentCommentIsNull(boardId);
 
         return comments.stream()

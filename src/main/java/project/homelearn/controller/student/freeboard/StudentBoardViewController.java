@@ -30,7 +30,7 @@ public class StudentBoardViewController {
     // 전체 리스트
     @GetMapping
     public ResponseEntity<?> viewBoardList(Principal principal,
-                                           @RequestParam(name = "page", defaultValue = "0") int page){
+                                           @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 15;
 
         String username = principal.getName();
@@ -44,37 +44,37 @@ public class StudentBoardViewController {
 
         Page<FreeBoardDto> boardList = boardService.getBoardList(myCurriculum,pageable);
 
-        if(boardList.getTotalElements() > 0){
+        if(boardList.getTotalElements() > 0) {
             return new ResponseEntity<>(boardList, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     // 상세보기
     @GetMapping("/{boardId}")
-    public ResponseEntity<?> viewBoard(@PathVariable Long boardId){
+    public ResponseEntity<?> viewBoard(@PathVariable Long boardId) {
         FreeBoardDetailDto viewBoard = boardService.getBoard(boardId);
 
-        if(viewBoard != null){
+        if (viewBoard != null) {
             boardService.incrementViewCount(boardId);
             return new ResponseEntity<>(viewBoard, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     // 댓글 추출
     @GetMapping("/{boardId}/comments")
-    public ResponseEntity<?> viewComments(@PathVariable("boardId")Long boardId){
+    public ResponseEntity<?> viewComments(@PathVariable("boardId")Long boardId) {
         List<FreeBoardCommentDto> viewComments = boardService.getBoardComment(boardId);
 
-        if(viewComments != null){
+        if (viewComments != null) {
             return new ResponseEntity<>(viewComments, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
