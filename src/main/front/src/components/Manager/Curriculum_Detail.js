@@ -4,6 +4,8 @@ import axios from 'axios';
 import Calendar from './Calendar';
 import './Curriculum_Detail.css';
 
+
+
 const CurriculumDetail = () => {
   const { curriculumId } = useParams();
   const [curriculum, setCurriculum] = useState({
