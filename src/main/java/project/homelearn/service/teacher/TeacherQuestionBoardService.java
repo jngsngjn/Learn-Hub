@@ -184,7 +184,6 @@ public class TeacherQuestionBoardService {
     }
 
     // 조회수 증가
-    // 댓글 수 증가
     public void incrementViewCount(Long questionBoardId){
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
         questionBoard.setCommentCount(questionBoard.getViewCount() + 1);
