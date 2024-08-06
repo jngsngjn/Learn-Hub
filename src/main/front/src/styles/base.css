@@ -10,7 +10,7 @@
 
 .inner_box {
   position: relative;
-  max-width: 1440px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -28,5 +28,5 @@
 } */
 
 .contents {
-  width: 1120px;
+  max-width: 1120px;
 }

@@ -1,20 +1,10 @@
 .student_dashboard_body {
   display: flex;
   flex-direction: row;
-  max-width: 1400px;
   background-color: #f5f5f5;
   color: #74b49b;
   margin: 0 auto;
-}
-
-/* 사이드 바 스타일 */
-
-.side_bar {
-  width: 515px;
-  padding: 3em;
-  background-color: #fff;
-  border-right: 0.0625em solid #a7d7c5;
-  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.1);
+  justify-content: center;
 }
 
 /* 메인 스타일 */
@@ -22,7 +12,7 @@
 .dashboard_main_container {
   display: flex;
   flex-direction: column;
-  width: 1400px;
+  width: 1120px;
   padding: 100px 36px;
   background-color: #fff;
   box-shadow: 0 0 0.625em rgba(0, 0, 0, 0.1);
@@ -53,23 +43,16 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 50px;
+  gap: 30px;
 }
 
-/* .left_container,
-.right_container {
-  flex: 1;
-  min-width: 0;
-  max-width: 50%;
-} */
-
 .recent_lecture_container {
-  width: 620px;
+  width: 500px; /* 이전 620px */
   height: 370px;
   padding: 0.9375em;
   border: 0.0625em solid #74b49b;
   border-radius: 0.5em;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -142,9 +125,9 @@
 /* 랜덤 영상과 보충 영상 스타일 */
 
 .video_container {
-  /* width: 620px; */
+  width: 500px;
   height: 700px;
-  padding: 50px 30px 40px 30px;
+  padding: 30px 30px 40px 30px;
   border: 1px solid #74b49b;
   border-radius: 0.5em;
   background-color: #f4f9f4;
@@ -161,12 +144,12 @@
 
 /* 질문 사항 영역 */
 .question_container {
-  /* width: 620px; */
+  /* width: 500px; */
   height: 350px;
   border-radius: 0.5em;
   border: 0.0625em solid #74b49b;
   background-color: #f4f9f4;
-  margin: 50px 0;
+  margin: 30px 0;
   padding: 2em;
   display: flex;
   flex-direction: column;
@@ -233,7 +216,7 @@
 /* 배지 컨테이터 스타일 */
 
 .badge_container {
-  /* width: 620px; */
+  /* width: 500px; */
   height: 200px;
   background-color: #f4f9f4;
   border: 0.0625em solid #74b49b;
@@ -276,12 +259,11 @@
 /* 학생 메인페이지 오른쪽 스타일 */
 
 .calander-container {
-  /* width: 620px; */
-
+  width: 500px;
   background-color: #f4f9f4;
   border: 0.0625em solid #74b49b;
   border-radius: 0.5em;
-  /* max-width: 620px; */
+  /* max-width: 500px; */
   height: 46.875em;
   text-align: center;
   padding: 1.875em;
@@ -300,13 +282,13 @@
 
 .subject_container {
   margin: 1.3em 0;
-  /* width: 620px; */
+  width: 500px;
   height: 540px;
   background-color: #f4f9f4;
   border: 1px solid #74b49b;
   border-radius: 10px;
   padding: 2em;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .dashboard_subject_list_container {
@@ -314,7 +296,7 @@
   flex-direction: row;
   justify-content: space-between;
   margin: 1em 0;
-  gap: 50px;
+  gap: 30px;
 }
 
 .dashboard_subject_list_box {
@@ -352,7 +334,7 @@
   background-color: #74b49b;
   border: none;
   border-radius: 10px;
-  padding: 10px 15px;
+  padding: 10px 16px;
   cursor: pointer;
 }
 
@@ -374,12 +356,12 @@
 .notice_container {
   display: flex;
   justify-content: space-between;
-  /* width: 620px; */
-  margin-top: 50px;
+  /* width: 500px; */
+  margin-top: 30px;
 }
 
 .notice_container > * {
-  width: 285px;
+  width: 235px;
   /* 여기서 팍 죽네 흠 */
   height: 380px;
   background-color: #f4f9f4;
@@ -409,7 +391,7 @@
   justify-content: space-around;
   align-items: center;
   background-color: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
   padding: 10px 5px;
 }
 
@@ -426,7 +408,7 @@
 
 .alert_notice {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
   color: #ff0000;
 }
 
@@ -470,21 +452,20 @@
 }
 
 .modal-content-student {
-  /* display: flex;
-  flex-direction: column; */
   background-color: #fefefe;
-  width: 1100px;
-  height: 1100px;
-  margin: 15% auto;
-  /* padding: 96px 225px; */
+  width: 680px;
+  height: 800px;
+  margin: 12% auto;
+  padding: 60px;
   border: 1px solid #888;
   width: 80%;
 }
 
 .close {
+  display: flex;
+  flex-direction: row-reverse;
   color: #5c8d89;
-  text-align: right;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: bold;
 }
 
@@ -497,7 +478,7 @@
 
 .modal_title {
   text-align: center;
-  font-size: 48px;
+  font-size: 40px;
 }
 
 .modal_form_body {
@@ -505,7 +486,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 75px;
+  padding: 30px 16px;
   justify-content: space-around;
 }
 
@@ -513,28 +494,34 @@
 .modal_name_tag,
 .modal_file_tag {
   font-size: 32px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .modal_input_title {
   width: 100%;
   border-radius: 20px;
-  height: 80px;
+  height: 48px;
   border: 2px solid #74b49b;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
+  font-size: 24px;
+  padding: 0 20px;
 }
 
 .modal_input_content {
   width: 100%;
   border-radius: 20px;
-  height: 300px;
+  height: 200px;
   border: 2px solid #74b49b;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
+  padding: 20px;
+  font-size: 20px;
+  white-space: pre;
+  overflow: hidden;
 }
 
 .modal_file_label {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .modal_file_input_wrapper {
@@ -547,8 +534,8 @@
   padding: 8px;
   border: 2px solid #74b49b;
   border-radius: 20px;
-  height: 80px;
-  margin-right: 15px;
+  height: 48px;
+  margin-right: 16px;
 }
 
 .modal_file_button {
@@ -558,10 +545,9 @@
   border: 2px solid #74b49b;
   border-radius: 10px;
   background-color: rgba(210, 218, 255, 0.25);
-
   cursor: pointer;
-  height: 80px;
-  line-height: 40px;
+  height: 48px;
+  line-height: 10px;
   font-size: 24px;
 }
 
@@ -578,23 +564,24 @@
 .modal_submit_button_box {
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 32px;
+  padding: 36px 0;
 }
 
 .modal_submit_button {
-  width: 150px;
+  width: 160px;
   height: 50px;
   border: 2px solid #5c8d89;
-  border-radius: 15px;
+  border-radius: 16px;
   color: white;
   background-color: #5c8d89;
 }
 
 .modal_cancel_button {
-  width: 150px;
-  height: 50px;
+  width: 160px;
+  height: 48px;
   border: 2px solid #74b49b;
-  border-radius: 15px;
+  border-radius: 16px;
   color: #5c8d89;
   background-color: rgba(210, 218, 255, 0.25);
 }

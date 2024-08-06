@@ -104,7 +104,7 @@ const StudentMain = () => {
   }
 
   return (
-    <div className="student_dashboard_body">
+    <div className="contents">
       <div className="dashboard_main_container">
         <h1 className="page_title">대시보드</h1>
         <div className="divide_right_container">
@@ -298,7 +298,7 @@ const StudentMain = () => {
       </div>
       {isModalOpen && (
         <div className="modal show">
-          <div className="modal-content-student" style={{ width: "1100px" }}>
+          <div className="modal-content-student" style={{ width: "700px" }}>
             <span className="close" onClick={closeModal}>
               &times;
             </span>

@@ -12,8 +12,9 @@
 }
 
 .iframe_wrapper {
-  width: 560px;
+  width: 550px;
   height: 250px;
+  transform: scale(0.8);
   overflow: hidden;
   border-radius: 10px;
 }
@@ -23,10 +24,10 @@
 }
 
 .get_random_video_btn {
-  width: 2.3em;
+  width: 2.2em;
   position: absolute;
-  top: -22%;
-  right: 0;
+  top: -18%;
+  right: 11%;
   cursor: pointer;
 }
 
