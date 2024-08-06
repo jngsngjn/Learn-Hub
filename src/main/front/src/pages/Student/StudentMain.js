@@ -51,8 +51,8 @@ const StudentMain = () => {
             <i
               className={`bi ${
                 showSection === "subject"
-                  ? "bi-caret-down-fill"
-                  : "bi-caret-up-fill"
+                  ? "bi-caret-up-fill"
+                  : "bi-caret-down-fill"
               } stu_sidebar_toogle_btn`}
             ></i>
             {subject.subject?.map((el, idx) => (
@@ -87,8 +87,8 @@ const StudentMain = () => {
             <i
               className={`bi ${
                 showSection === "board"
-                  ? "bi-caret-down-fill"
-                  : "bi-caret-up-fill"
+                  ? "bi-caret-up-fill"
+                  : "bi-caret-down-fill"
               } stu_sidebar_toogle_btn`}
             ></i>
             <li onClick={() => handleSectionClick("freeBoard")}>자유 게시판</li>
@@ -106,8 +106,8 @@ const StudentMain = () => {
             <i
               className={`bi ${
                 showSection === "notice"
-                  ? "bi-caret-down-fill"
-                  : "bi-caret-up-fill"
+                  ? "bi-caret-up-fill"
+                  : "bi-caret-down-fill"
               } stu_sidebar_toogle_btn`}
             ></i>
             <li onClick={() => handleSectionClick("teacherNotice")}>
@@ -127,8 +127,8 @@ const StudentMain = () => {
             <i
               className={`bi ${
                 showSection === "question"
-                  ? "bi-caret-down-fill"
-                  : "bi-caret-up-fill"
+                  ? "bi-caret-up-fill"
+                  : "bi-caret-down-fill"
               } stu_sidebar_toogle_btn`}
             ></i>
             <li onClick={() => handleSectionClick("teacherQuestion")}>
