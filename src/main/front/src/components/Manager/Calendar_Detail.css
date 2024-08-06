@@ -3,14 +3,14 @@
 }
 
 .detail-calendar-detail-sidebar {
-  flex: 1;
+  width: 700px;
 }
 
 .detail-calendar-detail-container {
   width: 400px;
   padding: 20px;
   background-color: #E8E8E9;
-  border:1px solid #757575;
+  border: 1px solid #757575;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -44,14 +44,21 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 10px;
+  padding: 15px;
+  background-color: #EDEDED;
+  border: none;
+  border-radius: 20px;
 }
 
 .detail-event-title-container {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .detail-event-color {
+  flex-shrink: 0;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -61,7 +68,8 @@
 .detail-event-title {
   font-size: 18px;
   font-weight: bold;
-  cursor:pointer;
+  cursor: pointer;
+  flex-grow: 1;
 }
 
 .detail-event-title-input,
@@ -82,17 +90,27 @@
   align-items: center;
   gap: 10px;
 }
+
 .detail-event-actions-edit {
   display: flex;
   align-items: center;
-  justify-content:flex-end;
+  justify-content: flex-end;
   gap: 10px;
 }
-.detail-event-actions-edit button{
+
+.detail-event-actions-edit button {
   background: none;
-  border: none;
+  border-radius:10px;
+  border: 1px solid #000;
+  padding:10px;
   cursor: pointer;
+  gap:20px;
 }
+
+.detail-event-actions-edit button:hover{
+  background: #C7C8CC;
+}
+
 .detail-event-actions button {
   background: none;
   border: none;
@@ -109,9 +127,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 5px 0;
+  margin-top:10px;
+  margin-bottom:10px;
 }
 
 .detail-all-events .detail-event-color {
+  flex-shrink: 0;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -126,4 +147,22 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.detail-event-color-picker {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px; /* 선택기에 약간의 여백을 추가 */
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.color-option.selected {
+  border: 2px solid #000;
 }

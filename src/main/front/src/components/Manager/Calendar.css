@@ -30,6 +30,7 @@
   font-weight: bold;
   margin-bottom: 10px;
   font-size: 20px;
+  margin: 0 20px 0 20px; /*양옆 margin값 설정*/
 }
 
 .days {
