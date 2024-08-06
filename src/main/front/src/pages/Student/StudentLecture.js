@@ -89,7 +89,7 @@ const StudentLecture = () => {
               <span
                 className="go_to_show_more_page"
                 onClick={() =>
-                  navigate(`/students/${mainLectures.title}/Board`)
+                  navigate(`/students/${mainLectures.title}/boardList`)
                 }
               >
                 더보기 ⟩
@@ -101,7 +101,9 @@ const StudentLecture = () => {
                   className="subject_list"
                   key={idx}
                   onClick={() =>
-                    navigate(`/students/subjectBoardDetail/${el.id}`)
+                    navigate(
+                      `/students/${mainLectures.title}/boardDetail/${el.id}`
+                    )
                   }
                 >
                   <div className="subject_title_box">
