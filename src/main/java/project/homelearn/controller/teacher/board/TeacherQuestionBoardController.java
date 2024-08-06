@@ -14,7 +14,6 @@ import project.homelearn.dto.common.board.QuestionBoardDetailDto;
 import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.entity.curriculum.Curriculum;
-import project.homelearn.entity.user.User;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.service.teacher.TeacherQuestionBoardService;
 
@@ -27,15 +26,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherQuestionBoardController {
 
-    private final TeacherQuestionBoardService teacherQuestionBoardService;
     private final CurriculumRepository curriculumRepository;
+    private final TeacherQuestionBoardService teacherQuestionBoardService;
 
-    //게시글 리스트
+    // 게시글 리스트
     @GetMapping
     public ResponseEntity<?> getQuestionBoardList(@RequestParam(required = false) String filterType,
                                                   @RequestParam(required = false) String subjectName,
                                                   Principal principal,
-                                                  @RequestParam(name = "page", defaultValue = "0") int page){
+                                                  @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 15;
 
         String username = principal.getName();
@@ -56,7 +55,7 @@ public class TeacherQuestionBoardController {
         }
     }
 
-    //댓글 작성
+    // 댓글 작성
     @PostMapping("/{questionBoardId}/comments")
     public ResponseEntity<?> writeComment(@PathVariable("questionBoardId") Long questionBoardId, Principal principal,
                                           @Valid @RequestBody CommentWriteDto commentDto) {
@@ -66,7 +65,7 @@ public class TeacherQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //댓글 수정
+    // 댓글 수정
     @PatchMapping("/{questionBoardId}/comments/{commentId}")
     public ResponseEntity<?> modifyComment(Principal principal,
                                            @PathVariable("commentId") Long commentId,
@@ -94,19 +93,19 @@ public class TeacherQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //대댓글 작성
+    // 대댓글 작성
     @PostMapping("/{questionBoardId}/comments/{commentId}")
     public ResponseEntity<?> writeReplyComment(Principal principal,
                                                @PathVariable("commentId") Long commentId,
                                                @Valid @RequestBody CommentWriteDto commentDto,
-                                               @PathVariable("questionBoardId")Long questionBoardId) {
+                                               @PathVariable("questionBoardId") Long questionBoardId) {
         String username = principal.getName();
         teacherQuestionBoardService.writeReplyComment(commentId, username, commentDto);
         teacherQuestionBoardService.incrementCommentCount(questionBoardId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //대댓글 수정
+    // 대댓글 수정
     @PatchMapping("/{questionBoardId}/comments/{commentId}/replies/{replyId}")
     public ResponseEntity<?> modifyReplyComment(Principal principal,
                                                 @PathVariable("commentId") Long replyId,
@@ -119,7 +118,7 @@ public class TeacherQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //대댓글 삭제
+    // 대댓글 삭제
     @DeleteMapping("/{questionBoardId}/comments/{commentId}/replies/{replyId}")
     public ResponseEntity<?> deleteReplyComment(@PathVariable("questionBoardId") Long questionBoardId,
                                                 @PathVariable("replyId") Long replyId,
@@ -161,6 +160,4 @@ public class TeacherQuestionBoardController {
             return new ResponseEntity<>("작성된 댓글이 없습니다.",HttpStatus.NOT_FOUND);
         }
     }
-
-
 }
