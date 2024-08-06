@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Sidebar from '../../components/Manager/Sidebar';
 import Calendar from '../../components/Manager/Calendar';
+import CalendarDetail from '../../components/Manager/Calendar_Detail';
 import CourseProgress from '../../components/Manager/Lecture';
 import SettingList from '../../components/Manager/Survey';
 import MessageBox from '../../components/Manager/MessageBox';
@@ -41,6 +42,7 @@ function ManagerMain() {
             <Route path="notice" element={<Notice />} />
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
+            <Route path="calendar/:eventId" element={<CalendarDetail />} /> {/* Calendar_Detail 경로 추가 */}
           </Routes>
         </div>
       </div>

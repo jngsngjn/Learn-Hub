@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import './Register.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 function Register() {
-  const [name, setName] = useState('안성민');
-  const [phone, setPhone] = useState('010-9722-5739');
-  const [email, setEmail] = useState('smahn4069@gmail.com');
+  const location = useLocation();
+  const nameFromState = location.state?.name || '';
+  const emailFromState = location.state?.email || '';
+  const phoneFromState = location.state?.phone || '';
+  const genderFromState = location.state?.gender || '';
+
+  const [name, setName] = useState(nameFromState);
+  const [email, setEmail] = useState(emailFromState);
+  const [phone, setPhone] = useState(phoneFromState);
+  const [gender, setGender] = useState(genderFromState);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,12 +45,12 @@ function Register() {
   }, [password]);
 
   const validateUsername = (username) => {
-    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z\d]{6,12}$/; /*{영문}{숫자} 6~12자리 */
+    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z\d]{6,12}$/;
     setUsernameValid(usernameRegex.test(username));
   };
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/; /*{대문}{특수문자}{영문} 10~18자리 */
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{10,18}$/;
     setPasswordValid(passwordRegex.test(password));
   };
 
@@ -61,19 +70,29 @@ function Register() {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/register', {
+      const registerData = {
+        username,
+        password,
         name,
         phone,
-        email,
-        username,
-        password
-      });
+        email
+      };
+
+      if (gender) {
+        registerData.gender = gender;
+      }
+
+      console.log("회원가입 데이터:", registerData); // 디버깅용 로그
+
+      const response = await axios.post('http://localhost:8080/register', registerData);
       if (response.status === 200) {
-        console.log('회원가입 성공');
-        navigate('/login');
+        swal("회원가입 성공", "회원가입이 성공적으로 완료되었습니다.", "success").then(() => {
+          navigate('/login');
+        });
       }
     } catch (error) {
       console.error('회원가입 실패:', error);
+      swal("회원가입 실패", "회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.", "error");
     }
   };
 

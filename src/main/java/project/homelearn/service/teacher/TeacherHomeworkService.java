@@ -2,22 +2,27 @@ package project.homelearn.service.teacher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
-import project.homelearn.dto.teacher.homework.HomeworkEnrollDto;
-import project.homelearn.dto.teacher.homework.HomeworkFeedbackDto;
+import project.homelearn.dto.teacher.dashboard.HomeworkStateDto;
+import project.homelearn.dto.teacher.homework.*;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.teacher.Teacher;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.homework.HomeworkRepository;
 import project.homelearn.repository.homework.StudentHomeworkRepository;
+import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.service.common.StorageService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static project.homelearn.config.storage.FolderType.HOMEWORK;
 
@@ -31,8 +36,10 @@ import static project.homelearn.config.storage.FolderType.HOMEWORK;
 public class TeacherHomeworkService {
 
     private final StorageService storageService;
+    private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
     private final HomeworkRepository homeworkRepository;
+    private final CurriculumRepository curriculumRepository;
     private final StudentHomeworkRepository studentHomeworkRepository;
 
     public void enrollHomework(String username, HomeworkEnrollDto homeworkDto) {
@@ -136,5 +143,38 @@ public class TeacherHomeworkService {
 
         studentHomeworkRepository.deleteById(studentHomeworkId);
         return true;
+    }
+
+    public HomeworkStateDto getHomeworkState(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Integer totalCount = studentRepository.findStudentCountByCurriculum(curriculum);
+        return homeworkRepository.findHomeworkStateDto(curriculum, totalCount);
+    }
+
+    public Page<HomeworkTabDto> getHomeworks(String username, int page, int size, String status) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        return homeworkRepository.findHomeworks(curriculum, pageRequest, status);
+    }
+
+    public HomeworkDetailDto getHomeworkDetail(String username, Long homeworkId) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+
+        Integer totalCount = studentRepository.findStudentCountByCurriculum(curriculum);
+        Long completedCount = homeworkRepository.findCompletedCount(homeworkId);
+        long unsubmittedCount = totalCount - completedCount;
+
+        return homeworkRepository.findHomeworkDetail(homeworkId, unsubmittedCount, curriculum);
+    }
+
+    public List<HomeworkSubmitListDto> getHomeworkSubmitList(String username, Long homeworkId) {
+        Homework homework = homeworkRepository.findById(homeworkId).orElseThrow();
+        Curriculum curriculum = homework.getCurriculum();
+        String teacher = teacherRepository.findUsernameByCurriculum(curriculum);
+        if (!username.equals(teacher)) {
+            return null;
+        }
+        return homeworkRepository.findHomeworkSubmitList(homeworkId);
     }
 }

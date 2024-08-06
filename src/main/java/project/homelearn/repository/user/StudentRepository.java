@@ -47,11 +47,17 @@ public interface StudentRepository extends JpaRepository<Student, Long>, Student
     @Query("SELECT s FROM Student s WHERE s.id NOT IN (SELECT lh.user.id FROM LoginHistory lh)")
     List<Student> findAbsentStudents();
 
-
-    //학생이 속해있는 커리큘럼의 총 교육과정 일수
+    // 학생이 속해있는 커리큘럼의 총 교육과정 일수
     @Query("SELECT c FROM Student s JOIN s.curriculum c WHERE s.id = :studentId")
     Curriculum findCurriculumByStudentId(@Param("studentId") Long studentId);
 
+    // 커리큘럼 넣으면 커리큘럼의 총 학생 수 반환
     @Query("select count(s) from Student s where s.curriculum =:curriculum")
     Integer findStudentCountByCurriculum(@Param("curriculum") Curriculum curriculum);
+
+    @Query("select s.name from Student s where s.id =:studentId")
+    String findStudentName(@Param("studentId") Long studentId);
+
+    @Query("select s.id from Student s where s.curriculum =:curriculum")
+    List<Long> findAllStudentIds(@Param("curriculum") Curriculum curriculum);
 }

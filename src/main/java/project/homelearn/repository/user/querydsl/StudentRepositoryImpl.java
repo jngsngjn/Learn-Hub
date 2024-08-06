@@ -29,4 +29,18 @@ public class StudentRepositoryImpl implements StudentRepositoryCustom {
                 .join(student.attendances, attendance)
                 .fetchOne();
     }
+
+    @Override
+    public Long findAttendanceCountByDate(Curriculum curriculum, LocalDate date) {
+        return queryFactory
+                .select(student.count())
+                .from(student)
+                .where(
+                        student.curriculum.eq(curriculum),
+                        attendance.type.in(ATTENDANCE, LATE),
+                        attendance.date.eq(date)
+                )
+                .join(student.attendances, attendance)
+                .fetchOne();
+    }
 }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.dashboard.CurriculumDto;
-import project.homelearn.dto.manager.dashboard.ScheduleDto;
+import project.homelearn.dto.manager.dashboard.ManagerScheduleDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
 import project.homelearn.entity.curriculum.CurriculumType;
@@ -31,11 +31,7 @@ public class ManagerCurriculumController {
     private final ManagerCalendarService calendarService;
     private final ManagerCurriculumService curriculumService;
 
-    @GetMapping
-    public String manager() {
-        return "Hello, manager!";
-    }
-
+    // 학생 또는 강사 등록 전 사용
     @GetMapping("/enroll-ready")
     public List<CurriculumTypeAndTh> readyEnroll() {
         return curriculumService.getCurriculumTypeAndTh();
@@ -147,7 +143,7 @@ public class ManagerCurriculumController {
 
     @GetMapping("/curriculum/{curriculumId}/calendar")
     public ResponseEntity<?> viewCurriculumCalendar(@PathVariable("curriculumId") Long curriculumId) {
-        List<ScheduleDto> result = calendarService.getCurriculumSchedules(curriculumId);
+        List<ManagerScheduleDto> result = calendarService.getCurriculumSchedules(curriculumId);
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -30,6 +30,7 @@ public class ManagerStudentController {
     private final ManagerStudentService studentService;
     private final AttendanceService attendanceService;
 
+    // 학생 리스트 조회
     @GetMapping("/manage-students")
     public ResponseEntity<?> studentList(@RequestParam(name = "page", defaultValue = "0") int page,
                                          @RequestParam(name = "curriculumName", required = false) String curriculumName,
@@ -71,12 +72,8 @@ public class ManagerStudentController {
      */
     @PostMapping("/manage-students/enroll-file")
     public ResponseEntity<?> enrollStudentByFile(MultipartFile file) {
-        boolean result = excelService.importStudentFile(file);
-        if (result) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        excelService.importStudentFile(file);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -128,7 +125,7 @@ public class ManagerStudentController {
      * 2. 학생 정보 ✅
      * 3. 출결 현황 ✅
      */
-    @GetMapping("/student/curriculum/{studentId}")
+    @GetMapping("/students/curriculum/{studentId}")
     public ResponseEntity<?> viewStudentCurriculum(@PathVariable("studentId") Long studentId) {
         CurriculumProgressDto result = studentService.getStudentCurriculum(studentId);
         if (result == null) {
@@ -137,7 +134,7 @@ public class ManagerStudentController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/student/basic/{studentId}")
+    @GetMapping("/students/basic/{studentId}")
     public ResponseEntity<?> viewStudentBasic(@PathVariable("studentId") Long studentId) {
         SpecificStudentDto result = studentService.getStudentBasic(studentId);
         if (result == null) {
@@ -146,7 +143,7 @@ public class ManagerStudentController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/student/attendance/{studentId}")
+    @GetMapping("/students/attendance/{studentId}")
     public ResponseEntity<?> viewStudentAttendance(@PathVariable("studentId") Long studentId) {
         StudentAttendanceDto result = attendanceService.getStudentAttendance(studentId);
         if (result == null) {

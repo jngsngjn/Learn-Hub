@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/students/dash-boards")
 @RequiredArgsConstructor
 public class StudentDashBoardController {
 

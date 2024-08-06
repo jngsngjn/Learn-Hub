@@ -1,70 +1,140 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Modal from './Modal';
 import './Teacher_Management.css';
+import swal from 'sweetalert';
 
-const initialTeachers = [
-  { id: 1, name: '서준명', curriculum: '네이버 데브옵스', th: '10기', email: '123@gmail.com', phone: '010-1234-1234' },
-  { id: 2, name: '김승민', curriculum: '네이버 데브옵스', th: '10기', email: '123@naver.com', phone: '010-1234-1234' },
-];
+axios.defaults.baseURL = 'http://localhost:8080';
 
 const TeacherManagement = () => {
-  const [teachers, setTeachers] = useState(initialTeachers);
+  const [teachers, setTeachers] = useState([]);
+  const [curriculums, setCurriculums] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [mainSelectedCourse, setMainSelectedCourse] = useState('');
-  const [mainSelectedGeneration, setMainSelectedGeneration] = useState('1기');
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [addSelectedCourse, setAddSelectedCourse] = useState('');
-  const [infoSelectedCourse, setInfoSelectedCourse] = useState('');
-  const [addSelectedGeneration, setAddSelectedGeneration] = useState('1기');
-  const [infoSelectedGeneration, setInfoSelectedGeneration] = useState('1기');
+  const [selectedCourse, setSelectedCourse] = useState('전체');
+  const [selectedGeneration, setSelectedGeneration] = useState('전체');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [newTeacher, setNewTeacher] = useState({
     name: '',
     email: '',
     phone: '',
+    curriculum: '',
+    generation: '',
+    curriculumFullName: '',
   });
   const [selectedTeachers, setSelectedTeachers] = useState([]);
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const getToken = () => localStorage.getItem('access-token');
 
-  const handleSearch = (event) => setSearchTerm(event.target.value);
-  const handleMainCourseChange = (course) => setMainSelectedCourse(course);
-  const handleMainGenerationChange = (event) => setMainSelectedGeneration(event.target.value);
-  const handleAddCourseChange = (course) => setAddSelectedCourse(course);
-  const handleInfoCourseChange = (course) => setInfoSelectedCourse(course);
-  const handleAddGenerationChange = (event) => setAddSelectedGeneration(event.target.value);
-  const handleInfoGenerationChange = (event) => setInfoSelectedGeneration(event.target.value);
-  const handleRefresh = () => {
-    setSearchTerm('');
-    setMainSelectedCourse('');
-  };
+  // 강사와 커리큘럼 데이터를 가져옴
+  useEffect(() => {
+    fetchTeachers();
+    fetchCurriculums();
+  }, []);
 
-  // 강사 추가
-  const handleAddTeacher = () => {
-    setTeachers([...teachers, { ...newTeacher, id: teachers.length + 1, curriculum: addSelectedCourse, th: addSelectedGeneration }]);
-    setNewTeacher({ name: '', email: '', phone: '' });
-    setIsAddModalOpen(false);
-  };
-
-  // 입력 변경
-  const handleInputChange = (e) => setNewTeacher({ ...newTeacher, [e.target.name]: e.target.value });
-
-  // 강사 삭제
-  const handleDeleteTeachers = () => {
-    setTeachers(teachers.filter(teacher => !selectedTeachers.includes(teacher.id)));
-    setSelectedTeacher(null);
-    setIsInfoModalOpen(false);
-  };
-
-  // 선택된 강사 삭제
-  const handleDeleteSelectedTeacher = () => {
-    if (selectedTeacher) {
-      setTeachers(teachers.filter(teacher => teacher.id !== selectedTeacher.id));
-      setSelectedTeacher(null);
-      setIsInfoModalOpen(false);
+  // 강사 목록 서버에서 가져오기
+  const fetchTeachers = async () => {
+    try {
+      const token = getToken();
+      const response = await axios.get('/managers/manage-teachers', {
+        headers: { access: token },
+      });
+      const teachersData = response.data && response.data.content ? response.data.content : [];
+      setTeachers(teachersData);
+    } catch (error) {
+      console.error('응답 에러:', error);
+      setTeachers([]);
     }
   };
 
-  // 체크박스 변경
+  // 커리큘럼 목록
+  const fetchCurriculums = async () => {
+    try {
+      const token = getToken();
+      const response = await axios.get('/managers/enroll-ready', {
+        headers: { access: token },
+      });
+      setCurriculums(response.data || []);
+    } catch (error) {
+      console.error('기수 가져오기 에러:', error);
+      setCurriculums([]);
+    }
+  };
+
+  // 검색어
+  const handleSearch = (event) => setSearchTerm(event.target.value);
+
+  // 선택된 커리큘럼
+  const handleCourseChange = (course) => {
+    const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS 데브옵스 과정';
+    setSelectedCourse(fullCourseName);
+    setSelectedGeneration('전체');
+    setNewTeacher({ ...newTeacher, curriculum: fullCourseName });
+  };
+
+  // 선택된 기수
+  const handleGenerationChange = (event) => setSelectedGeneration(event.target.value);
+
+  // 검색어와 선택된 강의
+  const handleRefresh = () => {
+    setSearchTerm('');
+    setSelectedCourse('전체');
+    setSelectedGeneration('전체');
+  };
+
+  // 필터링된 강사
+  const filteredTeachers = (Array.isArray(teachers) ? teachers : []).filter(teacher =>
+    (teacher.name?.includes(searchTerm) || teacher.email?.includes(searchTerm)) &&
+    (selectedCourse === '전체' || teacher.curriculumName === selectedCourse) &&
+    (selectedGeneration === '전체' || teacher.curriculumTh === parseInt(selectedGeneration))
+  );
+
+  // 새로운 강사 등록
+  const handleAddTeacher = async () => {
+    try {
+      const token = getToken();
+      const teacherData = {
+        name: newTeacher.name,
+        email: newTeacher.email,
+        phone: newTeacher.phone,
+        curriculumFullName: `${newTeacher.curriculum} ${newTeacher.generation}기`
+      };
+
+      console.log("강사 등록 데이터:", teacherData); // 디버깅용 로그
+
+      const response = await axios.post('/managers/manage-teachers/enroll', teacherData, {
+        headers: { access: token },
+      });
+      if (response.status === 200) {
+        setIsModalOpen(false);
+        fetchTeachers();
+      } else {
+        console.error('강사 등록 실패');
+      }
+    } catch (error) {
+      console.error('등록 에러:', error);
+    }
+  };
+
+  // 입력 필드 값
+  const handleInputChange = (e) => setNewTeacher({ ...newTeacher, [e.target.name]: e.target.value });
+
+  // 선택된 강사 삭제
+  const handleDeleteTeachers = async () => {
+    try {
+      const token = getToken();
+      const deletePromises = selectedTeachers.map(teacherId =>
+        axios.delete(`/managers/manage-teachers/${teacherId}`, {
+          headers: { access: token },
+        })
+      );
+      await Promise.all(deletePromises);
+      fetchTeachers();
+      setSelectedTeachers([]);
+    } catch (error) {
+      console.error('삭제 에러:', error);
+    }
+  };
+
+  // 체크박스 상태
   const handleCheckboxChange = (teacherId) => setSelectedTeachers(
     selectedTeachers.includes(teacherId)
       ? selectedTeachers.filter(id => id !== teacherId)
@@ -72,47 +142,24 @@ const TeacherManagement = () => {
   );
 
   // 행 클릭
-  const handleRowClick = (teacher) => {
-    setSelectedTeacher(teacher);
-    setInfoSelectedCourse(teacher.curriculum);
-    setInfoSelectedGeneration(teacher.th);
-    setIsInfoModalOpen(true);
-  };
+  const handleRowClick = (teacherId) => handleCheckboxChange(teacherId);
 
-  // 강사 정보 수정
-  const handleTeacherUpdate = () => {
-    const updatedTeachers = teachers.map(teacher =>
-      teacher.id === selectedTeacher.id ? { ...selectedTeacher, curriculum: infoSelectedCourse, th: infoSelectedGeneration } : teacher
-    );
-    setTeachers(updatedTeachers);
-    setIsInfoModalOpen(false);
-  };
-
-  const handleTeacherChange = (e) => setSelectedTeacher({ ...selectedTeacher, [e.target.name]: e.target.value, });
-
-  // 검색 필터 (이름 이메일)
-  const filteredTeachers = teachers.filter(teacher =>
-    (teacher.name.includes(searchTerm) || teacher.email.includes(searchTerm)) &&
-    (mainSelectedCourse === '' || teacher.curriculum === mainSelectedCourse)
-  );
+  // 선택된 기수를 필터링
+  const filteredGenerations = curriculums.find(curriculum => curriculum.type === (selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'NCP' : 'AWS'))?.th || [];
 
   return (
     <div className="teacher-management">
       <h1>강사 관리</h1>
       <div className="teacher-controls">
         <div className="teacher-program-buttons">
-          <button
-            className={mainSelectedCourse === '네이버 데브옵스' ? 'selected' : ''}
-            onClick={() => handleMainCourseChange('네이버 데브옵스')}
-          >
-            네이버 데브옵스
-          </button>
-          <button
-            className={mainSelectedCourse === 'AWS' ? 'selected' : ''}
-            onClick={() => handleMainCourseChange('AWS')}
-          >
-            AWS
-          </button>
+          <button className={selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('NCP')}>NCP</button>
+          <button className={selectedCourse === 'AWS 데브옵스 과정' ? 'selected' : ''} onClick={() => handleCourseChange('AWS')}>AWS</button>
+          <select value={selectedGeneration} onChange={handleGenerationChange}>
+            <option value="전체">전체</option>
+            {filteredGenerations.map(th => (
+              <option key={`${th}`} value={th}>{`${th}기`}</option>
+            ))}
+          </select>
         </div>
         <div className="teacher-search-container">
           <div className="teacher-search-wrapper">
@@ -139,14 +186,14 @@ const TeacherManagement = () => {
           </thead>
           <tbody>
             {filteredTeachers.map((teacher, index) => (
-              <tr key={index} onClick={() => handleRowClick(teacher)} className={selectedTeachers.includes(teacher.id) ? 'selected' : ''}>
+              <tr key={index} onClick={() => handleRowClick(teacher.teacherId)} className={selectedTeachers.includes(teacher.teacherId) ? 'selected' : ''}>
                 <td>
-                  <input type="checkbox" checked={selectedTeachers.includes(teacher.id)} onChange={() => handleCheckboxChange(teacher.id)} onClick={(e) => e.stopPropagation()} />
+                  <input type="checkbox" checked={selectedTeachers.includes(teacher.teacherId)} onChange={() => handleCheckboxChange(teacher.teacherId)} onClick={(e) => e.stopPropagation()} />
                 </td>
-                <td>{teacher.id}</td>
+                <td>{teacher.teacherId}</td>
                 <td>{teacher.name}</td>
-                <td>{teacher.curriculum}</td>
-                <td>{teacher.th}</td>
+                <td>{teacher.curriculumName}</td>
+                <td>{teacher.curriculumTh}</td>
                 <td>{teacher.email}</td>
                 <td>{teacher.phone}</td>
               </tr>
@@ -156,23 +203,22 @@ const TeacherManagement = () => {
       </div>
 
       <div className="teacher-actions">
-        <button onClick={() => setIsAddModalOpen(true)}>강사 등록</button>
+        <button onClick={() => setIsModalOpen(true)}>강사 등록</button>
         <button onClick={handleDeleteTeachers}>강사 삭제</button>
       </div>
 
-      {/* 강사 등록 모달 */}
-      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
-        <span className="teacher-add-title">강사 등록</span>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <span className="add_title">강사 등록</span>
         <div className="teacher-form-container">
           <div className="teacher-course-selection">
-            <button className={`teacher-course-button ${addSelectedCourse === '네이버 데브옵스' ? 'selected' : ''}`} onClick={() => handleAddCourseChange('네이버 데브옵스')}>네이버 데브옵스</button>
-            <button className={`teacher-course-button ${addSelectedCourse === 'AWS' ? 'selected' : ''}`} onClick={() => handleAddCourseChange('AWS')}>AWS</button>
+            <button className={`teacher-course-button ${newTeacher.curriculum === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewTeacher({ ...newTeacher, curriculum: '네이버 클라우드 데브옵스 과정' })}>NCP</button>
+            <button className={`teacher-course-button ${newTeacher.curriculum === 'AWS 데브옵스 과정' ? 'selected' : ''}`} onClick={() => setNewTeacher({ ...newTeacher, curriculum: 'AWS 데브옵스 과정' })}>AWS</button>
           </div>
           <div className="teacher-generation-selection">
-            <select name="th" value={addSelectedGeneration} onChange={handleAddGenerationChange}>
-              <option value="1기">1기</option>
-              <option value="2기">2기</option>
-              <option value="3기">3기</option>
+            <select name="generation" value={newTeacher.generation} onChange={handleInputChange}>
+              {(newTeacher.curriculum === '네이버 클라우드 데브옵스 과정' ? curriculums.find(curriculum => curriculum.type === 'NCP')?.th : curriculums.find(curriculum => curriculum.type === 'AWS')?.th || []).map(th => (
+                <option key={`${th}`} value={th}>{`${th}기`}</option>
+              ))}
             </select>
           </div>
           <div className="teacher-input-group">
@@ -189,41 +235,7 @@ const TeacherManagement = () => {
           </div>
           <div className="teacher-modal-actions">
             <button className="add-teacher-modal-button" onClick={handleAddTeacher}>강사 등록</button>
-            <button className="add-teacher-modal-button" onClick={() => setIsAddModalOpen(false)}>등록 취소</button>
-          </div>
-        </div>
-      </Modal>
-
-      {/* 강사 정보 모달 */}
-      <Modal isOpen={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)}>
-        <span className="teacher-add-title">강사 정보</span>
-        <div className="teacher-form-container">
-          <div className="teacher-course-selection">
-            <button className={`teacher-course-button ${infoSelectedCourse === '네이버 데브옵스' ? 'selected' : ''}`} onClick={() => handleInfoCourseChange('네이버 데브옵스')}>네이버 데브옵스</button>
-            <button className={`teacher-course-button ${infoSelectedCourse === 'AWS' ? 'selected' : ''}`} onClick={() => handleInfoCourseChange('AWS')}>AWS</button>
-          </div>
-          <div className="teacher-generation-selection">
-            <select name="th" value={infoSelectedGeneration} onChange={handleInfoGenerationChange}>
-              <option value="1기">1기</option>
-              <option value="2기">2기</option>
-              <option value="3기">3기</option>
-            </select>
-          </div>
-          <div className="teacher-input-group">
-            <label>이름</label>
-            <input type="text" name="name" value={selectedTeacher?.name || ''} onChange={handleTeacherChange} />
-          </div>
-          <div className="teacher-input-group">
-            <label>이메일</label>
-            <input type="email" name="email" value={selectedTeacher?.email || ''} onChange={handleTeacherChange} />
-          </div>
-          <div className="teacher-input-group">
-            <label>전화번호</label>
-            <input type="text" name="phone" value={selectedTeacher?.phone || ''} onChange={handleTeacherChange} />
-          </div>
-          <div className="teacher-modal-actions">
-            <button className="add-teacher-modal-button" onClick={handleTeacherUpdate}>강사 정보 수정</button>
-            <button className="add-teacher-modal-button" onClick={handleDeleteSelectedTeacher}>강사 정보 삭제</button>
+            <button className="add-teacher-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
           </div>
         </div>
       </Modal>
