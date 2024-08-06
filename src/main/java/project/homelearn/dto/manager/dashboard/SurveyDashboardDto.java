@@ -6,7 +6,7 @@ import lombok.Data;
 
 // 최근 설문 2개 조회 (매니저 대시보드)
 @Data
-public class SurveyDto {
+public class SurveyDashboardDto {
 
     @NotNull
     private Long id;

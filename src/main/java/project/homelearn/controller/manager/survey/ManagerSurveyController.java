@@ -1,4 +1,4 @@
-package project.homelearn.controller.manager.curriculum;
+package project.homelearn.controller.manager.survey;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
