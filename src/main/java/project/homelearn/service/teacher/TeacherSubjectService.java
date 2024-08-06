@@ -160,4 +160,8 @@ public class TeacherSubjectService {
         String teacherName = teacherRepository.findTeacherNameBySubjectId(subjectId);
         return lectureRepository.findSubjectBoardPage(subjectId, pageRequest, teacherName);
     }
+
+    public SubjectBoardViewDto getSubjectBoard(Long boardId) {
+        return subjectBoardRepository.findSubjectBoard(boardId);
+    }
 }

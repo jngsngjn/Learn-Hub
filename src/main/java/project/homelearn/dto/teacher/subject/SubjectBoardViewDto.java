@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @Data
 public class SubjectBoardViewDto {
 
+    @NotNull
+    private Long boardId;
+
     @NotBlank
     private String title;
 
@@ -31,7 +34,8 @@ public class SubjectBoardViewDto {
     private LocalDateTime writeDate;
 
     @QueryProjection
-    public SubjectBoardViewDto(String title, String content, int viewCount, String filePath, String fileName, LocalDateTime writeDate) {
+    public SubjectBoardViewDto(Long boardId, String title, String content, int viewCount, String filePath, String fileName, LocalDateTime writeDate) {
+        this.boardId = boardId;
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;

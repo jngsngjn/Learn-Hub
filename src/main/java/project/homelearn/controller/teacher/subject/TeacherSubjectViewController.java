@@ -8,6 +8,7 @@ import project.homelearn.dto.teacher.lecture.LectureListDto;
 import project.homelearn.dto.teacher.subject.SubjectBasicDto;
 import project.homelearn.dto.teacher.subject.SubjectBoardListDto;
 import project.homelearn.dto.teacher.subject.SubjectBoardTop5Dto;
+import project.homelearn.dto.teacher.subject.SubjectBoardViewDto;
 import project.homelearn.service.teacher.TeacherSubjectService;
 
 import java.util.List;
@@ -64,14 +65,17 @@ public class TeacherSubjectViewController {
 
     /**
      * 과목 게시판 특정 글 페이지
-     * 1. 제목, 조회수, 내용, 파일
+     * 1. 특정 글 상세 내용 - ✅
      * 2. 게시글 페이징 (size = 5) - ✅
      */
-//    @GetMapping("/boards-view")
+    @GetMapping("/boards/{boardId}")
+    public SubjectBoardViewDto viewSubjectBoard(@PathVariable("boardId") Long boardId) {
+        return subjectService.getSubjectBoard(boardId);
+    }
 
     @GetMapping("/boards-view-list")
     public Page<SubjectBoardListDto> viewSubjectBoard(@PathVariable("subjectId") Long subjectId,
-                                                          @RequestParam(name = "page", defaultValue = "0") int page) {
+                                                      @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 5;
         return subjectService.getSubjectBoardPage(subjectId, page, size);
     }

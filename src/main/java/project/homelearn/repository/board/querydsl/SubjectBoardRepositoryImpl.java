@@ -3,7 +3,9 @@ package project.homelearn.repository.board.querydsl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import project.homelearn.dto.teacher.subject.QSubjectBoardTop5Dto;
+import project.homelearn.dto.teacher.subject.QSubjectBoardViewDto;
 import project.homelearn.dto.teacher.subject.SubjectBoardTop5Dto;
+import project.homelearn.dto.teacher.subject.SubjectBoardViewDto;
 
 import java.util.List;
 
@@ -23,5 +25,21 @@ public class SubjectBoardRepositoryImpl implements SubjectBoardRepositoryCustom 
                 .orderBy(subjectBoard.createdDate.desc())
                 .limit(5)
                 .fetch();
+    }
+
+    @Override
+    public SubjectBoardViewDto findSubjectBoard(Long boardId) {
+        return queryFactory
+                .select(new QSubjectBoardViewDto(
+                        subjectBoard.id,
+                        subjectBoard.title,
+                        subjectBoard.content,
+                        subjectBoard.viewCount,
+                        subjectBoard.filePath,
+                        subjectBoard.uploadFileName,
+                        subjectBoard.createdDate))
+                .from(subjectBoard)
+                .where(subjectBoard.id.eq(boardId))
+                .fetchOne();
     }
 }
