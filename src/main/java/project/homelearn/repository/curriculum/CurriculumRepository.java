@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumBasicDto;
+import project.homelearn.dto.manager.survey.CurriculumSimpleDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.repository.curriculum.querydsl.CurriculumRepositoryCustom;

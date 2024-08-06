@@ -25,7 +25,6 @@ import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.UserRepository;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -207,7 +206,7 @@ public class TeacherQuestionBoardService {
 
     // 댓글 뽑아오기
     public List<QuestionBoardCommentDto> getQuestionBoardComment(Long questionBoardId){
-        List<QuestionBoardComment> comments = commentRepository.findbyQuestionBoardIdAndParentCommentIsNull(questionBoardId);
+        List<QuestionBoardComment> comments = commentRepository.findByQuestionBoardIdAndParentCommentIsNull(questionBoardId);
 
         return comments.stream()
                 .map(this::convertToCommentDto)
