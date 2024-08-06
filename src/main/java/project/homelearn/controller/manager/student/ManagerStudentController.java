@@ -71,12 +71,8 @@ public class ManagerStudentController {
      */
     @PostMapping("/manage-students/enroll-file")
     public ResponseEntity<?> enrollStudentByFile(MultipartFile file) {
-        boolean result = excelService.importStudentFile(file);
-        if (result) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        excelService.importStudentFile(file);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**

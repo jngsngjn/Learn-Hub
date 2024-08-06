@@ -298,7 +298,7 @@ const StudentMain = () => {
       </div>
       {isModalOpen && (
         <div className="modal show">
-          <div className="modal-content" style={{ width: "1100px" }}>
+          <div className="modal-content-student" style={{ width: "1100px" }}>
             <span className="close" onClick={closeModal}>
               &times;
             </span>

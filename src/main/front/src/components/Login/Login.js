@@ -35,7 +35,6 @@ function Login() {
           const token = response.headers['access'];
           console.log('토큰:', token);
           localStorage.setItem('access-token', token); // 토큰을 로컬 스토리지에 저장
-          swal("로그인 성공", "성공적으로 로그인되었습니다.", "success");
 
           const userType = response.data.userType; // 서버 응답에서 사용자 유형을 받아옴
           console.log('사용자:', username);
