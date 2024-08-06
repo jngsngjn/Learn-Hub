@@ -3,11 +3,16 @@ package project.homelearn.service.teacher;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import project.homelearn.dto.chatgpt.ChatGPTResponseDto;
+import project.homelearn.dto.common.board.QuestionBoardCommentDto;
+import project.homelearn.dto.common.board.QuestionBoardDetailDto;
+import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.teacher.AiCommentWriteDto;
 import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
@@ -20,8 +25,10 @@ import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.UserRepository;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -172,16 +179,103 @@ public class TeacherQuestionBoardService {
 
     // 답변없는 게시글 불러오기
     public List<QuestionBoard> findUnansweredQuestionsWithin12Hours() {
-        LocalDateTime twelveHoursAgo = LocalDateTime.now().minusHours(12); // 안 쓰나요?
-        LocalDateTime testTime = LocalDateTime.now();
-        return questionBoardRepository.findByCreatedDateBeforeAndCommentsIsNull(testTime);
+        LocalDateTime twelveHoursAgo = LocalDateTime.now().minusHours(12);
+        return questionBoardRepository.findByCreatedDateBeforeAndCommentsIsNull(twelveHoursAgo);
     }
 
     // 조회수 증가
+    // 댓글 수 증가
+    public void incrementViewCount(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        questionBoard.setCommentCount(questionBoard.getViewCount() + 1);
+    }
 
     // 글 상세보기
+    public QuestionBoardDetailDto getQuestionBoard(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
 
-    // 게시글 리스트
+        return new QuestionBoardDetailDto(
+                questionBoard.getId(),
+                questionBoard.getTitle(),
+                questionBoard.getContent(),
+                questionBoard.getViewCount(),
+                questionBoard.getQuestionScraps().size(),
+                questionBoard.getUser().getName(),
+                questionBoard.getCreatedDate(),
+                questionBoard.getCommentCount()
+        );
+    }
+
+    // 댓글 뽑아오기
+    public List<QuestionBoardCommentDto> getQuestionBoardComment(Long questionBoardId){
+        List<QuestionBoardComment> comments = commentRepository.findbyQuestionBoardIdAndParentCommentIsNull(questionBoardId);
+
+        return comments.stream()
+                .map(this::convertToCommentDto)
+                .collect(Collectors.toList());
+    }
+
+    // 댓글 Dto 변환
+    public QuestionBoardCommentDto convertToCommentDto(QuestionBoardComment comment){
+        return new QuestionBoardCommentDto(
+                comment.getId(),
+                comment.getUser().getName(),
+                comment.getUser().getImageName(),
+                comment.getContent(),
+                comment.getCreatedDate(),
+                comment.getReplies().stream()
+                        .map(this::convertToCommentDto)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    //게시글 리스트
+    public Page<QuestionBoardDto> getQuestionBoardList(String filterType, String subjectName, Curriculum curriculum, Pageable pageable) {
+        if (filterType == null) {
+            filterType = "default";
+        }
+
+        Page<QuestionBoard> questionBoards;
+
+        // 필터링 타입에 따라 다른 쿼리 메소드 호출
+        switch (filterType) {
+            case "subject":
+                questionBoards = questionBoardRepository.findBySubjectNameAndCurriculum(subjectName, curriculum, pageable);
+                break;
+
+            case "unanswered":
+                questionBoards = questionBoardRepository.findByCommentsIsNullAndCurriculum(curriculum, pageable);
+                break;
+
+            case "subjectUnanswered":
+                questionBoards = questionBoardRepository.findBySubjectNameAndCommentsIsNullAndCurriculum(subjectName, curriculum, pageable);
+                break;
+
+            default:
+                questionBoards = questionBoardRepository.findByCreatedDateDesc(curriculum, pageable);
+                break;
+        }
+
+        // Entity -> DTO 변환
+        return questionBoards.map(this::convertToListDto);
+    }
+
+    private QuestionBoardDto convertToListDto(QuestionBoard questionBoard) {
+
+        //선생님이 글을 달았는지 안달았는지 여부를 추가해야함
+        boolean isCommentHere = questionBoardRepository.hasTeacherComment(questionBoard);
+
+        return new QuestionBoardDto(
+                questionBoard.getId(),
+                questionBoard.getSubject().getName(),
+                questionBoard.getTitle(),
+                questionBoard.getUser().getName(),
+                questionBoard.getContent(),
+                questionBoard.getCreatedDate(),
+                questionBoard.getCommentCount(),
+                isCommentHere
+        );
+    }
 
     // 최근 질문 5개
     public List<QuestionTop5Dto> getQuestionTop5(String username) {

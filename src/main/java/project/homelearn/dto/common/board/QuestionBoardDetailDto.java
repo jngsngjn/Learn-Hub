@@ -1,4 +1,4 @@
-package project.homelearn.dto.teacher;
+package project.homelearn.dto.common.board;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class QuestionBoardListDto {
+public class QuestionBoardDetailDto {
 
     @NotNull
     private Long questionBoardId;
@@ -17,11 +17,21 @@ public class QuestionBoardListDto {
     @NotBlank
     private String title;
 
-    private String subjectName;
-
-    @NotNull
-    private LocalDateTime createDate;
-
     @NotBlank
     private String content;
+
+    @NotNull
+    private int viewCount;
+
+    @NotNull
+    private int scrapCount;
+
+    @NotBlank
+    private String author;
+
+    @NotNull
+    private LocalDateTime createTime;
+
+    @NotNull
+    private int commentCount;
 }
