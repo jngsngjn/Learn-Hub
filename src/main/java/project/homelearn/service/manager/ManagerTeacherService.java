@@ -41,7 +41,7 @@ public class ManagerTeacherService {
      * 강사조회
      * Author : 김승민
      * */
-    //필터링 x : 전체 강사 조회
+    // 필터링 x : 전체 강사 조회
     public Page<ManagerTeacherDto> getTeachers(int size, int page) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Teacher> teacherPage = teacherRepository.findAllByOrderByCreatedDateDesc(pageable);
@@ -51,7 +51,7 @@ public class ManagerTeacherService {
         return new PageImpl<>(teacherDto, pageable, teacherPage.getTotalElements());
     }
 
-    //필터링 o : 교육과정명 기준 강사 조회
+    // 필터링 o : 교육과정명 기준 강사 조회
     public Page<ManagerTeacherDto> getTeachersWithCurriculumName(int size, int page, String curriculumName) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Teacher> teacherPage = teacherRepository.findByCurriculumName(pageable, curriculumName);
@@ -61,7 +61,7 @@ public class ManagerTeacherService {
         return new PageImpl<>(teacherDto, pageable, teacherPage.getTotalElements());
     }
 
-    //배정안되어 있는 강사들만 조회
+    // 배정안되어 있는 강사들만 조회
     public Page<ManagerTeacherDto> getTeachersCurriculumIsNull(int size, int page) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Teacher> teacherPage = teacherRepository.findByCurriculumIdIsNull(pageable);
@@ -71,7 +71,7 @@ public class ManagerTeacherService {
         return new PageImpl<>(teacherDto, pageable, teacherPage.getTotalElements());
     }
 
-    //학생 DTO 매핑 메소드
+    // 학생 DTO 매핑 메소드
     private static List<ManagerTeacherDto> getManagerTeacherDto(Page<Teacher> teacherPage) {
         // 학생 정보를 DTO로 변환
         return teacherPage.stream()

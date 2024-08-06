@@ -1,3 +1,4 @@
+/* Curriculum_Management.css */
 .curriculum-submit {
   display: flex;
   justify-content: center;
@@ -46,11 +47,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-}
-
-.curriculum-logo {
-  width: 100px;
-  margin-bottom: 20px;
 }
 
 .curriculum-card {
@@ -115,6 +111,7 @@
   margin-right: 5px;
 }
 
+/* Modal.css */
 .close-button {
   background: none;
   border: none;

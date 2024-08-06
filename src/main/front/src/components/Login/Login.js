@@ -32,12 +32,22 @@ function Login() {
         console.log('로그인 응답:', response);
 
         if (response.status === 200) {
-            const token = response.headers['access'];
-            console.log(token);
-            localStorage.setItem('access-token', token); // 토큰을 로컬 스토리지에 저장
-            swal("로그인 성공", "성공적으로 로그인되었습니다.", "success");
-            navigate('/managers'); // 로그인 후 메인 페이지로 이동
-         } else {
+          const token = response.headers['access'];
+          console.log('토큰:', token);
+          localStorage.setItem('access-token', token); // 토큰을 로컬 스토리지에 저장
+          swal("로그인 성공", "성공적으로 로그인되었습니다.", "success");
+
+          const userType = response.data.userType; // 서버 응답에서 사용자 유형을 받아옴
+          console.log('사용자:', username);
+
+          if (username === 'manager') {
+            navigate('/managers'); // 매니저 페이지로 이동
+          } else if (username === 'teacher') {
+            navigate('/teachers'); // 강사 페이지로 이동
+          } else {
+            navigate('/main'); // 그 외 학생 페이지 이동
+          }
+        } else {
           swal("로그인 실패", "아이디 또는 비밀번호가 잘못되었습니다.", "error");
         }
       } catch (error) {
