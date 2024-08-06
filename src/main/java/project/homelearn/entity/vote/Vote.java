@@ -3,6 +3,7 @@ package project.homelearn.entity.vote;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import project.homelearn.entity.BaseEntity;
 import project.homelearn.entity.curriculum.Curriculum;
 
@@ -31,11 +32,12 @@ public class Vote extends BaseEntity {
     private String description;
 
     @Column(name = "is_anonymous", nullable = false)
-    private boolean isAnonymous;
+    private Boolean isAnonymous;
 
     @Column(name = "is_multiple_choice", nullable = false)
-    private boolean isMultipleChoice;
+    private Boolean isMultipleChoice;
 
+    @CreationTimestamp
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 

@@ -22,4 +22,5 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, Long>, C
 
     @Query("select c.th, c.type from Curriculum c where c.id =:id")
     List<Object> findThById(@Param("id") Long id);
+
 }
