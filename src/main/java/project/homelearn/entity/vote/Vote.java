@@ -3,6 +3,7 @@ package project.homelearn.entity.vote;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import project.homelearn.entity.BaseEntity;
 import project.homelearn.entity.curriculum.Curriculum;
 
