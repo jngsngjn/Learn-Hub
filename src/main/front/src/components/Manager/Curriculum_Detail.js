@@ -5,10 +5,10 @@ import Calendar from './Calendar';
 import './Curriculum_Detail.css';
 
 const CurriculumDetail = () => {
-  const { curriculumId } = useParams();
+  const { id } = useParams();
   const [curriculum, setCurriculum] = useState({
     name: '',
-    th: '',
+    th: 0,
     progress: 0,
   });
   const [attendance, setAttendance] = useState({
@@ -32,7 +32,7 @@ const CurriculumDetail = () => {
   const getToken = () => localStorage.getItem('access-token');
 
   useEffect(() => {
-    if (!curriculumId) {
+    if (!id) {
       console.error('Invalid curriculum ID');
       return;
     }
@@ -40,37 +40,40 @@ const CurriculumDetail = () => {
     const fetchData = async () => {
       try {
         const token = getToken();
+        console.log('Token:', token);
         const config = {
           headers: { access: token },
         };
 
-        console.log('Fetching curriculum details');
+        console.log('Fetching curriculum details for ID:', id);
         const [basicResponse, attendanceResponse, teacherResponse, calendarResponse, surveyResponse] = await Promise.all([
-          axios.get(`/managers/curriculum/${curriculumId}/basic`, config),
-          axios.get(`/managers/curriculum/${curriculumId}/attendance`, config),
-          axios.get(`/managers/curriculum/${curriculumId}/teacher`, config),
-          axios.get(`/managers/curriculum/${curriculumId}/calendar`, config),
-          axios.get(`/managers/curriculum/${curriculumId}/survey`, config),
+          axios.get(`/curriculum/${id}/basic`, config),
+          axios.get(`/curriculum/${id}/attendance`, config),
+          axios.get(`/curriculum/${id}/teacher`, config),
+          axios.get(`/curriculum/${id}/calendar`, config),
+          axios.get(`/curriculum/${id}/survey`, config),
         ]);
 
-        console.log('Basic Response:', basicResponse.data);
-        console.log('Attendance Response:', attendanceResponse.data);
-        console.log('Teacher Response:', teacherResponse.data);
-        console.log('Calendar Response:', calendarResponse.data);
-        console.log('Survey Response:', surveyResponse.data);
+        console.log('Basic Response:', basicResponse);
+        console.log('Attendance Response:', attendanceResponse);
+        console.log('Teacher Response:', teacherResponse);
+        console.log('Calendar Response:', calendarResponse);
+        console.log('Survey Response:', surveyResponse);
 
         setCurriculum(basicResponse.data);
         setAttendance(attendanceResponse.data);
         setTeacher(teacherResponse.data);
         setSchedules(calendarResponse.data);
         setSurvey(surveyResponse.data);
+
       } catch (error) {
         console.error('Error:', error);
+        console.error('Error response:', error.response);
       }
     };
 
     fetchData();
-  }, [curriculumId]);
+  }, [id]);
 
   return (
     <div className="curriculum-detail">
@@ -79,11 +82,11 @@ const CurriculumDetail = () => {
       </div>
       <div className="curriculum-detail-container">
         <div className="title-progress-bar">
-          <h2>{curriculum.name} {curriculum.th}제목제목</h2>
+          <h2>{curriculum.name} {curriculum.th}기</h2>
           <div className="progress-container">
             <div className="progress-bar">
               <div className="progress" style={{ width: `${curriculum.progress}%` }}></div>
-              <span className="progress-text">{curriculum.progress.toFixed(1)}% / 100%</span>
+              <span className="progress-text">{curriculum.progress?.toFixed(1)}% / 100%</span>
             </div>
           </div>
         </div>
@@ -93,7 +96,7 @@ const CurriculumDetail = () => {
               <div className="info-box">
                 <div className="detail-attendance-title">
                 <span className="detail-subtitle">학생 출결 현황</span>
-                <Link to={`/attendance/${curriculumId}`} className="detail-link">자세히 보기 ></Link>
+                <Link to={`/attendance/${id}`} className="detail-link">자세히 보기 ></Link>
                 </div>
                 <p>{attendance.attendance} / {attendance.total}</p>
                 <p>{attendance.ratio}%</p>
@@ -101,18 +104,17 @@ const CurriculumDetail = () => {
               <div className="info-box">
                 <div className="detail-teacher-title">
                 <span>강사 정보</span>
-                <Link to={`/teacher/${curriculumId}`} className="detail-link">자세히 보기 ></Link>
+                <Link to={`/teacher/${id}`} className="detail-link">자세히 보기 ></Link>
                 </div>
                 <p>{teacher.name}</p>
                 <p>{teacher.email}</p>
                 <p>{teacher.phone}</p>
-
               </div>
             </div>
             <div className="info-box survey-box">
               <div className="detail-survey-title">
               <span>설문 조사</span>
-              <Link to={`/survey/${curriculumId}`} className="detail-link">자세히 보기 ></Link>
+              <Link to={`/survey/${id}`} className="detail-link">자세히 보기 ></Link>
               </div>
               <p>{survey.title}</p>
               <p>{survey.completed} / {survey.total}</p>
