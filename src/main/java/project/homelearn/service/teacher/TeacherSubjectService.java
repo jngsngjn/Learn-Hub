@@ -2,18 +2,28 @@ package project.homelearn.service.teacher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
-import project.homelearn.dto.teacher.subject.SubjectEnrollDto;
-import project.homelearn.dto.teacher.subject.SubjectModifyDto;
+import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
+import project.homelearn.dto.teacher.lecture.LectureListDto;
+import project.homelearn.dto.teacher.subject.*;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.Subject;
+import project.homelearn.entity.curriculum.SubjectBoard;
 import project.homelearn.entity.teacher.Teacher;
+import project.homelearn.repository.board.QuestionBoardRepository;
+import project.homelearn.repository.board.SubjectBoardRepository;
+import project.homelearn.repository.curriculum.CurriculumRepository;
+import project.homelearn.repository.curriculum.LectureRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
 import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.service.common.StorageService;
+
+import java.util.List;
 
 import static project.homelearn.config.storage.FolderType.SUBJECT;
 
@@ -24,11 +34,15 @@ import static project.homelearn.config.storage.FolderType.SUBJECT;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SubjectService {
+public class TeacherSubjectService {
 
     private final StorageService storageService;
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
+    private final LectureRepository lectureRepository;
+    private final SubjectBoardRepository subjectBoardRepository;
+    private final QuestionBoardRepository questionBoardRepository;
+    private final CurriculumRepository curriculumRepository;
 
     public void createSubject(String username, SubjectEnrollDto subjectDto) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
@@ -103,5 +117,58 @@ public class SubjectService {
 
         subjectRepository.deleteById(subjectId);
         return true;
+    }
+
+    public SubjectBasicDto getSubjectBasic(Long subjectId) {
+        return subjectRepository.findSubjectBasic(subjectId);
+    }
+
+    public List<SubjectBoardTop5Dto> getSubjectBoardTop5(Long subjectId) {
+        return subjectBoardRepository.findSubjectBoardTop5(subjectId);
+    }
+
+    public void writeBoard(Long subjectId, SubjectBoardWriteDto boardDto, String username) {
+        Subject subject = subjectRepository.findById(subjectId).orElseThrow();
+        SubjectBoard board = new SubjectBoard();
+        board.setTitle(boardDto.getTitle());
+        board.setContent(boardDto.getContent());
+        board.setSubject(subject);
+
+        MultipartFile file = boardDto.getFile();
+        if (file != null) {
+            Teacher teacher = teacherRepository.findByUsername(username);
+            String folderPath = storageService.getFolderPath(teacher, SUBJECT);
+            FileDto fileDto = storageService.uploadFile(file, folderPath);
+
+            board.setFilePath(fileDto.getFilePath());
+            board.setStoreFileName(fileDto.getUploadFileName());
+            board.setUploadFileName(fileDto.getOriginalFileName());
+        }
+
+        subjectBoardRepository.save(board);
+    }
+
+    public List<QuestionTop5Dto> getQuestionTop5(Long subjectId) {
+        return questionBoardRepository.findQuestionTop5BySubjectId(subjectId);
+    }
+
+    public Page<LectureListDto> getSubjectLecturePage(Long subjectId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return lectureRepository.findSubjectLecturePage(subjectId, pageRequest);
+    }
+
+    public Page<SubjectBoardListDto> getSubjectBoardPage(Long subjectId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        String teacherName = teacherRepository.findTeacherNameBySubjectId(subjectId);
+        return lectureRepository.findSubjectBoardPage(subjectId, pageRequest, teacherName);
+    }
+
+    public SubjectBoardViewDto getSubjectBoard(Long boardId) {
+        return subjectBoardRepository.findSubjectBoard(boardId);
+    }
+
+    public List<SubjectSelectListDto> getSubjectSelectList(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        return subjectRepository.findSubjectSelectList(curriculum);
     }
 }
