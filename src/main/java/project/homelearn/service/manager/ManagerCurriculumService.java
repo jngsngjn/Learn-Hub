@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.dashboard.CurriculumDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
+import project.homelearn.dto.manager.survey.CurriculumSimpleDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.entity.teacher.Teacher;
@@ -251,4 +252,9 @@ public class ManagerCurriculumService {
     public List<CurriculumTypeAndTh> getCurriculumTypeAndTh() {
         return curriculumRepository.findCurriculumTypeAndTh();
     }
+
+    public CurriculumSimpleDto getCurriculumSimple(Long curriculumId) {
+        return curriculumRepository.findCurriculumSimple(curriculumId);
+    }
+
 }
