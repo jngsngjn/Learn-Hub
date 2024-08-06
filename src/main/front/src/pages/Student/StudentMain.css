@@ -18,14 +18,16 @@
 .student_dashboard_list_container > ul {
   list-style: none;
   width: 300px;
-  padding: 28px;
-  padding: 20px 0 37.5px 20px;
+  padding: 20px 20px 37.5px 20px;
   font-size: 28px;
+  position: relative;
 }
 
 .stu_sidebar_toogle_btn {
   font-size: 20px;
-  padding: 0 0 0 20px;
+  position: absolute;
+  top: 30px;
+  right: 60px;
 }
 
 .student_dashboard_section {

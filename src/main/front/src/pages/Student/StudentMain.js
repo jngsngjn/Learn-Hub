@@ -49,8 +49,13 @@ const StudentMain = () => {
             onClick={() => toggleOpen("subject")}
           >
             과목
-            <i className="bi bi-caret-up-fill stu_sidebar_toogle_btn"></i>
-            <i className="bi bi-caret-down-fill stu_sidebar_toogle_btn"></i>
+            <i
+              className={`bi ${
+                showSection === "subject"
+                  ? "bi-caret-down-fill"
+                  : "bi-caret-up-fill"
+              } stu_sidebar_toogle_btn`}
+            ></i>
             {subject.subject?.map((el, idx) => (
               <li key={idx} onClick={() => handleSubjectClick(el.name)}>
                 {el.name}
@@ -80,6 +85,13 @@ const StudentMain = () => {
             onClick={() => toggleOpen("board")}
           >
             게시판
+            <i
+              className={`bi ${
+                showSection === "board"
+                  ? "bi-caret-down-fill"
+                  : "bi-caret-up-fill"
+              } stu_sidebar_toogle_btn`}
+            ></i>
             <li onClick={() => handleSectionClick("freeBoard")}>자유 게시판</li>
             <li onClick={() => handleSectionClick("questionBoard")}>
               질문 게시판
@@ -92,6 +104,13 @@ const StudentMain = () => {
             onClick={() => toggleOpen("notice")}
           >
             공지사항
+            <i
+              className={`bi ${
+                showSection === "notice"
+                  ? "bi-caret-down-fill"
+                  : "bi-caret-up-fill"
+              } stu_sidebar_toogle_btn`}
+            ></i>
             <li onClick={() => handleSectionClick("teacherNotice")}>
               강사 공지사항
             </li>
@@ -106,6 +125,13 @@ const StudentMain = () => {
             onClick={() => toggleOpen("question")}
           >
             문의
+            <i
+              className={`bi ${
+                showSection === "question"
+                  ? "bi-caret-down-fill"
+                  : "bi-caret-up-fill"
+              } stu_sidebar_toogle_btn`}
+            ></i>
             <li onClick={() => handleSectionClick("teacherQuestion")}>
               강사 문의
             </li>
