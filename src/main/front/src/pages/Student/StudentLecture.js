@@ -88,7 +88,9 @@ const StudentLecture = () => {
               <h3 className="board_title">과목 게시판</h3>
               <span
                 className="go_to_show_more_page"
-                onClick={() => navigate("/students/subjectBoard")}
+                onClick={() =>
+                  navigate(`/students/${mainLectures.title}/Board`)
+                }
               >
                 더보기 ⟩
               </span>
