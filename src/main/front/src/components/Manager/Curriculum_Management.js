@@ -3,6 +3,7 @@ import { CirclePicker } from 'react-color';
 import axios from 'axios';
 import './Curriculum_Management.css';
 import './Modal.css';
+import swal from 'sweetalert';
 
 // 기본 API URL 설정
 axios.defaults.baseURL = 'http://localhost:8080';
@@ -49,6 +50,12 @@ const CurriculumManagement = () => {
       color: newCurriculum.color,
       teacherId: newCurriculum.teacherId,
     };
+
+    // 종료일이 시작일보다 빠르거나 같으면 swal 메시지
+    if (new Date(newCurriculumItem.endDate) <= new Date(newCurriculumItem.startDate)) {
+      swal('등록 실패', '종료일은 시작일 이후여야 합니다.', 'warning');
+      return;
+    }
 
     try {
       const token = getToken();
