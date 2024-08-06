@@ -10,6 +10,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import project.homelearn.dto.chatgpt.ChatGPTResponseDto;
+import project.homelearn.dto.common.board.QuestionBoardCommentDto;
+import project.homelearn.dto.common.board.QuestionBoardDetailDto;
 import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.teacher.AiCommentWriteDto;
@@ -26,6 +28,7 @@ import project.homelearn.repository.user.UserRepository;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -181,8 +184,50 @@ public class TeacherQuestionBoardService {
     }
 
     // 조회수 증가
+    // 댓글 수 증가
+    public void incrementViewCount(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        questionBoard.setCommentCount(questionBoard.getViewCount() + 1);
+    }
 
     // 글 상세보기
+    public QuestionBoardDetailDto getQuestionBoard(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+
+        return new QuestionBoardDetailDto(
+                questionBoard.getId(),
+                questionBoard.getTitle(),
+                questionBoard.getContent(),
+                questionBoard.getViewCount(),
+                questionBoard.getQuestionScraps().size(),
+                questionBoard.getUser().getName(),
+                questionBoard.getCreatedDate(),
+                questionBoard.getCommentCount()
+        );
+    }
+
+    // 댓글 뽑아오기
+    public List<QuestionBoardCommentDto> getQuestionBoardComment(Long questionBoardId){
+        List<QuestionBoardComment> comments = commentRepository.findbyQuestionBoardIdAndParentCommentIsNull(questionBoardId);
+
+        return comments.stream()
+                .map(this::convertToCommentDto)
+                .collect(Collectors.toList());
+    }
+
+    // 댓글 Dto 변환
+    public QuestionBoardCommentDto convertToCommentDto(QuestionBoardComment comment){
+        return new QuestionBoardCommentDto(
+                comment.getId(),
+                comment.getUser().getName(),
+                comment.getUser().getImageName(),
+                comment.getContent(),
+                comment.getCreatedDate(),
+                comment.getReplies().stream()
+                        .map(this::convertToCommentDto)
+                        .collect(Collectors.toList())
+        );
+    }
 
     //게시글 리스트
     public Page<QuestionBoardDto> getQuestionBoardList(String filterType, String subjectName, Curriculum curriculum, Pageable pageable) {
@@ -212,10 +257,10 @@ public class TeacherQuestionBoardService {
         }
 
         // Entity -> DTO 변환
-        return questionBoards.map(this::convertToDto);
+        return questionBoards.map(this::convertToListDto);
     }
 
-    private QuestionBoardDto convertToDto(QuestionBoard questionBoard) {
+    private QuestionBoardDto convertToListDto(QuestionBoard questionBoard) {
 
         //선생님이 글을 달았는지 안달았는지 여부를 추가해야함
         boolean isCommentHere = questionBoardRepository.hasTeacherComment(questionBoard);

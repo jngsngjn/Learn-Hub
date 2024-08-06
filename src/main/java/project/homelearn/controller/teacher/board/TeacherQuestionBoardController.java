@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.common.board.QuestionBoardCommentDto;
+import project.homelearn.dto.common.board.QuestionBoardDetailDto;
 import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -17,6 +19,7 @@ import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.service.teacher.TeacherQuestionBoardService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -131,9 +134,33 @@ public class TeacherQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    //조회수 증가
+    // 글 상세보기
+    @GetMapping("/{questionBoardId}")
+    public ResponseEntity<?> viewQuestionBoard(@PathVariable("questionBoardId") Long questionBoardId) {
+        QuestionBoardDetailDto viewQuestionBoard = teacherQuestionBoardService.getQuestionBoard(questionBoardId);
 
-    //글 상세보기
+        if (viewQuestionBoard != null) {
+            //조회수 증가
+            teacherQuestionBoardService.incrementViewCount(questionBoardId);
+            return new ResponseEntity<>(viewQuestionBoard, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // 해당 글 상세보기 페이지 댓글 모음
+    @GetMapping("/{questionBoardId}/comments")
+    public ResponseEntity<?> viewComments(@PathVariable("questionBoardId") Long questionBoardId) {
+        List<QuestionBoardCommentDto> viewComments = teacherQuestionBoardService.getQuestionBoardComment(questionBoardId);
+
+        if (viewComments != null) {
+            return new ResponseEntity<>(viewComments, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("작성된 댓글이 없습니다.",HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }
