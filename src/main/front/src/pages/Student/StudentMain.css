@@ -92,30 +92,31 @@
 }
 
 .play_recent_video_icon {
-  font-size: 60px;
-  width: 60px;
+  font-size: 50px;
+  width: 50px;
+  line-height: 50px;
   display: inline-block;
   cursor: pointer;
   color: #5c8d89;
 }
 
 .recent_lecture_video_title {
-  font-size: 28px;
+  font-size: 24px;
   margin: 0;
 }
 
 .recent_lecture_progress_container {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   position: relative;
 }
 
 .recent_lecture_percentage {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
   position: absolute;
-  top: 36%;
-  left: 22%;
+  top: 27%;
+  left: 19%;
 }
 
 .video_container h3 {
@@ -126,12 +127,12 @@
 
 .video_container {
   width: 500px;
-  height: 700px;
+  height: 660px;
   padding: 30px 30px 40px 30px;
   border: 1px solid #74b49b;
   border-radius: 0.5em;
   background-color: #f4f9f4;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .random_video_box,
@@ -176,12 +177,20 @@
   align-items: center;
 }
 
+.student_question_title {
+  width: 200px;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .question_type_tag {
   width: 88px;
   height: 32px;
   border-radius: 1em;
   border: 0.0625em solid #a7d7c5;
-  padding: 10px;
+  padding: 2px 10px;
   text-align: center;
   background-color: #f4f9f4;
 }
@@ -205,12 +214,10 @@
 
 .watch_icon {
   width: 18px;
-  height: 18px;
 }
 
 .comment_icon {
   width: 18px;
-  height: 16px;
 }
 
 /* 배지 컨테이터 스타일 */
@@ -264,7 +271,7 @@
   border: 0.0625em solid #74b49b;
   border-radius: 0.5em;
   /* max-width: 500px; */
-  height: 46.875em;
+  height: 692px;
   text-align: center;
   padding: 1.875em;
   display: flex;

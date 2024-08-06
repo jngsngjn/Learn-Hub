@@ -180,13 +180,15 @@ const StudentMain = () => {
                     <div className="question_type_box">
                       <span className="question_type_tag">질문</span>
                       <span className="question_type_nage">{el.type}</span>
-                      <span className="recomment_button">답글 달기⟩</span>
+                      <span className="recomment_button">답글 달기 ⟩</span>
                     </div>
                     <div className="question_box">
                       <div className="qusetion_subject_name">
                         {el.lectureName}
                       </div>
-                      <p className="question_title">{el.questionTitle}</p>
+                      <p className="student_question_title">
+                        {el.questionTitle}
+                      </p>
                       <div className="question_icon_box">
                         <i className="bi bi-eye watch_icon"></i>
                         {el.watchCount}

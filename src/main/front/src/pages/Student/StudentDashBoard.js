@@ -49,9 +49,8 @@ const StudentDashBoard = () => {
             onClick={() => toggleOpen("subject")}
           >
             과목
-            <i className="bi bi-caret-right-fill stu_sidebar_toogle_btn"></i>
+            <i className="bi bi-caret-up-fill stu_sidebar_toogle_btn"></i>
             <i className="bi bi-caret-down-fill stu_sidebar_toogle_btn"></i>
-            <i className="bi bi-caret-left-fill stu_sidebar_toogle_btn"></i>
             {subject.subject?.map((el, idx) => (
               <li key={idx} onClick={() => handleSubjectClick(el.name)}>
                 {el.name}

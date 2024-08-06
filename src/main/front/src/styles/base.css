@@ -1,22 +1,22 @@
 /* Color ================================================*/
 :root {
   /* Student Color */
-  --studentMainColor: #5C8D89;
-  --studentSubColor: #74B49B;
-  --studentPrimaryColor: #A7D7C5;
-  --studentAssistColor: #F4F9F4;
+  --studentMainColor: #5c8d89;
+  --studentSubColor: #74b49b;
+  --studentPrimaryColor: #a7d7c5;
+  --studentAssistColor: #f4f9f4;
 
   /* Teacher Color */
-  --teacherMainColor: #B1B2FF;
-  --teacherSubColor: #AAC4FF;
-  --teacherPrimaryColor: #D2DAFF;
-  --teacherAssistColor: #EEF1FF;
+  --teacherMainColor: #b1b2ff;
+  --teacherSubColor: #aac4ff;
+  --teacherPrimaryColor: #d2daff;
+  --teacherAssistColor: #eef1ff;
 
   /* Manager Color */
   --managerMainColor: #757575;
-  --managerSubColor: #B4B4B8;
-  --managerPrimaryColor: #C7C8CC;
-  --managerAssistColor: #E3E1D9;
+  --managerSubColor: #b4b4b8;
+  --managerPrimaryColor: #c7c8cc;
+  --managerAssistColor: #e3e1d9;
 
   --titleColor: #1a1a1a;
   --descColor: #666666;
@@ -39,7 +39,7 @@ select,
 textarea,
 button,
 table {
-  font-family : 'NanumSquare', sans-serif;
+  font-family: "NanumSquare", sans-serif;
   font-size: 1.6rem;
   font-weight: 400; /* 100~900 */
   color: var(--descColor);
@@ -55,7 +55,6 @@ input {
 }
 
 #container {
-  padding-top: 8rem;
   /* 색이 보여서 투명하게 바꿈 */
   background-color: transparent;
 }
@@ -74,10 +73,6 @@ input {
   font-size: 3.2rem;
   color: var(--mainColor);
 }
-
-/* .subContents {
-  padding-bottom: 12rem;
-} */
 
 .contents {
   max-width: 1120px;
