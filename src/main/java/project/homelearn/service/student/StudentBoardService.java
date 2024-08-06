@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
-import project.homelearn.dto.student.board.CommentWriteDto;
-import project.homelearn.dto.student.board.FreeBoardDto;
-import project.homelearn.dto.student.board.FreeBoardWriteDto;
+import project.homelearn.dto.student.board.*;
 import project.homelearn.entity.board.FreeBoard;
 import project.homelearn.entity.board.comment.FreeBoardComment;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -21,6 +19,9 @@ import project.homelearn.repository.board.FreeBoardRepository;
 import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.common.StorageService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static project.homelearn.config.storage.FolderType.FREE_BOARD;
 
@@ -180,6 +181,7 @@ public class StudentBoardService {
         return true;
     }
 
+    // 리스트
     public Page<FreeBoardDto> getBoardList(Curriculum curriculum, Pageable pageable){
 
         Page<FreeBoard> freeBoardPage = boardRepository.findByCreatedDateDesc(curriculum,pageable);
@@ -195,5 +197,49 @@ public class StudentBoardService {
                 freeBoard.getCreatedDate(),
                 freeBoard.getCommentCount()
         );
+    }
+
+    // 상세보기
+    public FreeBoardDetailDto getBoard(Long boardId){
+        FreeBoard freeBoard = boardRepository.findById(boardId).orElseThrow();
+
+        return new FreeBoardDetailDto(
+                freeBoard.getId(),
+                freeBoard.getTitle(),
+                freeBoard.getContent(),
+                freeBoard.getViewCount(),
+                freeBoard.getUser().getName(),
+                freeBoard.getCreatedDate(),
+                freeBoard.getCommentCount()
+        );
+    }
+
+    // 댓글 추출
+    public List<FreeBoardCommentDto> getBoardComment(Long boardId){
+        List<FreeBoardComment> comments = commentRepository.findByFreeBoardCommentIdAndParentCommentIsNull(boardId);
+
+        return comments.stream()
+                .map(this::convertToCommentDto)
+                .collect(Collectors.toList());
+    }
+
+    // 댓글 Dto 반환
+    public FreeBoardCommentDto convertToCommentDto(FreeBoardComment comment) {
+        return new FreeBoardCommentDto(
+                comment.getId(),
+                comment.getUser().getName(),
+                comment.getUser().getImageName(),
+                comment.getContent(),
+                comment.getCreatedDate(),
+                comment.getReplies().stream()
+                        .map(this::convertToCommentDto)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    // 조회수 증가
+    public void incrementViewCount(Long boardId) {
+        FreeBoard freeBoard = boardRepository.findById(boardId).orElseThrow();
+        freeBoard.setViewCount(freeBoard.getViewCount() + 1);
     }
 }

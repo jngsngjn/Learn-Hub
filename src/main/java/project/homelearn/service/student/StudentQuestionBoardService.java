@@ -265,7 +265,7 @@ public class StudentQuestionBoardService {
 
     // 댓글 뽑아오기
     public List<QuestionBoardCommentDto> getQuestionBoardComment(Long questionBoardId){
-        List<QuestionBoardComment> comments = commentRepository.findbyQuestionBoardIdAndParentCommentIsNull(questionBoardId);
+        List<QuestionBoardComment> comments = commentRepository.findByQuestionBoardIdAndParentCommentIsNull(questionBoardId);
 
         return comments.stream()
                 .map(this::convertToCommentDto)
