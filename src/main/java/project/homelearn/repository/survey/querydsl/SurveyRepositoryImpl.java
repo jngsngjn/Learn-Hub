@@ -22,7 +22,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
     @Override
     public CurriculumSurveyDto findCurriculumSurvey(Long curriculumId) {
         Tuple tuple = queryFactory
-                .select(survey.title, survey.curriculum.th)
+                .select(survey.id, survey.title, survey.curriculum.th)
                 .from(survey)
                 .where(survey.curriculum.id.eq(curriculumId), survey.isFinished.eq(false))
                 .fetchOne();
@@ -30,6 +30,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
             return null;
         }
 
+        Long surveyId = tuple.get(survey.id);
         String title = tuple.get(survey.title);
         Long th = tuple.get(survey.curriculum.th);
 
@@ -44,7 +45,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
                 .from(student)
                 .where(student.curriculum.id.eq(curriculumId))
                 .fetchOne();
-        return new CurriculumSurveyDto(title, th, completed, total);
+        return new CurriculumSurveyDto(surveyId, title, th, completed, total);
     }
 
     @Override
