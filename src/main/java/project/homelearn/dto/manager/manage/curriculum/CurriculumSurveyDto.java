@@ -7,6 +7,9 @@ import lombok.Data;
 @Data
 public class CurriculumSurveyDto {
 
+    @NotNull
+    private Long surveyId;
+
     @NotBlank
     private String title;
 
@@ -19,7 +22,8 @@ public class CurriculumSurveyDto {
     @NotNull
     private Long total;
 
-    public CurriculumSurveyDto(String title, Long th, Long completed, Long total) {
+    public CurriculumSurveyDto(Long surveyId, String title, Long th, Long completed, Long total) {
+        this.surveyId = surveyId;
         this.title = title;
         this.th = th;
         this.completed = completed;

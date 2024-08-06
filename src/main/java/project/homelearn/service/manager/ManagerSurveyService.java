@@ -2,9 +2,14 @@ package project.homelearn.service.manager;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.manager.dashboard.SurveyDto;
+import project.homelearn.dto.manager.dashboard.SurveyDashboardDto;
+import project.homelearn.dto.manager.manage.curriculum.CurriculumSurveyDto;
+import project.homelearn.dto.manager.survey.CurriculumAndSurveyDto;
+import project.homelearn.dto.manager.survey.SurveyChoiceStatisticsDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.repository.curriculum.CurriculumRepository;
@@ -12,6 +17,7 @@ import project.homelearn.repository.survey.SurveyRepository;
 import project.homelearn.repository.user.StudentRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -40,13 +46,14 @@ public class ManagerSurveyService {
                 return false;
             }
 
-            int result = surveyRepository.findSurveyCount(curriculumId) + 1;
+            int round = surveyRepository.findSurveyCount(curriculumId) + 1;
 
             Survey survey = new Survey();
 
             // 네이버 클라우드 데브옵스 과정 만족도 설문 조사 1회
-            survey.setTitle(curriculum.getName() + " 만족도 설문 조사 " + result + "차");
+            survey.setTitle(curriculum.getName() + " 만족도 설문 조사 " + round + "차");
             survey.setCurriculum(curriculum);
+            survey.setRound(round);
             surveyRepository.save(survey);
 
             studentRepository.updateSurveyCompletedFalse(curriculumId);
@@ -69,7 +76,32 @@ public class ManagerSurveyService {
         return true;
     }
 
-    public List<SurveyDto> getRecentSurvey() {
-        return surveyRepository.findRecentSurveyDto();
+    public List<SurveyDashboardDto> getRecentSurvey() {
+        return surveyRepository.findSurveyTop2Dto();
+    }
+
+    public CurriculumSurveyDto getProgressSurvey(Long curriculumId) {
+        return surveyRepository.findProgressSurvey(curriculumId);
+    }
+
+    public List<CurriculumSurveyDto> getEndSurvey(Long curriculumId) {
+        return surveyRepository.findEndSurvey(curriculumId);
+    }
+
+    public Map<Integer, Integer> getSurveyBasicTrend(Long curriculumId) {
+        return surveyRepository.findSurveyBasicTrend(curriculumId);
+    }
+
+    public CurriculumAndSurveyDto getCurriculumAndSurvey(Long curriculumId, Long surveyId) {
+        return surveyRepository.findCurriculumAndSurvey(curriculumId, surveyId);
+    }
+
+    public List<SurveyChoiceStatisticsDto> getSurveyChoiceStatistics(Long surveyId) {
+        return surveyRepository.findSurveyChoiceStatistics(surveyId);
+    }
+
+    public Page<String> getSurveyTextResponse(Long surveyId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return surveyRepository.findSurveyTextResponse(surveyId, pageRequest);
     }
 }
