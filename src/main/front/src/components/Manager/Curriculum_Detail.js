@@ -4,8 +4,6 @@ import axios from 'axios';
 import Calendar from './Calendar';
 import './Curriculum_Detail.css';
 
-
-
 const CurriculumDetail = () => {
   const { curriculumId } = useParams();
   const [curriculum, setCurriculum] = useState({
@@ -77,48 +75,58 @@ const CurriculumDetail = () => {
   return (
     <div className="curriculum-detail">
       <div className="header">
-        <h1>교육 과정</h1>
+        <h2>교육 과정</h2>
       </div>
-      <div className="curriculum-container">
-        <div className="left-container">
+      <div className="curriculum-detail-container">
+        <div className="title-progress-bar">
+          <h2>{curriculum.name} {curriculum.th}제목제목</h2>
           <div className="progress-container">
             <div className="progress-bar">
               <div className="progress" style={{ width: `${curriculum.progress}%` }}></div>
               <span className="progress-text">{curriculum.progress.toFixed(1)}% / 100%</span>
             </div>
           </div>
-
-          <div className="info-box">
-            <h2>학생 출결 현황</h2>
-            <p>{attendance.attendance} / {attendance.total}</p>
-            <p>{attendance.ratio}%</p>
-            <Link to={`/attendance/${curriculumId}`} className="detail-link">자세히 보기</Link>
-          </div>
-
-          <div className="info-box">
-            <h2>강사 정보</h2>
-            <p>{teacher.name}</p>
-            <p>{teacher.email}</p>
-            <p>{teacher.phone}</p>
-            <Link to={`/teacher/${curriculumId}`} className="detail-link">자세히 보기</Link>
-          </div>
-
-          <div className="info-box survey-box">
-            <h2>설문 조사</h2>
-            <p>{survey.title}</p>
-            <p>{survey.completed} / {survey.total}</p>
-            <Link to={`/survey/${curriculumId}`} className="detail-link">자세히 보기</Link>
-          </div>
         </div>
+        <div className="content-container">
+          <div className="left-container">
+            <div className="info-boxes-top">
+              <div className="info-box">
+                <div className="detail-attendance-title">
+                <span className="detail-subtitle">학생 출결 현황</span>
+                <Link to={`/attendance/${curriculumId}`} className="detail-link">자세히 보기 ></Link>
+                </div>
+                <p>{attendance.attendance} / {attendance.total}</p>
+                <p>{attendance.ratio}%</p>
+              </div>
+              <div className="info-box">
+                <div className="detail-teacher-title">
+                <span>강사 정보</span>
+                <Link to={`/teacher/${curriculumId}`} className="detail-link">자세히 보기 ></Link>
+                </div>
+                <p>{teacher.name}</p>
+                <p>{teacher.email}</p>
+                <p>{teacher.phone}</p>
 
-        <div className="right-container">
-          <div className="calendar-box">
-            <h2>캘린더</h2>
+              </div>
+            </div>
+            <div className="info-box survey-box">
+              <div className="detail-survey-title">
+              <span>설문 조사</span>
+              <Link to={`/survey/${curriculumId}`} className="detail-link">자세히 보기 ></Link>
+              </div>
+              <p>{survey.title}</p>
+              <p>{survey.completed} / {survey.total}</p>
+            </div>
+          </div>
+          <div className="right-container">
+            <span className="curriculum-detail-calendar">캘린더</span>
             <Calendar events={schedules} />
           </div>
         </div>
+        <div className="detail-update-button-container">
+         <button className="curriculum-detail-update-button">교육 과정 수정</button>
+        </div>
       </div>
-      <button className="update-button">교육 과정 수정</button>
     </div>
   );
 };
