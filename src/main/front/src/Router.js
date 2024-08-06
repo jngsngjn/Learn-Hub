@@ -32,8 +32,9 @@ const Router = () => {
         <Route path="/email" element={<LoginEmail />} />
         <Route path="/main" element={<Main />} />
         <Route path="/managers/*" element={<ManagerMain />} />
-
-        <Route path="/students" element={<StudentMain />} />
+        <Route path="/students/*" element={<StudentDashBoard />} />
+        {/* <Route path="/students" element={<StudentDashBoard />} />
+        // <Route path="/students" element={<StudentMain />} />
         <Route path="/students/:subject/board" element={<StudentLecture />} />
         <Route path="/students/lectureLists" element={<StudentLectureList />} />
         <Route
@@ -60,7 +61,7 @@ const Router = () => {
         <Route
           path="/students/assignmentDetail/:id"
           element={<StudentAssignmentDetail />}
-        />
+        /> */}
         <Route path="/image-board" element={<ImageBoard />} />
         <Route path="/test-view" element={<ViewBoardImage />} />
       </Routes>

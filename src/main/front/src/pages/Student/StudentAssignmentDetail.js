@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import useGetFetch from "../../hooks/useGetFetch";
 
 const StudentAssignmentDetail = () => {
-  const a = "b";
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -28,9 +26,6 @@ const StudentAssignmentDetail = () => {
 
   return (
     <div className="student_assignment_detail_container">
-      <div className="side_bar">
-        <h3>사이드 바</h3>
-      </div>
       <div className="assignment_detail_main_container">
         <h2 className="student_assignment_board_page_title">과제</h2>
         <div className="student_assignment_board_content_box">

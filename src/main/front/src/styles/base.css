@@ -1,3 +1,32 @@
 * {
   box-sizing: border-box;
 }
+
+#container {
+  padding-top: 8rem;
+  /* 색이 보여서 투명하게 바꿈 */
+  background-color: transparent;
+}
+
+.inner_box {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.subCommon {
+  padding: 10rem 0 0;
+}
+
+.subTitle {
+  font-size: 3.2rem;
+  color: var(--mainColor);
+}
+
+/* .subContents {
+  padding-bottom: 12rem;
+} */
+
+.contents {
+  width: 1120px;
+}

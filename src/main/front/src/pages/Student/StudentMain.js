@@ -105,9 +105,6 @@ const StudentMain = () => {
 
   return (
     <div className="student_dashboard_body">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="dashboard_main_container">
         <h1 className="page_title">대시보드</h1>
         <div className="divide_right_container">

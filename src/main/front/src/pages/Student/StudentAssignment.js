@@ -63,9 +63,6 @@ const StudentAssignment = () => {
 
   return (
     <div className="student_subject_body">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="student_subject_main_container">
         <h1 className="student_subject_page_title">과제</h1>
         <div className="current_proceeding_subject_container">

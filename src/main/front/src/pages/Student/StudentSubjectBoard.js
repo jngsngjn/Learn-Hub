@@ -32,9 +32,6 @@ const StudentSubjectBoard = () => {
 
   return (
     <div className="subject_board_body">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="subject_board_main_container">
         <div className="subject_board_type_container">
           <img

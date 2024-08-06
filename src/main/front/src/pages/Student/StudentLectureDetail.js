@@ -15,9 +15,6 @@ const StudentLectureDetail = () => {
 
   return (
     <div className="subject_lecture_detail_body">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="subject_lecture_detail_main_container">
         <div className="subject_lecture_detail_video_container">
           <img

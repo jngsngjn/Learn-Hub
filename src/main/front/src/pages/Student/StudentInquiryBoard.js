@@ -22,9 +22,6 @@ const StudentInquiryBoard = () => {
 
   return (
     <div className="student_inquiry_board_container">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="student_inquiry_board_main_container">
         <div className="student_inquiry_board_title_box">
           <h1 className="student_inquiry_board_title">질문 게시판</h1>
