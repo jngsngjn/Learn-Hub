@@ -2,14 +2,18 @@ package project.homelearn.service.student;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
+import project.homelearn.dto.student.board.FreeBoardDto;
 import project.homelearn.dto.student.board.FreeBoardWriteDto;
 import project.homelearn.entity.board.FreeBoard;
 import project.homelearn.entity.board.comment.FreeBoardComment;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.FreeBoardCommentRepository;
@@ -174,5 +178,23 @@ public class StudentBoardService {
 
         reply.setContent(commentDto.getContent());
         return true;
+    }
+
+    public Page<FreeBoardDto> getBoardList(Curriculum curriculum, Pageable pageable){
+
+        Page<FreeBoard> freeBoardPage = boardRepository.findByCreatedDateDesc(curriculum,pageable);
+
+        return freeBoardPage.map(this::convertToListDto);
+    }
+
+    private FreeBoardDto convertToListDto(FreeBoard freeBoard) {
+        return new FreeBoardDto(
+                freeBoard.getId(),
+                freeBoard.getTitle(),
+                freeBoard.getContent(),
+                freeBoard.getUser().getName(),
+                freeBoard.getCreatedDate(),
+                freeBoard.getCommentCount()
+        );
     }
 }
