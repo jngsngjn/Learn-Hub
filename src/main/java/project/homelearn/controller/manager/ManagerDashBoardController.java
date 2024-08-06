@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.homelearn.dto.manager.dashboard.CurriculumDto;
+import project.homelearn.dto.manager.dashboard.CurriculumDashboardDto;
 import project.homelearn.dto.manager.dashboard.ManagerScheduleDto;
-import project.homelearn.dto.manager.dashboard.SurveyDto;
+import project.homelearn.dto.manager.dashboard.SurveyDashboardDto;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.entity.user.Role;
 import project.homelearn.service.manager.ManagerCalendarService;
@@ -43,7 +43,7 @@ public class ManagerDashBoardController {
     // 대시보드 교육 과정 현황 조회
     @GetMapping("/curriculum/{type}") // NCP or AWS
     public ResponseEntity<?> viewCurriculums(@PathVariable("type") CurriculumType type) {
-        List<CurriculumDto> result = curriculumService.getCurriculumList(type);
+        List<CurriculumDashboardDto> result = curriculumService.getCurriculumList(type);
         if (result.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -65,7 +65,7 @@ public class ManagerDashBoardController {
     // 최근 설문 2개 조회
     @GetMapping("/survey")
     public ResponseEntity<?> viewRecentSurvey() {
-        List<SurveyDto> result = surveyService.getRecentSurvey();
+        List<SurveyDashboardDto> result = surveyService.getRecentSurvey();
         if (result == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
