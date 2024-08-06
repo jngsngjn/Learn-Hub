@@ -8,6 +8,8 @@ import StudentLectureList from "./StudentLectureList";
 import StudentFreeBoard from "./StudentFreeBoard";
 import StudentQuestionBoard from "./StudentQuestionBoard";
 import StudentDashBoard from "./StudentDashBoard";
+import StudentSubjectBoardList from "./StudentSubjectBoardList";
+import StudentSubjectBoardDetail from "./StudentSubjectBoardDetail";
 
 const StudentMain = () => {
   const [showSection, setShowSection] = useState(null);
@@ -156,6 +158,14 @@ const StudentMain = () => {
             element={<StudentLecture subject={selectedSubject} />}
           />
           <Route path="assignment" element={<StudentAssignment />} />
+          <Route
+            path="/:subjectName/boardList"
+            element={<StudentSubjectBoardList />}
+          />
+          <Route
+            path="/:subjectName/boardDetail/:id"
+            element={<StudentSubjectBoardDetail />}
+          />
           <Route path="/lectureLists" element={<StudentLectureList />} />
           <Route path="/freeBoard" element={<StudentFreeBoard />} />
           <Route path="/questionBoard" element={<StudentQuestionBoard />} />
