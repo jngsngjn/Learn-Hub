@@ -1,0 +1,55 @@
+.Lecture_state_container{
+    width: 600px;
+    height: 370px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.Lecture_state_title{
+    width: 560px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #B1B2FF;
+}
+
+.Lecture_state_date{
+    font-size: 18px;
+}
+
+.h2{
+    font-size: 32px;
+}
+
+.Lecture_state_chart_container{
+    margin-top: 20px;
+    display: flex;
+}
+
+.Lecture_state_content{
+    display: flex;
+    justify-content: space-between;
+    width: 480px;
+    color: #B1B2FF;
+}
+
+.attendance_state{
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 250px;
+    width: 200px;
+}
+
+.homework_state{
+    border: 1px solid;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+}

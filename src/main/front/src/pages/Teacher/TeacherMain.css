@@ -1,0 +1,53 @@
+.App {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    flex: 0 0 200px;
+}
+
+.content-area {
+    flex: 1;
+    padding: 20px;
+}
+
+/* grid 설정 */
+.dashboard-grid-container{
+    display: flex;
+    gap: 20px;
+}
+
+.teacher-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1200px;
+    /* margin: 0 auto; */
+    grid-gap: 30px;
+}
+
+.teacher-dashboard-grid2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1200px;
+    /* margin: 0 auto; */
+    grid-gap: 30px;
+}
+
+.teacher-dashboard-grid > div {
+    border: 1px solid #B1B2FF;
+    background-color: rgba(210, 218, 255, 0.25);
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+}
+
+.teacher-dashboard-grid2 > div {
+    background-color: rgba(210, 218, 255, 0.25);
+}

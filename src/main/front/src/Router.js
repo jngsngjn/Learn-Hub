@@ -19,6 +19,7 @@ import StudentInquiryDetail from "./pages/Student/StudentInquiryDetail";
 import StudentSubjectBoardDetail from "./pages/Student/StudentSubjectBoardDetail";
 import StudentLectureList from "./pages/Student/StudentLectureList";
 import StudentLectureDetail from "./pages/Student/StudentLectureDetail";
+import TeacherMain from "./pages/Teacher/TeacherMain";
 
 const Router = () => {
   return (
@@ -61,6 +62,8 @@ const Router = () => {
         />
         <Route path="/image-board" element={<ImageBoard />} />
         <Route path="/test-view" element={<ViewBoardImage />} />
+        <Route path="/teacher/*" element={<TeacherMain/>}/>
+
       </Routes>
       <Footer />
     </BrowserRouter>
