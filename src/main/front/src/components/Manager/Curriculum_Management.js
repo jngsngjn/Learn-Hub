@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { CirclePicker } from 'react-color';
 import axios from 'axios';
 import './Curriculum_Management.css';
@@ -104,7 +105,7 @@ const CurriculumManagement = () => {
       <div key={curriculum.id} className="curriculum-card">
         <div className="curriculum-header">
           <span className="curriculum-th" style={{ backgroundColor: curriculum.color }}>{curriculum.th}기</span>
-          <span className="curriculum-type">{curriculum.name}</span>
+          <Link to={`/managers/manage-curriculums/${curriculum.id}`} className="curriculum-type">{curriculum.name}</Link>
         </div>
         <div className="curriculum-footer">
           <span className="curriculum-teacher">강사 {curriculum.teacherName}</span>
