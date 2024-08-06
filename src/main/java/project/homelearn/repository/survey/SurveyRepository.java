@@ -20,4 +20,7 @@ public interface SurveyRepository extends JpaRepository<Survey, Long>, SurveyRep
     @Transactional
     @Query("update Survey s set s.isFinished = true where s.id =:id")
     void updateSurveyIsFinishedTrue(@Param("id") Long id);
+
+    @Query("select s.isFinished from Survey s where s.id =:surveyId")
+    boolean isSurveyFinished(@Param("surveyId") Long surveyId);
 }
