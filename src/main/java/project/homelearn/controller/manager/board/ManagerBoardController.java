@@ -24,7 +24,7 @@ public class ManagerBoardController {
 
     private final ManagerBoardService managerBoardService;
 
-    // 게시글 등록
+    // 공지사항 등록
     @PostMapping("/notification-boards")
     public ResponseEntity<?> writeBoard(@Valid @ModelAttribute BoardCreateDto boardCreateDto) {
         boolean result = managerBoardService.createManagerBoard(boardCreateDto);
@@ -36,7 +36,7 @@ public class ManagerBoardController {
         }
     }
 
-    // 게시글 조회
+    // 공지사항 조회
     @GetMapping("/notification-boards")
     public ResponseEntity<?> readBoard(@RequestParam(name = "page", defaultValue = "0") int page) {
         Page<BoardReadDto> moList = managerBoardService.getManagerBoards(page, 5);
@@ -48,7 +48,7 @@ public class ManagerBoardController {
         }
     }
 
-    // 게시글 수정
+    // 공지사항 수정
     @PatchMapping("/notification-boards/{id}")
     public ResponseEntity<?> updateBoard(@PathVariable("id") Long id,
                                          @Valid @ModelAttribute BoardUpdateDto boardUpdateDto) {
@@ -60,7 +60,7 @@ public class ManagerBoardController {
         }
     }
 
-    // 게시글 삭제
+    // 공지사항 삭제
     @DeleteMapping("/notification-boards")
     public ResponseEntity<?> deleteBoards(@RequestBody List<Long> ids) {
 

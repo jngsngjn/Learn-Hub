@@ -31,11 +31,7 @@ public class ManagerCurriculumController {
     private final ManagerCalendarService calendarService;
     private final ManagerCurriculumService curriculumService;
 
-    @GetMapping
-    public String manager() {
-        return "Hello, manager!";
-    }
-
+    // 학생 또는 강사 등록 전 사용
     @GetMapping("/enroll-ready")
     public List<CurriculumTypeAndTh> readyEnroll() {
         return curriculumService.getCurriculumTypeAndTh();

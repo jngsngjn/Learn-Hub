@@ -32,13 +32,13 @@ public class Vote extends BaseEntity {
     private String description;
 
     @Column(name = "is_anonymous", nullable = false)
-    private boolean isAnonymous;
+    private Boolean isAnonymous;
 
     @Column(name = "is_multiple_choice", nullable = false)
-    private boolean isMultipleChoice;
+    private Boolean isMultipleChoice;
 
     @CreationTimestamp
-    @Column(name = "start_time", nullable = false, insertable = false)
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
     @Column(name = "end_time", nullable = false)
