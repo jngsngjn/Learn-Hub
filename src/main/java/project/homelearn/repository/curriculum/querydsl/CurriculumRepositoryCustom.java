@@ -16,4 +16,6 @@ public interface CurriculumRepositoryCustom {
     List<CurriculumTypeAndTh> findCurriculumTypeAndTh();
 
     Curriculum findCurriculumByTeacher(String username);
+
+    Curriculum findCurriculumByStudent(String username);
 }
