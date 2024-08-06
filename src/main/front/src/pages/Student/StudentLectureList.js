@@ -21,9 +21,6 @@ const StudentLectureList = () => {
 
   return (
     <div className="subject_lecture_list_body">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="subject_lecture_list_main_container">
         <div className="subject_lecture_list_page_title_box">
           <h1 className="subject_lecture_list_page_title">강의 영상</h1>

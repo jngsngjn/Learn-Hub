@@ -1,34 +1,17 @@
-.student_lecture_container {
-  display: flex;
-  flex-direction: row;
-  width: 100vw;
-  background-color: #f5f5f5;
-  color: #74b49b;
-}
-
-/* 사이드 바 스타일 */
-.side_bar {
-  width: 514px;
-  padding: 3em;
-  background-color: #fff;
-  border-right: 0.0625em solid #a7d7c5;
-  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.1);
-}
-
 /* 메인 스타일 */
 .main_container {
   display: flex;
   flex-direction: column;
-  width: 1400px;
-  padding: 100px 68px 75px 68px;
+  width: 1120px;
+  padding: 100px 36px;
   background-color: #fff;
   box-shadow: 0 0 0.625em rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid gray;
 }
 
 .lecture_type_image {
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   border-radius: 20px;
 }
 
@@ -44,28 +27,27 @@
 }
 
 .lecture_type_name {
-  font-size: 56px;
+  font-size: 48px;
   margin-bottom: 75px;
 }
 
 .lecture_type_description {
-  font-size: 36px;
+  font-size: 32px;
 }
 
 .board_container {
   display: flex;
-  /* justify-content: space-between; */
   justify-content: flex-start;
   padding: 75px 0 75px 0;
-  gap: 50px;
+  gap: 30px;
   border-bottom: 1px solid #5c8d89;
 }
 
 .inquiry_board_container,
 .lecture_subject_board_container {
-  width: 600px;
-  height: 719px;
-  gap: 50px;
+  width: 500px;
+  height: 700px;
+  gap: 30px;
 }
 
 .board_title_box {
@@ -117,6 +99,8 @@
 }
 
 .subject_text_content {
+  width: 216px;
+  white-space: pre-wrap;
 }
 
 /* 질문 게시판  */
@@ -126,7 +110,7 @@
   height: 120px;
   border: 2px solid #74b49b;
   border-radius: 20px;
-  padding: 22px 25px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -141,9 +125,11 @@
 }
 
 .inquiry_type {
+  width: 64px;
+  text-align: center;
   border: 2px solid #74b49b;
   background-color: #f5f5f5;
-  padding: 6px 20px 5px 21px;
+  padding: 4px 8px;
   border-radius: 20px;
 }
 
@@ -158,7 +144,7 @@
 }
 
 .inquiry_list_title {
-  width: 340px;
+  width: 308px;
   font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
@@ -166,7 +152,7 @@
 }
 
 .inquiry_text_content {
-  width: 340px;
+  width: 308px;
   font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
@@ -212,18 +198,18 @@
 }
 
 .lecture_video_container {
-  width: 1100px; /*피그마는 1200px 인데 좁아보여서 바꿔봄*/
+  width: 950px;
   height: 453px;
-  margin: 75px 0;
+  margin: 50px 0;
   display: grid;
   justify-items: center;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 50px;
+  gap: 30px;
 }
 
 .lecture_video {
-  width: 340px; /*피그마는 350px 188.86px*/
+  width: 320px;
   height: 200px;
 }
 

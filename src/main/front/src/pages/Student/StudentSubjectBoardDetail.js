@@ -21,9 +21,6 @@ const StudentSubjectBoardDetail = () => {
 
   return (
     <div className="student_subject_board_detail_container">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="subject_board_detail_main_container">
         <div className="lecutre_type_container">
           <img

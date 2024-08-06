@@ -6,15 +6,6 @@
   color: #74b49b;
 }
 
-/* 사이드 바 스타일 */
-/* .side_bar {
-  width: 514px;
-  padding: 3em;
-  background-color: #fff;
-  border-right: 0.0625em solid #a7d7c5;
-  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.1);
-} */
-
 /* 메인 스타일 */
 .subject_board_main_container {
   display: flex;

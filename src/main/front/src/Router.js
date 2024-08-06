@@ -10,15 +10,6 @@ import ManagerMain from "./pages/Manager/ManagerMain";
 import ViewBoardImage from "./components/Test/ViewBoardImage";
 import ImageBoard from "./components/Editor/ImageBoard";
 import StudentMain from "./pages/Student/StudentMain";
-import StudentLecture from "./pages/Student/StudentLecture";
-import StudentAssignment from "./pages/Student/StudentAssignment";
-import StudentSubjectBoard from "./pages/Student/StudentSubjectBoard";
-import StudentInquiryBoard from "./pages/Student/StudentInquiryBoard";
-import StudentAssignmentDetail from "./pages/Student/StudentAssignmentDetail";
-import StudentInquiryDetail from "./pages/Student/StudentInquiryDetail";
-import StudentSubjectBoardDetail from "./pages/Student/StudentSubjectBoardDetail";
-import StudentLectureList from "./pages/Student/StudentLectureList";
-import StudentLectureDetail from "./pages/Student/StudentLectureDetail";
 
 const Router = () => {
   return (
@@ -31,7 +22,8 @@ const Router = () => {
         <Route path="/email" element={<LoginEmail />} />
         <Route path="/main" element={<Main />} />
         <Route path="/managers/*" element={<ManagerMain />} />
-        <Route path="/students" element={<StudentMain />} />
+        <Route path="/students/*" element={<StudentMain />} />
+        {/*
         <Route path="/students/:subject/board" element={<StudentLecture />} />
         <Route path="/students/lectureLists" element={<StudentLectureList />} />
         <Route
@@ -58,7 +50,7 @@ const Router = () => {
         <Route
           path="/students/assignmentDetail/:id"
           element={<StudentAssignmentDetail />}
-        />
+        /> */}
         <Route path="/image-board" element={<ImageBoard />} />
         <Route path="/test-view" element={<ViewBoardImage />} />
       </Routes>
