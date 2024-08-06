@@ -3,22 +3,35 @@ package project.homelearn.service.student;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
+import project.homelearn.dto.common.board.QuestionBoardCommentDto;
+import project.homelearn.dto.common.board.QuestionBoardDetailDto;
+import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.student.board.QuestionBoardWriteDto;
+import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
+import project.homelearn.entity.board.scrap.QuestionScrap;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.Subject;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
+import project.homelearn.repository.board.QuestionScrapRepository;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
 import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.common.StorageService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static project.homelearn.config.storage.FolderType.QUESTION_BOARD;
 
@@ -34,6 +47,8 @@ public class StudentQuestionBoardService {
     private final SubjectRepository subjectRepository;
     private final QuestionBoardRepository questionBoardRepository;
     private final QuestionBoardCommentRepository commentRepository;
+    private final CurriculumRepository curriculumRepository;
+    private final QuestionScrapRepository questionScrapRepository;
 
     // 글 작성
     public void writeQuestionBoard(String username, QuestionBoardWriteDto questionBoardWriteDto) {
@@ -195,11 +210,133 @@ public class StudentQuestionBoardService {
     }
 
 
-    //질문 게시판 글 스크랩 = 나도 궁금해
+    // 질문 게시판 글 스크랩 = 나도 궁금해
+    public boolean addScrap(String username, Long questionBoardId) {
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        Student student = studentRepository.findByUsername(username);
 
-    //조회수 증가
+        QuestionScrap myScrap = new QuestionScrap(
+                student,questionBoard
+        );
+
+        if (questionScrapRepository.existByUserNameAndQuestionBoardId(username,questionBoardId)){
+            return false;
+        }
+        else{
+            questionScrapRepository.save(myScrap);
+            return true;
+        }
+    }
+
+    // 질문 게시판 글 스크랩 지우기
+    public boolean deleteScrap(String username, Long questionBoardId) {
+
+        if(questionScrapRepository.existByUserNameAndQuestionBoardId(username,questionBoardId)){
+            questionScrapRepository.deleteByUserNameAndQuestionBoardId(username,questionBoardId);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    // 조회수 증가
+    public void incrementViewCount(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        questionBoard.setCommentCount(questionBoard.getViewCount() + 1);
+    }
 
     //글 상세보기
+    public QuestionBoardDetailDto getQuestionBoard(Long questionBoardId){
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+
+        return new QuestionBoardDetailDto(
+                questionBoard.getId(),
+                questionBoard.getTitle(),
+                questionBoard.getContent(),
+                questionBoard.getViewCount(),
+                questionBoard.getQuestionScraps().size(),
+                questionBoard.getUser().getName(),
+                questionBoard.getCreatedDate(),
+                questionBoard.getCommentCount()
+        );
+    }
+
+    // 댓글 뽑아오기
+    public List<QuestionBoardCommentDto> getQuestionBoardComment(Long questionBoardId){
+        List<QuestionBoardComment> comments = commentRepository.findbyQuestionBoardIdAndParentCommentIsNull(questionBoardId);
+
+        return comments.stream()
+                .map(this::convertToCommentDto)
+                .collect(Collectors.toList());
+    }
+
+    // 댓글 Dto 변환
+    public QuestionBoardCommentDto convertToCommentDto(QuestionBoardComment comment){
+        return new QuestionBoardCommentDto(
+                comment.getId(),
+                comment.getUser().getName(),
+                comment.getUser().getImageName(),
+                comment.getContent(),
+                comment.getCreatedDate(),
+                comment.getReplies().stream()
+                        .map(this::convertToCommentDto)
+                        .collect(Collectors.toList())
+        );
+    }
 
     //게시글 리스트
+    public Page<QuestionBoardDto> getQuestionBoardList(String filterType, String subjectName, Curriculum curriculum, Pageable pageable) {
+        if (filterType == null) {
+            filterType = "default";
+        }
+
+        Page<QuestionBoard> questionBoards;
+
+        // 필터링 타입에 따라 다른 쿼리 메소드 호출
+        switch (filterType) {
+            case "subject":
+                questionBoards = questionBoardRepository.findBySubjectNameAndCurriculum(subjectName, curriculum, pageable);
+                break;
+
+            case "unanswered":
+                questionBoards = questionBoardRepository.findByCommentsIsNullAndCurriculum(curriculum, pageable);
+                break;
+
+            case "subjectUnanswered":
+                questionBoards = questionBoardRepository.findBySubjectNameAndCommentsIsNullAndCurriculum(subjectName, curriculum, pageable);
+                break;
+
+            default:
+                questionBoards = questionBoardRepository.findByCreatedDateDesc(curriculum, pageable);
+                break;
+        }
+
+        // Entity -> DTO 변환
+        return questionBoards.map(this::convertToListDto);
+    }
+
+    private QuestionBoardDto convertToListDto(QuestionBoard questionBoard) {
+
+        //선생님이 글을 달았는지 안달았는지 여부를 추가해야함
+        boolean isCommentHere = questionBoardRepository.hasTeacherComment(questionBoard);
+
+        return new QuestionBoardDto(
+                questionBoard.getId(),
+                questionBoard.getSubject().getName(),
+                questionBoard.getTitle(),
+                questionBoard.getUser().getName(),
+                questionBoard.getContent(),
+                questionBoard.getCreatedDate(),
+                questionBoard.getCommentCount(),
+                isCommentHere
+        );
+    }
+
+    // 최근 질문 5개
+    public List<QuestionTop5Dto> getQuestionTop5(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        return questionBoardRepository.findQuestionTop5(curriculum);
+    }
 }
