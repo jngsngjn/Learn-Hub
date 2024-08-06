@@ -1,12 +1,11 @@
 package project.homelearn.dto.teacher.lecture;
 
-import com.querydsl.core.annotations.QueryProjection;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class LectureListDto {
+public class TeacherLectureViewDto {
 
     @NotNull
     private Long lectureId;
@@ -15,12 +14,12 @@ public class LectureListDto {
     private String title;
 
     @NotBlank
+    private String content;
+
+    @NotBlank
     private String link;
 
-    @QueryProjection
-    public LectureListDto(Long lectureId, String title, String link) {
-        this.title = title;
-        this.lectureId = lectureId;
-        this.link = link;
-    }
+    private String subjectName;
+
+    private int completeRate;
 }

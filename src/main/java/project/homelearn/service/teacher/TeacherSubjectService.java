@@ -17,6 +17,7 @@ import project.homelearn.entity.curriculum.SubjectBoard;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.board.SubjectBoardRepository;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.curriculum.LectureRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
 import project.homelearn.repository.user.TeacherRepository;
@@ -41,6 +42,7 @@ public class TeacherSubjectService {
     private final LectureRepository lectureRepository;
     private final SubjectBoardRepository subjectBoardRepository;
     private final QuestionBoardRepository questionBoardRepository;
+    private final CurriculumRepository curriculumRepository;
 
     public void createSubject(String username, SubjectEnrollDto subjectDto) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
@@ -163,5 +165,10 @@ public class TeacherSubjectService {
 
     public SubjectBoardViewDto getSubjectBoard(Long boardId) {
         return subjectBoardRepository.findSubjectBoard(boardId);
+    }
+
+    public List<SubjectSelectListDto> getSubjectSelectList(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        return subjectRepository.findSubjectSelectList(curriculum);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.teacher.lecture.LectureEnrollDto;
-import project.homelearn.service.teacher.LectureService;
+import project.homelearn.service.teacher.TeacherLectureService;
 
 import java.security.Principal;
 
@@ -20,14 +20,14 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class TeacherLectureController {
 
-    private final LectureService lectureService;
+    private final TeacherLectureService teacherLectureService;
 
     // 강의 등록
     @PostMapping
     public ResponseEntity<?> enrollLecture(Principal principal,
                                            @Valid @RequestBody LectureEnrollDto lectureDto) {
         String username = principal.getName();
-        lectureService.enrollLecture(username, lectureDto);
+        teacherLectureService.enrollLecture(username, lectureDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -36,7 +36,7 @@ public class TeacherLectureController {
     public ResponseEntity<?> modifyLecture(@PathVariable("lectureId") Long lectureId, Principal principal,
                                            @Valid @RequestBody LectureEnrollDto lectureDto) {
         String username = principal.getName();
-        boolean result = lectureService.modifyLecture(username, lectureId, lectureDto);
+        boolean result = teacherLectureService.modifyLecture(username, lectureId, lectureDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -47,7 +47,7 @@ public class TeacherLectureController {
     @DeleteMapping("/{lectureId}")
     public ResponseEntity<?> deleteLecture(@PathVariable("lectureId") Long lectureId, Principal principal) {
         String username = principal.getName();
-        boolean result = lectureService.deleteLecture(username, lectureId);
+        boolean result = teacherLectureService.deleteLecture(username, lectureId);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
