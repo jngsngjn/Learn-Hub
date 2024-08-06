@@ -186,26 +186,31 @@ const Calendar = () => {
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div>
-          <h3 className="modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
-          <div className="event-form">
+          <h3 className="calendar-modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
+          <div className="calendar-event-form-edit">
+            <label>제목</label>
             <input
               type="text"
               placeholder="일정 제목"
               value={newEvent.title}
               onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
             />
-            <label>시작일</label>
-            <input
-              type="date"
-              value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
-              onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
-            />
-            <label>종료일</label>
-            <input
-              type="date"
-              value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
-              onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
-            />
+            <div className="date-input-container">
+              <label>시작일</label>
+              <input
+                type="date"
+                value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
+                onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
+              />
+            </div>
+            <div className="date-input-container">
+              <label>종료일</label>
+              <input
+                type="date"
+                value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
+                onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
+              />
+            </div>
             <div className="color-picker">
               {['#FF9999', '#99FF99', '#9999FF'].map(color => (
                 <div
