@@ -191,7 +191,6 @@ public class StudentBoardService {
         return new FreeBoardDto(
                 freeBoard.getId(),
                 freeBoard.getTitle(),
-                freeBoard.getContent(),
                 freeBoard.getUser().getName(),
                 freeBoard.getCreatedDate(),
                 freeBoard.getCommentCount()
