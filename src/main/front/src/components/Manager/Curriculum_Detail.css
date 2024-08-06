@@ -1,47 +1,89 @@
 .curriculum-detail {
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: auto;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.curriculum-info, .edit-group {
-  margin-bottom: 15px;
+.header {
+  text-align: center;
 }
 
-.info-group, .edit-group {
+.curriculum-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
-.label {
-  font-weight: bold;
+.left-container {
+  flex: 1 1 40%;
 }
 
-.color-input-select {
-  cursor: pointer;
+.right-container {
+  flex: 1 1 60%;
 }
 
-.color-box {
-  width: 30px;
+.progress-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress {
   height: 30px;
-  border-radius: 4px;
+  background-color: #76c7c0;
+}
+
+.progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  line-height: 30px;
+  color: #fff;
+}
+
+.info-box,
+.calendar-box,
+.survey-box {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.info-box h2,
+.calendar-box h2,
+.survey-box h2 {
+  margin-top: 0;
+}
+
+.detail-link {
+  color: #007bff;
+  text-decoration: none;
 }
 
 .update-button {
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  text-align: center;
 }
 
 .update-button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
 }

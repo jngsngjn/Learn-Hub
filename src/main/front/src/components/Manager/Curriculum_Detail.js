@@ -1,129 +1,122 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { CirclePicker } from 'react-color';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import swal from 'sweetalert';
+import Calendar from './Calendar';
 import './Curriculum_Detail.css';
 
 const CurriculumDetail = () => {
-  const { id } = useParams(); // useParams 훅을 통해 매개변수 가져오기
+  const { curriculumId } = useParams();
   const [curriculum, setCurriculum] = useState({
-    id: '',
-    type: '',
-    startDate: '',
-    endDate: '',
-    color: '',
-    teacherId: '',
-    teacherName: '',
+    name: '',
+    th: '',
+    progress: 0,
+  });
+  const [attendance, setAttendance] = useState({
     attendance: 0,
     total: 0,
+    ratio: 0,
   });
-  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [teacher, setTeacher] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
+  const [schedules, setSchedules] = useState([]);
+  const [survey, setSurvey] = useState({
+    title: '',
+    th: '',
+    completed: 0,
+    total: 0,
+  });
 
   const getToken = () => localStorage.getItem('access-token');
 
   useEffect(() => {
-    const fetchCurriculum = async () => {
+    if (!curriculumId) {
+      console.error('Invalid curriculum ID');
+      return;
+    }
+
+    const fetchData = async () => {
       try {
         const token = getToken();
-        const response = await axios.get(`/managers/curriculum/${id}/basic`, {
+        const config = {
           headers: { access: token },
-        });
-        setCurriculum(response.data);
+        };
+
+        console.log('Fetching curriculum details');
+        const [basicResponse, attendanceResponse, teacherResponse, calendarResponse, surveyResponse] = await Promise.all([
+          axios.get(`/managers/curriculum/${curriculumId}/basic`, config),
+          axios.get(`/managers/curriculum/${curriculumId}/attendance`, config),
+          axios.get(`/managers/curriculum/${curriculumId}/teacher`, config),
+          axios.get(`/managers/curriculum/${curriculumId}/calendar`, config),
+          axios.get(`/managers/curriculum/${curriculumId}/survey`, config),
+        ]);
+
+        console.log('Basic Response:', basicResponse.data);
+        console.log('Attendance Response:', attendanceResponse.data);
+        console.log('Teacher Response:', teacherResponse.data);
+        console.log('Calendar Response:', calendarResponse.data);
+        console.log('Survey Response:', surveyResponse.data);
+
+        setCurriculum(basicResponse.data);
+        setAttendance(attendanceResponse.data);
+        setTeacher(teacherResponse.data);
+        setSchedules(calendarResponse.data);
+        setSurvey(surveyResponse.data);
       } catch (error) {
         console.error('Error:', error);
       }
     };
 
-    fetchCurriculum();
-  }, [id]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCurriculum({ ...curriculum, [name]: value });
-  };
-
-  const handleColorChange = (color) => {
-    setCurriculum({ ...curriculum, color: color.hex });
-    setIsColorPickerOpen(false);
-  };
-
-  const handleUpdateCurriculum = async () => {
-    const updatedCurriculum = {
-      teacherId: curriculum.teacherId,
-      startDate: curriculum.startDate,
-      endDate: curriculum.endDate,
-      color: curriculum.color,
-    };
-
-    if (new Date(updatedCurriculum.endDate) <= new Date(updatedCurriculum.startDate)) {
-      swal('수정 실패', '종료일은 시작일 이후여야 합니다.', 'warning');
-      return;
-    }
-
-    try {
-      const token = getToken();
-      const response = await axios.patch(`/managers/manage-curriculums/${id}`, updatedCurriculum, {
-        headers: { access: token },
-      });
-
-      if (response.status === 200) {
-        swal('수정 성공', '교육 과정이 성공적으로 수정되었습니다.', 'success');
-      } else {
-        console.error('교육 과정 수정 실패');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    fetchData();
+  }, [curriculumId]);
 
   return (
     <div className="curriculum-detail">
-      <h1>교육 과정 상세 정보</h1>
-      <div className="curriculum-info">
-        <div className="info-group">
-          <label>교육 과정</label>
-          <span>{curriculum.type}</span>
-        </div>
-        <div className="info-group">
-          <label>강사 이름</label>
-          <span>{curriculum.teacherName}</span>
-        </div>
-        <div className="info-group">
-          <label>출석 인원</label>
-          <span>{curriculum.attendance} / {curriculum.total}</span>
-        </div>
+      <div className="header">
+        <h1>교육 과정</h1>
       </div>
-      <div className="edit-group">
-        <label>시작일</label>
-        <input type="date" name="startDate" value={curriculum.startDate} onChange={handleInputChange} />
-      </div>
-      <div className="edit-group">
-        <label>종료일</label>
-        <input type="date" name="endDate" value={curriculum.endDate} onChange={handleInputChange} />
-      </div>
-      <div className="edit-group">
-        <label>기수 색상</label>
-        <input type="text" value={curriculum.color} readOnly />
-        <div className="color-input-select" onClick={() => setIsColorPickerOpen(true)}>
-          <div className="color-box" style={{ backgroundColor: curriculum.color }}></div>
-        </div>
-      </div>
-      {isColorPickerOpen && (
-        <div className="color-picker-modal-overlay" onClick={() => setIsColorPickerOpen(false)}>
-          <div className="color-picker-modal-content" onClick={(e) => e.stopPropagation()}>
-            <CirclePicker
-              color={curriculum.color}
-              onChangeComplete={handleColorChange}
-            />
+      <div className="curriculum-container">
+        <div className="left-container">
+          <div className="progress-container">
+            <div className="progress-bar">
+              <div className="progress" style={{ width: `${curriculum.progress}%` }}></div>
+              <span className="progress-text">{curriculum.progress.toFixed(1)}% / 100%</span>
+            </div>
+          </div>
+
+          <div className="info-box">
+            <h2>학생 출결 현황</h2>
+            <p>{attendance.attendance} / {attendance.total}</p>
+            <p>{attendance.ratio}%</p>
+            <Link to={`/attendance/${curriculumId}`} className="detail-link">자세히 보기</Link>
+          </div>
+
+          <div className="info-box">
+            <h2>강사 정보</h2>
+            <p>{teacher.name}</p>
+            <p>{teacher.email}</p>
+            <p>{teacher.phone}</p>
+            <Link to={`/teacher/${curriculumId}`} className="detail-link">자세히 보기</Link>
+          </div>
+
+          <div className="info-box survey-box">
+            <h2>설문 조사</h2>
+            <p>{survey.title}</p>
+            <p>{survey.completed} / {survey.total}</p>
+            <Link to={`/survey/${curriculumId}`} className="detail-link">자세히 보기</Link>
           </div>
         </div>
-      )}
-      <div className="edit-group">
-        <label>강사 ID</label>
-        <input type="text" name="teacherId" value={curriculum.teacherId} onChange={handleInputChange} />
+
+        <div className="right-container">
+          <div className="calendar-box">
+            <h2>캘린더</h2>
+            <Calendar events={schedules} />
+          </div>
+        </div>
       </div>
-      <button className="update-button" onClick={handleUpdateCurriculum}>수정하기</button>
+      <button className="update-button">교육 과정 수정</button>
     </div>
   );
 };
