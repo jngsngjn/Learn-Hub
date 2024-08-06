@@ -16,12 +16,14 @@ import project.homelearn.dto.student.board.QuestionBoardWriteDto;
 import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
+import project.homelearn.entity.board.scrap.QuestionScrap;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.Subject;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
+import project.homelearn.repository.board.QuestionScrapRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
 import project.homelearn.repository.user.StudentRepository;
@@ -46,6 +48,7 @@ public class StudentQuestionBoardService {
     private final QuestionBoardRepository questionBoardRepository;
     private final QuestionBoardCommentRepository commentRepository;
     private final CurriculumRepository curriculumRepository;
+    private final QuestionScrapRepository questionScrapRepository;
 
     // 글 작성
     public void writeQuestionBoard(String username, QuestionBoardWriteDto questionBoardWriteDto) {
@@ -208,6 +211,34 @@ public class StudentQuestionBoardService {
 
 
     // 질문 게시판 글 스크랩 = 나도 궁금해
+    public boolean addScrap(String username, Long questionBoardId) {
+        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        Student student = studentRepository.findByUsername(username);
+
+        QuestionScrap myScrap = new QuestionScrap(
+                student,questionBoard
+        );
+
+        if (questionScrapRepository.existByUserNameAndQuestionBoardId(username,questionBoardId)){
+            return false;
+        }
+        else{
+            questionScrapRepository.save(myScrap);
+            return true;
+        }
+    }
+
+    // 질문 게시판 글 스크랩 지우기
+    public boolean deleteScrap(String username, Long questionBoardId) {
+
+        if(questionScrapRepository.existByUserNameAndQuestionBoardId(username,questionBoardId)){
+            questionScrapRepository.deleteByUserNameAndQuestionBoardId(username,questionBoardId);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
 
     // 조회수 증가

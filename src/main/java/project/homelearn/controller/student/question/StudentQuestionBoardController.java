@@ -138,10 +138,31 @@ public class StudentQuestionBoardController {
     }
 
     // 질문 게시판 글 스크랩 = 나도 궁금해
+    @PostMapping("/{questionBoardId}/scrap")
+    public ResponseEntity<?> addScrap(@PathVariable("questionBoardId")Long questionBoardId,
+                                      Principal principal) {
+        String username = principal.getName();
+        boolean result = studentQuestionBoardService.addScrap(username, questionBoardId);
 
-    // 조회수 증가
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
-    // 글 상세보기
+    @DeleteMapping("/{questionBoardId}/scrap")
+    public ResponseEntity<?> deleteScrap(@PathVariable("questionBoardId")Long questionBoardId,
+                                         Principal principal){
+        String username = principal.getName();
+        boolean result = studentQuestionBoardService.deleteScrap(username,questionBoardId);
 
-    // 게시글 리스트
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
