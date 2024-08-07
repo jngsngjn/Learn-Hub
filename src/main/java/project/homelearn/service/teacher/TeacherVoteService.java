@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.teacher.vote.VoteBasicDto;
+import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
 import project.homelearn.dto.teacher.vote.VoteCreateDto;
 import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -26,7 +26,7 @@ public class TeacherVoteService {
     private final VoteRepository voteRepository;
     private final CurriculumRepository curriculumRepository;
 
-    public VoteBasicDto getVoteBasic(Long voteId, String username) {
+    public TeacherVoteBasicDto getVoteBasic(Long voteId, String username) {
         Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
         return voteRepository.findVoteBasic(voteId, curriculum);
     }
@@ -91,7 +91,13 @@ public class TeacherVoteService {
             Vote vote = voteRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Vote not found" + id));
 
+            boolean finished = vote.isFinished();
+            if (finished) {
+                return false;
+            }
+
             vote.setFinished(true);
+            vote.setEndTime(LocalDateTime.now());
             return true;
         } catch (Exception e) {
             log.error("Error finishing vote for voteId '{}'", id, e);

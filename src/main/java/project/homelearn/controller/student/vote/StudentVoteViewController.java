@@ -1,10 +1,12 @@
 package project.homelearn.controller.student.vote;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.student.vote.VoteFinishDto;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
 import project.homelearn.service.common.CommonVoteService;
 import project.homelearn.service.student.StudentVoteService;
@@ -14,6 +16,7 @@ import java.security.Principal;
 /**
  * Author : 정성진
  */
+@Slf4j
 @RestController
 @RequestMapping("/students/votes")
 @RequiredArgsConstructor
@@ -43,28 +46,23 @@ public class StudentVoteViewController {
 
     /**
      * 투표 상세 조회
-     * 참여 전 -
-     * 참여 후 -
      */
     @GetMapping("/{voteId}")
     public ResponseEntity<?> viewVote(@PathVariable("voteId") Long voteId,
                                       Principal principal) {
         String username = principal.getName();
-        boolean participate = studentVoteService.isParticipate(voteId, username);
         boolean finished = studentVoteService.isVoteFinished(voteId);
 
-        // 참여 O && 종료
-        if (participate && finished) {
+        // 마감된 투표
+        if (finished) {
+            log.info("마감된 투표 조회");
+            VoteFinishDto result = studentVoteService.getVoteFinishDto(voteId, username);
+            return new ResponseEntity<>(result, HttpStatus.OK);
 
-        }
-
-
-
-        if (participate) { // 투표 참여 O
+        // 진행 중인 투표
+        } else {
+            log.info("진행 중인 투표 조회");
             return new ResponseEntity<>(HttpStatus.OK);
         }
-
-        // 투표 참여 X
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

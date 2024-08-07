@@ -3,7 +3,7 @@ package project.homelearn.controller.teacher.vote;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.teacher.vote.VoteBasicDto;
+import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
 import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
 import project.homelearn.service.common.CommonVoteService;
@@ -47,8 +47,8 @@ public class TeacherVoteViewController {
      * 2. 투표 참여 현황 (익명 투표 시 null 반환) - ✅
      */
     @GetMapping("/{voteId}/basic")
-    public VoteBasicDto viewVoteBasic(@PathVariable("voteId") Long voteId,
-                                      Principal principal) {
+    public TeacherVoteBasicDto viewVoteBasic(@PathVariable("voteId") Long voteId,
+                                             Principal principal) {
         return voteService.getVoteBasic(voteId, principal.getName());
     }
 

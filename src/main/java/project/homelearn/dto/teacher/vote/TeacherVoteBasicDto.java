@@ -1,13 +1,16 @@
-package project.homelearn.dto.student.vote;
+package project.homelearn.dto.teacher.vote;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
 
+// response
 @Data
-public class VoteBeforeDto {
+@Builder
+public class TeacherVoteBasicDto {
 
     private Long voteId;
     private String title;
@@ -20,7 +23,12 @@ public class VoteBeforeDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endTime;
 
+    private Long total; // 총 학생 수
     private Long participantCount; // 총 투표 참여 수
 
-    private List<VoteBeforeSub> voteBeforeSubs;
+    private Map<String, Long> voteCountByContent; // 항목별 투표 수
 }
+
+/*
+
+ */
