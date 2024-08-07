@@ -45,30 +45,31 @@ const CurriculumDetail = () => {
           headers: { access: token },
         };
 
-        console.log('Fetching curriculum details for ID:', id);
-        const [basicResponse, attendanceResponse, teacherResponse, calendarResponse, surveyResponse] = await Promise.all([
-          axios.get(`/curriculum/${id}/basic`, config),
-          axios.get(`/curriculum/${id}/attendance`, config),
-          axios.get(`/curriculum/${id}/teacher`, config),
-          axios.get(`/curriculum/${id}/calendar`, config),
-          axios.get(`/curriculum/${id}/survey`, config),
-        ]);
+        console.log('ID 값:', id);
 
+        const basicResponse = await axios.get(`/managers/curriculum/${id}/basic`, config);
         console.log('Basic Response:', basicResponse);
-        console.log('Attendance Response:', attendanceResponse);
-        console.log('Teacher Response:', teacherResponse);
-        console.log('Calendar Response:', calendarResponse);
-        console.log('Survey Response:', surveyResponse);
-
         setCurriculum(basicResponse.data);
+
+        const attendanceResponse = await axios.get(`/managers/curriculum/${id}/attendance`, config);
+        console.log('Attendance Response:', attendanceResponse);
         setAttendance(attendanceResponse.data);
+
+        const teacherResponse = await axios.get(`/managers/curriculum/${id}/teacher`, config);
+        console.log('Teacher Response:', teacherResponse);
         setTeacher(teacherResponse.data);
+
+        const calendarResponse = await axios.get(`/managers/curriculum/${id}/calendar`, config);
+        console.log('Calendar Response:', calendarResponse);
         setSchedules(calendarResponse.data);
-        setSurvey(surveyResponse.data);
+
+        // survey는 없기 때문에 주석처리
+        // const surveyResponse = await axios.get(`/managers/curriculum/${id}/survey`, config);
+        // console.log('Survey Response:', surveyResponse);
+        // setSurvey(surveyResponse.data);
 
       } catch (error) {
-        console.error('Error:', error);
-        console.error('Error response:', error.response);
+        console.error('response 오류:', error.response);
       }
     };
 
