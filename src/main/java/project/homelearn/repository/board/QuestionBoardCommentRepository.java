@@ -10,5 +10,5 @@ import java.util.List;
 public interface QuestionBoardCommentRepository extends JpaRepository<QuestionBoardComment, Long> {
 
     @Query("select q from QuestionBoardComment q where q.questionBoard.id =:questionBoardId and q.parentComment.id is null")
-    List<QuestionBoardComment> findbyQuestionBoardIdAndParentCommentIsNull(@Param("questionBoardId")Long questionBoardId);
+    List<QuestionBoardComment> findByQuestionBoardIdAndParentCommentIsNull(@Param("questionBoardId")Long questionBoardId);
 }

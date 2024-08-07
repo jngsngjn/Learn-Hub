@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.manager.dashboard.CurriculumDto;
+import project.homelearn.dto.manager.dashboard.CurriculumDashboardDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
+import project.homelearn.dto.manager.survey.CurriculumSimpleDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.entity.teacher.Teacher;
@@ -216,8 +217,8 @@ public class ManagerCurriculumService {
         return attendanceDto;
     }
 
-    public CurriculumSurveyDto getCurriculumSurvey(Long curriculumId) {
-        return surveyRepository.findCurriculumSurvey(curriculumId);
+    public CurriculumSurveyDto getProgressSurvey(Long curriculumId) {
+        return surveyRepository.findProgressSurvey(curriculumId);
     }
 
     /**
@@ -229,26 +230,34 @@ public class ManagerCurriculumService {
      * 3. 학생총원 ✅
      * 4. 출석한 학생인원 ✅
      * */
-    public List<CurriculumDto> getCurriculumList(CurriculumType type) {
+    public List<CurriculumDashboardDto> getCurriculumList(CurriculumType type) {
         List<Curriculum> curriculums = curriculumRepository.findByCurriculumType(type);
         LocalDateTime now = LocalDateTime.now();
 
         return curriculums.stream()
                 .map(curriculum -> {
-                    CurriculumDto curriculumDto = new CurriculumDto();
-                    curriculumDto.setId(curriculum.getId());
-                    curriculumDto.setName(curriculum.getName());
-                    curriculumDto.setTh(curriculum.getTh());
-                    curriculumDto.setTeacherName(userRepository.findTeacherNameByCurriculumId(curriculum.getId()));
-                    curriculumDto.setAttendance(attendanceRepository.countAttendanceByCurriculumId(curriculum.getId(), now.toLocalDate()));
-                    curriculumDto.setTotal(userRepository.countTotalStudentsByCurriculumId(curriculum.getId()));
+                    CurriculumDashboardDto curriculumDashboardDto = new CurriculumDashboardDto();
+                    curriculumDashboardDto.setId(curriculum.getId());
+                    curriculumDashboardDto.setName(curriculum.getName());
+                    curriculumDashboardDto.setTh(curriculum.getTh());
+                    curriculumDashboardDto.setTeacherName(userRepository.findTeacherNameByCurriculumId(curriculum.getId()));
+                    curriculumDashboardDto.setAttendance(attendanceRepository.countAttendanceByCurriculumId(curriculum.getId(), now.toLocalDate()));
+                    curriculumDashboardDto.setTotal(userRepository.countTotalStudentsByCurriculumId(curriculum.getId()));
 
-                    return curriculumDto;
+                    return curriculumDashboardDto;
                 })
                 .collect(Collectors.toList());
     }
 
     public List<CurriculumTypeAndTh> getCurriculumTypeAndTh() {
         return curriculumRepository.findCurriculumTypeAndTh();
+    }
+
+    public CurriculumSimpleDto getCurriculumSimple(Long curriculumId) {
+        return curriculumRepository.findCurriculumSimple(curriculumId);
+    }
+
+    public List<String> getCurriculumColor() {
+        return curriculumRepository.findAllColor();
     }
 }

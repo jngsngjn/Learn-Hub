@@ -1,4 +1,4 @@
-package project.homelearn.controller.manager.curriculum;
+package project.homelearn.controller.manager.survey;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class ManagerSurveyController {
 
     private final ManagerSurveyService surveyService;
 
-    // 설문조사 시작 - 학생에게 알림보내야 함
+    // 설문조사 시작
     @PostMapping("/survey-start/{id}")
     public ResponseEntity<?> startSurvey(@PathVariable("id") Long id) {
         boolean result = surveyService.startSurveyProcess(id);

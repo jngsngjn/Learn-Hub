@@ -24,6 +24,9 @@ public class Survey {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private int round;
+
     @Column(name = "is_finished", nullable = false)
     private boolean isFinished = false;
 

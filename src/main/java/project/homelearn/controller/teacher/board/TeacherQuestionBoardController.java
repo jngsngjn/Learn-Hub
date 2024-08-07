@@ -20,6 +20,9 @@ import project.homelearn.service.teacher.TeacherQuestionBoardService;
 import java.security.Principal;
 import java.util.List;
 
+/**
+ * Author : 김승민
+ */
 @Slf4j
 @RestController
 @RequestMapping("/teachers/questionBoards")
@@ -139,7 +142,7 @@ public class TeacherQuestionBoardController {
         QuestionBoardDetailDto viewQuestionBoard = teacherQuestionBoardService.getQuestionBoard(questionBoardId);
 
         if (viewQuestionBoard != null) {
-            //조회수 증가
+            // 조회수 증가
             teacherQuestionBoardService.incrementViewCount(questionBoardId);
             return new ResponseEntity<>(viewQuestionBoard, HttpStatus.OK);
         }
@@ -156,7 +159,7 @@ public class TeacherQuestionBoardController {
         if (viewComments != null) {
             return new ResponseEntity<>(viewComments, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>("작성된 댓글이 없습니다.",HttpStatus.NOT_FOUND);
         }
     }
