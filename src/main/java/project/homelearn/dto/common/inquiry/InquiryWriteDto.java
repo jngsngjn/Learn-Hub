@@ -12,3 +12,10 @@ public class InquiryWriteDto {
     @NotBlank
     private String content;
 }
+
+/*
+{
+    "title": "title",
+    "content": "content"
+}
+ */

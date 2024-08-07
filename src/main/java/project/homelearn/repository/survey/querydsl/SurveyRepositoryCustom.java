@@ -6,6 +6,7 @@ import project.homelearn.dto.manager.dashboard.SurveyDashboardDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumSurveyDto;
 import project.homelearn.dto.manager.survey.CurriculumAndSurveyDto;
 import project.homelearn.dto.manager.survey.SurveyChoiceStatisticsDto;
+import project.homelearn.dto.student.survey.SurveyModalDto;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +28,6 @@ public interface SurveyRepositoryCustom {
     List<SurveyChoiceStatisticsDto> findSurveyChoiceStatistics(Long surveyId);
 
     Page<String> findSurveyTextResponse(Long surveyId, Pageable pageable);
+
+    SurveyModalDto findSurveyModal(Long surveyId);
 }
