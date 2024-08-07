@@ -37,6 +37,12 @@ public class ManagerCurriculumController {
         return curriculumService.getCurriculumTypeAndTh();
     }
 
+    // 교육과정 등록 및 수정 시 사용
+    @GetMapping("/enroll-curriculum-color")
+    public List<String> viewCurriculumColor() {
+        return curriculumService.getCurriculumColor();
+    }
+
     /**
      * 교육과정 전체 페이지
      * Author : 김승민

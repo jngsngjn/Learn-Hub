@@ -26,4 +26,7 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, Long>, C
 
     @Query("select new project.homelearn.dto.manager.survey.CurriculumSimpleDto(c.name, c.th) from Curriculum c where c.id =:curriculumId")
     CurriculumSimpleDto findCurriculumSimple(@Param("curriculumId") Long curriculumId);
+
+    @Query("select c.color from Curriculum c")
+    List<String> findAllColor();
 }

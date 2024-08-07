@@ -256,4 +256,8 @@ public class ManagerCurriculumService {
     public CurriculumSimpleDto getCurriculumSimple(Long curriculumId) {
         return curriculumRepository.findCurriculumSimple(curriculumId);
     }
+
+    public List<String> getCurriculumColor() {
+        return curriculumRepository.findAllColor();
+    }
 }
