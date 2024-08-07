@@ -2,51 +2,46 @@
   max-width: 1200px;
 }
 
-.header {
-  margin-bottom: 20px;
-}
-
-.header h2 {
-  font-size: 24px;
-  color: #333;
-}
-
 .curriculum-detail-container {
   background-color: #f5f5f5;
   border-radius: 10px;
   padding: 20px;
 }
 
-.title-progress-bar {
+.curriculum-detail-title-progress-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.title-progress-bar h2 {
-  font-size: 20px;
-  color: #333;
-}
-
-.progress-container {
+.curriculum-detail-progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   width: 50%;
 }
 
-.progress-bar {
-  width: 100%;
+.curriculum-detail-progress-bar {
+  width: 50%;
   height: 10px;
   background-color: #e0e0e0;
   border-radius: 5px;
   overflow: hidden;
 }
 
-.progress {
+.curriculum-detail-progress-title{
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 200px;
+}
+
+.curriculum-detail-progress {
   height: 100%;
   background-color: #757575;
 }
 
-.progress-text {
+.curriculum-detail-progress-text {
   display: block;
   text-align: right;
   margin-top: 5px;
@@ -54,82 +49,88 @@
   font-size: 14px;
 }
 
-.content-container {
+.curriculum-detail-content-container {
   display: flex;
   gap: 20px;
 }
 
-.left-container {
+.curriculum-detail-left-container {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
 
-.info-box {
+.curriculum-detail-info-box {
   background: #fff;
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  width: calc(50% - 10px);
+  width:265px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  padding: 10px;
 }
 
-.survey-box {
+.curriculum-detail-survey-box {
   width: 100%;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  padding: 20px;
 }
 
-.info-box-title {
+.curriculum-detail-info-box-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.info-box-title i {
+.curriculum-detail-info-box-title i {
   font-size: 20px;
   color: #757575;
 }
 
-.info-box-title span {
+.curriculum-detail-info-box-title span {
   font-size: 16px;
   font-weight: bold;
   color: #333;
 }
 
-.detail-link {
+.curriculum-detail-link {
   color: #757575;
   text-decoration: none;
   font-size: 14px;
 }
 
-.info-box-content {
+.curriculum-detail-info-box-content {
   text-align: left;
 }
 
-.attendance-ratio {
+.curriculum-detail-attendance-ratio {
   font-size: 32px;
   font-weight: bold;
   color: #757575;
   margin: 0;
 }
 
-.attendance-count {
+.curriculum-detail-attendance-count {
   font-size: 16px;
   color: #666;
   margin: 5px 0 0;
 }
 
-.info-box-content p {
+.curriculum-detail-info-box-content p {
   margin: 5px 0;
-  font-size: 14px;
+  font-size: 20px;
 }
 
-.info-box-content i {
+.curriculum-detail-info-box-content i {
   margin-right: 5px;
   color: #666;
 }
 
-.right-container {
+.curriculum-detail-right-container {
   flex: 1;
   background: #fff;
   border-radius: 10px;
@@ -137,7 +138,7 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.curriculum-detail-calendar {
+.curriculum-detail-calendar-title {
   font-size: 18px;
   font-weight: bold;
   color: #333;
@@ -147,16 +148,91 @@
   margin-bottom: 15px;
 }
 
-.curriculum-detail-calendar i {
+.curriculum-detail-calendar-title i {
   margin-right: 10px;
   color: #757575;
 }
 
-.survey-title {
-  font-weight: bold;
-  margin-bottom: 5px;
+.curriculum-detail-survey-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.survey-count {
+.curriculum-detail-survey-content {
+  margin-top: 10px;
+}
+
+.curriculum-detail-survey-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.curriculum-detail-survey-th {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.curriculum-detail-survey-count {
+  font-size: 16px;
   color: #666;
+}
+
+.curriculum-detail-survey-name {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.curriculum-detail-survey-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.curriculum-detail-survey-status-text {
+  font-size: 14px;
+  color: #757575;
+}
+
+.curriculum-detail-survey-button {
+  background-color: #757575;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.curriculum-detail-survey-button:hover {
+    color:#000;
+    background:#C7C8CC;
+}
+.curriculum-detail-update-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.curriculum-detail-update-button {
+  background-color: #757575;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.curriculum-detail-update-button:hover{
+    color:#000;
+    background:#C7C8CC;
+}
+
+.curriculum-detail-no-survey {
+  border: 3px solid #757575;
+  border-radius: 20px;
+  padding: 10px;
+  text-align: center;
 }

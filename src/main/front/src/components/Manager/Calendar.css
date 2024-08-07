@@ -270,10 +270,18 @@
   font-size: 30px;
 }
 
+.sunday {
+  color: #FF0000;
+}
+
+.saturday {
+  color: #0000FF;
+}
+
 .holiday {
   color: #FF0000;
 }
 
-.weekend {
-  color: #FF0000;
+.curriculum-detail-circular-progress{
+    font-size:10px;
 }

@@ -181,7 +181,7 @@ const Calendar = () => {
   // 주말 확인
   const isWeekend = (date) => {
     const day = date.getDay();
-    return day === 0 || day === 6;
+    return { isSunday: day === 0, isSaturday: day === 6 };
   };
 
   return (
@@ -216,7 +216,9 @@ const Calendar = () => {
                   day.date.getFullYear() === selectedDate.getFullYear() &&
                   day.date.getMonth() === selectedDate.getMonth() &&
                   day.date.getDate() === selectedDate.getDate() ? 'selected' : ''
-                } ${isCurrentDate(day.date) ? 'current-date' : ''} ${isHoliday(day.date) ? 'holiday' : ''} ${isWeekend(day.date) ? 'weekend' : ''}`}
+                } ${isCurrentDate(day.date) ? 'current-date' : ''} ${isHoliday(day.date) ? 'holiday' : ''} ${
+                  isWeekend(day.date).isSunday ? 'sunday' : isWeekend(day.date).isSaturday ? 'saturday' : ''
+                }`}
                 onClick={() => handleDateClick(day.date)}
               >
                 <span className="day-number">{day.date.getDate()}</span>
