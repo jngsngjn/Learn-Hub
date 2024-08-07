@@ -176,7 +176,7 @@ const TeacherManagement = () => {
                   <td>
                     <input type="checkbox" checked={selectedTeachers.includes(teacher.teacherId)} onChange={() => handleCheckboxChange(teacher.teacherId)} onClick={(e) => e.stopPropagation()} />
                   </td>
-                  <td>{teacher.teacherId}</td>
+                  <td>{index+1}</td>
                   <td>{teacher.name}</td>
                   <td>{teacher.curriculumName}</td>
                   <td>{teacher.curriculumTh}</td>

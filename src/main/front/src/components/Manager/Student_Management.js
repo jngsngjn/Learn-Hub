@@ -230,7 +230,7 @@ const StudentManagement = () => {
                   <td>
                     <input type="checkbox" checked={selectedStudents.includes(student.studentId)} onChange={() => handleCheckboxChange(student.studentId)} onClick={(e) => e.stopPropagation()} />
                   </td>
-                  <td>{student.studentId}</td>
+                  <td>{index+1}</td>
                   <td>{student.curriculumName}</td>
                   <td>{student.curriculumTh}</td>
                   <td>{student.name}</td>

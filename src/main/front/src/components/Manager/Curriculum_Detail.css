@@ -144,6 +144,7 @@
   background: #fff;
   border-radius: 10px;
   padding: 15px;
+  border:1px solid #757575;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
