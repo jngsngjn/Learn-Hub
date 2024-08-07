@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import project.homelearn.config.storage.StorageConstants;
 import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.student.homework.HomeworkSubmitDto;
 import project.homelearn.dto.student.homework.HomeworkUpdateDto;
@@ -17,12 +16,13 @@ import project.homelearn.repository.homework.StudentHomeworkRepository;
 import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.service.common.StorageService;
 
+import java.time.LocalDateTime;
+
 import static project.homelearn.config.storage.FolderType.HOMEWORK;
 
 /**
  * Author : 동재완
  */
-
 @Slf4j
 @Service
 @Transactional
@@ -36,7 +36,6 @@ public class StudentHomeworkService {
 
     public boolean createHomework(String username, HomeworkSubmitDto homeWorkSubmitDto) {
         try {
-
             Student student = studentRepository.findByUsername(username);
             if (student == null) {
                 throw new RuntimeException("Student not found");
@@ -70,10 +69,16 @@ public class StudentHomeworkService {
         }
     }
 
-    public boolean updateHomework(Long id, HomeworkUpdateDto homeWorkUpdateDto) {
+    public boolean updateHomework(Long homeworkId, String username, HomeworkUpdateDto homeWorkUpdateDto) {
         try {
-            StudentHomework homework = studentHomeworkRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Error getting homework" + id));
+            StudentHomework homework = studentHomeworkRepository.findById(homeworkId)
+                    .orElseThrow(() -> new RuntimeException("Error getting homework" + homeworkId));
+
+            LocalDateTime deadline = homework.getHomework().getDeadline();
+            if (LocalDateTime.now().isAfter(deadline)) {
+                throw new RuntimeException("Cannot update homework after the deadline:" + homeworkId);
+            }
+
             homework.setDescription(homeWorkUpdateDto.getDescription());
 
             MultipartFile file = homeWorkUpdateDto.getFile();
@@ -88,8 +93,10 @@ public class StudentHomeworkService {
                 }
             }
 
+            Student student = studentRepository.findByUsername(username);
             if (file != null && !file.isEmpty()) {
-                FileDto fileDto = storageService.uploadFile(file, StorageConstants.HOMEWORK_STORAGE);
+                String folderPath = storageService.getFolderPath(student, HOMEWORK);
+                FileDto fileDto = storageService.uploadFile(file, folderPath);
                 homework.setUploadFileName(fileDto.getOriginalFileName());
                 homework.setStoreFileName(fileDto.getUploadFileName());
                 homework.setFilePath(fileDto.getFilePath());
@@ -103,9 +110,22 @@ public class StudentHomeworkService {
         }
     }
 
-    public boolean deleteHomework(Long id) {
+    public boolean deleteHomework(Long homeworkId) {
         try {
-            studentHomeworkRepository.deleteById(id);
+            StudentHomework homework = studentHomeworkRepository.findById(homeworkId)
+                    .orElseThrow(() -> new RuntimeException("Error getting homework" + homeworkId));
+
+            LocalDateTime deadline = homework.getHomework().getDeadline();
+            if (LocalDateTime.now().isAfter(deadline)) {
+                throw new RuntimeException("Cannot delete homework after the deadline:" + homeworkId);
+            }
+
+            String file = homework.getFilePath();
+            if (file != null) {
+                storageService.deleteFile(file);
+            }
+
+            studentHomeworkRepository.deleteById(homeworkId);
             return true;
         } catch (Exception e) {
             log.error("Error deleting homework", e);

@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class HomeworkUpdateDto {
 
     @NotNull
-    private Long id;
+    private Long homeworkId;
 
     @NotBlank
     private String description;

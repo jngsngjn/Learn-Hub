@@ -15,7 +15,7 @@ import java.security.Principal;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/students")
+@RequestMapping("/students/homeworks")
 public class StudentHomeWorkController {
 
     private final StudentHomeworkService studentHomeworkService;
@@ -25,9 +25,6 @@ public class StudentHomeWorkController {
     public ResponseEntity<?> enrollmentHomework(Principal principal,
                                                 @Valid @ModelAttribute HomeworkSubmitDto homeWorkSubmitDto) {
         String username = principal.getName();
-        // 로그 추가
-        log.debug("Submitting homework for username: {}", username);
-
         boolean result = studentHomeworkService.createHomework(username, homeWorkSubmitDto);
 
         if (result) {
@@ -38,10 +35,12 @@ public class StudentHomeWorkController {
     }
 
     // 학생 과제 수정
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> updateHomework(@PathVariable("id") Long id,
+    @PatchMapping("/{homeworkId}")
+    public ResponseEntity<?> updateHomework(Principal principal,
+                                            @PathVariable("homeworkId") Long homeworkId,
                                             @Valid @ModelAttribute HomeworkUpdateDto homeWorkUpdateDto) {
-        boolean result = studentHomeworkService.updateHomework(id, homeWorkUpdateDto);
+
+        boolean result = studentHomeworkService.updateHomework(homeworkId, principal.getName(), homeWorkUpdateDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -50,9 +49,9 @@ public class StudentHomeWorkController {
     }
 
     // 학생 과제 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteHomework(@PathVariable("id") Long id) {
-        boolean result = studentHomeworkService.deleteHomework(id);
+    @DeleteMapping("/{homeworkId}")
+    public ResponseEntity<?> deleteHomework(@PathVariable("homeworkId") Long homeworkId) {
+        boolean result = studentHomeworkService.deleteHomework(homeworkId);
 
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
