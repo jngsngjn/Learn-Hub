@@ -40,4 +40,7 @@ public class StudentVoteController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    // 투표 수정
+
 }
