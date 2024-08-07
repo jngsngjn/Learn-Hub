@@ -25,7 +25,6 @@ import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.UserRepository;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,9 +36,9 @@ import java.util.stream.Collectors;
 public class TeacherQuestionBoardService {
 
     private final UserRepository userRepository;
+    private final CurriculumRepository curriculumRepository;
     private final QuestionBoardRepository questionBoardRepository;
     private final QuestionBoardCommentRepository commentRepository;
-    private final CurriculumRepository curriculumRepository;
 
     // 댓글 작성 = 답변달기
     public void writeComment(Long questionBoardId, String username, CommentWriteDto commentDto) {
@@ -184,14 +183,13 @@ public class TeacherQuestionBoardService {
     }
 
     // 조회수 증가
-    // 댓글 수 증가
-    public void incrementViewCount(Long questionBoardId){
+    public void incrementViewCount(Long questionBoardId) {
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
         questionBoard.setCommentCount(questionBoard.getViewCount() + 1);
     }
 
     // 글 상세보기
-    public QuestionBoardDetailDto getQuestionBoard(Long questionBoardId){
+    public QuestionBoardDetailDto getQuestionBoard(Long questionBoardId) {
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
 
         return new QuestionBoardDetailDto(
@@ -207,8 +205,8 @@ public class TeacherQuestionBoardService {
     }
 
     // 댓글 뽑아오기
-    public List<QuestionBoardCommentDto> getQuestionBoardComment(Long questionBoardId){
-        List<QuestionBoardComment> comments = commentRepository.findbyQuestionBoardIdAndParentCommentIsNull(questionBoardId);
+    public List<QuestionBoardCommentDto> getQuestionBoardComment(Long questionBoardId) {
+        List<QuestionBoardComment> comments = commentRepository.findByQuestionBoardIdAndParentCommentIsNull(questionBoardId);
 
         return comments.stream()
                 .map(this::convertToCommentDto)
@@ -216,7 +214,7 @@ public class TeacherQuestionBoardService {
     }
 
     // 댓글 Dto 변환
-    public QuestionBoardCommentDto convertToCommentDto(QuestionBoardComment comment){
+    public QuestionBoardCommentDto convertToCommentDto(QuestionBoardComment comment) {
         return new QuestionBoardCommentDto(
                 comment.getId(),
                 comment.getUser().getName(),

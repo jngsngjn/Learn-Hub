@@ -60,4 +60,6 @@ public interface StudentRepository extends JpaRepository<Student, Long>, Student
 
     @Query("select s.id from Student s where s.curriculum =:curriculum")
     List<Long> findAllStudentIds(@Param("curriculum") Curriculum curriculum);
+
+    List<Student> findAllByCurriculum(Curriculum curriculum);
 }

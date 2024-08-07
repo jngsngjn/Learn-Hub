@@ -10,6 +10,8 @@ import project.homelearn.dto.manager.dashboard.SurveyDashboardDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumSurveyDto;
 import project.homelearn.dto.manager.survey.CurriculumAndSurveyDto;
 import project.homelearn.dto.manager.survey.SurveyChoiceStatisticsDto;
+import project.homelearn.dto.student.survey.SurveyModalDto;
+import project.homelearn.dto.student.survey.SurveyModalSubDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.entity.survey.SurveyContent;
@@ -238,13 +240,43 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total = queryFactory
+        Long total = queryFactory
                 .select(surveyAnswer.count())
                 .from(surveyAnswer)
                 .where(surveyAnswer.survey.id.eq(surveyId))
                 .fetchOne();
 
+        if (total == null) {
+            total = 0L;
+        }
+
         return new PageImpl<>(textAnswers, pageable, total);
+    }
+
+    @Override
+    public SurveyModalDto findSurveyModal(Long surveyId) {
+        String title = queryFactory
+                .select(survey.title)
+                .from(survey)
+                .where(survey.id.eq(surveyId))
+                .fetchOne();
+
+        List<SurveyModalSubDto> subDtos = new ArrayList<>();
+
+        List<Tuple> tuples = queryFactory
+                .select(surveyContent.id, surveyContent.content, surveyContent.questionType)
+                .from(surveyContent)
+                .fetch();
+
+        for (Tuple tuple : tuples) {
+            SurveyModalSubDto subDto = new SurveyModalSubDto(tuple.get(surveyContent.id), tuple.get(surveyContent.content), tuple.get(surveyContent.questionType));
+            subDtos.add(subDto);
+        }
+
+        SurveyModalDto result = new SurveyModalDto();
+        result.setTitle(title);
+        result.setContents(subDtos);
+        return result;
     }
 }
 

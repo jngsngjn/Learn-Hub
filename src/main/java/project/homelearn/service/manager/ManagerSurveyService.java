@@ -11,10 +11,12 @@ import project.homelearn.dto.manager.manage.curriculum.CurriculumSurveyDto;
 import project.homelearn.dto.manager.survey.CurriculumAndSurveyDto;
 import project.homelearn.dto.manager.survey.SurveyChoiceStatisticsDto;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.student.Student;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.survey.SurveyRepository;
 import project.homelearn.repository.user.StudentRepository;
+import project.homelearn.service.student.StudentNotificationService;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class ManagerSurveyService {
     private final SurveyRepository surveyRepository;
     private final StudentRepository studentRepository;
     private final CurriculumRepository curriculumRepository;
+    private final StudentNotificationService studentNotificationService;
 
     /**
      * 교육 과정 만족도 설문 시작
@@ -57,6 +60,9 @@ public class ManagerSurveyService {
             surveyRepository.save(survey);
 
             studentRepository.updateSurveyCompletedFalse(curriculumId);
+
+            List<Student> students = studentRepository.findAllByCurriculum(curriculum);
+            studentNotificationService.notifySurvey(survey, students);
             return true;
         } catch (Exception e) {
             log.error("Error starting survey: ", e);
@@ -73,6 +79,9 @@ public class ManagerSurveyService {
             return false;
         }
         surveyRepository.updateSurveyIsFinishedTrue(id);
+
+        Survey survey = surveyRepository.findById(id).orElseThrow();
+        studentNotificationService.deleteSurveyNotification(survey);
         return true;
     }
 

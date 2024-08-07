@@ -28,7 +28,7 @@ public class TeacherInquiryController {
     // 1:1 문의 작성 : 강사 -> 매니저
     @PostMapping("/send-inquiries")
     public ResponseEntity<?> sendInquiry(Principal principal,
-                                         @Valid @ModelAttribute InquiryWriteDto writeDto) {
+                                         @Valid @RequestBody InquiryWriteDto writeDto) {
         String username = principal.getName();
         boolean result = teacherInquiryService.writeInquiryToManager(username, writeDto);
 
