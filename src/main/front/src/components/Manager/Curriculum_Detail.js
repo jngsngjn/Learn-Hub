@@ -98,20 +98,18 @@ const CurriculumDetail = () => {
           <div className="curriculum-detail-left-container">
             <div className="curriculum-detail-info-box">
               <div className="curriculum-detail-info-box-title">
-                <i className="fas fa-user-graduate"></i>
                 <span className="curriculum-detail-subtitle">학생 출결 현황</span>
                 <Link to={`/attendance/${id}`} className="curriculum-detail-link">자세히 보기 ></Link>
               </div>
               <div className="curriculum-detail-info-box-content">
                 <div className="curriculum-detail-circular-progress">
-                <p className="curriculum-detail-attendance-count">{attendance.attendance} / {attendance.total}</p>
+                <p className="curriculum-detail-attendance-count"><i className="fas fa-user-graduate"></i>{attendance.attendance} / {attendance.total}</p>
                   <CircularProgressbar value={attendance.ratio} text={`${attendance.ratio}%`} />
                 </div>
               </div>
             </div>
             <div className="curriculum-detail-info-box">
               <div className="curriculum-detail-info-box-title">
-                <i className="fas fa-chalkboard-teacher"></i>
                 <span className="curriculum-detail-subtitle">강사 정보</span>
                 <Link to={`/teacher/${id}`} className="curriculum-detail-link">자세히 보기 ></Link>
               </div>

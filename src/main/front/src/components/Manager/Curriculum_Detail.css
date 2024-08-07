@@ -92,7 +92,7 @@
 }
 
 .curriculum-detail-info-box-title span {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
 }
@@ -100,7 +100,7 @@
 .curriculum-detail-link {
   color: #757575;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .curriculum-detail-info-box-content {
@@ -123,6 +123,7 @@
 .curriculum-detail-info-box-content p {
   display:flex;
   justify-content:center;
+  align-items:center;
   margin: 5px 0;
   font-size: 20px;
 }

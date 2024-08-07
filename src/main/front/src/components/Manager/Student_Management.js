@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../../utils/axios'; // 올바른 경로로 수정
+import axios from '../../utils/axios';
 import Modal from './Modal';
 import ProgressModal from './ProgressModal';
 import './Student_Management.css';
