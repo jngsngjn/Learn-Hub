@@ -53,7 +53,7 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
             tuples = queryFactory
                     .select(vote.id, vote.title, vote.description, vote.endTime)
                     .from(vote)
-                    .where(vote.curriculum.eq(curriculum), vote.endTime.before(LocalDateTime.now()))
+                    .where(vote.curriculum.eq(curriculum), vote.endTime.before(LocalDateTime.now()).or(vote.isFinished.eq(true)))
                     .orderBy(vote.createdDate.desc())
                     .fetch();
         }

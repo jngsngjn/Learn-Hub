@@ -22,7 +22,7 @@ public class TeacherVoteController {
 
     private final TeacherVoteService teacherVoteService;
 
-    // 투표 등록
+    // 투표 등록 (학생에게 알림 보내야 함)
     @PostMapping
     public ResponseEntity<?> createVote(Principal principal, @Valid @RequestBody VoteCreateDto voteCreateDto) {
         String username = principal.getName();
@@ -36,9 +36,9 @@ public class TeacherVoteController {
     }
 
     // 투표 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteVote(@PathVariable("id") Long id) {
-        boolean result = teacherVoteService.deleteVote(id);
+    @DeleteMapping("/{voteId}")
+    public ResponseEntity<?> deleteVote(@PathVariable("voteId") Long voteId) {
+        boolean result = teacherVoteService.deleteVote(voteId);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -47,9 +47,9 @@ public class TeacherVoteController {
     }
 
     // 투표 마감
-    @PostMapping("/{id}")
-    public ResponseEntity<?> finishVote(@PathVariable("id") Long id) {
-        boolean result = teacherVoteService.finishVotes(id);
+    @PostMapping("/{voteId}")
+    public ResponseEntity<?> finishVote(@PathVariable("voteId") Long voteId) {
+        boolean result = teacherVoteService.finishVotes(voteId);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
