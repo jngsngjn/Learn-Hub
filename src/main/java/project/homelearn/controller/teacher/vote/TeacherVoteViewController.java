@@ -42,7 +42,7 @@ public class TeacherVoteViewController {
     }
 
     /**
-     * 투표 상세 조회 (테스트 해야 함)
+     * 투표 상세 조회
      * 1. 투표 상세 내용 - ✅
      * 2. 투표 참여 현황 (익명 투표 시 null 반환) - ✅
      */
@@ -54,6 +54,6 @@ public class TeacherVoteViewController {
 
     @GetMapping("/{voteId}/detail")
     public VoteDetailDto viewVoteDetail(@PathVariable("voteId") Long voteId) {
-        return voteService.getVoteDetail(voteId);
+        return commonVoteService.getVoteDetail(voteId);
     }
 }

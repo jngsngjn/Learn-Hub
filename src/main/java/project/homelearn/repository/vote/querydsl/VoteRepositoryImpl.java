@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import project.homelearn.dto.student.vote.VoteFinishDto;
-import project.homelearn.dto.student.vote.VoteFinishDto.VContent;
+import project.homelearn.dto.student.vote.StudentVoteViewDto;
+import project.homelearn.dto.student.vote.StudentVoteViewDto.VContent;
 import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
 import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.dto.teacher.vote.VoteDetailSub;
@@ -169,9 +169,9 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
     }
 
     @Override
-    public VoteFinishDto findVoteFinished(Long voteId, String username) {
+    public StudentVoteViewDto findStudentVoteView(Long voteId, String username) {
         Tuple tuple = queryFactory
-                .select(vote.id, vote.title, vote.description, vote.isMultipleChoice, vote.isAnonymous, vote.endTime)
+                .select(vote.id, vote.title, vote.description, vote.isMultipleChoice, vote.isAnonymous, vote.isFinished, vote.endTime)
                 .from(vote)
                 .where(vote.id.eq(voteId))
                 .fetchOne();
@@ -179,23 +179,27 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
             return null;
         }
 
-        VoteFinishDto result = new VoteFinishDto();
+        StudentVoteViewDto result = new StudentVoteViewDto();
         result.setVoteId(tuple.get(vote.id));
         result.setTitle(tuple.get(vote.title));
         result.setDescription(tuple.get(vote.description));
         result.setIsMultiple(tuple.get(vote.isMultipleChoice));
         result.setIsAnonymous(tuple.get(vote.isAnonymous));
         result.setEndTime(tuple.get(vote.endTime));
+        result.setParticipateCount(findParticipantCount(voteId));
+        result.setIsFinished(tuple.get(vote.isFinished));
 
         List<VContent> vContents = new ArrayList<>();
 
         Student student = studentRepository.findByUsername(username);
         Long studentId = student.getId();
         boolean participate = studentVoteRepository.isParticipate(voteId, student);
+        result.setParticipate(participate);
 
-        List<VoteContent> voteContents = voteContentRepository.findAll();
+        List<VoteContent> voteContents = voteContentRepository.findByVoteId(voteId);
         for (VoteContent content : voteContents) {
             VContent vContent = new VContent();
+            vContent.setContentId(content.getId());
             vContent.setContent(content.getContent());
             vContent.setCount(content.getVoteCount());
             Long contentId = content.getId();

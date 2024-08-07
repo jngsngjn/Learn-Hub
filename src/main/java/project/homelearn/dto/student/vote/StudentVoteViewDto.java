@@ -8,7 +8,7 @@ import java.util.List;
 
 // response
 @Data
-public class VoteFinishDto {
+public class StudentVoteViewDto {
 
     private Long voteId;
     private String title;
@@ -16,7 +16,10 @@ public class VoteFinishDto {
 
     private Boolean isMultiple;
     private Boolean isAnonymous;
+    private Boolean isFinished;
     private Integer total;
+    private Long participateCount;
+    private Boolean participate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endTime;
@@ -25,6 +28,7 @@ public class VoteFinishDto {
 
     @Data
     public static class VContent {
+        private Long contentId;
         private String content;
         private int count;
         private Boolean voted;
@@ -33,27 +37,33 @@ public class VoteFinishDto {
 
 /*
 {
-    "voteId": 13,
+    "voteId": 1,
     "title": "투표",
     "description": "투표 테스트",
-    "isMultiple": false,
+    "isMultiple": true,
     "isAnonymous": false,
+    "isFinished": false,
     "total": 30,
-    "endTime": "2024-08-07 20:48",
+    "participateCount": 20,
+    "participate": false,
+    "endTime": "2024-09-10 14:00",
     "vcontents": [
         {
+            "contentId": 1,
             "content": "투표 항목1",
-            "count": 1,
-            "voted": true
-        },
-        {
-            "content": "투표 항목2",
-            "count": 0,
+            "count": 12,
             "voted": false
         },
         {
+            "contentId": 2,
+            "content": "투표 항목2",
+            "count": 3,
+            "voted": false
+        },
+        {
+            "contentId": 3,
             "content": "투표 항목3",
-            "count": 0,
+            "count": 5,
             "voted": false
         }
     ]

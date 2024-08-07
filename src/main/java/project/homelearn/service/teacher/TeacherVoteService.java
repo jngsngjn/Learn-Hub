@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
 import project.homelearn.dto.teacher.vote.VoteCreateDto;
-import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.vote.Vote;
 import project.homelearn.entity.vote.VoteContent;
@@ -29,14 +28,6 @@ public class TeacherVoteService {
     public TeacherVoteBasicDto getVoteBasic(Long voteId, String username) {
         Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
         return voteRepository.findVoteBasic(voteId, curriculum);
-    }
-
-    public VoteDetailDto getVoteDetail(Long voteId) {
-        boolean isAnonymous = voteRepository.isAnonymousVote(voteId);
-        if (isAnonymous) {
-            return null;
-        }
-        return voteRepository.findVoteDetail(voteId);
     }
 
     // 투표 생성

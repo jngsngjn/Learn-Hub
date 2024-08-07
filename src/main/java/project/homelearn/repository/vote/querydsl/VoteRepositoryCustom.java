@@ -2,7 +2,7 @@ package project.homelearn.repository.vote.querydsl;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import project.homelearn.dto.student.vote.VoteFinishDto;
+import project.homelearn.dto.student.vote.StudentVoteViewDto;
 import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
 import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
@@ -18,5 +18,5 @@ public interface VoteRepositoryCustom {
 
     VoteDetailDto findVoteDetail(Long voteId);
 
-    VoteFinishDto findVoteFinished(Long voteId, String username);
+    StudentVoteViewDto findStudentVoteView(Long voteId, String username);
 }

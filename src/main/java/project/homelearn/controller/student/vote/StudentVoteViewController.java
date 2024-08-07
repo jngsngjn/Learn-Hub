@@ -6,7 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.student.vote.VoteFinishDto;
+import project.homelearn.dto.student.vote.StudentVoteViewDto;
+import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
 import project.homelearn.service.common.CommonVoteService;
 import project.homelearn.service.student.StudentVoteService;
@@ -45,24 +46,26 @@ public class StudentVoteViewController {
     }
 
     /**
-     * 투표 상세 조회
+     * 투표 조회 - ✅
      */
     @GetMapping("/{voteId}")
     public ResponseEntity<?> viewVote(@PathVariable("voteId") Long voteId,
                                       Principal principal) {
         String username = principal.getName();
-        boolean finished = studentVoteService.isVoteFinished(voteId);
+        StudentVoteViewDto result = studentVoteService.getStudentVoteView(voteId, username);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
-        // 마감된 투표
-        if (finished) {
-            log.info("마감된 투표 조회");
-            VoteFinishDto result = studentVoteService.getVoteFinishDto(voteId, username);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-
-        // 진행 중인 투표
-        } else {
-            log.info("진행 중인 투표 조회");
-            return new ResponseEntity<>(HttpStatus.OK);
+    /**
+     * 투표 상세 조회
+     * 1. 투표 참여 현황 (익명 투표 시 null 반환 or 미참여 시 null 반환) - ✅
+     */
+    @GetMapping("/{voteId}/detail")
+    public VoteDetailDto viewVoteDetail(@PathVariable("voteId") Long voteId, Principal principal) {
+        boolean participate = studentVoteService.isParticipate(voteId, principal.getName());
+        if (!participate) {
+            return null;
         }
+        return commonVoteService.getVoteDetail(voteId);
     }
 }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.homelearn.dto.student.vote.VoteFinishDto;
+import project.homelearn.dto.student.vote.StudentVoteViewDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.vote.StudentVote;
@@ -35,15 +35,11 @@ public class StudentVoteService {
         return studentVoteRepository.isParticipate(voteId, student);
     }
 
-    public boolean isVoteFinished(Long voteId) {
-        return voteRepository.isVoteFinished(voteId);
-    }
-
-    public VoteFinishDto getVoteFinishDto(Long voteId, String username) {
+    public StudentVoteViewDto getStudentVoteView(Long voteId, String username) {
         Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
         Integer total = studentRepository.findStudentCountByCurriculum(curriculum);
 
-        VoteFinishDto result = voteRepository.findVoteFinished(voteId, username);
+        StudentVoteViewDto result = voteRepository.findStudentVoteView(voteId, username);
         result.setTotal(total);
         return result;
     }
