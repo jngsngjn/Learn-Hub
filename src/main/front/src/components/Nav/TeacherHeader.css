@@ -1,5 +1,5 @@
 /* Container ================================== */
-#manager_header {
+#teacher_header {
     position: fixed;
     left: 0;
     top: 0;
@@ -10,7 +10,7 @@
     background: #fff;
 }
 
-.manager_h-inner {
+.teacher_h-inner {
     position: relative;
     max-width: 1440px;
     margin: 0 auto;
@@ -20,13 +20,14 @@
     justify-content: space-between;
 }
 
-.manager_h-left {
+.teacher_h-left {
     height: 100%;
     display: flex;
     align-items: center;
+    gap: 4rem;
 }
 
-.manager_h-right {
+.teacher_h-right {
     height: 100%;
     display: flex;
     align-items: center;
@@ -34,40 +35,46 @@
 }
 
 /* Logo ===================================== */
-.manager_h-logo {
+.teacher_h-logo {
     width: 100px;
 }
 
-.manager_h-logo a {
+.teacher_h-logo a {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.manager_h-logo a img {
+.teacher_h-logo a img {
     width: 100%;
 }
 
+/* Curriculum ================================= */
+.teacher_h-curriculum_name {
+    font-size: 2.4rem;
+    color: var(--teacherMainColor);
+}
+
 /* Global Navigation Bar =============== */
-.manager_h-gnb_items {
+.teacher_h-gnb_items {
     display: flex;
     align-items: center;
     gap: 4rem;
 }
 
-.manager_h-gnb_items > li > a, .manager_h-alarm_btn > li > a {
+.teacher_h-gnb_items > li > a, .teacher_h-alarm_btn > li > a {
     position: relative;
     font-size: 4rem;
-    color: var(--managerMainColor);
+    color: var(--teacherMainColor);
 }
 
-.manager_h-gnb_items > li > a:hover, .manager_h-alarm_btn > li > a:hover {
-    color: #000;
+.teacher_h-gnb_items > li > a:hover, .teacher_h-alarm_btn > li > a:hover {
+    color: var(--teacherSubColor);
 }
 
 /* Alarm ================================= */
-.manager_h-alarm_list {
+.teacher_h-alarm_list {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -86,15 +93,14 @@
     overflow: hidden;
 }
 
-.manager_h-alarm_list.open {
-    display: block;
+.teacher_h-alarm_list.open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
     max-height: 300px;
 }
 
-.manager_h-alarm_count {
+.teacher_h-alarm_count {
     position: absolute;
     right: -1.2rem;
     top: -1.2rem;
@@ -109,46 +115,46 @@
 }
 
 /* Profile ================================= */
-.manager_h-profile_box {
+.teacher_h-profile_box {
     position: relative;
 }
 
-.manager_h-profile {
+.teacher_h-profile {
     display: flex;
     align-items: center;
     gap: 1rem;
     cursor: pointer;
 }
 
-.manager_h-profile_img {
+.teacher_h-profile_img {
     display: block;
     width: 40px;
     height: 40px;
     border-radius: 100%;
-    border: 1px solid var(--managerMainColor);
+    border: 1px solid var(--teacherMainColor);
 }
 
-.manager_h-profile span {
+.teacher_h-profile span {
     font-size: 2.8rem;
-    color: var(--managerMainColor);
+    color: var(--teacherMainColor);
 }
 
-.manager_h-profile i {
-    color: var(--managerMainColor);
+.teacher_h-profile i {
+    color: var(--teacherMainColor);
     transition: 0.3s;
 }
 
-.manager_h-profile.active i {
+.teacher_h-profile.active i {
     transform: rotate(180deg);
 }
 
-.manager_h-profile:hover {
-    color: #000;
+.teacher_h-profile:hover {
+    color: var(--teacherSubColor);
     font-weight: 700;
 }
 
 /* Profile Menu ============================= */
-.manager_h-profile_menu {
+.teacher_h-profile_menu {
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
@@ -165,28 +171,27 @@
     overflow: hidden;
 }
 
-.manager_h-profile_menu.open {
-    display: block;
+.teacher_h-profile_menu.open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
     max-height: 300px;
 }
 
-.manager_h-profile_menu > li {
+.teacher_h-profile_menu > li {
     margin-bottom: 1.8rem;
 }
 
-.manager_h-profile_menu > li:last-child {
+.teacher_h-profile_menu > li:last-child {
     margin-bottom: 0;
 }
 
-.manager_h-profile_menu > li > a {
+.teacher_h-profile_menu > li > a {
     font-size: 1.4rem;
-    color: var(--managerMainColor)
+    color: var(--teacherMainColor)
 }
 
-.manager_h-profile_menu > li > a:hover {
+.teacher_h-profile_menu > li > a:hover {
     font-weight: 500;
-    color: #000;
+    color: var(--teacherSubColor);
 }

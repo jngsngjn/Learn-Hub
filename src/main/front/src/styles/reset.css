@@ -31,3 +31,7 @@ button {
   background: none;
   border: none;
 }
+
+p {
+  margin: 0;
+}
