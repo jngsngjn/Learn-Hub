@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import "./StudentSubmitModal.css";
 
-const SubmitModal = ({
+const StudentSubmitModal = ({
   isOpen,
   closeModal,
   formData,
@@ -13,7 +14,7 @@ const SubmitModal = ({
 
   return (
     <div className="modal show">
-      <div className="modal-content" style={{ width: "1100px" }}>
+      <div className="modal_content">
         <span className="close" onClick={closeModal}>
           &times;
         </span>
@@ -76,4 +77,4 @@ const SubmitModal = ({
   );
 };
 
-export default SubmitModal;
+export default StudentSubmitModal;

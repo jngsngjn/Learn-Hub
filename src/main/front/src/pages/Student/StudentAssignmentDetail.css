@@ -10,6 +10,7 @@
 .student_assignment_detail_page_title {
   font-size: 48px;
   margin-bottom: 75px;
+  font-weight: 700;
 }
 
 .date_color {
@@ -17,6 +18,50 @@
 }
 
 /*  과제  설명 */
+.student_submit_assignment_title_box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.student_submit_assignment_sub_title {
+  font-size: 36px;
+  font-weight: 700;
+  padding: 0 0 0 40px;
+}
+
+.show_modify_box_icon {
+  font-size: 32px;
+  position: relative;
+  cursor: pointer;
+}
+
+.show_modify_box {
+  position: absolute;
+  bottom: 18%;
+  right: 11%;
+  width: 116px;
+  height: 92px;
+  border: 1px solid #5c8d89;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  z-index: 10;
+  background-color: #fff;
+}
+
+.modify_btn {
+  text-align: center;
+  width: 100%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modify_btn:hover {
+  color: #5c8d89ac;
+  font-weight: 700;
+}
+
 .student_assignment_detail_notice_box {
   width: 1050px;
   height: 320px;
@@ -26,6 +71,7 @@
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 48px;
+  color: black;
 }
 
 .student_assignment_detail_notice_title_box {
@@ -36,6 +82,7 @@
 
 .student_assginment_detail_notice_title {
   font-size: 36px;
+  font-weight: 700;
 }
 
 .student_assignment_detail_notice_file {
@@ -64,6 +111,7 @@
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 48px;
+  color: black;
 }
 
 .student_submit_assignment_detail_title_box {
@@ -73,22 +121,24 @@
 }
 
 .student_submit_assignment_detail_title {
-  font-size: 36px;
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .student_submit_assignment_detail_file {
   font-size: 28px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #5c8d89;
 }
 
 .student_submit_assignment_detail_content {
-  font-size: 28px;
+  font-size: 24px;
 }
 
 .student_submit_assignment_detail_date {
   display: flex;
   justify-content: flex-end;
   font-size: 24px;
+  color: black;
 }
 
 /* 학생의 과제 미제출 */
@@ -107,6 +157,7 @@
 
 .student_non_submit_assignment_detail_title {
   font-size: 36px;
+  font-weight: 700;
   color: black;
 }
 

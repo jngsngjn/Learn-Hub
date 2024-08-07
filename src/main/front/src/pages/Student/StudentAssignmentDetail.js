@@ -1,14 +1,21 @@
-import React, { useState } from "react";
-import SubmitModal from "../../components/SubmitModal/SubmitModal";
+import React, { useEffect, useRef, useState } from "react";
+import StudentSubmitModal from "../../components/StudentSubmitModal/StudentSubmitModal";
 import "./StudentAssignmentDetail.css";
 import useGetFetch from "../../hooks/useGetFetch";
 
 const StudentAssignmentDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ title: "", content: "" });
-  const [selectedFileName, setSelectedFileName] = useState("");
+  const [isModifyOpen, setIsModifyOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    selectedFileName: "",
+  });
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = () => {
+    setIsModalOpen(true);
+    setIsModifyOpen(false);
+  };
   const closeModal = () => setIsModalOpen(false);
 
   const handleChange = (e) => {
@@ -18,13 +25,24 @@ const StudentAssignmentDetail = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSelectedFileName(file ? file.name : "");
+    setFormData((prevData) => ({
+      ...prevData,
+      selectedFileName: file ? file.name : "",
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("제출 내용:", formData, selectedFileName);
+    console.log("모달 데이터:", formData);
     closeModal();
+  };
+
+  const handleIconClick = () => {
+    if (isModifyOpen === false) {
+      setIsModifyOpen(true);
+    } else if (isModifyOpen === true) {
+      setIsModifyOpen(false);
+    }
   };
 
   const { data: assignment, error: assignmentError } = useGetFetch(
@@ -56,7 +74,7 @@ const StudentAssignmentDetail = () => {
         </p>
         <div className="student_assignment_detail_notice_date_box">
           <span className="student_assignment_detail_notice_deadline">
-            <span className="date_color">2024-08-31</span>까지
+            <span className="date_color">2024-08-31</span> 까지
           </span>
           <span className="student_assignment_detail_notice_write_date">
             <span className="date_color">2024-08-01</span> 까지
@@ -64,12 +82,34 @@ const StudentAssignmentDetail = () => {
         </div>
       </div>
       {/* 학생의 과제 제출 여부 및 제출한 과제 페이지 */}
+      <div className="student_submit_assignment_title_box">
+        <h1 className="student_submit_assignment_sub_title">제출 내역</h1>
+        {assignment && assignment.id ? (
+          <div>
+            <i
+              className="bi bi-three-dots-vertical show_modify_box_icon"
+              onClick={handleIconClick}
+            ></i>
+            {isModifyOpen && (
+              <div className="show_modify_box">
+                <div className="modify_btn" onClick={openModal}>
+                  수정
+                </div>
+                <div className="modify_btn" onClick="">
+                  삭제
+                </div>
+              </div>
+            )}
+          </div>
+        ) : null}
+      </div>
       {assignment && assignment.id ? (
         <div className="student_submit_assignment_detail_box">
           <div className="student_submit_assignment_detail_title_box">
             <h1 className="student_submit_assignment_detail_title">
               {assignment.title}
             </h1>
+
             <a href={assignment.filePath} download={assignment.fileName}>
               <span className="student_submit_assignment_detail_file">
                 {assignment.fileName}
@@ -80,7 +120,8 @@ const StudentAssignmentDetail = () => {
             {assignment.content}
           </p>
           <span className="student_submit_assignment_detail_date">
-            <span className="date_color">{assignment.writeDate}</span> 제출
+            <span className="date_color">{assignment.writeDate} </span>
+            &nbsp;제출
           </span>
         </div>
       ) : (
@@ -94,6 +135,7 @@ const StudentAssignmentDetail = () => {
         </div>
       )}
       {/* 피드백 요소 */}
+      <h1 className="student_submit_assignment_sub_title">피드백</h1>
       {assignment && assignment.id && assignment.reple.id ? (
         <div className="student_submit_assignment_feedback_box">
           <p className="student_submit_assignment_feedback_content">
@@ -103,20 +145,20 @@ const StudentAssignmentDetail = () => {
             <span className="student_submit_assignment_feedback_date date_color">
               {assignment?.reple?.writeDate}
             </span>
-            까지
+            &nbsp;까지
           </div>
         </div>
       ) : (
         <></>
       )}
-      <SubmitModal
+      <StudentSubmitModal
         isOpen={isModalOpen}
         closeModal={closeModal}
         formData={formData}
-        selectedFileName={selectedFileName}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
+        selectedFileName={formData.selectedFileName}
       />
     </div>
   );
