@@ -2,8 +2,8 @@ import "./TeacherMain.css";
 import Question from "../../components/Teacher/Question";
 import Lecture_State from "../../components/Teacher/Lecture_State";
 import Calendar from "../../components/Teacher/Calendar";
-import SettingList from "../../components/Teacher/Survey";
-import MessageBox from "../../components/Teacher/MessageBox";
+import SettingList from "../../components/Teacher/Today_It";
+import Faq from "../../components/Teacher/Faq";
 import Sidebar from "../../components/Manager/Sidebar";
 import {Route, Routes} from "react-router-dom";
 import StudentManagement from "../../components/Manager/Student_Management";
@@ -18,13 +18,13 @@ function Dashboard() {
   return (
       <>
         <h1>대시보드</h1>
-          <div className="dashboard-grid-container">
+          <div className="teacher-dashboard-grid-container">
               <div className="teacher-dashboard-grid">
                   <Lecture_State/>
 
                   <Question/>
 
-                  <MessageBox/>
+                  <Faq/>
               </div>
               <div className="teacher-dashboard-grid2">
                   <Calendar/>
@@ -38,10 +38,10 @@ function Dashboard() {
 
 function TeacherMain() {
     return (
-        <div className="App">
-            <div className="main-content">
+        <div className="teacher-App">
+            <div className="teacher-main-content">
                 <Sidebar/>
-                <div className="content-area">
+                <div className="teacher-content-area">
                     <Routes>
                         <Route path="/" element={<Dashboard/>} />
               <Route path="manage-students" element={<StudentManagement />} />

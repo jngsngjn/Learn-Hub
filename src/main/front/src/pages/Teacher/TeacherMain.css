@@ -1,27 +1,24 @@
-.App {
+.teacher-App {
     display: flex;
-    height: 100vh;
     flex-direction: column;
 }
 
-.main-content {
+.teacher-main-content {
     display: flex;
     flex: 1;
 }
 
-.sidebar {
-    flex: 0 0 200px;
-}
 
-.content-area {
+
+.teacher-content-area {
     flex: 1;
-    padding: 20px;
+    padding: 30px;
 }
 
 /* grid 설정 */
-.dashboard-grid-container{
+.teacher-dashboard-grid-container{
     display: flex;
-    gap: 20px;
+    gap: 30px;
 }
 
 .teacher-dashboard-grid {
@@ -36,7 +33,6 @@
     display: grid;
     grid-template-columns: 1fr;
     max-width: 1200px;
-    /* margin: 0 auto; */
     grid-gap: 30px;
 }
 

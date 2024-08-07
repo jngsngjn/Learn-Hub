@@ -130,14 +130,15 @@ const Calendar = () => {
   };
 
   return (
-    <section className="calendar-container">
-      <div className="calendar">
-        <div className="calendar-header">
+    <section className="teacher-calendar-container">
+      <div className="teacher-calendar">
+        <div className="teacher-calendar-title">캘린더</div>
+        <div className="teacher-calendar-header">
           <button onClick={() => handleMonthChange(-1)}>&lt;</button> {/* 이전 달로 이동 */}
           <h2>{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월</h2> {/* 현재 년도와 월 표시 */}
           <button onClick={() => handleMonthChange(1)}>&gt;</button> {/* 다음 달로 이동 */}
         </div>
-        <div className="add-list">
+        <div className="teacher-add-list">
           <button onClick={() => setCurrentDate(new Date())}>
             Today
           </button>
@@ -146,17 +147,17 @@ const Calendar = () => {
             <FaCalendarPlus style={{ marginLeft: '8px' }} />
           </button>
         </div>
-        <div className="calendar-body">
-          <div className="weekdays">
+        <div className="teacher-calendar-body">
+          <div className="teacher-weekdays">
             {['일', '월', '화', '수', '목', '금', '토'].map(day => (
               <div key={day}>{day}</div> // 요일 표시
             ))}
           </div>
-          <div className="days">
+          <div className="teacher-days">
             {generateCalendarDates().map((day, index) => (
               <div
                 key={index}
-                className={`day ${day.isCurrentMonth ? '' : 'other-month'} ${
+                className={`teacher-day ${day.isCurrentMonth ? '' : 'other-month'} ${
                   selectedDate &&
                   day.date.getFullYear() === selectedDate.getFullYear() &&
                   day.date.getMonth() === selectedDate.getMonth() &&
@@ -164,11 +165,11 @@ const Calendar = () => {
                 } ${isCurrentDate(day.date) ? 'current-date' : ''}`}
                 onClick={() => handleDateClick(day.date)}
               >
-                <span className="day-number">{day.date.getDate()}</span>
-                <div className="events-indicator">
+                <span className="teacher-day-number">{day.date.getDate()}</span>
+                <div className="teacher-events-indicator">
                   {getEventsForDate(day.date).map(event => (
                     <div key={event.id} className="event-bar" style={{ backgroundColor: event.color, ...getEventStyle(event, day.date) }} onClick={() => handleEventClick(event)}>
-                      <span className="event-title">{event.title}</span>
+                      <span className="teacher-event-title">{event.title}</span>
                     </div>
                   ))}
                 </div>
@@ -180,8 +181,8 @@ const Calendar = () => {
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div>
-          <h3 className="modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
-          <div className="event-form">
+          <h3 className="teacher-modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
+          <div className="teacher-event-form">
             <input
               type="text"
               placeholder="일정 제목"
@@ -200,17 +201,17 @@ const Calendar = () => {
               value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
               onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })} // 종료일 입력
             />
-            <div className="color-picker">
+            <div className="teacher-color-picker">
               {['#FF9999', '#99FF99', '#9999FF'].map(color => (
                 <div
                   key={color}
-                  className={`color-option ${newEvent.color === color ? 'selected' : ''}`}
+                  className={`teacher-color-option ${newEvent.color === color ? 'selected' : ''}`}
                   style={{ backgroundColor: color }}
                   onClick={() => setNewEvent({ ...newEvent, color })} // 색상 선택
                 ></div>
               ))}
             </div>
-            <div className='calendar-submit'>
+            <div className='teacher-calendar-submit'>
               <button onClick={handleSaveEvent}>{editEvent ? '수정' : '등록'}</button>
               {editEvent && <button onClick={handleDeleteEvent}>삭제</button>}
             </div>

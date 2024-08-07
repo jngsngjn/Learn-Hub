@@ -1,11 +1,11 @@
-.message-box-wrapper1 {
+.faq-box-wrapper {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
   height: 380px;
 }
 
-.message-content1{
+.faq-content{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -14,32 +14,31 @@
   width: 260px;
 }
 
-.message-item1 {
-  background-color: #f0f0f0;
+.faq-item {
+  background-color: rgba(210, 218, 255, 0.25);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #757575;
+  border: 1px solid #B1B2FF;
   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
-  width: 290px;
+  width: 285px;
 }
 
-.message-item1 h2 {
-  color: #757575;
+.faq-item h2 {
+  color: #B1B2FF;
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.message-icon1 {
-  color: #B4B4B8;
+.faq-icon {
   font-size: 200px;
   display: flex;
   flex-direction: column;
 }
 
-.message-count1 {
+.faq-count {
   background: #ff0000;
   color: white;
   border-radius: 100px;
@@ -47,37 +46,40 @@
   display: flex;
   justify-content: center;
   align-self: end;
+  align-items: center;
   width: 48px;
   height: 28px;
 }
 
-.view-more1 {
+.faq-view-more {
   font-size: 16px;
-  color: #757575;
+  color: #B1B2FF;
   text-decoration: none;
   align-self: end;
 }
-.view-more1:hover{
-    color:#757575;
+.faq-view-more:hover{
+    color:#B1B2FF;
 }
 
-.fa-envelope{
-  cursor:pointer;
-}
-.fa-envelope:hover{
-    color:#757575;
+.faq-icon .fa-envelope{
+  color: #AAC4FF;
 }
 
-.message-content2{
+.faq-icon .fa-envelope:hover{
+  color: #B1B2FF;
+}
+
+
+.faq-notice-container{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: 350px;
-  width: 260px;
+  width: 250px;
 }
 
-.teacher-notice-container{
+.teacher-notice-content{
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -87,36 +89,36 @@
   position: relative;
   height: 50px;
   width: 250px;
-  border: 1px solid;
+  border: 3px solid #AAC4FF;
   border-radius: 20px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-inline: 10px;
+  background-color: white;
 }
 
 .teacher-notice a {
-  position: absolute;
-  width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
   text-decoration: none;
-  color: inherit;  /* 부모 요소의 텍스트 색상 상속 */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-right: 40px;
+  text-align: center;
+  font-size: 12px;
+  color: black;
+  position: absolute;
+  width: 100%;
 }
 
 .teacher-notice a:hover {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.05);  /* 호버 시 배경색 변경 */
 }
 
 .teacher-manager-notice-state{
-  border: 1px solid;
+  border: 1px solid #D2DAFF;
+  background-color: #EEF1FF;
   border-radius: 20px;
   font-size: 15px;
   width: 50px;
@@ -124,4 +126,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.teacher-manager-notice-date{
+  font-size: 10px;
+  color: black;
 }
