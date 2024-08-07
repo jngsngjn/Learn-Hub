@@ -1,7 +1,5 @@
 .curriculum-detail {
   max-width: 1200px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
 }
 
 .header {
@@ -45,7 +43,7 @@
 
 .progress {
   height: 100%;
-  background-color: #4CAF50;
+  background-color: #757575;
 }
 
 .progress-text {
@@ -89,7 +87,7 @@
 
 .info-box-title i {
   font-size: 20px;
-  color: #4CAF50;
+  color: #757575;
 }
 
 .info-box-title span {
@@ -99,19 +97,19 @@
 }
 
 .detail-link {
-  color: #4CAF50;
+  color: #757575;
   text-decoration: none;
   font-size: 14px;
 }
 
 .info-box-content {
-  text-align: center;
+  text-align: left;
 }
 
 .attendance-ratio {
   font-size: 32px;
   font-weight: bold;
-  color: #4CAF50;
+  color: #757575;
   margin: 0;
 }
 
@@ -151,7 +149,7 @@
 
 .curriculum-detail-calendar i {
   margin-right: 10px;
-  color: #4CAF50;
+  color: #757575;
 }
 
 .survey-title {
