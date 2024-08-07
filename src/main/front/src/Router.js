@@ -19,11 +19,12 @@ import StudentInquiryDetail from "./pages/Student/StudentInquiryDetail";
 import StudentSubjectBoardDetail from "./pages/Student/StudentSubjectBoardDetail";
 import StudentLectureList from "./pages/Student/StudentLectureList";
 import StudentLectureDetail from "./pages/Student/StudentLectureDetail";
+import ManagerHeader from "./components/Nav/ManagerHeader";
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <Nav />
+      <ManagerHeader />
       <Routes>
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<Login />} />
