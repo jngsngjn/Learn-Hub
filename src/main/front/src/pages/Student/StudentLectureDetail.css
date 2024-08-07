@@ -1,26 +1,8 @@
-.subject_lecture_detail_body {
-  display: flex;
-  flex-direction: row;
-  width: 100vw;
-  background-color: #f5f5f5;
-  color: #74b49b;
-}
-
-/* 사이드 바 스타일 */
-/* .side_bar {
-  width: 514px;
-  padding: 3em;
-  background-color: #fff;
-  border-right: 0.0625em solid #a7d7c5;
-  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.1);
-} */
-
-/* 메인 스타일 */
 .subject_lecture_detail_main_container {
   display: flex;
   flex-direction: column;
-  width: 1400px;
-  padding: 100px 75px 20px 68px;
+  width: 1120px;
+  padding: 100px 68px;
   background-color: #fff;
 }
 
@@ -28,7 +10,7 @@
 }
 
 .subject_lecture_video_box {
-  width: 1200px;
+  width: 1120px;
   height: 726px;
   margin: 0 auto;
   border-radius: 20px;

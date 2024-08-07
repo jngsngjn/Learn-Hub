@@ -185,19 +185,25 @@ const TeacherManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredTeachers.map((teacher, index) => (
-              <tr key={index} onClick={() => handleRowClick(teacher.teacherId)} className={selectedTeachers.includes(teacher.teacherId) ? 'selected' : ''}>
-                <td>
-                  <input type="checkbox" checked={selectedTeachers.includes(teacher.teacherId)} onChange={() => handleCheckboxChange(teacher.teacherId)} onClick={(e) => e.stopPropagation()} />
-                </td>
-                <td>{teacher.teacherId}</td>
-                <td>{teacher.name}</td>
-                <td>{teacher.curriculumName}</td>
-                <td>{teacher.curriculumTh}</td>
-                <td>{teacher.email}</td>
-                <td>{teacher.phone}</td>
+            {filteredTeachers.length > 0 ? (
+              filteredTeachers.map((teacher, index) => (
+                <tr key={index} onClick={() => handleRowClick(teacher.teacherId)} className={selectedTeachers.includes(teacher.teacherId) ? 'selected' : ''}>
+                  <td>
+                    <input type="checkbox" checked={selectedTeachers.includes(teacher.teacherId)} onChange={() => handleCheckboxChange(teacher.teacherId)} onClick={(e) => e.stopPropagation()} />
+                  </td>
+                  <td>{teacher.teacherId}</td>
+                  <td>{teacher.name}</td>
+                  <td>{teacher.curriculumName}</td>
+                  <td>{teacher.curriculumTh}</td>
+                  <td>{teacher.email}</td>
+                  <td>{teacher.phone}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7">강사 데이터가 없습니다.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

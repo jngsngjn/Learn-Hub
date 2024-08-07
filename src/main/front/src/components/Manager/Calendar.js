@@ -13,23 +13,29 @@ const Calendar = () => {
   const [viewEvent, setViewEvent] = useState(null);
   const [editEvent, setEditEvent] = useState(null);
 
+  // 컴포넌트가 마운트될 때 로컬 스토리지에서 일정 불러오기
   useEffect(() => {
     const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
     setEvents(storedEvents);
   }, []);
 
+  // 일정이 변경될 때 로컬 스토리지에 저장
   useEffect(() => {
     localStorage.setItem('calendarEvents', JSON.stringify(events));
   }, [events]);
 
+  // 해당 월의 날짜 수 계산
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+  // 해당 월의 첫 번째 날짜 요일 계산
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
 
+  // 달력 날짜 생성
   const generateCalendarDates = () => {
     const dates = [];
     const prevMonthLastDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
     const nextMonthFirstDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
+    // 이전 달 날짜 추가
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       dates.push({
         date: new Date(prevMonthLastDate.getFullYear(), prevMonthLastDate.getMonth(), prevMonthLastDate.getDate() - i),
@@ -37,6 +43,7 @@ const Calendar = () => {
       });
     }
 
+    // 현재 달 날짜 추가
     for (let i = 1; i <= daysInMonth; i++) {
       dates.push({
         date: new Date(currentDate.getFullYear(), currentDate.getMonth(), i),
@@ -44,6 +51,7 @@ const Calendar = () => {
       });
     }
 
+    // 다음 달 날짜 추가
     const remainingDays = 7 - (dates.length % 7);
     if (remainingDays < 7) {
       for (let i = 0; i < remainingDays; i++) {
@@ -57,6 +65,7 @@ const Calendar = () => {
     return dates;
   };
 
+  // 월 변경
   const handleMonthChange = (direction) => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1));
   };
@@ -73,6 +82,7 @@ const Calendar = () => {
     setEditEvent(null);
   };
 
+  // 일정 저장
   const handleSaveEvent = () => {
     if (newEvent.title && newEvent.start && newEvent.end) {
       if (editEvent) {
@@ -84,16 +94,19 @@ const Calendar = () => {
     }
   };
 
+  // 일정 삭제
   const handleDeleteEvent = () => {
     setEvents(events.filter(event => event.id !== viewEvent.id));
     handleCloseModal();
   };
 
+  // 날짜 클릭
   const handleDateClick = (date) => {
     const adjustedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     setSelectedDate(adjustedDate);
   };
 
+  // 특정 날짜 일정
   const getEventsForDate = (date) => {
     return events.filter(event =>
       new Date(event.start).toDateString() === date.toDateString() ||
@@ -101,6 +114,7 @@ const Calendar = () => {
     );
   };
 
+  // 현재 날짜 확인
   const isCurrentDate = (date) => {
     const today = new Date();
     return date && date.getDate() === today.getDate() &&
@@ -108,6 +122,7 @@ const Calendar = () => {
            date.getFullYear() === today.getFullYear();
   };
 
+  // 일정 스타일 설정
   const getEventStyle = (event, day) => {
     const startDate = new Date(event.start);
     const endDate = new Date(event.end);
@@ -171,26 +186,31 @@ const Calendar = () => {
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div>
-          <h3 className="modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
-          <div className="event-form">
+          <h3 className="calendar-modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
+          <div className="calendar-event-form-edit">
+            <label>제목</label>
             <input
               type="text"
               placeholder="일정 제목"
               value={newEvent.title}
               onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
             />
-            <label>시작일</label>
-            <input
-              type="date"
-              value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
-              onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
-            />
-            <label>종료일</label>
-            <input
-              type="date"
-              value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
-              onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
-            />
+            <div className="date-input-container">
+              <label>시작일</label>
+              <input
+                type="date"
+                value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
+                onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
+              />
+            </div>
+            <div className="date-input-container">
+              <label>종료일</label>
+              <input
+                type="date"
+                value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
+                onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
+              />
+            </div>
             <div className="color-picker">
               {['#FF9999', '#99FF99', '#9999FF'].map(color => (
                 <div

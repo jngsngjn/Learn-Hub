@@ -250,7 +250,7 @@ const StudentManagement = () => {
                 ))
             ) : (
                 <tr>
-                  <td colSpan="9">학생 데이터가 없습니다.</td>
+                  <td colSpan="9">등록된 학생이 없습니다</td>
                 </tr>
             )}
             </tbody>

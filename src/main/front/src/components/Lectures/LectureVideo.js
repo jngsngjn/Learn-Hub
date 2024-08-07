@@ -8,7 +8,8 @@ const LectureVideo = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8080/test")
+    // fetch("http://localhost:8080/test") // 여기에 백이랑 통신시 사용한 코드는 주석처리
+    fetch("/data/student/mainpage/lectureVideo.json")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");

@@ -69,7 +69,7 @@ public class ManagerBoardService {
                 )).toList();
     }
 
-    // 변환된 DTO 조회 서비스
+    // 변환된 DTO, 조회 서비스
     public Page<BoardReadDto> getManagerBoards(int page, int size) {
         Page<ManagerBoard> managerBoards;
         Pageable pageable = PageRequest.of(page, size);

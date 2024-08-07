@@ -24,6 +24,7 @@ public class ManagerTeacherController {
 
     private final ManagerTeacherService teacherService;
 
+    // 강사 리스트 조회
     @GetMapping("/manage-teachers")
     public ResponseEntity<?> teacherList(@RequestParam(name = "page", defaultValue = "0") int page,
                                          @RequestParam(name = "curriculumName", required = false) String curriculumName,
@@ -31,18 +32,18 @@ public class ManagerTeacherController {
         int size = 15;
 
         Page<ManagerTeacherDto> teachers;
-        if(curriculumName != null && !curriculumName.isEmpty()){
+        if (curriculumName != null && !curriculumName.isEmpty()) {
             teachers = teacherService.getTeachersWithCurriculumName(size, page, curriculumName);
         }
-        else{
-            if(isAssigned){
+        else {
+            if (isAssigned) {
                 teachers = teacherService.getTeachers(size, page);
             }
             else{
                 teachers = teacherService.getTeachersCurriculumIsNull(size, page);
             }
         }
-        if(teachers != null && !teachers.isEmpty()){
+        if (teachers != null && !teachers.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(teachers);
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);

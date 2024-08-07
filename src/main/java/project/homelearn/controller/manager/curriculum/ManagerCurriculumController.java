@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.manager.dashboard.CurriculumDto;
+import project.homelearn.dto.manager.dashboard.CurriculumDashboardDto;
 import project.homelearn.dto.manager.dashboard.ManagerScheduleDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
@@ -31,11 +31,7 @@ public class ManagerCurriculumController {
     private final ManagerCalendarService calendarService;
     private final ManagerCurriculumService curriculumService;
 
-    @GetMapping
-    public String manager() {
-        return "Hello, manager!";
-    }
-
+    // 학생 또는 강사 등록 전 사용
     @GetMapping("/enroll-ready")
     public List<CurriculumTypeAndTh> readyEnroll() {
         return curriculumService.getCurriculumTypeAndTh();
@@ -47,7 +43,7 @@ public class ManagerCurriculumController {
      * */
     @GetMapping("/manage-curriculums/{type}") // NCP or AWS
     public ResponseEntity<?> viewCurriculumList(@PathVariable("type") CurriculumType type) {
-        List<CurriculumDto> result = curriculumService.getCurriculumList(type);
+        List<CurriculumDashboardDto> result = curriculumService.getCurriculumList(type);
         if (result.isEmpty()) {
             return new ResponseEntity<>("교육과정 없음", HttpStatus.NOT_FOUND);
         } else {
@@ -155,8 +151,8 @@ public class ManagerCurriculumController {
     }
 
     @GetMapping("/curriculum/{curriculumId}/survey")
-    public ResponseEntity<?> viewCurriculumSurvey(@PathVariable("curriculumId") Long curriculumId) {
-        CurriculumSurveyDto survey = curriculumService.getCurriculumSurvey(curriculumId);
+    public ResponseEntity<?> viewProgressSurvey(@PathVariable("curriculumId") Long curriculumId) {
+        CurriculumSurveyDto survey = curriculumService.getProgressSurvey(curriculumId);
         if (survey == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
