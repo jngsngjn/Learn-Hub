@@ -16,7 +16,7 @@ import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import project.homelearn.repository.inquiry.TeacherInquiryRepository;
 import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.repository.user.UserRepository;
-import project.homelearn.service.common.CommonNotificationService;
+import project.homelearn.service.common.InquiryNotificationService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,11 +31,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeacherInquiryService {
 
-    private final CommonNotificationService commonNotificationService;
-    private final TeacherInquiryRepository teacherInquiryRepository;
-    private final ManagerInquiryRepository managerInquiryRepository;
     private final UserRepository userRepository;
     private final TeacherRepository teacherRepository;
+    private final ManagerInquiryRepository managerInquiryRepository;
+    private final TeacherInquiryRepository teacherInquiryRepository;
+    private final InquiryNotificationService inquiryNotificationService;
 
     // 문의 내역 리스트(학생)
     public List<TeacherInquiryDto> getInquiryListDefaultFromStudents() {
@@ -81,7 +81,7 @@ public class TeacherInquiryService {
             inquiry.setResponseDate(LocalDateTime.now());
             teacherInquiryRepository.save(inquiry);
 
-            commonNotificationService.notifyTeacherResponse(inquiry); // 학생에게 알림
+            inquiryNotificationService.notifyTeacherResponse(inquiry); // 학생에게 알림
             return true;
         }
         return false;
@@ -97,6 +97,7 @@ public class TeacherInquiryService {
             managerInquiry.setContent(writeDto.getContent());
 
             managerInquiryRepository.save(managerInquiry);
+            inquiryNotificationService.notifyToManagerTeacherInquiry(managerInquiry); // 매니저에게 알림
             return true;
         }
         catch (Exception e){

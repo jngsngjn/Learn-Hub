@@ -5,16 +5,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
+import project.homelearn.entity.notification.manager.ManagerNotification;
 import project.homelearn.entity.notification.student.StudentNotification;
 import project.homelearn.entity.notification.student.StudentNotificationType;
 import project.homelearn.entity.notification.teacher.TeacherNotification;
 import project.homelearn.entity.notification.teacher.TeacherNotificationType;
 import project.homelearn.entity.user.Role;
 import project.homelearn.entity.user.User;
+import project.homelearn.repository.notification.ManagerNotificationRepository;
 import project.homelearn.repository.notification.StudentNotificationRepository;
 import project.homelearn.repository.notification.TeacherNotificationRepository;
 import project.homelearn.repository.user.UserRepository;
 
+import static project.homelearn.entity.notification.manager.ManagerNotificationType.STUDENT_INQUIRY;
+import static project.homelearn.entity.notification.manager.ManagerNotificationType.TEACHER_INQUIRY;
 import static project.homelearn.entity.user.Role.*;
 
 /**
@@ -23,11 +27,12 @@ import static project.homelearn.entity.user.Role.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommonNotificationService {
+public class InquiryNotificationService {
 
     private final UserRepository userRepository;
     private final StudentNotificationRepository studentNotificationRepository;
     private final TeacherNotificationRepository teacherNotificationRepository;
+    private final ManagerNotificationRepository managerNotificationRepository;
 
     // 매니저가 학생 또는 강사의 문의에 답변했을 때 해당 인원에게 알림
     public void notifyManageResponse(ManagerInquiry inquiry) {
@@ -58,5 +63,23 @@ public class CommonNotificationService {
         notification.setTeacherInquiry(teacherInquiry);
         notification.setType(StudentNotificationType.TEACHER_REPLY_TO_INQUIRY);
         studentNotificationRepository.save(notification);
+    }
+
+    // 학생이 매니저에게 문의 등록 시 매니저에게 알림
+    public void notifyToMangerStudentInquiry(ManagerInquiry inquiry) {
+        ManagerNotification notification = new ManagerNotification();
+        notification.setManagerInquiry(inquiry);
+        notification.setType(STUDENT_INQUIRY);
+
+        managerNotificationRepository.save(notification);
+    }
+
+    // 강사가 매니저에게 문의 등록 시 매니저에게 알림
+    public void notifyToManagerTeacherInquiry(ManagerInquiry inquiry) {
+        ManagerNotification notification = new ManagerNotification();
+        notification.setManagerInquiry(inquiry);
+        notification.setType(TEACHER_INQUIRY);
+
+        managerNotificationRepository.save(notification);
     }
 }
