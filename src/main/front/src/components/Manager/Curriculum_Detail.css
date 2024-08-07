@@ -121,8 +121,16 @@
 }
 
 .curriculum-detail-info-box-content p {
+  display:flex;
+  justify-content:center;
   margin: 5px 0;
   font-size: 20px;
+}
+
+.curriculum-detail-info-box-content-second p{
+    font-size:20px;
+    margin-top:50px;
+    margin-bottom:50px;
 }
 
 .curriculum-detail-info-box-content i {
@@ -235,4 +243,13 @@
   border-radius: 20px;
   padding: 10px;
   text-align: center;
+}
+
+
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: #757575;
+}
+
+.CircularProgressbar .CircularProgressbar-text {
+  fill: #757575;
 }
