@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import project.homelearn.dto.student.homework.HomeWorkCreateDto;
-import project.homelearn.dto.student.homework.HomeWorkUpdateDto;
+import project.homelearn.dto.student.homework.HomeworkSubmitDto;
+import project.homelearn.dto.student.homework.HomeworkUpdateDto;
 import project.homelearn.service.student.StudentHomeworkService;
 
 import java.security.Principal;
@@ -21,14 +21,14 @@ public class StudentHomeWorkController {
     private final StudentHomeworkService studentHomeworkService;
 
     // 학생 과제 등록
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> enrollmentHomework(Principal principal,
-                                                @Valid @ModelAttribute HomeWorkCreateDto homeWorkCreateDto) {
+                                                @Valid @ModelAttribute HomeworkSubmitDto homeWorkSubmitDto) {
         String username = principal.getName();
         // 로그 추가
         log.debug("Submitting homework for username: {}", username);
 
-        boolean result = studentHomeworkService.createHomework(username, homeWorkCreateDto);
+        boolean result = studentHomeworkService.createHomework(username, homeWorkSubmitDto);
 
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -40,7 +40,7 @@ public class StudentHomeWorkController {
     // 학생 과제 수정
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateHomework(@PathVariable("id") Long id,
-                                            @Valid @ModelAttribute HomeWorkUpdateDto homeWorkUpdateDto) {
+                                            @Valid @ModelAttribute HomeworkUpdateDto homeWorkUpdateDto) {
         boolean result = studentHomeworkService.updateHomework(id, homeWorkUpdateDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);

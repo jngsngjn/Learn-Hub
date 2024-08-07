@@ -6,7 +6,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class HomeWorkUpdateDto {
+public class HomeworkUpdateDto {
 
     @NotNull
     private Long id;

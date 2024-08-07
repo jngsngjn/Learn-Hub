@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.config.storage.StorageConstants;
 import project.homelearn.dto.common.FileDto;
-import project.homelearn.dto.student.homework.HomeWorkCreateDto;
-import project.homelearn.dto.student.homework.HomeWorkUpdateDto;
+import project.homelearn.dto.student.homework.HomeworkSubmitDto;
+import project.homelearn.dto.student.homework.HomeworkUpdateDto;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.student.Student;
@@ -16,6 +16,8 @@ import project.homelearn.repository.homework.HomeworkRepository;
 import project.homelearn.repository.homework.StudentHomeworkRepository;
 import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.service.common.StorageService;
+
+import static project.homelearn.config.storage.FolderType.HOMEWORK;
 
 /**
  * Author : 동재완
@@ -32,7 +34,7 @@ public class StudentHomeworkService {
     private final HomeworkRepository homeworkRepository;
     private final StudentHomeworkRepository studentHomeworkRepository;
 
-    public boolean createHomework(String username, HomeWorkCreateDto homeWorkCreateDto) {
+    public boolean createHomework(String username, HomeworkSubmitDto homeWorkSubmitDto) {
         try {
 
             Student student = studentRepository.findByUsername(username);
@@ -40,7 +42,7 @@ public class StudentHomeworkService {
                 throw new RuntimeException("Student not found");
             }
 
-            Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeWorkCreateDto.getHomeworkId());
+            Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeWorkSubmitDto.getHomeworkId());
             if (homework == null) {
                 throw new RuntimeException("Homework not found");
             }
@@ -48,12 +50,13 @@ public class StudentHomeworkService {
 
             StudentHomework studentHomework = new StudentHomework();
             studentHomework.setUser(student);
-            studentHomework.setDescription(homeWorkCreateDto.getDescription());
+            studentHomework.setDescription(homeWorkSubmitDto.getDescription());
             studentHomework.setHomework(homework);
 
-            MultipartFile file = homeWorkCreateDto.getFile();
+            MultipartFile file = homeWorkSubmitDto.getFile();
             if (file != null && !file.isEmpty()) {
-                FileDto fileDto = storageService.uploadFile(file, StorageConstants.HOMEWORK_STORAGE);
+                String folderPath = storageService.getFolderPath(student, HOMEWORK);
+                FileDto fileDto = storageService.uploadFile(file, folderPath);
                 studentHomework.setUploadFileName(fileDto.getOriginalFileName());
                 studentHomework.setStoreFileName(fileDto.getUploadFileName());
                 studentHomework.setFilePath(fileDto.getFilePath());
@@ -67,7 +70,7 @@ public class StudentHomeworkService {
         }
     }
 
-    public boolean updateHomework(Long id, HomeWorkUpdateDto homeWorkUpdateDto) {
+    public boolean updateHomework(Long id, HomeworkUpdateDto homeWorkUpdateDto) {
         try {
             StudentHomework homework = studentHomeworkRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Error getting homework" + id));
