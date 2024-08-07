@@ -94,18 +94,21 @@ const StudentAssignmentDetail = () => {
         </div>
       )}
       {/* 피드백 요소 */}
-      <div className="student_submit_assignment_feedback_box">
-        <p className="student_submit_assignment_feedback_content">
-          아주 아주 잘 했습니다. 당신은 1등 입니다
-        </p>
-        <div className="student_submit_assignment_feedback_date_box">
-          <span className="student_submit_assignment_feedback_date date_color">
-            2024-08-11
-          </span>{" "}
-          까지
+      {assignment && assignment.id && assignment.reple.id ? (
+        <div className="student_submit_assignment_feedback_box">
+          <p className="student_submit_assignment_feedback_content">
+            {assignment?.reple?.content}
+          </p>
+          <div className="student_submit_assignment_feedback_date_box">
+            <span className="student_submit_assignment_feedback_date date_color">
+              {assignment?.reple?.writeDate}
+            </span>
+            까지
+          </div>
         </div>
-      </div>
-
+      ) : (
+        <></>
+      )}
       <SubmitModal
         isOpen={isModalOpen}
         closeModal={closeModal}
