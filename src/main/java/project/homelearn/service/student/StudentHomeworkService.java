@@ -45,7 +45,6 @@ public class StudentHomeworkService {
             if (homework == null) {
                 throw new RuntimeException("Homework not found");
             }
-            log.debug("Homework found: {}", homework);
 
             StudentHomework studentHomework = new StudentHomework();
             studentHomework.setUser(student);

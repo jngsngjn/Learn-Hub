@@ -18,7 +18,7 @@ public class HomeworkSubmitDto {
 
 /*
   JSON 요청 BODY 체크 후, form-data 선택. Key값과 Value값으로 요청
-  요청 경로 : localhost:8080/students
+  요청 경로 : localhost:8080/students/homeworks
   POST 요청
   key               value
   homeworkId        1

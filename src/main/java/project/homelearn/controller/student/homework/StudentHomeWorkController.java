@@ -39,7 +39,6 @@ public class StudentHomeWorkController {
     public ResponseEntity<?> updateHomework(Principal principal,
                                             @PathVariable("homeworkId") Long homeworkId,
                                             @Valid @ModelAttribute HomeworkUpdateDto homeWorkUpdateDto) {
-
         boolean result = studentHomeworkService.updateHomework(homeworkId, principal.getName(), homeWorkUpdateDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -52,7 +51,6 @@ public class StudentHomeWorkController {
     @DeleteMapping("/{homeworkId}")
     public ResponseEntity<?> deleteHomework(@PathVariable("homeworkId") Long homeworkId) {
         boolean result = studentHomeworkService.deleteHomework(homeworkId);
-
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
