@@ -123,7 +123,6 @@ public class ManagerBoardService {
 
     // 삭제 서비스
     public boolean deleteManagerBoards(List<Long> ids) {
-
         try {
             List<ManagerBoard> boards = managerBoardRepository.findAllById(ids);
             for (ManagerBoard board : boards) {
