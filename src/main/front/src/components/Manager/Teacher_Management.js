@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../utils/axios';
 import Modal from './Modal';
 import './Teacher_Management.css';
 import swal from 'sweetalert';
-
-axios.defaults.baseURL = 'http://localhost:8080';
 
 const TeacherManagement = () => {
   const [teachers, setTeachers] = useState([]);
@@ -22,7 +20,6 @@ const TeacherManagement = () => {
     curriculumFullName: '',
   });
   const [selectedTeachers, setSelectedTeachers] = useState([]);
-  const getToken = () => localStorage.getItem('access-token');
 
   // 강사와 커리큘럼 데이터를 가져옴
   useEffect(() => {
@@ -33,10 +30,7 @@ const TeacherManagement = () => {
   // 강사 목록 서버에서 가져오기
   const fetchTeachers = async () => {
     try {
-      const token = getToken();
-      const response = await axios.get('/managers/manage-teachers', {
-        headers: { access: token },
-      });
+      const response = await axios.get('/managers/manage-teachers');
       const teachersData = response.data && response.data.content ? response.data.content : [];
       setTeachers(teachersData);
     } catch (error) {
@@ -48,10 +42,7 @@ const TeacherManagement = () => {
   // 커리큘럼 목록
   const fetchCurriculums = async () => {
     try {
-      const token = getToken();
-      const response = await axios.get('/managers/enroll-ready', {
-        headers: { access: token },
-      });
+      const response = await axios.get('/managers/enroll-ready');
       setCurriculums(response.data || []);
     } catch (error) {
       console.error('기수 가져오기 에러:', error);
@@ -90,7 +81,6 @@ const TeacherManagement = () => {
   // 새로운 강사 등록
   const handleAddTeacher = async () => {
     try {
-      const token = getToken();
       const teacherData = {
         name: newTeacher.name,
         email: newTeacher.email,
@@ -100,9 +90,7 @@ const TeacherManagement = () => {
 
       console.log("강사 등록 데이터:", teacherData); // 디버깅용 로그
 
-      const response = await axios.post('/managers/manage-teachers/enroll', teacherData, {
-        headers: { access: token },
-      });
+      const response = await axios.post('/managers/manage-teachers/enroll', teacherData);
       if (response.status === 200) {
         setIsModalOpen(false);
         fetchTeachers();
@@ -120,11 +108,8 @@ const TeacherManagement = () => {
   // 선택된 강사 삭제
   const handleDeleteTeachers = async () => {
     try {
-      const token = getToken();
       const deletePromises = selectedTeachers.map(teacherId =>
-        axios.delete(`/managers/manage-teachers/${teacherId}`, {
-          headers: { access: token },
-        })
+        axios.delete(`/managers/manage-teachers/${teacherId}`)
       );
       await Promise.all(deletePromises);
       fetchTeachers();
@@ -185,19 +170,25 @@ const TeacherManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredTeachers.map((teacher, index) => (
-              <tr key={index} onClick={() => handleRowClick(teacher.teacherId)} className={selectedTeachers.includes(teacher.teacherId) ? 'selected' : ''}>
-                <td>
-                  <input type="checkbox" checked={selectedTeachers.includes(teacher.teacherId)} onChange={() => handleCheckboxChange(teacher.teacherId)} onClick={(e) => e.stopPropagation()} />
-                </td>
-                <td>{teacher.teacherId}</td>
-                <td>{teacher.name}</td>
-                <td>{teacher.curriculumName}</td>
-                <td>{teacher.curriculumTh}</td>
-                <td>{teacher.email}</td>
-                <td>{teacher.phone}</td>
+            {filteredTeachers.length > 0 ? (
+              filteredTeachers.map((teacher, index) => (
+                <tr key={index} onClick={() => handleRowClick(teacher.teacherId)} className={selectedTeachers.includes(teacher.teacherId) ? 'selected' : ''}>
+                  <td>
+                    <input type="checkbox" checked={selectedTeachers.includes(teacher.teacherId)} onChange={() => handleCheckboxChange(teacher.teacherId)} onClick={(e) => e.stopPropagation()} />
+                  </td>
+                  <td>{index+1}</td>
+                  <td>{teacher.name}</td>
+                  <td>{teacher.curriculumName}</td>
+                  <td>{teacher.curriculumTh}</td>
+                  <td>{teacher.email}</td>
+                  <td>{teacher.phone}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7">강사 데이터가 없습니다.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

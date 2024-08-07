@@ -52,24 +52,21 @@
 }
 
 .detail-event-title-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.detail-event-color {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  margin-right: 8px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 8px;
+   width: 100%;
 }
 
 .detail-event-title {
   font-size: 18px;
   font-weight: bold;
-  cursor: pointer;
   flex-grow: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detail-event-title-input,
@@ -130,11 +127,18 @@
   margin-top:10px;
   margin-bottom:10px;
 }
-
+.detail-event-color{
+  width: 20px;
+  height: 20px;
+  border:1px solid #757575;
+  border-radius: 50%;
+  margin-right: 8px;
+}
 .detail-all-events .detail-event-color {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
+  border:1px solid #757575;
   border-radius: 50%;
   margin-right: 8px;
 }
@@ -146,13 +150,13 @@
 .detail-all-events .detail-event-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .detail-event-color-picker {
   display: flex;
   gap: 8px;
-  margin-bottom: 10px; /* 선택기에 약간의 여백을 추가 */
+  margin-bottom: 10px;
 }
 
 .color-option {

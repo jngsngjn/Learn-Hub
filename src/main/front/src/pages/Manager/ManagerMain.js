@@ -12,6 +12,7 @@ import TeacherManagement from '../../components/Manager/Teacher_Management';
 import Notice from '../../components/Manager/Notice';
 import StudentContact from '../../components/Manager/Student_Contact';
 import TeacherContact from '../../components/Manager/Teacher_Contact';
+import CurriculumDetail from '../../components/Manager/Curriculum_Detail'; // CurriculumDetail 컴포넌트 임포트
 import './ManagerMain.css';
 
 function Dashboard() {
@@ -38,11 +39,12 @@ function ManagerMain() {
             <Route path="/" element={<Dashboard />} />
             <Route path="manage-students" element={<StudentManagement />} />
             <Route path="manage-curriculums" element={<CurriculumManagement />} />
+            <Route path="manage-curriculums/:id" element={<CurriculumDetail />} />
             <Route path="manage-teachers" element={<TeacherManagement />} />
             <Route path="notice" element={<Notice />} />
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
-            <Route path="calendar/:eventId" element={<CalendarDetail />} /> {/* Calendar_Detail 경로 추가 */}
+            <Route path="calendar/:eventId" element={<CalendarDetail />} />
           </Routes>
         </div>
       </div>

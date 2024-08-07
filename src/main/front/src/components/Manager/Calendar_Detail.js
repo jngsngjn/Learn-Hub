@@ -10,6 +10,7 @@ const CalendarDetail = () => {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null); // 추가: 선택된 날짜 상태
 
   const predefinedColors = ['#FF9999', '#99FF99', '#9999FF']; // 임시 색상 -> 백엔드 연도 필요
 
@@ -39,11 +40,9 @@ const CalendarDetail = () => {
     const updatedEvents = events.filter((e) => e.id !== id);
     localStorage.setItem('calendarEvents', JSON.stringify(updatedEvents));
     setEvents(updatedEvents);
-    if (id === event.id) { //삭제 되어도 캘린더에 위치시킴
-      navigate('/managers/calendar');
-    }
-    if (updatedEvents.length === 0) { //일정이 아무것도 없으면 managers로 이동
-      navigate('/managers');
+    if (id === selectedEvent.id) {
+      setSelectedEvent(null); // 선택 취소
+      setEditMode(false); // 수정 모드 해제
     }
   };
 
@@ -79,13 +78,17 @@ const CalendarDetail = () => {
     }
   };
 
-  // 선택된 날짜
-  const selectedDate = new Date(event.start);
+  // 날짜 클릭 핸들러 추가
+  const handleDayClick = (date) => {
+    setSelectedDate(date);
+    setSelectedEvent(null);
+    setEditMode(false);
+  };
 
   return (
     <div className="detail-calendar-detail-page">
       <div className="detail-calendar-detail-sidebar">
-        <Calendar events={events} onDeleteEvent={handleDeleteEvent} />
+        <Calendar events={events} onDeleteEvent={handleDeleteEvent} onDayClick={handleDayClick} />
       </div>
       <div className="detail-calendar-detail-container">
         <div className="detail-calendar-detail-header">
@@ -96,7 +99,7 @@ const CalendarDetail = () => {
           <div className="detail-all-events">
             <h3>해당 날짜의 일정</h3>
             <ul>
-              {getEventsForDate(selectedDate).map((evt) => (
+              {getEventsForDate(selectedDate || new Date(event.start)).map((evt) => (
                 <li key={evt.id}>
                   <div className="detail-event-title-container">
                     <span className="detail-event-color" style={{ backgroundColor: evt.color }}></span>

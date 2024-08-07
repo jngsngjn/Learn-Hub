@@ -37,7 +37,7 @@ public class Curriculum extends BaseEntity {
     @Column(nullable = false)
     private Long th; // 기수
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String color; // #FFFFFF
 
     @Column(name = "start_date", nullable = false)

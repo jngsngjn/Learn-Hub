@@ -9,7 +9,7 @@ import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.student.Student;
 import project.homelearn.repository.inquiry.ManagerInquiryRepository;
 import project.homelearn.repository.user.StudentRepository;
-import project.homelearn.service.manager.ManagerNotificationService;
+import project.homelearn.service.common.InquiryNotificationService;
 
 /**
  * Author : 정성진
@@ -22,7 +22,7 @@ public class StudentInquiryService {
 
     private final StudentRepository studentRepository;
     private final ManagerInquiryRepository managerInquiryRepository;
-    private final ManagerNotificationService managerNotificationService;
+    private final InquiryNotificationService inquiryNotificationService;
 
     public void inquiryToManger(String username, StudentToMangerInquiryDto inquiryDto) {
         Student student = studentRepository.findByUsername(username);
@@ -34,7 +34,7 @@ public class StudentInquiryService {
         managerInquiryRepository.save(inquiry);
 
         // 매니저에게 알림
-        managerNotificationService.notifyStudentInquiry(inquiry);
+        inquiryNotificationService.notifyToMangerStudentInquiry(inquiry);
     }
 
     public boolean modifyManagerInquiry(Long inquiryId, String username, StudentToMangerInquiryDto inquiryDto) {

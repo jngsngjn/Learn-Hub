@@ -8,6 +8,7 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
+  const [holidays, setHolidays] = useState([]);
   const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, color: '#FF9999', content: '' });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [viewEvent, setViewEvent] = useState(null);
@@ -23,6 +24,40 @@ const Calendar = () => {
   useEffect(() => {
     localStorage.setItem('calendarEvents', JSON.stringify(events));
   }, [events]);
+
+  // 선택된 연도와 월이 변경될 때 공휴일 데이터를 가져오기
+  useEffect(() => {
+    const fetchHolidays = async () => {
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      const serviceKey = 't21Zxd4T5l%2FCFpu9dpVZ2U4nEIv06W14hNeu7Op7HA0yIBHYgMu23%2FL6JHBWQ%2Bp9HNG%2B93RJwgq7zANzmn%2B2%2BA%3D%3D';
+      const url = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?serviceKey=${serviceKey}&pageNo=1&numOfRows=100&solYear=${year}&solMonth=${month}`;
+
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const responseText = await response.text();
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(responseText, 'application/xml');
+          const items = xmlDoc.getElementsByTagName('item');
+          const holidays = Array.from(items).map(item => {
+            const locdate = item.getElementsByTagName('locdate')[0].textContent;
+            return locdate;
+          }).filter(date => {
+            const monthDay = date.substr(4, 4);
+            return monthDay !== '0717'; //api에서 제헌절이 공휴일로 표기도어 있어 필터를 사용하여 해당 일수는 제외
+          });
+          setHolidays(holidays);
+        } else {
+          console.error('공휴일 데이터 가져오기 실패:', response.statusText);
+        }
+      } catch (error) {
+         console.error('공휴일 데이터 가져오는 중 오류:', error);
+      }
+    };
+
+    fetchHolidays();
+  }, [currentDate]);
 
   // 해당 월의 날짜 수 계산
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
@@ -122,6 +157,14 @@ const Calendar = () => {
            date.getFullYear() === today.getFullYear();
   };
 
+  // 공휴일 확인
+  const isHoliday = (date) => {
+    return holidays.some(holiday => {
+      const holidayDate = new Date(holiday.substr(0, 4), holiday.substr(4, 2) - 1, holiday.substr(6, 2));
+      return holidayDate.toDateString() === date.toDateString();
+    });
+  };
+
   // 일정 스타일 설정
   const getEventStyle = (event, day) => {
     const startDate = new Date(event.start);
@@ -133,6 +176,12 @@ const Calendar = () => {
       }
     }
     return {};
+  };
+
+  // 주말 확인
+  const isWeekend = (date) => {
+    const day = date.getDay();
+    return { isSunday: day === 0, isSaturday: day === 6 };
   };
 
   return (
@@ -167,7 +216,9 @@ const Calendar = () => {
                   day.date.getFullYear() === selectedDate.getFullYear() &&
                   day.date.getMonth() === selectedDate.getMonth() &&
                   day.date.getDate() === selectedDate.getDate() ? 'selected' : ''
-                } ${isCurrentDate(day.date) ? 'current-date' : ''}`}
+                } ${isCurrentDate(day.date) ? 'current-date' : ''} ${isHoliday(day.date) ? 'holiday' : ''} ${
+                  isWeekend(day.date).isSunday ? 'sunday' : isWeekend(day.date).isSaturday ? 'saturday' : ''
+                }`}
                 onClick={() => handleDateClick(day.date)}
               >
                 <span className="day-number">{day.date.getDate()}</span>
@@ -186,26 +237,31 @@ const Calendar = () => {
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div>
-          <h3 className="modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
-          <div className="event-form">
+          <h3 className="calendar-modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
+          <div className="calendar-event-form-edit">
+            <label>제목</label>
             <input
               type="text"
               placeholder="일정 제목"
               value={newEvent.title}
               onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
             />
-            <label>시작일</label>
-            <input
-              type="date"
-              value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
-              onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
-            />
-            <label>종료일</label>
-            <input
-              type="date"
-              value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
-              onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
-            />
+            <div className="date-input-container">
+              <label>시작일</label>
+              <input
+                type="date"
+                value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
+                onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
+              />
+            </div>
+            <div className="date-input-container">
+              <label>종료일</label>
+              <input
+                type="date"
+                value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
+                onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
+              />
+            </div>
             <div className="color-picker">
               {['#FF9999', '#99FF99', '#9999FF'].map(color => (
                 <div

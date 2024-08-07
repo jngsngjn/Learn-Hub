@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../utils/axios';
 import './Lecture.css';
+import { Link } from 'react-router-dom';
 
 const Lecture = () => {
   const [activeButton, setActiveButton] = useState('NCP'); // 버튼 변수
@@ -54,7 +55,7 @@ const Lecture = () => {
           <li key={lecture.id} className="lecture-item">
             <div className="lecture-info">
               <span className="lecture-id">{lecture.th}기</span>
-              <span className="lecture-title">{lecture.name}</span>
+              <Link to={`/managers/manage-curriculums/${lecture.id}`} className="lecture-title">{lecture.name}</Link>
             </div>
             <div className="lecture-details">
               <div className="lecture-teacher">
