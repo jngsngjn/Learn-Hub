@@ -48,24 +48,24 @@ const CurriculumDetail = () => {
         console.log('ID 값:', id);
 
         const basicResponse = await axios.get(`/managers/curriculum/${id}/basic`, config);
-        console.log('Basic Response:', basicResponse);
+        console.log('Basic:', basicResponse);
         setCurriculum(basicResponse.data);
 
         const attendanceResponse = await axios.get(`/managers/curriculum/${id}/attendance`, config);
-        console.log('Attendance Response:', attendanceResponse);
+        console.log('출석:', attendanceResponse);
         setAttendance(attendanceResponse.data);
 
         const teacherResponse = await axios.get(`/managers/curriculum/${id}/teacher`, config);
-        console.log('Teacher Response:', teacherResponse);
+        console.log('강사:', teacherResponse);
         setTeacher(teacherResponse.data);
 
         const calendarResponse = await axios.get(`/managers/curriculum/${id}/calendar`, config);
-        console.log('Calendar Response:', calendarResponse);
+        console.log('달력:', calendarResponse);
         setSchedules(calendarResponse.data);
 
         // survey는 없기 때문에 주석처리
         // const surveyResponse = await axios.get(`/managers/curriculum/${id}/survey`, config);
-        // console.log('Survey Response:', surveyResponse);
+        // console.log('설문조사 Response:', surveyResponse);
         // setSurvey(surveyResponse.data);
 
       } catch (error) {
@@ -87,47 +87,53 @@ const CurriculumDetail = () => {
           <div className="progress-container">
             <div className="progress-bar">
               <div className="progress" style={{ width: `${curriculum.progress}%` }}></div>
-              <span className="progress-text">{curriculum.progress?.toFixed(1)}% / 100%</span>
             </div>
+            <span className="progress-text">{curriculum.progress?.toFixed(1)}% / 100%</span>
           </div>
         </div>
         <div className="content-container">
           <div className="left-container">
-            <div className="info-boxes-top">
-              <div className="info-box">
-                <div className="detail-attendance-title">
-                <span className="detail-subtitle">학생 출결 현황</span>
+            <div className="info-box">
+              <div className="info-box-title">
+                <i className="fas fa-user-graduate"></i>
+                <span>학생 출결 현황</span>
                 <Link to={`/attendance/${id}`} className="detail-link">자세히 보기 ></Link>
-                </div>
-                <p>{attendance.attendance} / {attendance.total}</p>
-                <p>{attendance.ratio}%</p>
               </div>
-              <div className="info-box">
-                <div className="detail-teacher-title">
+              <div className="info-box-content">
+                <p className="attendance-ratio">{attendance.ratio}%</p>
+                <p className="attendance-count">{attendance.attendance} / {attendance.total}</p>
+              </div>
+            </div>
+            <div className="info-box">
+              <div className="info-box-title">
+                <i className="fas fa-chalkboard-teacher"></i>
                 <span>강사 정보</span>
                 <Link to={`/teacher/${id}`} className="detail-link">자세히 보기 ></Link>
-                </div>
-                <p>{teacher.name}</p>
-                <p>{teacher.email}</p>
-                <p>{teacher.phone}</p>
+              </div>
+              <div className="info-box-content">
+                <p><i className="fas fa-user"></i> {teacher.name}</p>
+                <p><i className="fas fa-envelope"></i> {teacher.email}</p>
+                <p><i className="fas fa-phone"></i> {teacher.phone}</p>
               </div>
             </div>
             <div className="info-box survey-box">
-              <div className="detail-survey-title">
-              <span>설문 조사</span>
-              <Link to={`/survey/${id}`} className="detail-link">자세히 보기 ></Link>
+              <div className="info-box-title">
+                <i className="fas fa-poll"></i>
+                <span>설문 조사</span>
+                <Link to={`/survey/${id}`} className="detail-link">자세히 보기 ></Link>
               </div>
-              <p>{survey.title}</p>
-              <p>{survey.completed} / {survey.total}</p>
+              <div className="info-box-content">
+                <p className="survey-title">{survey.title}</p>
+                <p className="survey-count"><i className="fas fa-users"></i> {survey.completed} / {survey.total}</p>
+              </div>
             </div>
           </div>
           <div className="right-container">
-            <span className="curriculum-detail-calendar">캘린더</span>
+            <span className="curriculum-detail-calendar">
+              <i className="far fa-calendar-alt"></i> 캘린더
+            </span>
             <Calendar events={schedules} />
           </div>
-        </div>
-        <div className="detail-update-button-container">
-         <button className="curriculum-detail-update-button">교육 과정 수정</button>
         </div>
       </div>
     </div>
