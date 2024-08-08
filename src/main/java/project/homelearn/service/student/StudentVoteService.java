@@ -37,7 +37,7 @@ public class StudentVoteService {
     }
 
     public StudentVoteViewDto getStudentVoteView(Long voteId, String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         Integer total = studentRepository.findStudentCountByCurriculum(curriculum);
 
         StudentVoteViewDto result = voteRepository.findStudentVoteView(voteId, username);

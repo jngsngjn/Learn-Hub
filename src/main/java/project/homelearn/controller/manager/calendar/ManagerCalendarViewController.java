@@ -9,6 +9,9 @@ import project.homelearn.service.manager.ManagerCalendarService;
 
 import java.util.List;
 
+/**
+ * Author : 정성진
+ */
 @RestController
 @RequestMapping("/managers/calendar")
 @RequiredArgsConstructor

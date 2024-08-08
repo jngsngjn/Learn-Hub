@@ -337,13 +337,13 @@ public class StudentQuestionBoardService {
 
     // 최근 질문 5개
     public List<QuestionTop5Dto> getQuestionTop5(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return questionBoardRepository.findQuestionTop5(curriculum);
     }
 
     // 최근 질문 2개
     public List<ViewQuestionBoardDto> getQuestionTop2(String username){
-        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return questionBoardRepository.findQuestionTop2(curriculum);
     }
 

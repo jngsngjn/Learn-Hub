@@ -26,14 +26,14 @@ public class TeacherAttendanceService {
     private final CurriculumRepository curriculumRepository;
 
     public boolean isCurriculumStarted(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         LocalDate startDate = curriculum.getStartDate();
 
         return startDate.isBefore(LocalDate.now()) || startDate.isEqual(LocalDate.now());
     }
 
     public AttendanceStateDto getAttendanceState(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         Integer total = studentRepository.findStudentCountByCurriculum(curriculum);
         Long attendanceCount = studentRepository.findAttendanceCount(curriculum);
 
