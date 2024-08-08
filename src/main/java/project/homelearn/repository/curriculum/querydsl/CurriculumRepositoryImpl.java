@@ -94,16 +94,7 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
     }
 
     @Override
-    public Curriculum findCurriculumByTeacher(String username) {
-        return queryFactory
-                .selectFrom(curriculum)
-                .join(curriculum.users, user)
-                .where(user.username.eq(username))
-                .fetchOne();
-    }
-
-    @Override
-    public Curriculum findCurriculumByStudent(String username){
+    public Curriculum findCurriculumByUsername(String username) {
         return queryFactory
                 .selectFrom(curriculum)
                 .join(curriculum.users, user)

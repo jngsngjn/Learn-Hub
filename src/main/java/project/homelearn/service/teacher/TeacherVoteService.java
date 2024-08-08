@@ -26,7 +26,7 @@ public class TeacherVoteService {
     private final CurriculumRepository curriculumRepository;
 
     public TeacherVoteBasicDto getVoteBasic(Long voteId, String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return voteRepository.findVoteBasic(voteId, curriculum);
     }
 
@@ -35,7 +35,7 @@ public class TeacherVoteService {
 
         try {
             // 투표가 속한 커리큘럼 찾기
-            Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+            Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
 
             // 새로운 투표 생성
             Vote vote = new Vote();

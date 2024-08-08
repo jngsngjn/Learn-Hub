@@ -17,6 +17,9 @@ import project.homelearn.repository.curriculum.CurriculumRepository;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Author : 정성진
+ */
 @Slf4j
 @Service
 @Transactional
@@ -105,12 +108,12 @@ public class ManagerCalendarService {
     }
 
     public List<ScheduleDto> getAllManagerSchedules(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return managerCalendarRepository.findManagerSchedule(curriculum);
     }
 
     public List<ViewScheduleDto> getAllManagerSchedulesOfStudent(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return managerCalendarRepository.findManagerScheduleOfStudent(curriculum);
     }
 

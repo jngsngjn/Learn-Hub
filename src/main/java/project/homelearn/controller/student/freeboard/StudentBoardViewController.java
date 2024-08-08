@@ -34,7 +34,7 @@ public class StudentBoardViewController {
         int size = 15;
 
         String username = principal.getName();
-        Curriculum myCurriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum myCurriculum = curriculumRepository.findCurriculumByUsername(username);
 
         if (myCurriculum == null) {
             return new ResponseEntity<>("해당 학생의 커리큘럼을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);

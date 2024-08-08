@@ -22,14 +22,14 @@ public class CommonVoteService {
     private final CurriculumRepository curriculumRepository;
 
     public Page<VoteTabDto> getProgressVotes(String username, int page, int size, String status) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         PageRequest pageRequest = PageRequest.of(page, size);
 
         return voteRepository.findVoteTab(curriculum, pageRequest, status);
     }
 
     public Page<VoteTabDto> getCompletedVotes(String username, int page, int size, String status) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         PageRequest pageRequest = PageRequest.of(page, size);
 
         return voteRepository.findVoteTab(curriculum, pageRequest, status);
