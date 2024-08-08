@@ -12,6 +12,9 @@ import project.homelearn.service.student.StudentHomeworkService;
 
 import java.security.Principal;
 
+/**
+ * Author : 동재완
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor

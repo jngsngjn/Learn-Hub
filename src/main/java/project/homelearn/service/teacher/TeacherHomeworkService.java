@@ -146,20 +146,20 @@ public class TeacherHomeworkService {
     }
 
     public HomeworkStateDto getHomeworkState(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         Integer totalCount = studentRepository.findStudentCountByCurriculum(curriculum);
         return homeworkRepository.findHomeworkStateDto(curriculum, totalCount);
     }
 
     public Page<HomeworkTabDto> getHomeworks(String username, int page, int size, String status) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         PageRequest pageRequest = PageRequest.of(page, size);
 
         return homeworkRepository.findHomeworks(curriculum, pageRequest, status);
     }
 
     public HomeworkDetailDto getHomeworkDetail(String username, Long homeworkId) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
 
         Integer totalCount = studentRepository.findStudentCountByCurriculum(curriculum);
         Long completedCount = homeworkRepository.findCompletedCount(homeworkId);

@@ -13,6 +13,7 @@ import project.homelearn.dto.common.board.QuestionBoardDetailDto;
 import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.student.board.QuestionBoardWriteDto;
+import project.homelearn.dto.student.dashboard.ViewQuestionBoardDto;
 import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
@@ -336,7 +337,14 @@ public class StudentQuestionBoardService {
 
     // 최근 질문 5개
     public List<QuestionTop5Dto> getQuestionTop5(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return questionBoardRepository.findQuestionTop5(curriculum);
     }
+
+    // 최근 질문 2개
+    public List<ViewQuestionBoardDto> getQuestionTop2(String username){
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
+        return questionBoardRepository.findQuestionTop2(curriculum);
+    }
+
 }

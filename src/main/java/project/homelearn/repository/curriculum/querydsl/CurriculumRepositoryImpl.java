@@ -2,6 +2,8 @@ package project.homelearn.repository.curriculum.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import project.homelearn.dto.manager.calendar.CurriculumNameAndColor;
+import project.homelearn.dto.manager.calendar.QCurriculumNameAndColor;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumIdAndThDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumTypeAndTh;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
@@ -92,7 +94,7 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
     }
 
     @Override
-    public Curriculum findCurriculumByTeacher(String username) {
+    public Curriculum findCurriculumByUsername(String username) {
         return queryFactory
                 .selectFrom(curriculum)
                 .join(curriculum.users, user)
@@ -101,11 +103,11 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
     }
 
     @Override
-    public Curriculum findCurriculumByStudent(String username){
+    public List<CurriculumNameAndColor> findCurriculumNameAndColor() {
         return queryFactory
-                .selectFrom(curriculum)
-                .join(curriculum.users, user)
-                .where(user.username.eq(username))
-                .fetchOne();
+                .select(new QCurriculumNameAndColor(curriculum.fullName, curriculum.color))
+                .from(curriculum)
+                .orderBy(curriculum.createdDate.asc())
+                .fetch();
     }
 }
