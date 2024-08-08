@@ -88,15 +88,19 @@ const StudentManagement = () => {
     try {
       const token = getToken();
 
+      const generation = newStudent.generation ? parseInt(newStudent.generation) : 1;
+      const curriculumFullName = `${newStudent.curriculum} ${generation}기`;
+
       const studentData = {
         name: newStudent.name,
         gender: newStudent.gender,
         email: newStudent.email,
         phone: newStudent.phone,
-        curriculumFullName: `${newStudent.curriculum} ${newStudent.generation}기`
+        curriculumFullName: curriculumFullName,
       };
 
       console.log('등록할 학생 데이터:', studentData);
+      console.log('curriculumFullName:', curriculumFullName);
 
       const response = await axios.post('/managers/manage-students/enroll', studentData, {
         headers: { access: token },
