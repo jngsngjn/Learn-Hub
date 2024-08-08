@@ -26,7 +26,7 @@ const RandomVideo = () => {
       const videoUrl = `https://www.youtube.com/embed/${videoId}`;
       setVideoUrl(videoUrl);
     } catch (err) {
-      console.error("YouTube API 가져오기 오류:", err);
+      console.error("YouTube API 가져오기 오류 또는 회수 초과:", err);
     }
   };
 

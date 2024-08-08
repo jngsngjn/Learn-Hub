@@ -100,13 +100,14 @@
 
 .user-found {
   color: #74B49B;
-  cursor: pointer;
 }
 
 .user-found-id:hover {
   color: #5C8D89;
+  cursor:pointer;
 }
 
 .user-found-pw:hover {
   color: #5C8D89;
+  cursor:pointer;
 }

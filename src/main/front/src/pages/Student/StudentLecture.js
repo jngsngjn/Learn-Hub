@@ -67,9 +67,6 @@ const StudentLecture = () => {
 
   return (
     <div className="student_lecture_container">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="main_container">
         <div className="lecutre_type_container">
           <img
@@ -91,7 +88,9 @@ const StudentLecture = () => {
               <h3 className="board_title">과목 게시판</h3>
               <span
                 className="go_to_show_more_page"
-                onClick={() => navigate("/students/subjectBoard")}
+                onClick={() =>
+                  navigate(`/students/${mainLectures.title}/boardList`)
+                }
               >
                 더보기 ⟩
               </span>
@@ -102,7 +101,9 @@ const StudentLecture = () => {
                   className="subject_list"
                   key={idx}
                   onClick={() =>
-                    navigate(`/students/subjectBoardDetail/${el.id}`)
+                    navigate(
+                      `/students/${mainLectures.title}/boardDetail/${el.id}`
+                    )
                   }
                 >
                   <div className="subject_title_box">
