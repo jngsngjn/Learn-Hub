@@ -11,10 +11,10 @@ import project.homelearn.entity.calendar.ManagerCalendar;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.repository.calendar.ManagerCalendarRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
-import project.homelearn.repository.user.TeacherRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -106,5 +106,9 @@ public class ManagerCalendarService {
     public List<ScheduleDto> getAllManagerSchedules(String username) {
         Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
         return managerCalendarRepository.findManagerSchedule(curriculum);
+    }
+
+    public Map<String, String> getCurriculumNameAndColor() {
+        return curriculumRepository.findCurriculumNameAndColor();
     }
 }
