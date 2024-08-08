@@ -48,7 +48,7 @@ public class StudentLectureService {
             return lectureRepository.findSubjectLecturePage(subjectId, pageRequest);
         }
 
-        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return lectureRepository.findLecturePage(curriculum, pageRequest);
     }
 
@@ -56,7 +56,7 @@ public class StudentLectureService {
     public Page<LectureListDto> getLectureList(String username, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return lectureRepository.findLecturePage(curriculum, pageRequest);
     }
 
