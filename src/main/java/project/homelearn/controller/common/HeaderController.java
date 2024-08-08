@@ -3,11 +3,11 @@ package project.homelearn.controller.common;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import project.homelearn.service.common.HeaderCommonService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+import project.homelearn.dto.common.HeaderCommonDto;
+import project.homelearn.dto.manager.header.NotificationDto;
+import project.homelearn.service.common.HeaderService;
 
 import java.security.Principal;
 
@@ -17,9 +17,30 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/header")
 @RequiredArgsConstructor
-public class HeaderNotificationController {
+public class HeaderController {
 
-    private final HeaderCommonService headerService;
+    private final HeaderService headerService;
+
+    @GetMapping("/basic")
+    public HeaderCommonDto viewHeaderCommon(Principal principal) {
+        String username = principal.getName();
+        return headerService.getHeaderCommon(username);
+    }
+
+    // 알림 정보 업데이트
+    @GetMapping("/notifications")
+    public NotificationDto viewNotification() {
+        String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
+        if (role.equals("ROLE_MANAGER")) {
+            return headerService.getManagerNotification();
+        }
+
+        if (role.equals("ROLE_TEACHER")) {
+            return null;
+        }
+
+        return null;
+    }
 
     // 알림 단 건 삭제
     @DeleteMapping("/notifications/{id}")

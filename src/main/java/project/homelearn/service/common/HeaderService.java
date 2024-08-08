@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.homelearn.dto.common.HeaderCommonDto;
+import project.homelearn.dto.manager.header.NotificationDto;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.notification.manager.ManagerNotification;
+import project.homelearn.entity.notification.manager.ManagerNotificationType;
 import project.homelearn.entity.user.Role;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.notification.ManagerNotificationRepository;
@@ -14,13 +17,17 @@ import project.homelearn.repository.user.UserRepository;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
+import static project.homelearn.entity.notification.manager.ManagerNotificationType.STUDENT_INQUIRY;
+import static project.homelearn.entity.notification.manager.ManagerNotificationType.TEACHER_INQUIRY;
 import static project.homelearn.entity.user.Role.*;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class HeaderCommonService {
+public class HeaderService {
 
     private final UserRepository userRepository;
     private final StudentNotificationRepository studentNotificationRepository;
@@ -29,6 +36,11 @@ public class HeaderCommonService {
 
     public HeaderCommonDto getHeaderCommon(String username) {
         User user = userRepository.findUserAndCurriculum(username);
+        Role role = user.getRole();
+        if (role.equals(ROLE_MANAGER)) {
+            return null;
+        }
+
         Curriculum curriculum = user.getCurriculum();
 
         LocalDate startDate = curriculum.getStartDate();
@@ -93,5 +105,30 @@ public class HeaderCommonService {
 
         managerNotificationRepository.deleteAll();
         return true;
+    }
+
+    public NotificationDto getManagerNotification() {
+        List<ManagerNotification> notifications = managerNotificationRepository.findAll();
+
+        NotificationDto result = new NotificationDto();
+        result.setCount(notifications.size());
+
+        List<NotificationDto.NotificationSubDto> subList = new ArrayList<>();
+        for (ManagerNotification notification : notifications) {
+            NotificationDto.NotificationSubDto subDto = new NotificationDto.NotificationSubDto();
+            subDto.setInquiryId(notification.getManagerInquiry().getId());
+
+            ManagerNotificationType type = notification.getType();
+            if (type.equals(STUDENT_INQUIRY)) {
+                subDto.setMessage("학생 1:1 문의가 등록되었습니다.");
+            }
+
+            if (type.equals(TEACHER_INQUIRY)) {
+                subDto.setMessage("강사 1:1 문의가 등록되었습니다.");
+            }
+            subList.add(subDto);
+        }
+        result.setNotifications(subList);
+        return result;
     }
 }
