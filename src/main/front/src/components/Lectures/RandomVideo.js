@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./RandomVideo.css";
 
-const RandomVideo = () => {
+const RandomVideo = ({ width, height }) => {
   const youtubeKey = process.env.REACT_APP_YOUTUBE_API_KEY;
   const query = process.env.REACT_APP_YOUTUBE_QUERY;
   const maxCount = 100;
 
   const [videoUrl, setVideoUrl] = useState("");
+  console.log(videoUrl);
   const [videoArray, setVideoArray] = useState([]);
 
   const getRandomVideoId = (arr) => {
@@ -54,9 +55,10 @@ const RandomVideo = () => {
       {videoUrl && (
         <div className="iframe_wrapper">
           <iframe
-            width="560"
-            height="250"
-            src={videoUrl}
+            id="player"
+            width="100%"
+            height={height}
+            src={`${videoUrl}/?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&fs=0&playsinline=1`}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
