@@ -41,7 +41,7 @@ public class TeacherQuestionBoardController {
         int size = 15;
 
         String username = principal.getName();
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
 
         if (curriculum == null) {
             return new ResponseEntity<>("해당 교사의 커리큘럼을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);

@@ -277,7 +277,7 @@ public class TeacherQuestionBoardService {
 
     // 최근 질문 5개
     public List<QuestionTop5Dto> getQuestionTop5(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return questionBoardRepository.findQuestionTop5(curriculum);
     }
 }
