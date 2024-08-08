@@ -1,8 +1,57 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
+import axios from 'axios';
 import './TeacherHeader.css';
 
 const TeacherHeader = () => {
+    const { id } = useParams();
+    const [curriculum, setCurriculum] = useState({
+        name: '',
+        th: 0,
+        progress: 0,
+    });
+
+    const [teacher, setTeacher] = useState({
+        name: '',
+        email: '',
+        phone: '',
+    });
+
+    const getToken = () => localStorage.getItem('access-token');
+
+    useEffect(() => {
+        if (!id) {
+            console.error('Invalid curriculum ID');
+            return;
+        }
+
+        const fetchData = async () => {
+            try {
+                const token = getToken();
+                console.log('Token:', token);
+                const config = {
+                    headers: { access: token },
+                };
+
+                console.log('ID 값:', id);
+
+                const basicResponse = await axios.get(`/managers/curriculum/${id}/basic`, config);
+                console.log('Basic:', basicResponse);
+                setCurriculum(basicResponse.data);
+
+                const teacherResponse = await axios.get(`/managers/curriculum/${id}/teacher`, config);
+                console.log('강사:', teacherResponse);
+                setTeacher(teacherResponse.data);
+
+            } catch (error) {
+                console.error('response 오류', error.response);
+            }
+        };
+
+        fetchData();
+    }, [id]);
+
+    {/* DropDown (Alarm & Profile) */}
     const [openDropdown, setOpenDropdown] = useState(null);
     const alarmRef = useRef(null);
     const profileRef = useRef(null);
@@ -37,10 +86,14 @@ const TeacherHeader = () => {
                             <img src="/images/logo/HomeLearn_Teacher_Header_Logo.png" alt="로고"/>
                         </a>
                     </h1>
-                    <span className="teacher_h-curriculum_name">네이버 클라우드 데브옵스 10기</span>
+                    <span className="teacher_h-curriculum_name">{curriculum.name} {curriculum.th}기</span>
                 </div>
 
                 <div className="teacher_h-right">
+                    <div className="teacher_h-progress-bar">
+                        <div className="teacher_h-progress" style={{width: `${curriculum.progress}%`}}></div>
+                    </div>
+
                     <ul className="teacher_h-gnb_items">
                         <li>
                             <NavLink to="/">
@@ -60,7 +113,8 @@ const TeacherHeader = () => {
                                     </a>
                                 </li>
                             </div>
-                            <ul id="teacher_h-alarm_list" className={`teacher_h-alarm_list ${openDropdown === 'teacher_alarm' ? 'open' : ''}`}>
+                            <ul id="teacher_h-alarm_list"
+                                className={`teacher_h-alarm_list ${openDropdown === 'teacher_alarm' ? 'open' : ''}`}>
                                 <div id="teacher_h-alarm_list">
                                     <li><span>알림 예시입니다.</span></li>
                                     <li><span>알림 예시입니다.</span></li>
@@ -76,7 +130,7 @@ const TeacherHeader = () => {
                             <div>
                                 <img className="teacher_h-profile_img" src="/" alt="프로필"/>
                             </div>
-                            <span className="teacher_h-profile_name">신지원</span>
+                            <span className="teacher_h-profile_name">{teacher.name}신지원</span>
                             <i className="fa-solid fa-caret-down"></i>
                         </div>
                         <ul className={`teacher_h-profile_menu ${openDropdown === 'teacher_profile' ? 'open' : ''}`}>
