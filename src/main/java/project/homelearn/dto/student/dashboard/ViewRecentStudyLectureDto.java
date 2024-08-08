@@ -31,5 +31,4 @@ public class ViewRecentStudyLectureDto {
         this.lastPosition = lastPosition;
         this.youtubeUrl = youtubeUrl;
     }
-
 }
