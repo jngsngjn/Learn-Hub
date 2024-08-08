@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.student.vote.StudentVoteViewDto;
 import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
-import project.homelearn.service.common.CommonVoteService;
+import project.homelearn.service.common.VoteCommonService;
 import project.homelearn.service.student.StudentVoteService;
 
 import java.security.Principal;
@@ -23,7 +23,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class StudentVoteViewController {
 
-    private final CommonVoteService commonVoteService;
+    private final VoteCommonService voteCommonService;
     private final StudentVoteService studentVoteService;
 
     /**
@@ -35,14 +35,14 @@ public class StudentVoteViewController {
     public Page<VoteTabDto> viewProgressVotes(Principal principal,
                                               @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 1;
-        return commonVoteService.getProgressVotes(principal.getName(), page, size, "진행");
+        return voteCommonService.getProgressVotes(principal.getName(), page, size, "진행");
     }
 
     @GetMapping("/completed")
     public Page<VoteTabDto> viewCompletedVotes(Principal principal,
                                                @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 5;
-        return commonVoteService.getCompletedVotes(principal.getName(), page, size, "마감");
+        return voteCommonService.getCompletedVotes(principal.getName(), page, size, "마감");
     }
 
     /**
@@ -66,6 +66,6 @@ public class StudentVoteViewController {
         if (!participate) {
             return null;
         }
-        return commonVoteService.getVoteDetail(voteId);
+        return voteCommonService.getVoteDetail(voteId);
     }
 }
