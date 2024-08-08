@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import './Sidebar.css';
+import './ManagerSidebar.css';
 
-const Sidebar = () => {
+const ManagerSidebar = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
@@ -59,4 +59,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default ManagerSidebar;

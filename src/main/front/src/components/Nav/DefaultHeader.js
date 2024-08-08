@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Nav.css';
+import './DefaultHeader.css';
 
-const Nav = () => {
+const DefaultHeader = () => {
   return (
       <header id="default_header">
           <div className="default_h-inner">
@@ -22,4 +22,4 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default DefaultHeader;
