@@ -41,7 +41,7 @@ const StudentMain = () => {
     <div className="student_dashboard_body" id="container">
       <div className="sidebar">
         <div className="profile_box">프로필 컴포넌트가 들어올 자리</div>
-        <h3 className="sidebar_title" onClick={() => handleSectionClick("/")}>
+        <h3 className="sidebar_title" onClick={() => handleSectionClick("")}>
           대쉬보드
         </h3>
         <ul className="student_dashboard_list_container" id="inner_box">
@@ -154,7 +154,7 @@ const StudentMain = () => {
       </div>
       <div className="contents">
         <Routes>
-          <Route path="/" element={<StudentDashBoard />} />
+          <Route path="" element={<StudentDashBoard />} />
           <Route
             path=":subjectName/board"
             element={<StudentLecture subject={selectedSubject} />}

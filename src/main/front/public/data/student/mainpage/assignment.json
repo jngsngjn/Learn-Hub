@@ -1,24 +1,16 @@
 [
   {
-    "user_id": "jngsngjn",
-    "title": "테스트 코드 작성",
-    "content": "게시판 테스트 코드 작성해오세요",
-    "file_path": "파일패스가 뭐였더라",
-    "file_name": "과제1",
-    "timeout": [
-      { "timeline": "12:00", "status": "true" },
-      { "timeline": "13:00", "status": "false" }
-    ]
+    "homeworkId": 2,
+    "title": "Spring Boot 테스트 코드 작성",
+    "description": "게시판 테스트 코드 작성해오세요게시판 테스트 코드 작성해오세요  안하면 혼날 줄 아세요",
+    "deadLine": "2024-01-04",
+    "isSubmit": false
   },
   {
-    "user_id": "강사B",
+    "homeworkId": 5,
     "title": "제목",
-    "content": "내용",
-    "file_path": "파일",
-    "file_name": "과제",
-    "timeout": [
-      { "timeline": "21:00", "status": "true" },
-      { "timeline": "", "status": "false" }
-    ]
+    "description": "학생용 게시판 테스트 코드 작성해오세요용",
+    "deadLine": "2024-01-04",
+    "isSubmit": true
   }
 ]

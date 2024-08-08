@@ -121,15 +121,18 @@ const StudentDashBoard = () => {
                   학습 목록 ⟩
                 </span>
               </div>
+              {/* onClick시에 준명이가 만든 영상 API가 뜨도록해야함 */}
               <div
                 className="recent_contents_box"
                 onClick={() =>
                   navigate(
-                    `/students/${recentLecture.subject}/lectures/${recentLecture.id}`
+                    `/students/${recentLecture.subjectName}/lectures/${recentLecture.lectureId}`
                   )
                 }
               >
-                <h3 className="recent_lecture_type">{recentLecture.subject}</h3>
+                <h3 className="recent_lecture_type">
+                  {recentLecture.subjectName}
+                </h3>
                 <div className="recent_video_box">
                   <i className="bi bi-play-btn play_recent_video_icon"></i>
                   <p className="recent_lecture_video_title">
@@ -158,7 +161,7 @@ const StudentDashBoard = () => {
               </div>
               <h3 className="components_title">보충 강의</h3>
               <div className="lecture_video_box">
-                <LectureVideo width="250" height="240" />
+                {/* <LectureVideo width="250" height="240" /> */}
               </div>
             </div>
             <div className="question_container">
@@ -174,27 +177,23 @@ const StudentDashBoard = () => {
                     className="question_list"
                     key={idx}
                     onClick={() =>
-                      navigate(`/students/inquiryBoardDetail/${el.id}`)
+                      navigate(`/students/inquiryBoardDetail/${el.idx}`)
                     }
                   >
-                    <div className="question_type_box">
-                      <span className="question_type_tag">질문</span>
-                      <span className="question_type_nage">{el.type}</span>
-                      <span className="recomment_button">답글 달기 ⟩</span>
-                    </div>
                     <div className="question_box">
                       <div className="qusetion_subject_name">
-                        {el.lectureName}
+                        {el.lecturName}
+                        <span className="question_type_tag">질문</span>
                       </div>
-                      <p className="student_question_title">
-                        {el.questionTitle}
-                      </p>
-                      <div className="question_icon_box">
-                        <i className="bi bi-eye watch_icon"></i>
-                        {el.watchCount}
-                        <i className="bi bi-chat comment_icon"></i>
-                        {el.commentCount}
-                      </div>
+                      <span className="student_question_title">{el.title}</span>
+                      <span className="">{el.createdDate}</span>
+                    </div>
+                    <div className="question_type_box">
+                      <span className="question_type_name">
+                        {el.subjectName}
+                      </span>
+                      <span className="question_content">{el.content}</span>
+                      <span className="recomment_button">답글 달기 ⟩</span>
                     </div>
                   </div>
                 ))}
@@ -212,7 +211,7 @@ const StudentDashBoard = () => {
                 {badge.map((el, idx) => (
                   <div className="badge_list" key={idx}>
                     <img
-                      src={el.image_path}
+                      src={el.filePath}
                       alt="badge"
                       className="badge_image"
                     />
@@ -234,29 +233,42 @@ const StudentDashBoard = () => {
                   className="go_to_subject_page navigate_button"
                   onClick={() => navigate("/students/assignment")}
                 >
-                  더보기
+                  더보기 ⟩
                 </span>
               </div>
-              <div className="dashboard_subject_list_container">
-                {subject.map((el, idx) => (
-                  <div className="dashboard_subject_list_box" key={idx}>
-                    <h3>과제</h3>
-                    <h4 className="subject_name">{el.title}</h4>
-                    <p className="subject_description">{el.content}</p>
+              <div className="dashboard_student_assignment_list_container">
+                {subject?.map((el, idx) => (
+                  <div
+                    className="dashboard_student_assignment_list_box"
+                    key={idx}
+                  >
+                    <h3 className="student_assignment_sub_title">과제</h3>
+                    <h4 className="student_assignment_name">{el.title}</h4>
+                    <p className="student_assignment_description">
+                      {el.description}
+                    </p>
                     <button
-                      className="subject_submit_button"
+                      className="student_assignment_submit_button"
                       onClick={openModal}
                     >
                       제출하기
                     </button>
-                    {/* subject response의 timeline이 뭔지 모르겠음 물어보기 */}
-                    {/* <div className="show_subject_complete">
-                      {subject.timeout.some((el) => el.status === "true")
-                        ? "제출 여부 ✅"
-                        : "제출 여부 ❌"}
-                    </div> */}
+                    <div className="show_student_assignment_complete">
+                      {el.isSubmit === true ? (
+                        <span>
+                          제출 여부 <i className="bi bi-check-circle-fill"></i>
+                        </span>
+                      ) : (
+                        <span>
+                          제출 여부 <i className="bi bi-x-circle-fill"></i>
+                        </span>
+                      )}
+                    </div>
                     <div className="addtional_info_box">
-                      <span className="go_to_subject_page">상세보기 ⟩</span>
+                      <span className="student_assignment_deadline">
+                        ~{el.deadLine}
+                      </span>
+                      <span className="go_to_subject_page"> 자세히 보기 ⟩</span>
                     </div>
                   </div>
                 ))}
@@ -271,15 +283,15 @@ const StudentDashBoard = () => {
                       {el.type === "alert" ? "긴급" : "공지"}
                     </div>
                     <div className="notice_title">{el.title}</div>
-                    <span className="notice_date">{el.writeDate}</span>
+                    <span className="go_to_admin_notice_page navigate_button">
+                      <span className="notice_date">{el.deadLine}</span>
+                    </span>
                   </div>
                 ))}
-                <span className="go_to_admin_notice_page navigate_button">
-                  자세히 보기 ⟩
-                </span>
+                <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
               </div>
 
-              <div className="admin_notice_container">
+              <div className="teacher_notice_container">
                 <h3 className="notice_components_title">선생님 공지사항</h3>
                 {teacherNotice.map((el, idx) => (
                   <div key={idx} className="notice_list">
@@ -290,9 +302,8 @@ const StudentDashBoard = () => {
                     <span className="notice_date">{el.writeDate}</span>
                   </div>
                 ))}
-                <div className="r">
-                  <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
-                </div>
+                <div className="r"></div>
+                <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
               </div>
             </div>
           </div>
