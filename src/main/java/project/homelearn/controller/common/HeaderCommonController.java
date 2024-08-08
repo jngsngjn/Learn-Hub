@@ -25,5 +25,4 @@ public class HeaderCommonController {
         return headerService.getHeaderCommon(username);
     }
 
-
 }

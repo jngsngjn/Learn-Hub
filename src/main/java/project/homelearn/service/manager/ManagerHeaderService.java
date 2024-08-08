@@ -24,26 +24,6 @@ public class ManagerHeaderService {
 
     private final ManagerNotificationRepository notificationRepository;
 
-    public boolean deleteNotification(Long id) {
-        try {
-            notificationRepository.deleteById(id);
-            return true;
-        } catch (Exception e) {
-            log.error("Error deleting a notification : ", e);
-            return false;
-        }
-    }
-
-    public boolean deleteAllNotifications() {
-        try {
-            notificationRepository.deleteAll();
-            return true;
-        } catch (Exception e) {
-            log.error("Error deleting all notifications : ", e);
-            return false;
-        }
-    }
-
     public NotificationDto getNotification() {
         List<ManagerNotification> notifications = notificationRepository.findAll();
 
