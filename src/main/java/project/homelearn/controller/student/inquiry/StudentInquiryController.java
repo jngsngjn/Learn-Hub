@@ -16,14 +16,14 @@ import java.security.Principal;
  */
 @Slf4j
 @RestController
-@RequestMapping("/students/inquiries")
+@RequestMapping("/students")
 @RequiredArgsConstructor
 public class StudentInquiryController {
 
     private final StudentInquiryService inquiryService;
 
     // 문의 등록 : 학생 -> 매니저
-    @PostMapping("/manager")
+    @PostMapping("/inquiries-managers")
     public ResponseEntity<?> inquiryToManager(Principal principal,
                                               @Valid @RequestBody StudentToMangerInquiryDto inquiryDto) {
         String username = principal.getName();
@@ -33,7 +33,7 @@ public class StudentInquiryController {
     }
 
     // 문의 수정 : 학생 -> 매니저
-    @PatchMapping("/manager/{inquiryId}")
+    @PatchMapping("/inquiries-managers/{inquiryId}")
     public ResponseEntity<?> modifyManagerInquiry(@PathVariable("inquiryId") Long inquiryId, Principal principal,
                                                   @Valid @RequestBody StudentToMangerInquiryDto inquiryDto) {
         String username = principal.getName();
@@ -45,8 +45,8 @@ public class StudentInquiryController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    // 문의 삭제
-    @DeleteMapping("/manager/{inquiryId}")
+    // 문의 삭제 : 학생 -> 매니저
+    @DeleteMapping("/inquiries-managers/{inquiryId}")
     public ResponseEntity<?> deleteManagerInquiry(@PathVariable("inquiryId") Long inquiryId, Principal principal) {
         String username = principal.getName();
         boolean result = inquiryService.deleteManagerInquiry(inquiryId, username);
@@ -56,4 +56,10 @@ public class StudentInquiryController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    // 문의 등록 : 학생 -> 강사
+
+    // 문의 수정 : 학생 -> 강사
+
+    // 문의 삭제 : 학생 -> 강사
 }

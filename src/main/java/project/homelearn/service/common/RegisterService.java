@@ -108,13 +108,7 @@ public class RegisterService {
     }
 
     public void saveProfileImage(User user, MultipartFile image) {
-        if (image == null) {
-            System.out.println("image is null");
-            return;
-        }
-
-        if (user == null) {
-            System.out.println("user is null");
+        if (image == null || user == null) {
             return;
         }
 
