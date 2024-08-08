@@ -20,14 +20,13 @@ const TeacherManagement = () => {
     curriculumFullName: '',
   });
   const [selectedTeachers, setSelectedTeachers] = useState([]);
+  const getToken = () => localStorage.getItem('access-token');
 
-  // 강사와 커리큘럼 데이터를 가져옴
   useEffect(() => {
     fetchTeachers();
     fetchCurriculums();
   }, []);
 
-  // 강사 목록 서버에서 가져오기
   const fetchTeachers = async () => {
     try {
       const response = await axios.get('/managers/manage-teachers');
@@ -39,10 +38,14 @@ const TeacherManagement = () => {
     }
   };
 
-  // 커리큘럼 목록
   const fetchCurriculums = async () => {
     try {
-      const response = await axios.get('/managers/enroll-ready');
+      const token = getToken();
+      const response = await axios.get('/managers/enroll-user-ready', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setCurriculums(response.data || []);
     } catch (error) {
       console.error('기수 가져오기 에러:', error);
@@ -50,10 +53,8 @@ const TeacherManagement = () => {
     }
   };
 
-  // 검색어
   const handleSearch = (event) => setSearchTerm(event.target.value);
 
-  // 선택된 커리큘럼
   const handleCourseChange = (course) => {
     const fullCourseName = course === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS 데브옵스 과정';
     setSelectedCourse(fullCourseName);
@@ -61,36 +62,40 @@ const TeacherManagement = () => {
     setNewTeacher({ ...newTeacher, curriculum: fullCourseName });
   };
 
-  // 선택된 기수
   const handleGenerationChange = (event) => setSelectedGeneration(event.target.value);
 
-  // 검색어와 선택된 강의
   const handleRefresh = () => {
     setSearchTerm('');
     setSelectedCourse('전체');
     setSelectedGeneration('전체');
   };
 
-  // 필터링된 강사
   const filteredTeachers = (Array.isArray(teachers) ? teachers : []).filter(teacher =>
     (teacher.name?.includes(searchTerm) || teacher.email?.includes(searchTerm)) &&
     (selectedCourse === '전체' || teacher.curriculumName === selectedCourse) &&
     (selectedGeneration === '전체' || teacher.curriculumTh === parseInt(selectedGeneration))
   );
 
-  // 새로운 강사 등록
   const handleAddTeacher = async () => {
     try {
+      const token = getToken();
+
+      const generation = newTeacher.generation ? parseInt(newTeacher.generation) : 1;
+      const curriculumFullName = `${newTeacher.curriculum} ${generation}기`;
+
       const teacherData = {
         name: newTeacher.name,
         email: newTeacher.email,
         phone: newTeacher.phone,
-        curriculumFullName: `${newTeacher.curriculum} ${newTeacher.generation}기`
+        curriculumFullName: curriculumFullName,
       };
 
-      console.log("강사 등록 데이터:", teacherData); // 디버깅용 로그
+      console.log("강사 등록 데이터:", teacherData);
 
-      const response = await axios.post('/managers/manage-teachers/enroll', teacherData);
+      const response = await axios.post('/managers/manage-teachers/enroll', teacherData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log('강사 등록 응답:', response.data);
       if (response.status === 200) {
         setIsModalOpen(false);
         fetchTeachers();
@@ -102,14 +107,15 @@ const TeacherManagement = () => {
     }
   };
 
-  // 입력 필드 값
   const handleInputChange = (e) => setNewTeacher({ ...newTeacher, [e.target.name]: e.target.value });
 
-  // 선택된 강사 삭제
   const handleDeleteTeachers = async () => {
     try {
+      const token = getToken();
       const deletePromises = selectedTeachers.map(teacherId =>
-        axios.delete(`/managers/manage-teachers/${teacherId}`)
+        axios.delete(`/managers/manage-teachers/${teacherId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
       );
       await Promise.all(deletePromises);
       fetchTeachers();
@@ -119,18 +125,17 @@ const TeacherManagement = () => {
     }
   };
 
-  // 체크박스 상태
   const handleCheckboxChange = (teacherId) => setSelectedTeachers(
     selectedTeachers.includes(teacherId)
       ? selectedTeachers.filter(id => id !== teacherId)
       : [...selectedTeachers, teacherId]
   );
 
-  // 행 클릭
   const handleRowClick = (teacherId) => handleCheckboxChange(teacherId);
 
-  // 선택된 기수를 필터링
-  const filteredGenerations = curriculums.find(curriculum => curriculum.type === (selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'NCP' : 'AWS'))?.th || [];
+  const filteredGenerations = curriculums.length > 0
+    ? curriculums.find(curriculum => curriculum.type === (selectedCourse === '네이버 클라우드 데브옵스 과정' ? 'NCP' : 'AWS'))?.th || []
+    : [];
 
   return (
     <div className="teacher-management">
@@ -142,7 +147,7 @@ const TeacherManagement = () => {
           <select value={selectedGeneration} onChange={handleGenerationChange}>
             <option value="전체">전체</option>
             {filteredGenerations.map(th => (
-              <option key={`${th}`} value={th}>{`${th}기`}</option>
+              <option key={th} value={th}>{`${th}기`}</option>
             ))}
           </select>
         </div>
@@ -172,11 +177,11 @@ const TeacherManagement = () => {
           <tbody>
             {filteredTeachers.length > 0 ? (
               filteredTeachers.map((teacher, index) => (
-                <tr key={index} onClick={() => handleRowClick(teacher.teacherId)} className={selectedTeachers.includes(teacher.teacherId) ? 'selected' : ''}>
+                <tr key={teacher.teacherId} onClick={() => handleRowClick(teacher.teacherId)} className={selectedTeachers.includes(teacher.teacherId) ? 'selected' : ''}>
                   <td>
                     <input type="checkbox" checked={selectedTeachers.includes(teacher.teacherId)} onChange={() => handleCheckboxChange(teacher.teacherId)} onClick={(e) => e.stopPropagation()} />
                   </td>
-                  <td>{index+1}</td>
+                  <td>{index + 1}</td>
                   <td>{teacher.name}</td>
                   <td>{teacher.curriculumName}</td>
                   <td>{teacher.curriculumTh}</td>
@@ -208,7 +213,7 @@ const TeacherManagement = () => {
           <div className="teacher-generation-selection">
             <select name="generation" value={newTeacher.generation} onChange={handleInputChange}>
               {(newTeacher.curriculum === '네이버 클라우드 데브옵스 과정' ? curriculums.find(curriculum => curriculum.type === 'NCP')?.th : curriculums.find(curriculum => curriculum.type === 'AWS')?.th || []).map(th => (
-                <option key={`${th}`} value={th}>{`${th}기`}</option>
+                <option key={th} value={th}>{`${th}기`}</option>
               ))}
             </select>
           </div>
