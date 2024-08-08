@@ -6,6 +6,7 @@ import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CurriculumRepositoryCustom {
 
@@ -18,4 +19,6 @@ public interface CurriculumRepositoryCustom {
     Curriculum findCurriculumByTeacher(String username);
 
     Curriculum findCurriculumByStudent(String username);
+
+    Map<String, String> findCurriculumNameAndColor();
 }

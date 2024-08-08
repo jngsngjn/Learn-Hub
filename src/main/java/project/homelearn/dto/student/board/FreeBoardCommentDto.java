@@ -14,7 +14,7 @@ import java.util.List;
 public class FreeBoardCommentDto {
 
     @NotNull
-    private Long boardId;
+    private Long commentId;
 
     @NotBlank
     private String author;

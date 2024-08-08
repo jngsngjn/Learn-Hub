@@ -217,6 +217,7 @@ public class StudentBoardService {
     // 댓글 추출
     public List<FreeBoardCommentDto> getBoardComment(Long boardId) {
         List<FreeBoardComment> comments = commentRepository.findByFreeBoardCommentIdAndParentCommentIsNull(boardId);
+        // 댓글을 가져오는데 -> 최상위 댓글만 = 대댓글이 아닌 댓글만
 
         return comments.stream()
                 .map(this::convertToCommentDto)

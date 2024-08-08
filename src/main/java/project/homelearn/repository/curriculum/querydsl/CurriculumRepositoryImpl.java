@@ -1,5 +1,6 @@
 package project.homelearn.repository.curriculum.querydsl;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumIdAndThDto;
@@ -12,6 +13,8 @@ import project.homelearn.entity.curriculum.CurriculumType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static project.homelearn.entity.curriculum.CurriculumType.AWS;
 import static project.homelearn.entity.curriculum.CurriculumType.NCP;
@@ -107,5 +110,20 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
                 .join(curriculum.users, user)
                 .where(user.username.eq(username))
                 .fetchOne();
+    }
+
+    @Override
+    public Map<String, String> findCurriculumNameAndColor() {
+        List<Tuple> results = queryFactory
+                .select(curriculum.fullName, curriculum.color)
+                .from(curriculum)
+                .orderBy(curriculum.createdDate.asc())
+                .fetch();
+
+        return results.stream()
+                .collect(Collectors.toMap(
+                        tuple -> tuple.get(curriculum.fullName),
+                        tuple -> tuple.get(curriculum.color)
+                ));
     }
 }

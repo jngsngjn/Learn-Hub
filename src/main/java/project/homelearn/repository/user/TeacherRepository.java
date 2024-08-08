@@ -35,4 +35,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Teacher
     // 과목 ID -> 강사명
     @Query("select distinct t.name from Teacher t join t.curriculum c join c.subjects s where s.id = :subjectId")
     String findTeacherNameBySubjectId(@Param("subjectId") Long subjectId);
+
+    @Query("select t from Teacher t where t.curriculum =:curriculum")
+    Teacher findByCurriculum(@Param("curriculum") Curriculum curriculum);
 }

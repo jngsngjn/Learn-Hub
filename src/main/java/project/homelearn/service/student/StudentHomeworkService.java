@@ -11,11 +11,13 @@ import project.homelearn.dto.student.homework.HomeworkUpdateDto;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.student.Student;
+import project.homelearn.dto.student.dashboard.ViewHomeworkDto;
 import project.homelearn.repository.homework.HomeworkRepository;
 import project.homelearn.repository.homework.StudentHomeworkRepository;
 import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.service.common.StorageService;
 
+import java.util.List;
 import java.time.LocalDateTime;
 
 import static project.homelearn.config.storage.FolderType.HOMEWORK;
@@ -24,8 +26,8 @@ import static project.homelearn.config.storage.FolderType.HOMEWORK;
  * Author : 동재완
  */
 @Slf4j
-@Service
 @Transactional
+@Service
 @RequiredArgsConstructor
 public class StudentHomeworkService {
 
@@ -130,5 +132,9 @@ public class StudentHomeworkService {
             log.error("Error deleting homework", e);
             return false;
         }
+    }
+    // 미제출우선 최근 2개 과제
+    public List<ViewHomeworkDto> getHomeworkTop2(String username){
+        return homeworkRepository.findHomeworkTop2(username);
     }
 }
