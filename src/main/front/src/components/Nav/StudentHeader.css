@@ -66,8 +66,8 @@
 }
 
 .student_h-progress {
-    height: 100%;
-    background-color: var(--studentSubColor);
+    height: 90%;
+    background-color: var(--studentMainColor);
 }
 
 /* Global Navigation Bar =============== */

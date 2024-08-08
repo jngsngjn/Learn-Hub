@@ -1,20 +1,20 @@
-.sideBar_container {
+.manager_sideBar_container {
   display: flex;
 }
 
-.sideBar_content {
+.manager_sideBar_content {
   display: flex;
   flex-direction: column;
   width: 320px;
   margin-top: 10rem;
-  gap: 50px;
+  gap: 5rem;
 }
 
-.sideBar_date_box {
+.manager_sideBar_date_box {
   margin: 0 auto;
 }
 
-.sideBar_date {
+.manager_sideBar_date {
   width: 220px;
   height: 50px;
   background: var(--managerMainColor), var(--mainOpacity);
@@ -24,17 +24,21 @@
   padding: 1rem 2rem;
 }
 
-.sideBar_link {
+.manager_sideBar_link {
+  display: block;
   width: 240px;
+  height: 100%;
   margin: 0 auto;
+  color: inherit;
+  text-decoration: none;
 }
 
-.sideBar_menu {
+.manager_sideBar_menu {
   margin: 0 auto;
   padding: 0 20px;
 }
 
-.sideBar_menu li {
+.manager_sideBar_menu li {
   width: 100%;
   padding: 1rem 0;
   margin-bottom: 5rem;
@@ -45,13 +49,13 @@
   list-style-type: none;
 }
 
-.sideBar_menu li:hover,
-.sideBar_menu li .sideBar_link.active {
+.manager_sideBar_menu li:hover,
+.manager_sideBar_menu li .manager_sideBar_link.active {
   color: #000;
   font-weight: 700;
 }
 
-.sideBar_dropdownHeader {
+.manager_sideBar_dropdownHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,26 +64,27 @@
   color: var(--managerMainColor);
   padding: 1rem 0;
   transition: color 0.3s ease, font-weight 0.3s ease;
+  cursor: pointer;
 }
 
-.sideBar_dropdownHeader:hover,
-.sideBar_dropdownHeader.active {
+.manager_sideBar_dropdownHeader:hover,
+.manager_sideBar_dropdownHeader.active {
   color: #000;
   font-weight: 700;
 }
 
-.sideBar_dropdownArrow {
+.manager_sideBar_dropdownArrow {
   font-size: 20px;
   margin-left: 5px;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 
-.sideBar_dropdownArrow.open {
+.manager_sideBar_dropdownArrow.open {
   transform: rotate(180deg);
 }
 
-.sideBar_subMenu {
+.manager_sideBar_subMenu {
   list-style-type: none;
   padding-left: 20px;
   margin-top: 10px;
@@ -88,11 +93,11 @@
   transition: max-height 0.3s ease;
 }
 
-.sideBar_subMenu.open {
+.manager_sideBar_subMenu.open {
   max-height: 100px;
 }
 
-.sideBar_subMenu li {
+.manager_sideBar_subMenu li {
   margin-bottom: 2rem;
   cursor: pointer;
   font-size: 1.6rem;
@@ -100,20 +105,12 @@
   padding: 5px 0;
 }
 
-.sideBar_subMenu li:hover,
-.sideBar_subMenu li .sideBar_link.active {
+.manager_sideBar_subMenu li:hover,
+.manager_sideBar_subMenu li .manager_sideBar_link.active {
   color: #000;
   font-weight: 700;
 }
 
-.sideBar_link {
-  color: inherit;
-  text-decoration: none;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.sideBar_line {
+.manager_sideBar_line {
   border: 1px solid #dddddd;
 }

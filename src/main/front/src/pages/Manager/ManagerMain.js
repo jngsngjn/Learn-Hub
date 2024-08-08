@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import ManagerSidebar from '../../components/SideBar/ManagerSidebar';
+import ManagerSideBar from '../../components/SideBar/ManagerSideBar';
+import StudentSideBar from "../../components/SideBar/StudentSideBar";
 import Calendar from '../../components/Manager/Calendar';
 import CalendarDetail from '../../components/Manager/Calendar_Detail';
 import CourseProgress from '../../components/Manager/Lecture';
@@ -33,7 +34,7 @@ function ManagerMain() {
   return (
     <div className="App">
       <div className="main-content">
-        <ManagerSidebar />
+        <StudentSideBar />
         <div className="content-area">
           <Routes>
             <Route path="/" element={<Dashboard />} />

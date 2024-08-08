@@ -32,7 +32,7 @@ const StudentMain = () => {
     setShowSection(null);
   };
 
-  const { data: subject, error: subjecError } = useGetFetch(
+  const { data: subject, error: subjectError } = useGetFetch(
     "/data/student/mainpage/sidebar.json",
     []
   );

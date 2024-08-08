@@ -91,7 +91,7 @@ const CurriculumDetail = () => {
             <div className="curriculum-detail-progress-bar">
               <div className="curriculum-detail-progress" style={{ width: `${curriculum.progress}%` }}></div>
             </div>
-            <span className="curriculum-detail-progress-text">{curriculum.progress?.toFixed(1)}% / 100%</span>
+            <span className="curriculum-detail-progress-text">{curriculum.progress?.toFixed(1)} / 100%</span>
           </div>
         </div>
         <div className="curriculum-detail-content-container">
