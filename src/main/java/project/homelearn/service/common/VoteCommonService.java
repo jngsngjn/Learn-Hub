@@ -16,7 +16,7 @@ import project.homelearn.repository.vote.VoteRepository;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommonVoteService {
+public class VoteCommonService {
 
     private final VoteRepository voteRepository;
     private final CurriculumRepository curriculumRepository;
