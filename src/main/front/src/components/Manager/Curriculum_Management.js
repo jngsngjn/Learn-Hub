@@ -9,6 +9,7 @@ import swal from 'sweetalert';
 const CurriculumManagement = () => {
   const [ncpCurriculums, setNcpCurriculums] = useState([]);
   const [awsCurriculums, setAwsCurriculums] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [newCurriculum, setNewCurriculum] = useState({
@@ -92,10 +93,25 @@ const CurriculumManagement = () => {
     }
   };
 
-  // 과정 목록을 가져옴
+  // 강사 목록 가져오기
+  const fetchTeachers = async () => {
+    try {
+      const token = getToken();
+      const response = await axios.get('/managers/manage-teachers', {
+        headers: { access: token },
+      });
+      setTeachers(response.data || []);
+    } catch (error) {
+      console.error('강사 목록 가져오기 에러:', error);
+      setTeachers([]);
+    }
+  };
+
+  // 데이터 가져옴
   useEffect(() => {
     fetchCurriculums('NCP');
     fetchCurriculums('AWS');
+    fetchTeachers();
   }, []);
 
   // 과정 목록 렌더링
@@ -155,7 +171,7 @@ const CurriculumManagement = () => {
             </div>
             <div className="curriculum-input-group">
               <label>기수 색상</label>
-              <input type="text" value={newCurriculum.color} readOnly />
+              <input type="text" name="color" value={newCurriculum.color} readOnly />
               <div className="color-input-select" onClick={() => setIsColorPickerOpen(true)}>
                 <div className="color-box" style={{ backgroundColor: newCurriculum.color }}></div>
               </div>
@@ -173,7 +189,12 @@ const CurriculumManagement = () => {
             )}
             <div className="curriculum-input-group">
               <label>강사</label>
-              <input type="text" name="teacherId" value={newCurriculum.teacherId} onChange={handleInputChange} />
+              <select name="teacherId" value={newCurriculum.teacherId} onChange={handleInputChange}>
+                <option value="">강사를 선택하세요</option>
+                {(Array.isArray(teachers) ? teachers : []).map(teacher => (
+                  <option key={teacher.id} value={teacher.id}>{teacher.name}</option>
+                ))}
+              </select>
             </div>
             <div className="modal-actions">
               <button className="modal-button" onClick={handleAddCurriculum}>교육 과정 등록</button>
