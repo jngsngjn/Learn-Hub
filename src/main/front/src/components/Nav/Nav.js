@@ -4,12 +4,21 @@ import './Nav.css';
 
 const Nav = () => {
   return (
-    <div className="nav_container">
-      <h3>안녕하세요? Nav입니다</h3>
-      <nav>
-        <Link to="/login">로그인</Link>
-      </nav>
-    </div>
+      <header id="default_header">
+          <div className="default_h-inner">
+              <div className="default_h-left">
+                  <h1 className="default_h-logo">
+                      <a className="default_navbar-brand" href="/">
+                          <img src="/images/logo/HomeLearn_Default_Header_Logo.png" alt="로고"/>
+                      </a>
+                  </h1>
+              </div>
+
+              <div className="default_h-right">
+                  <Link to="/login" className="default_h-login_btn">로그인</Link>
+              </div>
+          </div>
+      </header>
   );
 };
 
