@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import project.homelearn.dto.student.dashboard.QViewLectureDto;
 import project.homelearn.dto.student.dashboard.ViewLectureDto;
+import project.homelearn.dto.student.lecture.StudentLectureViewDto;
 import project.homelearn.dto.teacher.lecture.LectureListDto;
 import project.homelearn.dto.teacher.lecture.QLectureListDto;
 import project.homelearn.dto.teacher.lecture.TeacherLectureViewDto;
@@ -160,5 +161,31 @@ public class LectureRepositoryImpl implements LectureRepositoryCustom {
             );
         }
         return Optional.of(unwatchedLecture);
+    }
+
+    @Override
+    public StudentLectureViewDto findStudentLectureView(Long lectureId) {
+        Tuple tuple = queryFactory
+                .select(lecture.id, lecture.curriculum, lecture.title, lecture.description, lecture.youtubeLink, lecture.subject)
+                .from(lecture)
+                .where(lecture.id.eq(lectureId))
+                .fetchOne();
+
+        if (tuple == null) {
+            return null;
+        }
+
+        StudentLectureViewDto result = new StudentLectureViewDto();
+        result.setLectureId(tuple.get(lecture.id));
+        result.setTitle(tuple.get(lecture.title));
+        result.setContent(tuple.get(lecture.description));
+        result.setLink(tuple.get(lecture.youtubeLink));
+
+        Subject subject = tuple.get(lecture.subject);
+        if (subject != null) {
+            result.setSubjectName(subject.getName());
+        }
+
+        return result;
     }
 }
