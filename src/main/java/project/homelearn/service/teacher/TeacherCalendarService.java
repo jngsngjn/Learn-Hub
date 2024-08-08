@@ -7,10 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.teacher.calendar.TeacherScheduleEnrollDto;
 import project.homelearn.dto.teacher.dashboard.TeacherScheduleDto;
 import project.homelearn.entity.calendar.TeacherCalendar;
+import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.student.Student;
 import project.homelearn.entity.teacher.Teacher;
+import project.homelearn.entity.user.User;
 import project.homelearn.repository.calendar.TeacherCalendarRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.TeacherRepository;
+import project.homelearn.repository.user.UserRepository;
 
 import java.time.LocalDate;
 
@@ -26,6 +30,7 @@ public class TeacherCalendarService {
     private final TeacherRepository teacherRepository;
     private final TeacherCalendarRepository calendarRepository;
     private final CurriculumRepository curriculumRepository;
+    private final UserRepository userRepository;
 
     public void addSchedule(String username, TeacherScheduleEnrollDto scheduleDto) {
         TeacherCalendar calendar = new TeacherCalendar();
@@ -78,6 +83,16 @@ public class TeacherCalendarService {
     public TeacherScheduleDto getSchedule(String username) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
         String color = teacher.getCurriculum().getColor();
+        return calendarRepository.findTeacherSchedule(color, teacher);
+    }
+
+    public TeacherScheduleDto getScheduleToStudent(String username){
+        User student = userRepository.findByUsername(username);
+        Curriculum curriculum = student.getCurriculum();
+
+        Teacher teacher = teacherRepository.findByCurriculum(curriculum);
+        String color = curriculum.getColor();
+
         return calendarRepository.findTeacherSchedule(color, teacher);
     }
 }

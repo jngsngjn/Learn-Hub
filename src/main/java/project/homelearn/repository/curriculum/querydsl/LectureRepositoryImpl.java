@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import project.homelearn.dto.student.dashboard.QViewLectureDto;
+import project.homelearn.dto.student.dashboard.ViewLectureDto;
 import project.homelearn.dto.teacher.lecture.LectureListDto;
 import project.homelearn.dto.teacher.lecture.QLectureListDto;
 import project.homelearn.dto.teacher.lecture.TeacherLectureViewDto;
@@ -17,8 +19,10 @@ import project.homelearn.repository.curriculum.StudentLectureRepository;
 import project.homelearn.repository.user.StudentRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static project.homelearn.entity.curriculum.QLecture.lecture;
+import static project.homelearn.entity.curriculum.QStudentLecture.studentLecture;
 import static project.homelearn.entity.curriculum.QSubjectBoard.subjectBoard;
 
 @RequiredArgsConstructor
@@ -126,5 +130,35 @@ public class LectureRepositoryImpl implements LectureRepositoryCustom {
         }
 
         return result;
+    }
+
+    @Override
+    public Optional<ViewLectureDto> findLatestUnwatchedOrRecentLecture(String username){
+
+        ViewLectureDto unwatchedLecture = queryFactory
+                .select(new QViewLectureDto(
+                        lecture.id,
+                        lecture.youtubeLink
+                ))
+                .from(lecture)
+                .leftJoin(studentLecture)
+                .on(lecture.eq(studentLecture.lecture)
+                        .and(studentLecture.user.username.eq(username)))
+                .where(studentLecture.isNull())
+                .orderBy(lecture.createdDate.desc())
+                .fetchFirst();
+
+        if(unwatchedLecture == null){
+            return Optional.ofNullable(queryFactory
+                    .select(new QViewLectureDto(
+                            lecture.id,
+                            lecture.youtubeLink
+                    ))
+                    .from(lecture)
+                    .orderBy(lecture.createdDate.desc())
+                    .fetchFirst()
+            );
+        }
+        return Optional.of(unwatchedLecture);
     }
 }
