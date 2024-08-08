@@ -8,12 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.dto.teacher.lecture.LectureListDto;
-import project.homelearn.dto.teacher.subject.SubjectBasicDto;
-import project.homelearn.dto.teacher.subject.SubjectBoardListDto;
-import project.homelearn.dto.teacher.subject.SubjectBoardTop5Dto;
-import project.homelearn.dto.teacher.subject.SubjectBoardViewDto;
+import project.homelearn.dto.teacher.subject.*;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.board.SubjectBoardRepository;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.curriculum.LectureRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
 import project.homelearn.repository.user.StudentRepository;
@@ -36,6 +35,7 @@ public class StudentSubjectService {
     private final QuestionBoardRepository questionBoardRepository;
     private final LectureRepository lectureRepository;
     private final TeacherRepository teacherRepository;
+    private final CurriculumRepository curriculumRepository;
 
 
     public SubjectBasicDto getSubjectBasic(Long subjectId) {
@@ -64,5 +64,10 @@ public class StudentSubjectService {
 
     public SubjectBoardViewDto getSubjectBoard(Long boardId) {
         return subjectBoardRepository.findSubjectBoard(boardId);
+    }
+
+    public List<SubjectSelectListDto> getSubjectSelectList(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        return subjectRepository.findSubjectSelectList(curriculum);
     }
 }
