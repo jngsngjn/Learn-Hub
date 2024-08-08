@@ -186,7 +186,7 @@ const TeacherManagement = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="7">강사 데이터가 없습니다.</td>
+                <td colSpan="7">등록된 강사가 없습니다</td>
               </tr>
             )}
           </tbody>

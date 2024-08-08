@@ -99,30 +99,30 @@ const CurriculumDetail = () => {
             <div className="curriculum-detail-info-box">
               <div className="curriculum-detail-info-box-title">
                 <span className="curriculum-detail-subtitle">학생 출결 현황</span>
-                <Link to={`/attendance/${id}`} className="curriculum-detail-link">자세히 보기 ></Link>
               </div>
               <div className="curriculum-detail-info-box-content">
                 <div className="curriculum-detail-circular-progress">
-                <p className="curriculum-detail-attendance-count"><i className="fas fa-user-graduate"></i>{attendance.attendance} / {attendance.total}</p>
+                  <p className="curriculum-detail-attendance-count"><i className="fas fa-user-graduate"></i>{attendance.attendance} / {attendance.total}</p>
                   <CircularProgressbar value={attendance.ratio} text={`${attendance.ratio}%`} />
                 </div>
               </div>
+              <Link to={`/attendance/${id}`} className="curriculum-detail-link attendance-link">자세히 보기 ></Link>
             </div>
             <div className="curriculum-detail-info-box">
               <div className="curriculum-detail-info-box-title">
                 <span className="curriculum-detail-subtitle">강사 정보</span>
-                <Link to={`/teacher/${id}`} className="curriculum-detail-link">자세히 보기 ></Link>
               </div>
               <div className="curriculum-detail-info-box-content-second">
                 <p><i className="fas fa-user"></i> {teacher.name}</p>
                 <p><i className="fas fa-envelope"></i> {teacher.email}</p>
                 <p><i className="fas fa-phone"></i> {teacher.phone}</p>
               </div>
+              <Link to={`/teacher/${id}`} className="curriculum-detail-link teacher-link">자세히 보기 ></Link>
             </div>
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
                 <span className="curriculum-detail-subtitle">설문 조사</span>
-                <Link to={`/survey/${id}`} className="curriculum-detail-link">자세히 보기 ></Link>
+                <Link to={`/survey/${id}`} className="survey-link">자세히 보기 ></Link>
               </div>
               {survey.title ? (
                 <div className="curriculum-detail-survey-content">
@@ -138,7 +138,7 @@ const CurriculumDetail = () => {
                 </div>
               ) : (
                 <div className="curriculum-detail-survey-content curriculum-detail-no-survey">
-                  설문 조사가 없습니다.
+                  <p>진행중인 설문 조사가 없습니다.</p>
                   <button className="curriculum-detail-survey-button">설문 등록</button>
                 </div>
               )}
