@@ -151,19 +151,19 @@ public class HeaderService {
 
             TeacherNotificationType type = notification.getType();
             if (type.equals(QUESTION_POSTED)) {
-                subDto.setMessage("");
+                subDto.setMessage("질문이 등록되었습니다.");
             }
 
             if (type.equals(REPLY_TO_COMMENT)) {
-                subDto.setMessage("");
+                subDto.setMessage("질문 답변에 댓글이 등록되었습니다.");
             }
 
             if (type.equals(STUDENT_INQUIRY_TO_TEACHER)) {
-                subDto.setMessage("");
+                subDto.setMessage("학생 1:1 문의가 등록되었습니다.");
             }
 
             if (type.equals(TeacherNotificationType.MANAGER_REPLY_TO_INQUIRY)) {
-                subDto.setMessage("");
+                subDto.setMessage("매니저 1:1 문의 답변이 등록되었습니다.");
             }
             subList.add(subDto);
         }
@@ -185,27 +185,27 @@ public class HeaderService {
 
             StudentNotificationType type = notification.getType();
             if (type.equals(HOMEWORK_UPLOADED)) {
-                subDto.setMessage("");
+                subDto.setMessage("과제가 등록되었습니다.");
             }
 
             if (type.equals(REPLY_TO_QUESTION)) {
-                subDto.setMessage("");
+                subDto.setMessage("질문에 답변이 등록되었습니다.");
             }
 
             if (type.equals(MANAGER_REPLY_TO_INQUIRY)) {
-                subDto.setMessage("");
+                subDto.setMessage("매니저 1:1 문의 답변이 등록되었습니다.");
             }
 
             if (type.equals(TEACHER_REPLY_TO_INQUIRY)) {
-                subDto.setMessage("");
+                subDto.setMessage("강사 1:1 문의 답변이 등록되었습니다.");
             }
 
             if (type.equals(SURVEY)) {
-                subDto.setMessage("");
+                subDto.setMessage("설문조사를 실시해 주세요.");
             }
 
             if (type.equals(COMMENT_ON_MY_FREE_BOARD)) {
-                subDto.setMessage("");
+                subDto.setMessage("내 글에 댓글이 등록되었습니다.");
             }
             subList.add(subDto);
         }
