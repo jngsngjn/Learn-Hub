@@ -10,6 +10,8 @@ import ManagerMain from "./pages/Manager/ManagerMain";
 import ViewBoardImage from "./components/Test/ViewBoardImage";
 import ImageBoard from "./components/Editor/ImageBoard";
 import StudentMain from "./pages/Student/StudentMain";
+import TeacherMain from "./pages/Teacher/TeacherMain";
+import YouTubePlayer from "./pages/Teacher/play";
 
 const Router = () => {
   return (
@@ -53,8 +55,8 @@ const Router = () => {
         /> */}
         <Route path="/image-board" element={<ImageBoard />} />
         <Route path="/test-view" element={<ViewBoardImage />} />
-        <Route path="/teacher/*" element={<TeacherMain/>}/>
-
+        <Route path="/teachers/*" element={<TeacherMain/>}/>
+          <Route path="/play" element={<YouTubePlayer />} />
       </Routes>
       <Footer />
     </BrowserRouter>

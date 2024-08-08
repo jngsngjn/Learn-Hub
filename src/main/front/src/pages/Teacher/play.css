@@ -1,0 +1,141 @@
+.custom-youtube-player {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.custom-youtube-player.fullscreen {
+    max-width: none;
+    width: 100vw;
+    height: 100vh;
+}
+
+#youtube-player {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+}
+
+.custom-youtube-player.fullscreen #youtube-player {
+    height: 100%;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.controls.visible {
+    opacity: 1;
+}
+
+.controls-top {
+    width: 100%;
+    padding: 0;
+}
+
+.controls-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+
+.controls-bottom-left, .controls-bottom-right {
+    display: flex;
+    align-items: center;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.volume-slider, .progress-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    outline: none;
+    transition: background 0.2s;
+}
+
+.progress-slider {
+    width: 100%;
+    margin: 0;
+}
+
+.volume-slider {
+    width: 70px;
+    margin: 0 10px;
+}
+
+.volume-slider::-webkit-slider-thumb,
+.progress-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.volume-slider::-moz-range-thumb,
+.progress-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+}
+
+.volume-slider::-webkit-slider-runnable-track,
+.progress-slider::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, #00ff00 var(--value, 0%), rgba(255, 255, 255, 0.3) var(--value, 0%));
+}
+
+.volume-slider::-moz-range-progress,
+.progress-slider::-moz-range-progress {
+    background-color: #00ff00;
+}
+
+.playback-rate-select {
+    margin: 0 10px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.custom-youtube-player.fullscreen .controls {
+    padding-bottom: 20px;
+}
+
+.custom-youtube-player.fullscreen .control-btn {
+    font-size: 1.5em;
+}
+
+.custom-youtube-player.fullscreen .volume-slider {
+    width: 100px;
+}
+
+.custom-youtube-player.fullscreen .playback-rate-select {
+    font-size: 1.2em;
+}

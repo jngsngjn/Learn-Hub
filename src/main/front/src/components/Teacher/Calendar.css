@@ -4,7 +4,8 @@
     border-radius: 10px;
     box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
     padding-top: 40px;
-  height: 900px;
+  height: 100%;
+  width: 465px;
 }
 
 .teacher-calendar {
@@ -13,8 +14,8 @@
 
 .teacher-calendar-title{
   text-align: center;
-  font-size: 42px;
-  margin-bottom: 50px;
+  font-size: 31px;
+  margin-bottom: 37px;
   color: #B1B2FF;
 }
 
@@ -27,7 +28,7 @@
 .teacher-calendar-header button {
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -36,14 +37,14 @@
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-weight: bold;
-  margin-bottom: 10px;
-  font-size: 20px;
+  margin-bottom: 7px;
+  font-size: 15px;
 }
 
 .teacher-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr); /*1열에 7개씩*/
-  padding: 20px;
+  padding: 15px;
   column-gap: 0px;
 }
 
@@ -52,8 +53,8 @@
   padding: 10px;
   cursor: pointer;
   position: relative;
-  min-width: 60px;
-  min-height: 90px;
+  min-width: 45px;
+  min-height: 67px;
   display: flex;
   flex-direction: column;
 }
@@ -164,7 +165,7 @@
 }
 
 .teacher-add-list button {
-  font-size: 20px;
+  font-size: 15px;
   cursor: pointer;
   background-color: #AAC4FF;
   color: white;
