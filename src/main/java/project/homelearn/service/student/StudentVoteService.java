@@ -48,7 +48,7 @@ public class StudentVoteService {
     // 투표 참여
     public boolean participateVote(Long voteId, String username, Map<Long, Boolean> voteResult) {
         Vote vote = voteRepository.findById(voteId).orElseThrow();
-        if (validateVote(vote, voteResult)) {
+        if (validateParticipateVote(vote, voteResult)) {
             return false;
         }
 
@@ -62,7 +62,7 @@ public class StudentVoteService {
         return true;
     }
 
-    private boolean validateVote(Vote vote, Map<Long, Boolean> voteResult) {
+    private boolean validateParticipateVote(Vote vote, Map<Long, Boolean> voteResult) {
         if (vote.isFinished()) {
             return true;
         }
@@ -94,26 +94,48 @@ public class StudentVoteService {
 
     // 투표 수정
     public boolean modifyVote(Long voteId, String username, Map<Long, Boolean> voteResult) {
+        boolean participate = isParticipate(voteId, username);
+        if (!participate) {
+            return false;
+        }
+
         Vote vote = voteRepository.findById(voteId).orElseThrow();
+        long trueCount = voteResult.values().stream().filter(Boolean::booleanValue).count();
+        if (validateModifyVote(vote, trueCount)) {
+            return false;
+        }
 
         Student student = studentRepository.findByUsername(username);
         List<StudentVote> studentVotes = studentVoteRepository.findAllByVoteAndUser(vote, student);
 
-        // 기존 투표 삭제
+        if (trueCount == 0) {
+            deleteVote(studentVotes);
+            return true;
+        }
+
+        deleteVote(studentVotes);
+        saveVote(voteResult, student, vote);
+        return true;
+    }
+
+    private void deleteVote(List<StudentVote> studentVotes) {
         for (StudentVote studentVote : studentVotes) {
             VoteContent voteContent = studentVote.getVoteContent();
             voteContent.setVoteCount(voteContent.getVoteCount() - 1);
             studentVoteRepository.delete(studentVote);
         }
+    }
 
-        // 새로운 투표 저장
-        long trueCount = voteResult.values().stream().filter(Boolean::booleanValue).count();
-        if (trueCount > 0) {
-            if (!validateVote(vote, voteResult)) {
-                return false;
-            }
-            saveVote(voteResult, student, vote);
+    private boolean validateModifyVote(Vote vote, long trueCount) {
+        if (vote.isFinished()) {
+            return true;
         }
-        return true;
+
+        boolean isMultipleChoice = vote.getIsMultipleChoice();
+
+        if (!isMultipleChoice && trueCount > 1) {
+            return true;
+        }
+        return false;
     }
 }
