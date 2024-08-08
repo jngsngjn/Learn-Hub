@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./LectureVideo.css";
 
-const LectureVideo = () => {
+const LectureVideo = ({ width, height }) => {
   const [links, setLinks] = useState("");
-  const [subLecture, setSubLecture] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // fetch("http://localhost:8080/test") // 여기에 백이랑 통신시 사용한 코드는 주석처리
     fetch("/data/student/mainpage/lectureVideo.json")
       .then((res) => {
         if (!res.ok) {
@@ -46,28 +44,26 @@ const LectureVideo = () => {
   }
 
   if (!links) {
-    return <p>비디오를 찾을 수 없습니다.</p>;
+    return <p>잘못된 링크로 비디오를 찾을 수 없습니다.</p>;
   }
 
   const videoId = extractVideoId(links);
 
   return (
-    <div className="lecture_container">
-      {videoId ? (
-        <div className="iframe_wrapper">
-          <iframe
-            width="560"
-            height="315"
-            src={`https://www.youtube.com/embed/${videoId}`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      ) : (
-        <p>비디오를 찾을 수 없습니다.</p>
-      )}
+    <div className="lecture_container" style={{ position: "relative" }}>
+      <iframe
+        id="player"
+        width={width}
+        height={height}
+        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&fs=0&playsinline=1`}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+
+      {/* <div className="hide_youtuebe_title_box">제목: 우어어어어어어엉</div>
+      <div className="hide_youtuebe_bottom_box"></div> */}
     </div>
   );
 };
