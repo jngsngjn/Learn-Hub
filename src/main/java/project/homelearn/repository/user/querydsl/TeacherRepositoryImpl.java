@@ -2,10 +2,14 @@ package project.homelearn.repository.user.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import project.homelearn.dto.manager.enroll.QTeacherIdAndName;
+import project.homelearn.dto.manager.enroll.TeacherIdAndName;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumTeacherDto;
 import project.homelearn.dto.manager.manage.curriculum.QCurriculumTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.QSpecificTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.SpecificTeacherDto;
+
+import java.util.List;
 
 import static project.homelearn.entity.curriculum.QCurriculum.curriculum;
 import static project.homelearn.entity.teacher.QTeacher.teacher;
@@ -36,5 +40,14 @@ public class TeacherRepositoryImpl implements TeacherRepositoryCustom {
                 .leftJoin(teacher.curriculum, curriculum)
                 .where(teacher.id.eq(teacherId))
                 .fetchOne();
+    }
+
+    @Override
+    public List<TeacherIdAndName> findTeacherIdsAndNames() {
+        return queryFactory
+                .select(new QTeacherIdAndName(teacher.id, teacher.name))
+                .from(teacher)
+                .where(teacher.curriculum.isNull())
+                .fetch();
     }
 }

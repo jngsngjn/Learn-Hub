@@ -13,4 +13,7 @@ public interface VoteRepository extends JpaRepository<Vote, Long>, VoteRepositor
 
     @Query("select v.isAnonymous from Vote v where v.id =:voteId")
     boolean isAnonymousVote(@Param("voteId") Long voteId);
+
+    @Query("select v.isFinished from Vote v where v.id =:voteId")
+    boolean isVoteFinished(@Param("voteId") Long voteId);
 }
