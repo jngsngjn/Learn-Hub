@@ -6,11 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import project.homelearn.dto.teacher.vote.VoteBasicDto;
+import project.homelearn.dto.student.vote.StudentVoteViewDto;
+import project.homelearn.dto.student.vote.StudentVoteViewDto.VContent;
+import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
 import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.dto.teacher.vote.VoteDetailSub;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.User;
 import project.homelearn.entity.vote.StudentVote;
 import project.homelearn.entity.vote.VoteContent;
@@ -53,7 +56,7 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
             tuples = queryFactory
                     .select(vote.id, vote.title, vote.description, vote.endTime)
                     .from(vote)
-                    .where(vote.curriculum.eq(curriculum), vote.endTime.before(LocalDateTime.now()))
+                    .where(vote.curriculum.eq(curriculum), vote.endTime.before(LocalDateTime.now()).or(vote.isFinished.eq(true)))
                     .orderBy(vote.createdDate.desc())
                     .fetch();
         }
@@ -91,7 +94,7 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
     }
 
     @Override
-    public VoteBasicDto findVoteBasic(Long voteId, Curriculum curriculum) {
+    public TeacherVoteBasicDto findVoteBasic(Long voteId, Curriculum curriculum) {
         Tuple tuple = queryFactory
                 .select(vote.id, vote.title, vote.description, vote.endTime, vote.isAnonymous, vote.isMultipleChoice, vote.isFinished)
                 .from(vote)
@@ -106,7 +109,7 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
         Long participantCount = findParticipantCount(voteId);
         Map<String, Long> voteCountByContent = getVoteCountByContent(voteId);
 
-        return VoteBasicDto
+        return TeacherVoteBasicDto
                 .builder()
                 .voteId(tuple.get(vote.id))
                 .title(tuple.get(vote.title))
@@ -163,5 +166,56 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
         }
 
         return voteCountByContent;
+    }
+
+    @Override
+    public StudentVoteViewDto findStudentVoteView(Long voteId, String username) {
+        Tuple tuple = queryFactory
+                .select(vote.id, vote.title, vote.description, vote.isMultipleChoice, vote.isAnonymous, vote.isFinished, vote.endTime)
+                .from(vote)
+                .where(vote.id.eq(voteId))
+                .fetchOne();
+        if (tuple == null) {
+            return null;
+        }
+
+        StudentVoteViewDto result = new StudentVoteViewDto();
+        result.setVoteId(tuple.get(vote.id));
+        result.setTitle(tuple.get(vote.title));
+        result.setDescription(tuple.get(vote.description));
+        result.setIsMultiple(tuple.get(vote.isMultipleChoice));
+        result.setIsAnonymous(tuple.get(vote.isAnonymous));
+        result.setEndTime(tuple.get(vote.endTime));
+        result.setParticipateCount(findParticipantCount(voteId));
+        result.setIsFinished(tuple.get(vote.isFinished));
+
+        List<VContent> vContents = new ArrayList<>();
+
+        Student student = studentRepository.findByUsername(username);
+        Long studentId = student.getId();
+        boolean participate = studentVoteRepository.isParticipate(voteId, student);
+        result.setParticipate(participate);
+
+        List<VoteContent> voteContents = voteContentRepository.findByVoteId(voteId);
+        for (VoteContent content : voteContents) {
+            VContent vContent = new VContent();
+            vContent.setContentId(content.getId());
+            vContent.setContent(content.getContent());
+            vContent.setCount(content.getVoteCount());
+            Long contentId = content.getId();
+
+            if (participate) {
+                boolean voted = studentVoteRepository.votedContent(studentId, contentId);
+                vContent.setVoted(voted);
+            }
+
+            if (!participate) {
+                vContent.setVoted(false);
+            }
+
+            vContents.add(vContent);
+        }
+        result.setVContents(vContents);
+        return result;
     }
 }
