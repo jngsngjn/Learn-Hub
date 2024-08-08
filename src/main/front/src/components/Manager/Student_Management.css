@@ -386,3 +386,49 @@
   display: flex;
   justify-content: center;
 }
+
+/* 테이블 열 너비 조정 */
+.student-table-container th:nth-child(1),
+.student-table-container td:nth-child(1) {
+  width: 5%;
+}
+
+.student-table-container th:nth-child(2),
+.student-table-container td:nth-child(2) {
+  width: 5%;
+}
+
+.student-table-container th:nth-child(3),
+.student-table-container td:nth-child(3) {
+  width: 25%;
+}
+
+.student-table-container th:nth-child(4),
+.student-table-container td:nth-child(4) {
+  width: 5%;
+}
+
+.student-table-container th:nth-child(5),
+.student-table-container td:nth-child(5) {
+  width: 10%;
+}
+
+.student-table-container th:nth-child(6),
+.student-table-container td:nth-child(6) {
+  width: 5%;
+}
+
+.student-table-container th:nth-child(7),
+.student-table-container td:nth-child(7) {
+  width: 25%;
+}
+
+.student-table-container th:nth-child(8),
+.student-table-container td:nth-child(8) {
+  width: 13%;
+}
+
+.student-table-container th:nth-child(9),
+.student-table-container td:nth-child(9) {
+  width: 7%;
+}

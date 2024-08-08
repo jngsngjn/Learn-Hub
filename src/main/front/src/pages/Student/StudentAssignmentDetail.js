@@ -1,125 +1,123 @@
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import SubmitModal from "../../components/SubmitModal/SubmitModal";
 import "./StudentAssignmentDetail.css";
-import { useEffect, useState } from "react";
 import useGetFetch from "../../hooks/useGetFetch";
 
 const StudentAssignmentDetail = () => {
-  const a = "b";
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({ title: "", content: "" });
+  const [selectedFileName, setSelectedFileName] = useState("");
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
-  const [isOpen, setIsOpen] = useState(false); // 상태 변수
-  const [clickIdx, setClickIdx] = useState(null);
-
-  const showSubmittedInfo = (index) => {
-    setClickIdx(clickIdx === index ? null : index);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const { data: assignments, error: assginmentsError } = useGetFetch(
-    "/data/student/mainLecture/assginmentDetail.json",
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFileName(file ? file.name : "");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("제출 내용:", formData, selectedFileName);
+    closeModal();
+  };
+
+  const { data: assignment, error: assignmentError } = useGetFetch(
+    "/data/student/mainLecture/submittedAssginment.json",
     []
   );
 
-  if (assginmentsError) {
-    return <div>데이터를 불러오는데 실패하였습니다.</div>;
+  if (assignmentError) {
+    return <div>Error: {assignmentError.message}</div>;
   }
 
   return (
-    <div className="student_assignment_detail_container">
-      <div className="side_bar">
-        <h3>사이드 바</h3>
-      </div>
-      <div className="assignment_detail_main_container">
-        <h2 className="student_assignment_board_page_title">과제</h2>
-        <div className="student_assignment_board_content_box">
-          <div className="student_assignment_board_title_box">
-            <span className="student_assignment_title">
-              {assignments?.title}
+    <div className="student_assignment_detail_main_container">
+      <h1 className="student_assignment_detail_page_title">과제</h1>
+      {/* 강사의 과제 공지 내용 */}
+      <div className="student_assignment_detail_notice_box">
+        <div className="student_assignment_detail_notice_title_box">
+          <h3 className="student_assginment_detail_notice_title">
+            Spring 게시판 제출 과제
+          </h3>
+          <a href="/assignment_files/응.없어~.zip" download>
+            <span className="student_assignment_detail_notice_file">
+              과제 자료.zip
             </span>
-            <span className="assignment_download_file_name">
-              {assignments?.fileName}
-            </span>
-          </div>
-          <div className="student_assignment_board_content">
-            {assignments?.content}
-          </div>
-          <div className="student_assignment_board_info_box">
-            <div className="important_notice_box">
-              <span className="student_assignment_deadline">
-                {assignments?.deadline}
-              </span>
-              &nbsp;까지 &nbsp;<b>|</b>&nbsp;
-              <span>
-                미제출&nbsp;
-                <span
-                  className="student_assignment_participants_count"
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  {assignments?.nonParticipants?.length || 0}명
-                  {isOpen && (
-                    <div className="non_participants_list_box">
-                      {assignments?.nonParticipants?.map((el) => (
-                        <p key={el.name} className="non_participants_name">
-                          {el.name}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-                </span>
-              </span>
-            </div>
-            <p className="student_assignment_board_writed_date">
-              {assignments?.writeDate} &nbsp;
-              <span style={{ color: "black" }}>작성</span>
-            </p>
-          </div>
+          </a>
         </div>
-        <div className="student_assignment_participants_list_container"></div>
-        {/* 과목 게시판 리스트들 */}
-        <div className="student_assignment_participants_container">
-          제출 &nbsp;
-          <span className="student_assignment_participants_count">
-            {assignments?.participants?.length || 0}명
+        <p className="student_assignment_detail_notice_content">
+          Sprign MVC로 CRUD 기능을 구현해서 제출하세요
+        </p>
+        <div className="student_assignment_detail_notice_date_box">
+          <span className="student_assignment_detail_notice_deadline">
+            <span className="date_color">2024-08-31</span>까지
+          </span>
+          <span className="student_assignment_detail_notice_write_date">
+            <span className="date_color">2024-08-01</span> 까지
           </span>
         </div>
-        <div className="subject_board_lists_container">
-          {assignments?.participants?.map((participant, idx) => (
-            <div
-              key={participant.studentId}
-              className="subject_board_list_one_box"
-            >
-              <div className="subject_submitted_lists">
-                <p className="submitted_number">{idx + 1}</p>
-                <p className="submitted_name">{participant.name}</p>
-                <p className="submitted_date">{participant.submittedDate}</p>
-                <p
-                  className="show_more_submitted_info"
-                  onClick={() => showSubmittedInfo(idx)}
-                >
-                  {clickIdx === idx ? "-" : "+"}
-                </p>
-              </div>
-              {clickIdx === idx && (
-                <div className="show_more_submitted_detail_info_container">
-                  <div className="student_submitted_title_box">
-                    <h3 className="student_submitted_title">
-                      {participant.submitTitle}
-                    </h3>
-                    <p className="student_submitted_file">
-                      {participant.fileName}
-                    </p>
-                  </div>
-                  <p className="student_submitted_content">
-                    {participant.content}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
       </div>
+      {/* 학생의 과제 제출 여부 및 제출한 과제 페이지 */}
+      {assignment && assignment.id ? (
+        <div className="student_submit_assignment_detail_box">
+          <div className="student_submit_assignment_detail_title_box">
+            <h1 className="student_submit_assignment_detail_title">
+              {assignment.title}
+            </h1>
+            <a href={assignment.filePath} download={assignment.fileName}>
+              <span className="student_submit_assignment_detail_file">
+                {assignment.fileName}
+              </span>
+            </a>
+          </div>
+          <p className="student_submit_assignment_detail_content">
+            {assignment.content}
+          </p>
+          <span className="student_submit_assignment_detail_date">
+            <span className="date_color">{assignment.writeDate}</span> 제출
+          </span>
+        </div>
+      ) : (
+        <div className="student_non_submit_assignment_detail_box">
+          <h1 className="student_non_submit_assignment_detail_title">
+            아직 과제를 제출하지 않았습니다.
+          </h1>
+          <button className="assignment_submit_button" onClick={openModal}>
+            제출하기
+          </button>
+        </div>
+      )}
+      {/* 피드백 요소 */}
+      {assignment && assignment.id && assignment.reple.id ? (
+        <div className="student_submit_assignment_feedback_box">
+          <p className="student_submit_assignment_feedback_content">
+            {assignment?.reple?.content}
+          </p>
+          <div className="student_submit_assignment_feedback_date_box">
+            <span className="student_submit_assignment_feedback_date date_color">
+              {assignment?.reple?.writeDate}
+            </span>
+            까지
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+      <SubmitModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        formData={formData}
+        selectedFileName={selectedFileName}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleFileChange={handleFileChange}
+      />
     </div>
   );
 };
