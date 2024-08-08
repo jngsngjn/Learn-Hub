@@ -9,11 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.dto.teacher.lecture.LectureListDto;
 import project.homelearn.dto.teacher.subject.SubjectBasicDto;
+import project.homelearn.dto.teacher.subject.SubjectBoardListDto;
 import project.homelearn.dto.teacher.subject.SubjectBoardTop5Dto;
+import project.homelearn.dto.teacher.subject.SubjectBoardViewDto;
 import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.board.SubjectBoardRepository;
 import project.homelearn.repository.curriculum.LectureRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
+import project.homelearn.repository.user.StudentRepository;
+import project.homelearn.repository.user.TeacherRepository;
 
 import java.util.List;
 
@@ -31,6 +35,7 @@ public class StudentSubjectService {
     private final SubjectBoardRepository subjectBoardRepository;
     private final QuestionBoardRepository questionBoardRepository;
     private final LectureRepository lectureRepository;
+    private final TeacherRepository teacherRepository;
 
 
     public SubjectBasicDto getSubjectBasic(Long subjectId) {
@@ -49,5 +54,15 @@ public class StudentSubjectService {
     public Page<LectureListDto> getSubjectLecturePage(Long subjectId, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return lectureRepository.findSubjectLecturePage(subjectId, pageRequest);
+    }
+
+    public Page<SubjectBoardListDto> getSubjectBoardPage(Long subjectId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        String studentName = teacherRepository.findTeacherNameBySubjectId(subjectId);
+        return lectureRepository.findSubjectBoardPage(subjectId, pageRequest, studentName);
+    }
+
+    public SubjectBoardViewDto getSubjectBoard(Long boardId) {
+        return subjectBoardRepository.findSubjectBoard(boardId);
     }
 }
