@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.manager.dashboard.CurriculumDashboardDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
+import project.homelearn.dto.manager.enroll.CurriculumEnrollReadyDto;
+import project.homelearn.dto.manager.enroll.TeacherIdAndName;
 import project.homelearn.dto.manager.manage.curriculum.*;
 import project.homelearn.dto.manager.survey.CurriculumSimpleDto;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -259,5 +261,15 @@ public class ManagerCurriculumService {
 
     public List<String> getCurriculumColor() {
         return curriculumRepository.findAllColor();
+    }
+
+    public CurriculumEnrollReadyDto getCurriculumEnrollReady() {
+        CurriculumEnrollReadyDto result = new CurriculumEnrollReadyDto();
+        List<String> curriculumColor = getCurriculumColor();
+        result.setColors(curriculumColor);
+
+        List<TeacherIdAndName> teacherIdsAndNames = teacherRepository.findTeacherIdsAndNames();
+        result.setTeachers(teacherIdsAndNames);
+        return result;
     }
 }

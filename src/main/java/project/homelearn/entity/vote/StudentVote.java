@@ -22,11 +22,16 @@ public class StudentVote {
     @JoinColumn(name = "vote_content_id", nullable = false)
     private VoteContent voteContent;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vote_id", nullable = false)
+    private Vote vote;
+
     public StudentVote() {
     }
 
-    public StudentVote(User user, VoteContent voteContent) {
+    public StudentVote(User user, VoteContent voteContent, Vote vote) {
         this.user = user;
         this.voteContent = voteContent;
+        this.vote = vote;
     }
 }
