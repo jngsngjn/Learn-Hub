@@ -6,6 +6,8 @@ import project.homelearn.entity.notification.student.StudentNotification;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.entity.user.User;
 
+import java.util.List;
+
 public interface StudentNotificationRepository extends JpaRepository<StudentNotification, Long> {
 
     @Modifying
@@ -13,4 +15,6 @@ public interface StudentNotificationRepository extends JpaRepository<StudentNoti
 
     @Modifying
     void deleteAllByUser(User user);
+
+    List<StudentNotification> findAllByUser(User user);
 }

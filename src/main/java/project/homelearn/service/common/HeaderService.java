@@ -8,6 +8,10 @@ import project.homelearn.dto.manager.header.NotificationDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.notification.manager.ManagerNotification;
 import project.homelearn.entity.notification.manager.ManagerNotificationType;
+import project.homelearn.entity.notification.student.StudentNotification;
+import project.homelearn.entity.notification.student.StudentNotificationType;
+import project.homelearn.entity.notification.teacher.TeacherNotification;
+import project.homelearn.entity.notification.teacher.TeacherNotificationType;
 import project.homelearn.entity.user.Role;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.notification.ManagerNotificationRepository;
@@ -22,6 +26,9 @@ import java.util.List;
 
 import static project.homelearn.entity.notification.manager.ManagerNotificationType.STUDENT_INQUIRY;
 import static project.homelearn.entity.notification.manager.ManagerNotificationType.TEACHER_INQUIRY;
+import static project.homelearn.entity.notification.student.StudentNotificationType.*;
+import static project.homelearn.entity.notification.student.StudentNotificationType.MANAGER_REPLY_TO_INQUIRY;
+import static project.homelearn.entity.notification.teacher.TeacherNotificationType.*;
 import static project.homelearn.entity.user.Role.*;
 
 @Slf4j
@@ -30,9 +37,9 @@ import static project.homelearn.entity.user.Role.*;
 public class HeaderService {
 
     private final UserRepository userRepository;
-    private final StudentNotificationRepository studentNotificationRepository;
-    private final TeacherNotificationRepository teacherNotificationRepository;
     private final ManagerNotificationRepository managerNotificationRepository;
+    private final TeacherNotificationRepository teacherNotificationRepository;
+    private final StudentNotificationRepository studentNotificationRepository;
 
     public HeaderCommonDto getHeaderCommon(String username) {
         User user = userRepository.findUserAndCurriculum(username);
@@ -42,13 +49,11 @@ public class HeaderService {
         }
 
         Curriculum curriculum = user.getCurriculum();
-
         LocalDate startDate = curriculum.getStartDate();
         LocalDate endDate = curriculum.getEndDate();
         LocalDate currentDate = LocalDate.now();
 
         double progressRate = calculateProgressRate(startDate, endDate, currentDate);
-
         return HeaderCommonDto
                 .builder()
                 .curriculumFullName(curriculum.getFullName())
@@ -125,6 +130,82 @@ public class HeaderService {
 
             if (type.equals(TEACHER_INQUIRY)) {
                 subDto.setMessage("강사 1:1 문의가 등록되었습니다.");
+            }
+            subList.add(subDto);
+        }
+        result.setNotifications(subList);
+        return result;
+    }
+
+    public NotificationDto getTeacherNotification(String username) {
+        User user = userRepository.findByUsername(username);
+        List<TeacherNotification> notifications = teacherNotificationRepository.findAllByUser(user);
+
+        NotificationDto result = new NotificationDto();
+        result.setCount(notifications.size());
+
+        List<NotificationDto.NotificationSubDto> subList = new ArrayList<>();
+        for (TeacherNotification notification : notifications) {
+            NotificationDto.NotificationSubDto subDto = new NotificationDto.NotificationSubDto();
+            subDto.setInquiryId(notification.getManagerInquiry().getId());
+
+            TeacherNotificationType type = notification.getType();
+            if (type.equals(QUESTION_POSTED)) {
+                subDto.setMessage("");
+            }
+
+            if (type.equals(REPLY_TO_COMMENT)) {
+                subDto.setMessage("");
+            }
+
+            if (type.equals(STUDENT_INQUIRY_TO_TEACHER)) {
+                subDto.setMessage("");
+            }
+
+            if (type.equals(TeacherNotificationType.MANAGER_REPLY_TO_INQUIRY)) {
+                subDto.setMessage("");
+            }
+            subList.add(subDto);
+        }
+        result.setNotifications(subList);
+        return result;
+    }
+
+    public NotificationDto getStudentNotification(String username) {
+        User user = userRepository.findByUsername(username);
+        List<StudentNotification> notifications = studentNotificationRepository.findAllByUser(user);
+
+        NotificationDto result = new NotificationDto();
+        result.setCount(notifications.size());
+
+        List<NotificationDto.NotificationSubDto> subList = new ArrayList<>();
+        for (StudentNotification notification : notifications) {
+            NotificationDto.NotificationSubDto subDto = new NotificationDto.NotificationSubDto();
+            subDto.setInquiryId(notification.getManagerInquiry().getId());
+
+            StudentNotificationType type = notification.getType();
+            if (type.equals(HOMEWORK_UPLOADED)) {
+                subDto.setMessage("");
+            }
+
+            if (type.equals(REPLY_TO_QUESTION)) {
+                subDto.setMessage("");
+            }
+
+            if (type.equals(MANAGER_REPLY_TO_INQUIRY)) {
+                subDto.setMessage("");
+            }
+
+            if (type.equals(TEACHER_REPLY_TO_INQUIRY)) {
+                subDto.setMessage("");
+            }
+
+            if (type.equals(SURVEY)) {
+                subDto.setMessage("");
+            }
+
+            if (type.equals(COMMENT_ON_MY_FREE_BOARD)) {
+                subDto.setMessage("");
             }
             subList.add(subDto);
         }

@@ -21,7 +21,7 @@ public class HeaderController {
 
     private final HeaderService headerService;
 
-    @GetMapping("/basic")
+    @GetMapping("/common")
     public HeaderCommonDto viewHeaderCommon(Principal principal) {
         String username = principal.getName();
         return headerService.getHeaderCommon(username);
@@ -29,17 +29,16 @@ public class HeaderController {
 
     // 알림 정보 업데이트
     @GetMapping("/notifications")
-    public NotificationDto viewNotification() {
+    public NotificationDto viewNotification(Principal principal) {
         String role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
         if (role.equals("ROLE_MANAGER")) {
             return headerService.getManagerNotification();
         }
 
         if (role.equals("ROLE_TEACHER")) {
-            return null;
+            return headerService.getTeacherNotification(principal.getName());
         }
-
-        return null;
+        return headerService.getStudentNotification(principal.getName());
     }
 
     // 알림 단 건 삭제
