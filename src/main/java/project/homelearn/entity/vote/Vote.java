@@ -50,6 +50,9 @@ public class Vote extends BaseEntity {
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VoteContent> contents = new ArrayList<>();
 
+    @OneToMany(mappedBy = "vote")
+    private List<StudentVote> studentVotes = new ArrayList<>();
+
     public String getFormattedStartTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return startTime != null ? startTime.format(formatter) : null;

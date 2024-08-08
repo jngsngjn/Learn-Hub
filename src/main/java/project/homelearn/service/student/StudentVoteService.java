@@ -16,6 +16,7 @@ import project.homelearn.repository.vote.StudentVoteRepository;
 import project.homelearn.repository.vote.VoteContentRepository;
 import project.homelearn.repository.vote.VoteRepository;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -44,37 +45,74 @@ public class StudentVoteService {
         return result;
     }
 
+    // 투표 참여
     public boolean participateVote(Long voteId, String username, Map<Long, Boolean> voteResult) {
         Vote vote = voteRepository.findById(voteId).orElseThrow();
+        if (validateVote(vote, voteResult)) {
+            return false;
+        }
+
+        boolean participate = isParticipate(voteId, username);
+        if (participate) {
+            return false;
+        }
+
+        Student student = studentRepository.findByUsername(username);
+        saveVote(voteResult, student, vote);
+        return true;
+    }
+
+    private boolean validateVote(Vote vote, Map<Long, Boolean> voteResult) {
         if (vote.isFinished()) {
-            return false; // 이미 마감된 경우 false 반환
+            return true;
         }
 
         boolean isMultipleChoice = vote.getIsMultipleChoice();
         long trueCount = voteResult.values().stream().filter(Boolean::booleanValue).count();
 
         if (trueCount == 0) {
-            return false; // 모든 값이 false일 때 false 반환
+            return true;
         }
 
         if (!isMultipleChoice && trueCount > 1) {
-            return false; // 단일 선택 투표에서 true 값이 2개 이상일 때 false 반환
+            return true;
         }
+        return false;
+    }
 
-        boolean participate = isParticipate(voteId, username);
-        if (participate) {
-            return false; // 이미 참여한 경우 false 반환
-        }
-
-        Student student = studentRepository.findByUsername(username);
+    private void saveVote(Map<Long, Boolean> voteResult, Student student, Vote vote) {
         for (Map.Entry<Long, Boolean> entry : voteResult.entrySet()) {
             Long contentId = entry.getKey();
             Boolean voted = entry.getValue();
             if (voted) {
                 VoteContent voteContent = voteContentRepository.findById(contentId).orElseThrow();
-                studentVoteRepository.save(new StudentVote(student, voteContent));
+                studentVoteRepository.save(new StudentVote(student, voteContent, vote));
                 voteContent.setVoteCount(voteContent.getVoteCount() + 1);
             }
+        }
+    }
+
+    // 투표 수정
+    public boolean modifyVote(Long voteId, String username, Map<Long, Boolean> voteResult) {
+        Vote vote = voteRepository.findById(voteId).orElseThrow();
+
+        Student student = studentRepository.findByUsername(username);
+        List<StudentVote> studentVotes = studentVoteRepository.findAllByVoteAndUser(vote, student);
+
+        // 기존 투표 삭제
+        for (StudentVote studentVote : studentVotes) {
+            VoteContent voteContent = studentVote.getVoteContent();
+            voteContent.setVoteCount(voteContent.getVoteCount() - 1);
+            studentVoteRepository.delete(studentVote);
+        }
+
+        // 새로운 투표 저장
+        long trueCount = voteResult.values().stream().filter(Boolean::booleanValue).count();
+        if (trueCount > 0) {
+            if (!validateVote(vote, voteResult)) {
+                return false;
+            }
+            saveVote(voteResult, student, vote);
         }
         return true;
     }

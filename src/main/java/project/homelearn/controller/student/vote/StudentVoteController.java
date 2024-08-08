@@ -42,5 +42,15 @@ public class StudentVoteController {
     }
 
     // 투표 수정
-
+    @PatchMapping("/{voteId}")
+    public ResponseEntity<?> modifyVote(@PathVariable("voteId") Long voteId,
+                                        Principal principal,
+                                        @RequestBody Map<Long, Boolean> voteResult) {
+        String username = principal.getName();
+        boolean result = voteService.modifyVote(voteId, username, voteResult);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
