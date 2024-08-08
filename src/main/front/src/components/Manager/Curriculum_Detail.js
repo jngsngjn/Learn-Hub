@@ -102,7 +102,7 @@ const CurriculumDetail = () => {
               </div>
               <div className="curriculum-detail-info-box-content">
                 <div className="curriculum-detail-circular-progress">
-                <p className="curriculum-detail-attendance-count"><i className="fas fa-user-graduate"></i>{attendance.attendance} / {attendance.total}</p>
+                  <p className="curriculum-detail-attendance-count"><i className="fas fa-user-graduate"></i>{attendance.attendance} / {attendance.total}</p>
                   <CircularProgressbar value={attendance.ratio} text={`${attendance.ratio}%`} />
                 </div>
               </div>
@@ -122,7 +122,7 @@ const CurriculumDetail = () => {
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
                 <span className="curriculum-detail-subtitle">설문 조사</span>
-                                <Link to={`/survey/${id}`} className=" survey-link">자세히 보기 ></Link>
+                <Link to={`/survey/${id}`} className="survey-link">자세히 보기 ></Link>
               </div>
               {survey.title ? (
                 <div className="curriculum-detail-survey-content">
@@ -138,7 +138,7 @@ const CurriculumDetail = () => {
                 </div>
               ) : (
                 <div className="curriculum-detail-survey-content curriculum-detail-no-survey">
-                  설문 조사가 없습니다.
+                  <p>진행중인 설문 조사가 없습니다.</p>
                   <button className="curriculum-detail-survey-button">설문 등록</button>
                 </div>
               )}

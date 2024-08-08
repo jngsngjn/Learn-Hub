@@ -29,10 +29,10 @@
 }
 
 .curriculum-detail-progress-bar {
-  width: 50%;
-  height: 10px;
+  width: 40%;
+  height: 20px;
   background-color: #e0e0e0;
-  border-radius: 5px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -52,7 +52,7 @@
   text-align: right;
   margin-top: 5px;
   color: #666;
-  font-size: 12px; /* 폰트 크기 조정 */
+  font-size: 12px;
 }
 
 .curriculum-detail-content-container {
@@ -70,7 +70,7 @@
 .curriculum-detail-info-box {
   background: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  width: 260px;
+  width: 266px;
   height :410px;
   border: 1px solid #757575;
   border-radius: 20px;
@@ -93,12 +93,12 @@
 }
 
 .curriculum-detail-info-box-title i {
-  font-size: 18px; /* 폰트 크기 조정 */
+  font-size: 18px;
   color: #757575;
 }
 
 .curriculum-detail-info-box-title span {
-  font-size: 18px; /* 폰트 크기 조정 */
+  font-size: 18px;
   font-weight: bold;
   color: #333;
 }
@@ -132,14 +132,14 @@
 }
 
 .curriculum-detail-attendance-ratio {
-  font-size: 28px; /* 폰트 크기 조정 */
+  font-size: 28px;
   font-weight: bold;
   color: #757575;
   margin: 0;
 }
 
 .curriculum-detail-attendance-count {
-  font-size: 14px; /* 폰트 크기 조정 */
+  font-size: 14px;
   color: #666;
   margin: 5px 0 0;
 }
@@ -148,14 +148,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 5px 0;
-  font-size: 18px; /* 폰트 크기 조정 */
+  margin: 10px 10px;
+  font-size: 28px;
+}
+.curriculum-detail-info-box-content-second{
+    display:grid;
+    gap:40px;
 }
 
 .curriculum-detail-info-box-content-second p {
-  font-size: 18px; /* 폰트 크기 조정 */
-  margin-top: 30px; /* 마진 조정 */
-  margin-bottom: 30px; /* 마진 조정 */
+  margin-top:20px;
+  font-size: 20px;
 }
 
 .curriculum-detail-info-box-content i {
@@ -234,17 +237,18 @@
 }
 
 .curriculum-detail-survey-button {
-  background-color: #757575;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  background-color: #f0f0f0;
+  color: #757575;
+  border: 1px solid #757575;
+  padding: 10px;
+  border-radius: 20px;
   cursor: pointer;
+  margin-left: 380px;
 }
 
 .curriculum-detail-survey-button:hover {
-  color: #000;
-  background: #c7c8cc;
+  color: #fff;
+  background: #757575;
 }
 
 .curriculum-detail-update-button-container {
@@ -273,7 +277,10 @@
   padding: 10px;
   text-align: center;
 }
-
+.curriculum-detail-no-survey p{
+    margin:50px auto;
+    font-size:24px;
+}
 .CircularProgressbar .CircularProgressbar-path {
   stroke: #757575;
 }
