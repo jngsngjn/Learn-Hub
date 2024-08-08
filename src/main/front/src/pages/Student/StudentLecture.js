@@ -176,14 +176,14 @@ const StudentLecture = () => {
                         !isOpen ? "not-released" : ""
                       }`}
                     >
-                      {!isOpen && (
+                      {/* {!isOpen && (
                         <>
                           <div className="show_not_open">
                             {daysRemaining}일 후 시청 가능합니다.
                           </div>
                           <div className="not-released-overlay"></div>
                         </>
-                      )}
+                      )} */}
                       <iframe
                         width="100%"
                         height="100%"
