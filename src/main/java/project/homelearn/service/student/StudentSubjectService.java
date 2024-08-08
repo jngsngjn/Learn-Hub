@@ -67,7 +67,7 @@ public class StudentSubjectService {
     }
 
     public List<SubjectSelectListDto> getSubjectSelectList(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return subjectRepository.findSubjectSelectList(curriculum);
     }
 }
