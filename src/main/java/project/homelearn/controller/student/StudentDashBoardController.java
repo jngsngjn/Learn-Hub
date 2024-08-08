@@ -39,7 +39,7 @@ public class StudentDashBoardController {
 
     // 매니저 공지사항 최신순 4개
     @GetMapping("/manager-boards")
-    public List<ManagerBoardDto> viewManagerBoard(){
+    public List<ManagerBoardDto> viewManagerBoard() {
         return managerNoticeService.viewManagerBoardRecent();
     }
 
@@ -51,76 +51,74 @@ public class StudentDashBoardController {
 
     // 매니저가 등록한 일정 중 학생 교육과정에 대한 일정
     @GetMapping("/calendar/manager")
-    public List<ViewScheduleDto> viewManagerSchedule(Principal principal){
+    public List<ViewScheduleDto> viewManagerSchedule(Principal principal) {
         return managerCalendarService.getAllManagerSchedulesOfStudent(principal.getName());
     }
 
     // 강사가 등록한 일정
     @GetMapping("/calendar/teacher")
-    public TeacherScheduleDto viewTeacherSchedule(Principal principal){
+    public TeacherScheduleDto viewTeacherSchedule(Principal principal) {
         return teacherCalendarService.getScheduleToStudent(principal.getName());
     }
 
     // 질문 게시판 최근 2개
     @GetMapping("/questions")
-    public ResponseEntity<?> viewQuestionTop2(Principal principal){
+    public ResponseEntity<?> viewQuestionTop2(Principal principal) {
 
         List<ViewQuestionBoardDto> questionBoards = questionBoardService.getQuestionTop2(principal.getName());
 
-        if (questionBoards != null){
+        if (questionBoards != null) {
             return new ResponseEntity<>(questionBoards, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>("게시된 글이 없습니다.",HttpStatus.NOT_FOUND);
         }
     }
 
     // 최근 학습 강의
     @GetMapping("/recentLecture")
-    public ResponseEntity<?> viewRecentLecture(Principal principal){
+    public ResponseEntity<?> viewRecentLecture(Principal principal) {
         Optional<ViewRecentStudyLectureDto> myRecentLecture = lectureService.getRecentLecture(principal.getName());
 
-        if (myRecentLecture.isPresent()){
+        if (myRecentLecture.isPresent()) {
             return new ResponseEntity<>(myRecentLecture, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>("최근 학습한 강의가 없습니다.", HttpStatus.NOT_FOUND);
         }
     }
 
-
     // 보충 강의
     @GetMapping("/lectures")
-    public Optional<ViewLectureDto> viewLecture(Principal principal){
+    public Optional<ViewLectureDto> viewLecture(Principal principal) {
         return lectureService.getLecture(principal.getName());
     }
 
     // 과제 목록
     @GetMapping("/homeworks")
-    public ResponseEntity<?> viewHomeworkTop2(Principal principal){
+    public ResponseEntity<?> viewHomeworkTop2(Principal principal) {
 
         List<ViewHomeworkDto> myHomeworks = studentHomeworkService.getHomeworkTop2(principal.getName());
 
-        if (myHomeworks != null){
+        if (myHomeworks != null) {
             return new ResponseEntity<>(myHomeworks, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>("과제가 없습니다.",HttpStatus.NOT_FOUND);
         }
     }
 
     // 배지
     @GetMapping("/badges")
-    public ResponseEntity<?> viewMyBadgesTop4(Principal principal){
+    public ResponseEntity<?> viewMyBadgesTop4(Principal principal) {
 
         List<ViewMyBadgeDto> myBadges = studentBadgeService.getMyBadgesTop4(principal.getName());
 
-        if (myBadges != null){
+        if (myBadges != null) {
             return new ResponseEntity<>(myBadges, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>("배지를 보유하고 있지 않습니다.",HttpStatus.NOT_FOUND);
         }
     }
-
 }
