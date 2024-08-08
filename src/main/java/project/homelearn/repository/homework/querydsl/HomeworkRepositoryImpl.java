@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import project.homelearn.dto.student.dashboard.QViewHomeworkDto;
+import project.homelearn.dto.student.dashboard.ViewHomeworkDto;
 import project.homelearn.dto.teacher.dashboard.HomeworkStateDto;
 import project.homelearn.dto.teacher.homework.HomeworkDetailDto;
 import project.homelearn.dto.teacher.homework.HomeworkSubmitListDto;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static project.homelearn.entity.homework.QHomework.homework;
 import static project.homelearn.entity.homework.QStudentHomework.studentHomework;
+import static project.homelearn.entity.user.QUser.user;
 
 @RequiredArgsConstructor
 public class HomeworkRepositoryImpl implements HomeworkRepositoryCustom {
@@ -198,5 +201,26 @@ public class HomeworkRepositoryImpl implements HomeworkRepositoryCustom {
                         .responseDate(tuple.get(studentHomework.responseDate))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ViewHomeworkDto> findHomeworkTop2(String username){
+        return queryFactory
+                .select(new QViewHomeworkDto(
+                        homework.id,
+                        homework.title,
+                        homework.description,
+                        homework.deadline,
+                        studentHomework.isNotNull()
+                ))
+                .from(homework)
+                .leftJoin(studentHomework)
+                .on(homework.eq(studentHomework.homework)
+                        .and(studentHomework.user.username.eq(username)))
+                .where(studentHomework.isNull()
+                        .and(homework.curriculum.eq(user.curriculum)))
+                .orderBy(homework.deadline.desc())
+                .limit(2)
+                .fetch();
     }
 }

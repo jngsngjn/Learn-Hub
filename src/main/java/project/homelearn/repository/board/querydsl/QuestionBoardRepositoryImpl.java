@@ -2,6 +2,8 @@ package project.homelearn.repository.board.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import project.homelearn.dto.student.dashboard.QViewQuestionBoardDto;
+import project.homelearn.dto.student.dashboard.ViewQuestionBoardDto;
 import project.homelearn.dto.teacher.dashboard.QQuestionTop5Dto;
 import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.entity.curriculum.Curriculum;
@@ -36,6 +38,18 @@ public class QuestionBoardRepositoryImpl implements QuestionBoardRepositoryCusto
                 .where(questionBoard.subject.id.eq(subjectId))
                 .orderBy(questionBoard.createdDate.desc())
                 .limit(5)
+                .fetch();
+    }
+
+    @Override
+    public List<ViewQuestionBoardDto> findQuestionTop2(Curriculum curriculum){
+        return queryFactory
+                .select(new QViewQuestionBoardDto(questionBoard.id, questionBoard.subject.name, questionBoard.title, questionBoard.content, questionBoard.createdDate))
+                .from(questionBoard)
+                .leftJoin(questionBoard.subject, subject)
+                .where(questionBoard.user.curriculum.eq(curriculum))
+                .orderBy(questionBoard.createdDate.desc())
+                .limit(2)
                 .fetch();
     }
 }
