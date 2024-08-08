@@ -155,7 +155,7 @@ const StudentDashBoard = () => {
               <h3 className="components_title">오늘의 IT</h3>
               <div className="random_video_box">{/* <RandomVideo /> */}</div>
               <h3 className="components_title">보충 강의</h3>
-              <div className="lecture_video_box">{/* <LectureVideo /> */}</div>
+              <div className="lecture_video_box"> <LectureVideo /> </div>
             </div>
             <div className="question_container">
               <div className="title_box">

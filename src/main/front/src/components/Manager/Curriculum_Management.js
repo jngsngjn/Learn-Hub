@@ -62,6 +62,7 @@ const CurriculumManagement = () => {
       });
 
       if (response.status === 200) {
+        console.log('과정 추가 응답:', response.data);
         setIsModalOpen(false);
         fetchCurriculums(newCurriculum.type); // 목록 갱신
       } else {
@@ -79,6 +80,7 @@ const CurriculumManagement = () => {
       const response = await axios.get(`/managers/manage-curriculums/${type}`, {
         headers: { access: token },
       });
+      console.log(`${type} 과정 목록 응답:`, response.data);
 
       if (type === 'NCP') {
         setNcpCurriculums(response.data || []);
