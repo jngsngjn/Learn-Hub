@@ -25,34 +25,6 @@ const Router = () => {
         <Route path="/main" element={<Main />} />
         <Route path="/managers/*" element={<ManagerMain />} />
         <Route path="/students/*" element={<StudentMain />} />
-        {/*
-        <Route path="/students/:subject/board" element={<StudentLecture />} />
-        <Route path="/students/lectureLists" element={<StudentLectureList />} />
-        <Route
-          path="/students/:subject/lectures/:id"
-          element={<StudentLectureDetail />}
-        />
-        <Route
-          path="/students/subjectBoard"
-          element={<StudentSubjectBoard />}
-        />
-        <Route
-          path="/Students/SubjectBoardDetail/:id"
-          element={<StudentSubjectBoardDetail />}
-        />
-        <Route
-          path="/students/inquiryBoard"
-          element={<StudentInquiryBoard />}
-        />
-        <Route
-          path="/students/inquiryDetail/:id"
-          element={<StudentInquiryDetail />}
-        />
-        <Route path="/students/assignment" element={<StudentAssignment />} />
-        <Route
-          path="/students/assignmentDetail/:id"
-          element={<StudentAssignmentDetail />}
-        /> */}
         <Route path="/image-board" element={<ImageBoard />} />
         <Route path="/test-view" element={<ViewBoardImage />} />
         <Route path="/teachers/*" element={<TeacherMain/>}/>

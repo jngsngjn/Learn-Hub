@@ -32,7 +32,10 @@ public class StudentNotificationService {
         }
     }
 
-    // 매니저가 설문 마감 시 알림 삭제
+    /*
+    매니저가 설문 마감 시 알림 삭제
+    설문 완료 시 알림 삭제
+     */
     public void deleteSurveyNotification(Survey survey) {
         notificationRepository.deleteAllBySurvey(survey);
     }

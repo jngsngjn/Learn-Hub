@@ -137,6 +137,8 @@
 
 .random_video_box,
 .lecture_video_box {
+  /* width: 550px;
+  height: 250px; */
   display: flex;
   justify-content: center;
   align-items: center;

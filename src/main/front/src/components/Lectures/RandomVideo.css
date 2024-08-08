@@ -9,12 +9,15 @@
 
 .random_video_container {
   position: relative;
+  height: 240px;
+}
+
+.random_video_container iframe {
 }
 
 .iframe_wrapper {
-  width: 550px;
-  height: 250px;
-  transform: scale(0.8);
+  width: 450px;
+  height: 280px;
   overflow: hidden;
   border-radius: 10px;
 }
@@ -26,8 +29,8 @@
 .get_random_video_btn {
   width: 2.2em;
   position: absolute;
-  top: -18%;
-  right: 11%;
+  top: -20%;
+  right: 2%;
   cursor: pointer;
 }
 

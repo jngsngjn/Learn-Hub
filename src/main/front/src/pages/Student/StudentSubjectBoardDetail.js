@@ -2,6 +2,7 @@ import "./StudentSubjectBoardDetail.css";
 import { useEffect, useState } from "react";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
+import LectureVideo from "../../components/Lectures/LectureVideo";
 
 const StudentSubjectBoardDetail = () => {
   const navigate = useNavigate();
@@ -21,12 +22,8 @@ const StudentSubjectBoardDetail = () => {
 
   return (
     <div className="subject_board_detail_main_container">
+      <LectureVideo width="1120px" height="600px" />
       <div className="lecutre_type_container">
-        <img
-          className="lecture_type_image"
-          alt="과목이미지"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv_al5pqaDdDHWONxiCA-B1mjpNdbA8fEe8g&s"
-        />
         <div className="lecture_description_box">
           <h1 className="lecture_type_name">JAVA</h1>
           <p className="lecture_type_description">설명</p>
@@ -35,7 +32,7 @@ const StudentSubjectBoardDetail = () => {
       <h2 className="student_subject_board_page_title">과목 게시판</h2>
       {/* 여기부터 과목 게시글 내용 */}
       <div className="student_subject_board_title_box">
-        <span className="student_subject_board_title">1주차 수업 자료</span>
+        <span className="student_subject_board_title">1주차 수업 자료.zip</span>
         <span
           className="student_subject_board_view_count"
           style={{ fontSize: "28px" }}
@@ -45,7 +42,14 @@ const StudentSubjectBoardDetail = () => {
         </span>
       </div>
       <div className="student_subject_board_body_container">
-        <p className="subject_board_download_file_name">1주차 수업 자료.zip</p>
+        <a
+          href="/assignment_files/1주차 수업자료.zip"
+          download="1주차 수업 자료.zip"
+        >
+          <p className="subject_board_download_file_name">
+            1주차 수업 자료.zip
+          </p>
+        </a>
         <p className="student_subject_board_content">
           1주차 수업 자료입니다. 미리 다운로드 받으세요! 수업 때 참고 자료로
           사용 예정!
