@@ -18,21 +18,21 @@ public class ViewMyBadgeDto {
     private String myBadgeName;
 
     @NotBlank
-    private String fileName;
+    private String imageName;
 
     @NotBlank
-    private String filePath;
+    private String imagePath;
 
     @NotBlank
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate getDate;
 
     @QueryProjection
-    public ViewMyBadgeDto(Long myBadgeId, String myBadgeName, String fileName,String filePath, LocalDate getDate) {
+    public ViewMyBadgeDto(Long myBadgeId, String myBadgeName, String imageName, String imagePath, LocalDate getDate) {
         this.myBadgeId = myBadgeId;
         this.myBadgeName = myBadgeName;
-        this.fileName = fileName;
-        this.filePath = filePath;
+        this.imageName = imageName;
+        this.imagePath = imagePath;
         this.getDate = getDate;
     }
 }

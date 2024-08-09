@@ -4,9 +4,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import project.homelearn.dto.student.dashboard.QViewMyBadgeDto;
 import project.homelearn.dto.student.dashboard.ViewMyBadgeDto;
-import project.homelearn.entity.student.badge.QBadge;
-import project.homelearn.entity.student.badge.QStudentBadge;
-import project.homelearn.entity.user.QUser;
 
 import java.util.List;
 
@@ -26,8 +23,8 @@ public class StudentBadgeRepositoryImpl implements StudentBadgeRepositoryCustom{
                 .select(new QViewMyBadgeDto(
                         studentBadge.id,
                         badge.name,
-                        badge.fileName,
-                        badge.filePath,
+                        badge.imageName,
+                        badge.imagePath,
                         studentBadge.getDate
                 ))
                 .from(studentBadge)
