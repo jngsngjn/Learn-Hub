@@ -7,6 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import StudentSubmitModal from "../../components/StudentSubmitModal/StudentSubmitModal";
 
 const StudentDashBoard = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const StudentDashBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.log("모달 데이터 : " + formData);
     closeModal();
   };
 
@@ -288,9 +289,10 @@ const StudentDashBoard = () => {
                     </span>
                   </div>
                 ))}
-                <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
+                <div className="align_right_box">
+                  <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
+                </div>
               </div>
-
               <div className="teacher_notice_container">
                 <h3 className="notice_components_title">선생님 공지사항</h3>
                 {teacherNotice.map((el, idx) => (
@@ -302,76 +304,23 @@ const StudentDashBoard = () => {
                     <span className="notice_date">{el.writeDate}</span>
                   </div>
                 ))}
-                <div className="r"></div>
-                <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
+                <div className="align_right_box">
+                  <span className="go_to_admin_notice_page">자세히 보기 ⟩</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {isModalOpen && (
-        <div className="modal show">
-          <div className="modal-content-student" style={{ width: "700px" }}>
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-            <h1 className="modal_title">과제 제출</h1>
-            <form onSubmit={handleSubmit} className="modal_form_body">
-              <label>
-                <p className="modal_name_tag">제목</p>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  className="modal_input_title"
-                />
-              </label>
-              <label>
-                <p className="modal_content_tag">내용</p>
-                <textarea
-                  name="content"
-                  value={formData.content}
-                  onChange={handleChange}
-                  className="modal_input_content"
-                ></textarea>
-              </label>
-              <label className="modal_file_label">
-                <p className="modal_file_tag">파일 첨부</p>
-                <div className="modal_file_input_wrapper">
-                  <input
-                    type="text"
-                    readOnly
-                    value={selectedFileName}
-                    className="modal_input_file_display"
-                  />
-                  <label className="modal_file_button">
-                    파일 선택
-                    <input
-                      type="file"
-                      name="file"
-                      onChange={handleFileChange}
-                      className="modal_input_file"
-                    />
-                  </label>
-                </div>
-              </label>
-              <div className="modal_submit_button_box">
-                <button type="submit" className="modal_submit_button">
-                  과제 제출
-                </button>
-                <button
-                  type="button"
-                  className="modal_cancel_button"
-                  onClick={closeModal}
-                >
-                  제출 취소
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <StudentSubmitModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        formData={formData}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleFileChange={handleFileChange}
+        selectedFileName={formData.selectedFileName}
+      />
     </div>
   );
 };

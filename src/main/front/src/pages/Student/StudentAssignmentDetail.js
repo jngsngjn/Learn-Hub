@@ -9,7 +9,7 @@ const StudentAssignmentDetail = () => {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    selectedFileName: "",
+    file: "",
   });
 
   const openModal = () => {
@@ -135,9 +135,9 @@ const StudentAssignmentDetail = () => {
         </div>
       )}
       {/* 피드백 요소 */}
-      <h1 className="student_submit_assignment_sub_title">피드백</h1>
       {assignment && assignment.id && assignment.reple.id ? (
         <div className="student_submit_assignment_feedback_box">
+          <h1 className="student_submit_assignment_sub_title">피드백</h1>
           <p className="student_submit_assignment_feedback_content">
             {assignment?.reple?.content}
           </p>
