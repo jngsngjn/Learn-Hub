@@ -18,9 +18,9 @@ public class Badge {
     @Column(nullable = false)
     private String description;
 
-    @Column(name = "file_name", nullable = false)
-    private String fileName;
+    @Column(name = "image_name", nullable = false)
+    private String imageName;
 
-    @Column(name = "file_path", nullable = false)
-    private String filePath;
+    @Column(name = "image_path", nullable = false)
+    private String imagePath;
 }
