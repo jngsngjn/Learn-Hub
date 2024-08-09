@@ -17,9 +17,8 @@ const TeacherHeader = () => {
     phone: "",
   });
 
-  const deleteToken = localStorage.removeItem("access-token");
-
   const getToken = () => localStorage.getItem("access-token");
+  const deleteToken = () => localStorage.removeItem("access-token");
 
   useEffect(() => {
     if (!id) {

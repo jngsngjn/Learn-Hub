@@ -13,6 +13,7 @@ import StudentSubjectBoardDetail from "./StudentSubjectBoardDetail";
 import StudentLectureDetail from "./StudentLectureDetail";
 import StudentAssignmentDetail from "./StudentAssignmentDetail";
 import StudentSideBar from "../../components/SideBar/StudentSideBar";
+import StudentHeader from "../../components/Nav/StudentHeader";
 
 const StudentMain = () => {
   const [showSection, setShowSection] = useState(null);
@@ -40,6 +41,7 @@ const StudentMain = () => {
 
   return (
     <div className="student_dashboard_body" id="container">
+      <StudentHeader />
       <StudentSideBar />
       <div className="contents">
         <Routes>
