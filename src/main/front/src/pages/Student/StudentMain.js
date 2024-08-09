@@ -20,24 +20,24 @@ const StudentMain = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const navigate = useNavigate();
 
-  const toggleOpen = (section) => {
-    setShowSection(showSection === section ? null : section);
-  };
+  // const toggleOpen = (section) => {
+  //   setShowSection(showSection === section ? null : section);
+  // };
 
-  const handleSubjectClick = (subjectName) => {
-    setSelectedSubject(subjectName);
-    navigate(`/students/${subjectName}/board`);
-  };
+  // const handleSubjectClick = (subjectName) => {
+  //   setSelectedSubject(subjectName);
+  //   navigate(`/students/${subjectName}/board`);
+  // };
 
-  const handleSectionClick = (section) => {
-    navigate(`/students/${section}`);
-    setShowSection(null);
-  };
+  // const handleSectionClick = (section) => {
+  //   navigate(`/students/${section}`);
+  //   setShowSection(null);
+  // };
 
-  const { data: subject, error: subjectError } = useGetFetch(
-    "/data/student/mainpage/sidebar.json",
-    []
-  );
+  // const { data: subject, error: subjectError } = useGetFetch(
+  //   "/data/student/mainpage/sidebar.json",
+  //   []
+  // );
 
   return (
     <div className="student_dashboard_body" id="container">
