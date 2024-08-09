@@ -21,6 +21,7 @@ import project.homelearn.entity.board.scrap.QuestionScrap;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.Subject;
 import project.homelearn.entity.student.Student;
+import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
@@ -28,13 +29,16 @@ import project.homelearn.repository.board.QuestionScrapRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
 import project.homelearn.repository.user.StudentRepository;
+import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.common.StorageService;
+import project.homelearn.service.teacher.TeacherNotificationService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static project.homelearn.config.storage.FolderType.QUESTION_BOARD;
+import static project.homelearn.entity.user.Role.ROLE_TEACHER;
 
 @Slf4j
 @Service
@@ -50,10 +54,11 @@ public class StudentQuestionBoardService {
     private final QuestionBoardCommentRepository commentRepository;
     private final CurriculumRepository curriculumRepository;
     private final QuestionScrapRepository questionScrapRepository;
+    private final TeacherNotificationService teacherNotificationService;
+    private final TeacherRepository teacherRepository;
 
     // 글 작성
     public void writeQuestionBoard(String username, QuestionBoardWriteDto questionBoardWriteDto) {
-
         Student student = studentRepository.findByUsername(username);
 
         QuestionBoard questionBoard = new QuestionBoard();
@@ -76,8 +81,11 @@ public class StudentQuestionBoardService {
             questionBoard.setImageName(fileDto.getUploadFileName());
             questionBoard.setImagePath(fileDto.getFilePath());
         }
-
         questionBoardRepository.save(questionBoard);
+
+        // 강사에게 알림
+        Teacher teacher = teacherRepository.findByStudentUsername(username);
+        teacherNotificationService.questionNotify(teacher, questionBoard);
     }
 
     // 글 삭제
@@ -170,7 +178,7 @@ public class StudentQuestionBoardService {
 
     // 대댓글 작성
     public void writeReplyComment(Long commentId, String username, CommentWriteDto commentDto) {
-        User user = userRepository.findByUsername(username);
+        User writer = userRepository.findByUsername(username);
         QuestionBoardComment parentComment = commentRepository.findById(commentId).orElseThrow();
 
         // 대댓글 깊이 확인
@@ -179,11 +187,19 @@ public class StudentQuestionBoardService {
         }
 
         QuestionBoardComment reply = new QuestionBoardComment();
-        reply.setUser(user);
+        reply.setUser(writer);
         reply.setContent(commentDto.getContent());
         reply.setQuestionBoard(parentComment.getQuestionBoard());
         reply.setParentComment(parentComment);
         commentRepository.save(reply);
+
+        // 부모 댓글의 작성자가 강사면 강사에게 알림
+        User parent = parentComment.getUser();
+        if (parent.getRole().equals(ROLE_TEACHER) && !writer.getRole().equals(ROLE_TEACHER)) {
+            Teacher teacher = teacherRepository.findByStudentUsername(username);
+            QuestionBoard questionBoard = parentComment.getQuestionBoard();
+            teacherNotificationService.questionReplyNotify(teacher, questionBoard, reply);
+        }
     }
 
     // 대댓글 수정

@@ -2,6 +2,7 @@ package project.homelearn.entity.notification.teacher;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
@@ -12,6 +13,7 @@ import project.homelearn.entity.user.User;
 @Entity
 @Getter @Setter
 @Table(name = "teacher_notification")
+@NoArgsConstructor
 public class TeacherNotification {
 
     @Id
@@ -41,4 +43,29 @@ public class TeacherNotification {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_inquiry_id")
     private ManagerInquiry managerInquiry;
+
+    public TeacherNotification(User user, TeacherNotificationType type, QuestionBoard questionBoard) {
+        this.user = user;
+        this.type = type;
+        this.questionBoard = questionBoard;
+    }
+
+    public TeacherNotification(User user, TeacherNotificationType type, QuestionBoard questionBoard, QuestionBoardComment questionBoardComment) {
+        this.user = user;
+        this.type = type;
+        this.questionBoard = questionBoard;
+        this.questionBoardComment = questionBoardComment;
+    }
+
+    public TeacherNotification(User user, TeacherNotificationType type, TeacherInquiry teacherInquiry) {
+        this.user = user;
+        this.type = type;
+        this.teacherInquiry = teacherInquiry;
+    }
+
+    public TeacherNotification(User user, TeacherNotificationType type, ManagerInquiry managerInquiry) {
+        this.user = user;
+        this.type = type;
+        this.managerInquiry = managerInquiry;
+    }
 }

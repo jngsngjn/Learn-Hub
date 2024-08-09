@@ -27,10 +27,8 @@ public class StudentQuestionBoardController {
     @PostMapping
     public ResponseEntity<?> writeQuestionBoard(Principal principal,
                                                 @Valid @ModelAttribute QuestionBoardWriteDto questionBoardWriteDto) {
-        System.out.println("StudentQuestionBoardController.writeQuestionBoard");
         String username = principal.getName();
         studentQuestionBoardService.writeQuestionBoard(username, questionBoardWriteDto);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
