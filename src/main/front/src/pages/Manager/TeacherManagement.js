@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../utils/axios";
-import ManagerModal from "../Modal/ManagerModal/ManagerModal";
+import ManagerModal from "../../components/Modal/ManagerModal/ManagerModal";
 import "./TeacherManagement.css";
 import swal from "sweetalert";
 

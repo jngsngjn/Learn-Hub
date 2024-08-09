@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCalendarPlus } from "react-icons/fa";
 import "./ManagerCalendar.css";
+import ManagerModal from "../../Modal/ManagerModal/ManagerModal";
 // import ManagerModal from '../../Modal/ManagerModal/ManagerModal';
 
 const ManagerCalendar = () => {
