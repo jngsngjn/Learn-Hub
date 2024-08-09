@@ -1,32 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaCalendarPlus } from 'react-icons/fa';
-import './ManagerCalendar.css';
-import ManagerModal from '../../Modal/ManagerModal/ManagerModal';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaCalendarPlus } from "react-icons/fa";
+import "./ManagerCalendar.css";
+// import ManagerModal from '../../Modal/ManagerModal/ManagerModal';
 
 const ManagerCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
   const [holidays, setHolidays] = useState([]);
-  const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, color: '#FF9999', content: '' });
+  const [newEvent, setNewEvent] = useState({
+    title: "",
+    start: null,
+    end: null,
+    color: "#FF9999",
+    content: "",
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
+    const storedEvents =
+      JSON.parse(localStorage.getItem("calendarEvents")) || [];
     setEvents(storedEvents);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('calendarEvents', JSON.stringify(events));
+    localStorage.setItem("calendarEvents", JSON.stringify(events));
   }, [events]);
 
   useEffect(() => {
     const fetchHolidays = async () => {
       const year = currentDate.getFullYear();
-      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-      const serviceKey = 't21Zxd4T5l%2FCFpu9dpVZ2U4nEIv06W14hNeu7Op7HA0yIBHYgMu23%2FL6JHBWQ%2Bp9HNG%2B93RJwgq7zANzmn%2B2%2BA%3D%3D';
+      const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+      const serviceKey =
+        "t21Zxd4T5l%2FCFpu9dpVZ2U4nEIv06W14hNeu7Op7HA0yIBHYgMu23%2FL6JHBWQ%2Bp9HNG%2B93RJwgq7zANzmn%2B2%2BA%3D%3D";
       const url = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?serviceKey=${serviceKey}&pageNo=1&numOfRows=100&solYear=${year}&solMonth=${month}`;
 
       try {
@@ -34,46 +42,72 @@ const ManagerCalendar = () => {
         if (response.ok) {
           const responseText = await response.text();
           const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(responseText, 'application/xml');
-          const items = xmlDoc.getElementsByTagName('item');
-          const holidays = Array.from(items).map(item => {
-            const locdate = item.getElementsByTagName('locdate')[0].textContent;
-            return locdate;
-          }).filter(date => {
-            const monthDay = date.substr(4, 4);
-            return monthDay !== '0717';
-          });
+          const xmlDoc = parser.parseFromString(
+            responseText,
+            "application/xml"
+          );
+          const items = xmlDoc.getElementsByTagName("item");
+          const holidays = Array.from(items)
+            .map((item) => {
+              const locdate =
+                item.getElementsByTagName("locdate")[0].textContent;
+              return locdate;
+            })
+            .filter((date) => {
+              const monthDay = date.substr(4, 4);
+              return monthDay !== "0717";
+            });
           setHolidays(holidays);
         } else {
-          console.error('공휴일 데이터 가져오기 실패:', response.statusText);
+          console.error("공휴일 데이터 가져오기 실패:", response.statusText);
         }
       } catch (error) {
-         console.error('공휴일 데이터 가져오는 중 오류:', error);
+        console.error("공휴일 데이터 가져오는 중 오류:", error);
       }
     };
 
     fetchHolidays();
   }, [currentDate]);
 
-  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+  const daysInMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  ).getDate();
+  const firstDayOfMonth = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    1
+  ).getDay();
 
   const generateCalendarDates = () => {
     const dates = [];
-    const prevMonthLastDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
-    const nextMonthFirstDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+    const prevMonthLastDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      0
+    );
+    const nextMonthFirstDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      1
+    );
 
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       dates.push({
-        date: new Date(prevMonthLastDate.getFullYear(), prevMonthLastDate.getMonth(), prevMonthLastDate.getDate() - i),
-        isCurrentMonth: false
+        date: new Date(
+          prevMonthLastDate.getFullYear(),
+          prevMonthLastDate.getMonth(),
+          prevMonthLastDate.getDate() - i
+        ),
+        isCurrentMonth: false,
       });
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
       dates.push({
         date: new Date(currentDate.getFullYear(), currentDate.getMonth(), i),
-        isCurrentMonth: true
+        isCurrentMonth: true,
       });
     }
 
@@ -81,8 +115,12 @@ const ManagerCalendar = () => {
     if (remainingDays < 7) {
       for (let i = 0; i < remainingDays; i++) {
         dates.push({
-          date: new Date(nextMonthFirstDate.getFullYear(), nextMonthFirstDate.getMonth(), i + 1),
-          isCurrentMonth: false
+          date: new Date(
+            nextMonthFirstDate.getFullYear(),
+            nextMonthFirstDate.getMonth(),
+            i + 1
+          ),
+          isCurrentMonth: false,
         });
       }
     }
@@ -91,17 +129,31 @@ const ManagerCalendar = () => {
   };
 
   const handleMonthChange = (direction) => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1)
+    );
   };
 
   const handleOpenModal = () => {
-    setNewEvent({ title: '', start: selectedDate, end: selectedDate, color: '#FF9999', content: '' });
+    setNewEvent({
+      title: "",
+      start: selectedDate,
+      end: selectedDate,
+      color: "#FF9999",
+      content: "",
+    });
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setNewEvent({ title: '', start: null, end: null, color: '#FF9999', content: '' });
+    setNewEvent({
+      title: "",
+      start: null,
+      end: null,
+      color: "#FF9999",
+      content: "",
+    });
   };
 
   const handleSaveEvent = () => {
@@ -112,7 +164,9 @@ const ManagerCalendar = () => {
   };
 
   const handleDateClick = (date) => {
-    const adjustedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const adjustedDate = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    );
     setSelectedDate(adjustedDate);
     const eventsForDate = getEventsForDate(date);
     if (eventsForDate.length > 0) {
@@ -121,22 +175,30 @@ const ManagerCalendar = () => {
   };
 
   const getEventsForDate = (date) => {
-    return events.filter(event =>
-      new Date(event.start).toDateString() === date.toDateString() ||
-      (new Date(event.start) <= date && new Date(event.end) >= date)
+    return events.filter(
+      (event) =>
+        new Date(event.start).toDateString() === date.toDateString() ||
+        (new Date(event.start) <= date && new Date(event.end) >= date)
     );
   };
 
   const isCurrentDate = (date) => {
     const today = new Date();
-    return date && date.getDate() === today.getDate() &&
-           date.getMonth() === today.getMonth() &&
-           date.getFullYear() === today.getFullYear();
+    return (
+      date &&
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
   };
 
   const isHoliday = (date) => {
-    return holidays.some(holiday => {
-      const holidayDate = new Date(holiday.substr(0, 4), holiday.substr(4, 2) - 1, holiday.substr(6, 2));
+    return holidays.some((holiday) => {
+      const holidayDate = new Date(
+        holiday.substr(0, 4),
+        holiday.substr(4, 2) - 1,
+        holiday.substr(6, 2)
+      );
       return holidayDate.toDateString() === date.toDateString();
     });
   };
@@ -151,21 +213,21 @@ const ManagerCalendar = () => {
       <div className="calendar">
         <div className="calendar-header">
           <button onClick={() => handleMonthChange(-1)}>&lt;</button>
-          <h2>{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월</h2>
+          <h2>
+            {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
+          </h2>
           <button onClick={() => handleMonthChange(1)}>&gt;</button>
         </div>
         <div className="add-list">
-          <button onClick={() => setCurrentDate(new Date())}>
-            Today
-          </button>
+          <button onClick={() => setCurrentDate(new Date())}>Today</button>
           <button onClick={handleOpenModal}>
             일정 추가
-            <FaCalendarPlus style={{ marginLeft: '8px' }} />
+            <FaCalendarPlus style={{ marginLeft: "8px" }} />
           </button>
         </div>
         <div className="calendar-body">
           <div className="weekdays">
-            {['일', '월', '화', '수', '목', '금', '토'].map(day => (
+            {["일", "월", "화", "수", "목", "금", "토"].map((day) => (
               <div key={day}>{day}</div>
             ))}
           </div>
@@ -173,23 +235,37 @@ const ManagerCalendar = () => {
             {generateCalendarDates().map((day, index) => (
               <div
                 key={index}
-                className={`day ${day.isCurrentMonth ? '' : 'other-month'} ${
+                className={`day ${day.isCurrentMonth ? "" : "other-month"} ${
                   selectedDate &&
                   day.date.getFullYear() === selectedDate.getFullYear() &&
                   day.date.getMonth() === selectedDate.getMonth() &&
-                  day.date.getDate() === selectedDate.getDate() ? 'selected' : ''
-                } ${isCurrentDate(day.date) ? 'current-date' : ''} ${isHoliday(day.date) ? 'holiday' : ''} ${
-                  isWeekend(day.date).isSunday ? 'sunday' : isWeekend(day.date).isSaturday ? 'saturday' : ''
+                  day.date.getDate() === selectedDate.getDate()
+                    ? "selected"
+                    : ""
+                } ${isCurrentDate(day.date) ? "current-date" : ""} ${
+                  isHoliday(day.date) ? "holiday" : ""
+                } ${
+                  isWeekend(day.date).isSunday
+                    ? "sunday"
+                    : isWeekend(day.date).isSaturday
+                    ? "saturday"
+                    : ""
                 }`}
                 onClick={() => handleDateClick(day.date)}
               >
                 <span className="day-number">{day.date.getDate()}</span>
                 <div className="events-indicator">
-                  {getEventsForDate(day.date).slice(0, 1).map(event => (
-                    <Link key={event.id} to={`/managers/calendar/${event.id}`} className="event-dot-link">
-                      <div className="event-dot"></div>
-                    </Link>
-                  ))}
+                  {getEventsForDate(day.date)
+                    .slice(0, 1)
+                    .map((event) => (
+                      <Link
+                        key={event.id}
+                        to={`/managers/calendar/${event.id}`}
+                        className="event-dot-link"
+                      >
+                        <div className="event-dot"></div>
+                      </Link>
+                    ))}
                 </div>
               </div>
             ))}
@@ -206,35 +282,49 @@ const ManagerCalendar = () => {
               type="text"
               placeholder="일정 제목"
               value={newEvent.title}
-              onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+              onChange={(e) =>
+                setNewEvent({ ...newEvent, title: e.target.value })
+              }
             />
             <div className="date-input-container">
               <label>시작일</label>
               <input
                 type="date"
-                value={newEvent.start ? newEvent.start.toISOString().substr(0, 10) : ''}
-                onChange={(e) => setNewEvent({ ...newEvent, start: new Date(e.target.value) })}
+                value={
+                  newEvent.start
+                    ? newEvent.start.toISOString().substr(0, 10)
+                    : ""
+                }
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, start: new Date(e.target.value) })
+                }
               />
             </div>
             <div className="date-input-container">
               <label>종료일</label>
               <input
                 type="date"
-                value={newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ''}
-                onChange={(e) => setNewEvent({ ...newEvent, end: new Date(e.target.value) })}
+                value={
+                  newEvent.end ? newEvent.end.toISOString().substr(0, 10) : ""
+                }
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, end: new Date(e.target.value) })
+                }
               />
             </div>
             <div className="color-picker">
-              {['#FF9999', '#99FF99', '#9999FF'].map(color => (
+              {["#FF9999", "#99FF99", "#9999FF"].map((color) => (
                 <div
                   key={color}
-                  className={`color-option ${newEvent.color === color ? 'selected' : ''}`}
+                  className={`color-option ${
+                    newEvent.color === color ? "selected" : ""
+                  }`}
                   style={{ backgroundColor: color }}
                   onClick={() => setNewEvent({ ...newEvent, color })}
                 ></div>
               ))}
             </div>
-            <div className='calendar-submit'>
+            <div className="calendar-submit">
               <button onClick={handleSaveEvent}>등록</button>
             </div>
           </div>

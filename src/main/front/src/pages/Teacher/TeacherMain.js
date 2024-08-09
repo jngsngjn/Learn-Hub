@@ -9,11 +9,11 @@ import { Route, Routes } from "react-router-dom";
 import StudentManagement from "../../components/Manager/Student_Management";
 import CurriculumManagement from "../../components/Manager/Curriculum_Management";
 import TeacherManagement from "../../components/Manager/Teacher_Management";
-import Notice from "../../components/Manager/Notice";
-import StudentContact from "../../components/Manager/Student_Contact";
-import TeacherContact from "../../components/Manager/Teacher_Contact";
 import React from "react";
 import TeacherSideBar from "../../components/SideBar/TeacherSideBar";
+import TeacherContact from "../Manager/TeacherContact";
+import StudentContact from "../Manager/StudentContact";
+import Notice from "../Manager/Notice";
 
 function Dashboard() {
   return (
