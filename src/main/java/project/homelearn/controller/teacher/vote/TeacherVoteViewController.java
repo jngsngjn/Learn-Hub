@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
 import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
-import project.homelearn.service.common.CommonVoteService;
+import project.homelearn.service.common.VoteCommonService;
 import project.homelearn.service.teacher.TeacherVoteService;
 
 import java.security.Principal;
@@ -20,7 +20,7 @@ import java.security.Principal;
 public class TeacherVoteViewController {
 
     private final TeacherVoteService voteService;
-    private final CommonVoteService commonVoteService;
+    private final VoteCommonService voteCommonService;
 
     /**
      * 투표 탭
@@ -31,14 +31,14 @@ public class TeacherVoteViewController {
     public Page<VoteTabDto> viewProgressVotes(Principal principal,
                                               @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 1;
-        return commonVoteService.getProgressVotes(principal.getName(), page, size, "진행");
+        return voteCommonService.getProgressVotes(principal.getName(), page, size, "진행");
     }
 
     @GetMapping("/completed")
     public Page<VoteTabDto> viewCompletedVotes(Principal principal,
                                                @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 5;
-        return commonVoteService.getCompletedVotes(principal.getName(), page, size, "마감");
+        return voteCommonService.getCompletedVotes(principal.getName(), page, size, "마감");
     }
 
     /**
@@ -54,6 +54,6 @@ public class TeacherVoteViewController {
 
     @GetMapping("/{voteId}/detail")
     public VoteDetailDto viewVoteDetail(@PathVariable("voteId") Long voteId) {
-        return commonVoteService.getVoteDetail(voteId);
+        return voteCommonService.getVoteDetail(voteId);
     }
 }

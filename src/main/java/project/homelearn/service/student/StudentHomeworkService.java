@@ -2,16 +2,22 @@ package project.homelearn.service.student;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
+import project.homelearn.dto.student.homework.HomeworkListDto;
 import project.homelearn.dto.student.homework.HomeworkSubmitDto;
 import project.homelearn.dto.student.homework.HomeworkUpdateDto;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.student.Student;
 import project.homelearn.dto.student.dashboard.ViewHomeworkDto;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.homework.HomeworkRepository;
 import project.homelearn.repository.homework.StudentHomeworkRepository;
 import project.homelearn.repository.user.StudentRepository;
@@ -19,6 +25,7 @@ import project.homelearn.service.common.StorageService;
 
 import java.util.List;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 import static project.homelearn.config.storage.FolderType.HOMEWORK;
 
@@ -35,6 +42,7 @@ public class StudentHomeworkService {
     private final StudentRepository studentRepository;
     private final HomeworkRepository homeworkRepository;
     private final StudentHomeworkRepository studentHomeworkRepository;
+    private final CurriculumRepository curriculumRepository;
 
     public boolean createHomework(String username, HomeworkSubmitDto homeWorkSubmitDto) {
         try {
@@ -137,4 +145,39 @@ public class StudentHomeworkService {
     public List<ViewHomeworkDto> getHomeworkTop2(String username){
         return homeworkRepository.findHomeworkTop2(username);
     }
+
+    // 진행중인 과제 페이지 리스트 - 마감기한 기준 오름 차순
+    public Page<HomeworkListDto> getHomeworkProceeding(String username, Pageable pageable) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
+
+        Page<Homework> homeworks = homeworkRepository.findProceedingHomework(curriculum, LocalDateTime.now(), pageable);
+
+        List<HomeworkListDto> homeworkList = getHomeworkListDtos(homeworks);
+
+        return new PageImpl<>(homeworkList, pageable, homeworks.getTotalElements());
+    }
+
+    // 마감된 과제들
+    public Page<HomeworkListDto> getHomeworkClosed(String username, Pageable pageable) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
+
+        Page<Homework> homeworks = homeworkRepository.findClosedHomework(curriculum, LocalDateTime.now(), pageable);
+
+        List<HomeworkListDto> homeworkList = getHomeworkListDtos(homeworks);
+
+        return new PageImpl<>(homeworkList, pageable, homeworks.getTotalElements());
+    }
+
+    // 페이지 DTO 변환
+    private List<HomeworkListDto> getHomeworkListDtos(Page<Homework> homeworks) {
+        return homeworks.stream()
+                .map(homework -> new HomeworkListDto(
+                        homework.getId(),
+                        homework.getTitle(),
+                        homework.getDescription(),
+                        homework.getDeadline(),
+                        homework.getStudentHomeworks().size()))
+                .collect(Collectors.toList());
+    }
+
 }

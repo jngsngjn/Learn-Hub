@@ -8,6 +8,9 @@ import project.homelearn.dto.manager.manage.curriculum.CurriculumTeacherDto;
 import project.homelearn.dto.manager.manage.curriculum.QCurriculumTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.QSpecificTeacherDto;
 import project.homelearn.dto.manager.manage.teacher.SpecificTeacherDto;
+import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.teacher.Teacher;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 
 import java.util.List;
 
@@ -18,6 +21,7 @@ import static project.homelearn.entity.teacher.QTeacher.teacher;
 public class TeacherRepositoryImpl implements TeacherRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final CurriculumRepository curriculumRepository;
 
     @Override
     public CurriculumTeacherDto findByCurriculumId(Long curriculumId) {
@@ -49,5 +53,14 @@ public class TeacherRepositoryImpl implements TeacherRepositoryCustom {
                 .from(teacher)
                 .where(teacher.curriculum.isNull())
                 .fetch();
+    }
+
+    @Override
+    public Teacher findByStudentUsername(String username) {
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
+        return queryFactory
+                .selectFrom(teacher)
+                .where(teacher.curriculum.eq(curriculum))
+                .fetchOne();
     }
 }

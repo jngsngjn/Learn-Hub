@@ -23,7 +23,7 @@ public class TeacherHomeworkController {
 
     private final TeacherHomeworkService homeworkService;
 
-    // 과제 등록 *알림
+    // 과제 등록
     @PostMapping
     public ResponseEntity<?> enrollHomework(Principal principal,
                                             @Valid @ModelAttribute HomeworkEnrollDto homeworkDto) {
