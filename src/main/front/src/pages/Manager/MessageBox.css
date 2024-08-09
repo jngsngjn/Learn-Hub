@@ -1,6 +1,6 @@
 .message-box-wrapper {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
 }
 
@@ -11,8 +11,7 @@
   text-align: center;
   position: relative;
   border: 1px solid #757575;
-  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
-  width: 290px;
+  width: 235px;
 }
 
 .message-item h2 {
@@ -40,12 +39,11 @@
 .message-icon {
   position: relative;
   font-size: 64px;
-  color: #B4B4B8;
+  color: #b4b4b8;
   font-size: 200px;
-
 }
-.envelope-icon{
-    cursor: pointer;
+.envelope-icon {
+  cursor: pointer;
 }
 
 .message-count {
@@ -72,13 +70,13 @@
   bottom: 10px;
   right: 20px;
 }
-.view-more:hover{
-    color:#000000;
+.view-more:hover {
+  color: #000000;
 }
 
-.fa-envelope{
-  cursor:pointer;
+.fa-envelope {
+  cursor: pointer;
 }
-.fa-envelope:hover{
-    color:#000000;
+.fa-envelope:hover {
+  color: #000000;
 }

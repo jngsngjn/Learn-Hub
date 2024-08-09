@@ -3,16 +3,16 @@ import { Route, Routes } from "react-router-dom";
 import ManagerSideBar from "../../components/SideBar/ManagerSideBar";
 import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
 import CalendarDetail from "../../components/Calendar/ManagerCalendar/ManagerCalendarDetail";
-import Lecture from "./Lecture"; // 경로 수정
-import SettingList from "./Survey"; // 경로 수정
-import MessageBox from "./MessageBox"; // 경로 수정
-import StudentManagement from "./StudentManagement"; // 경로 수정
-import CurriculumManagement from "./CurriculumManagement"; // 경로 수정
-import TeacherManagement from "./TeacherManagement"; // 경로 수정
-import Notice from "./Notice"; // 경로 수정
-import StudentContact from "./StudentContact"; // 경로 수정
-import TeacherContact from "./TeacherContact"; // 경로 수정
-import CurriculumDetail from "./CurriculumDetail"; // 경로 수정
+import Lecture from "./Lecture";
+import SettingList from "./Survey";
+import MessageBox from "./MessageBox";
+import StudentManagement from "./StudentManagement";
+import CurriculumManagement from "./CurriculumManagement";
+import TeacherManagement from "./TeacherManagement";
+import Notice from "./Notice";
+import StudentContact from "./StudentContact";
+import TeacherContact from "./TeacherContact";
+import CurriculumDetail from "./CurriculumDetail";
 import "./ManagerMain.css";
 
 
@@ -24,10 +24,14 @@ function Dashboard() {
     <>
       <h1>대시보드</h1>
       <div className="dashboard-grid">
-        <Lecture />
-        <ManagerCalendar />
-        <SettingList />
-        <MessageBox />
+        <div className="manager-dashboard-divide-box">
+          <Lecture />
+          <ManagerCalendar />
+        </div>
+        <div className="manager-dashboard-divide-box2">
+          <SettingList />
+          <MessageBox />
+        </div>
       </div>
     </>
   );
