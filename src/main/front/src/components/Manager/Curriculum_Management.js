@@ -9,7 +9,6 @@ import swal from 'sweetalert';
 const CurriculumManagement = () => {
   const [ncpCurriculums, setNcpCurriculums] = useState([]);
   const [awsCurriculums, setAwsCurriculums] = useState([]);
-  const [teachers, setTeachers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [newCurriculum, setNewCurriculum] = useState({
@@ -20,23 +19,27 @@ const CurriculumManagement = () => {
     teacherId: '',
   });
 
+  // 토큰을 가져오기
   const getToken = () => localStorage.getItem('access-token');
 
+  // 입력 값 변경 시
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCurriculum({ ...newCurriculum, [name]: value });
   };
 
+  // 교육 과정 변경 시
   const handleCourseChange = (courseName) => {
-    const fullCourseName = courseName === 'NCP' ? '네이버 클라우드 데브옵스 과정' : 'AWS 데브옵스 과정';
-    setNewCurriculum({ ...newCurriculum, type: fullCourseName });
+    setNewCurriculum({ ...newCurriculum, type: courseName });
   };
 
+  // 색상 선택
   const handleColorChange = (color) => {
     setNewCurriculum({ ...newCurriculum, color: color.hex });
     setIsColorPickerOpen(false);
   };
 
+  // 과정 추가
   const handleAddCurriculum = async () => {
     const newCurriculumItem = {
       type: newCurriculum.type,
@@ -46,6 +49,7 @@ const CurriculumManagement = () => {
       teacherId: newCurriculum.teacherId,
     };
 
+    // 종료일이 시작일보다 빠르거나 같으면 swal 메시지
     if (new Date(newCurriculumItem.endDate) <= new Date(newCurriculumItem.startDate)) {
       swal('등록 실패', '종료일은 시작일 이후여야 합니다.', 'warning');
       return;
@@ -53,15 +57,13 @@ const CurriculumManagement = () => {
 
     try {
       const token = getToken();
-      console.log('전송할 데이터:', newCurriculumItem);
       const response = await axios.post('/managers/manage-curriculums/enroll', newCurriculumItem, {
         headers: { access: token },
       });
 
       if (response.status === 200) {
-        console.log('과정 추가 응답:', response.data);
         setIsModalOpen(false);
-        fetchCurriculums(newCurriculum.type);
+        fetchCurriculums(newCurriculum.type); // 목록 갱신
       } else {
         console.error('교육 과정 등록 실패');
       }
@@ -70,14 +72,13 @@ const CurriculumManagement = () => {
     }
   };
 
+  // NCP AWS 교육 과정 목록 가져오기
   const fetchCurriculums = async (type) => {
     try {
       const token = getToken();
-      console.log(`토큰 확인: ${token}`);
       const response = await axios.get(`/managers/manage-curriculums/${type}`, {
         headers: { access: token },
       });
-      console.log(`${type} 과정 목록 응답:`, response.data);
 
       if (type === 'NCP') {
         setNcpCurriculums(response.data || []);
@@ -89,25 +90,13 @@ const CurriculumManagement = () => {
     }
   };
 
-  const fetchTeachers = async () => {
-    try {
-      const token = getToken();
-      const response = await axios.get('/managers/manage-teachers', {
-        headers: { access: token },
-      });
-      setTeachers(response.data || []);
-    } catch (error) {
-      console.error('강사 목록 가져오기 에러:', error);
-      setTeachers([]);
-    }
-  };
-
+  // 과정 목록을 가져옴
   useEffect(() => {
     fetchCurriculums('NCP');
     fetchCurriculums('AWS');
-    fetchTeachers();
   }, []);
 
+  // 과정 목록 렌더링
   const renderCurriculumList = (curriculums) => (
     curriculums.map(curriculum => (
       <div key={curriculum.id} className="curriculum-card">
@@ -151,26 +140,34 @@ const CurriculumManagement = () => {
             <button className="modal-close" onClick={() => setIsModalOpen(false)}>×</button>
             <span className="curriculum-submit">교육 과정 등록</span>
             <div className="course-selection">
-              <button className={`course-button ${newCurriculum.type === '네이버 클라우드 데브옵스 과정' ? 'selected' : ''}`} onClick={() => handleCourseChange('NCP')}>NCP</button>
-              <button className={`course-button ${newCurriculum.type === 'AWS 데브옵스 과정' ? 'selected' : ''}`} onClick={() => handleCourseChange('AWS')}>AWS</button>
+              <button className={`course-button ${newCurriculum.type === 'NCP' ? 'selected' : ''}`} onClick={() => handleCourseChange('NCP')}>NCP</button>
+              <button className={`course-button ${newCurriculum.type === 'AWS' ? 'selected' : ''}`} onClick={() => handleCourseChange('AWS')}>AWS</button>
             </div>
             <div className="curriculum-input-group">
               <label>시작일</label>
-              <input type="date" name="startDate" value={newCurriculum.startDate} onChange={handleInputChange} />
+              <input className="curriculum-start-date-input" type="date" name="startDate" value={newCurriculum.startDate} onChange={handleInputChange} />
             </div>
             <div className="curriculum-input-group">
               <label>종료일</label>
-              <input type="date" name="endDate" value={newCurriculum.endDate} onChange={handleInputChange} />
+              <input className="curriculum-end-date-input" type="date" name="endDate" value={newCurriculum.endDate} onChange={handleInputChange} />
             </div>
             <div className="curriculum-input-group">
               <label>기수 색상</label>
-              <input type="text" name="color" value={newCurriculum.color} readOnly />
-                <span className="color-input-title">{newCurriculum.type}</span>
-              <div className="color-input-select" onClick={() => setIsColorPickerOpen(true)}>
-
-                <div className="color-box" style={{ backgroundColor: newCurriculum.color }}></div>
+              <div className="color-input-wrapper">
+                <input
+                  className="color-input"
+                  type="text"
+                  name="color"
+                  value={newCurriculum.color}
+                  readOnly
+                />
+                <div
+                  className="color-input-select"
+                  onClick={() => setIsColorPickerOpen(true)}
+                >
+                  <div className="color-box" style={{ backgroundColor: newCurriculum.color }}></div>
+                </div>
               </div>
-
             </div>
             {isColorPickerOpen && (
               <div className="color-picker-modal-overlay" onClick={() => setIsColorPickerOpen(false)}>
@@ -185,12 +182,7 @@ const CurriculumManagement = () => {
             )}
             <div className="curriculum-input-group">
               <label>강사</label>
-              <select name="teacherId" value={newCurriculum.teacherId} onChange={handleInputChange}>
-                <option value="">강사를 선택하세요</option>
-                {(Array.isArray(teachers) ? teachers : []).map(teacher => (
-                  <option key={teacher.id} value={teacher.id}>{teacher.name}</option>
-                ))}
-              </select>
+              <input type="text" name="teacherId" value={newCurriculum.teacherId} onChange={handleInputChange} />
             </div>
             <div className="modal-actions">
               <button className="modal-button" onClick={handleAddCurriculum}>교육 과정 등록</button>

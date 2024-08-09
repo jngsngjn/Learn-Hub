@@ -41,8 +41,7 @@
 }
 
 .detail-all-events {
-  max-height: 300px;
-
+  max-height: 400px;
   overflow-y: auto;
 }
 
@@ -159,4 +158,23 @@
 
 .color-option.selected {
   border: 2px solid #000;
+}
+
+.detail-all-events::-webkit-scrollbar {
+  width: 15px;
+}
+
+.detail-all-events::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 20px;
+}
+
+.detail-all-events::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+  border: 3px solid #f1f1f1;
+}
+
+.detail-all-events::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
