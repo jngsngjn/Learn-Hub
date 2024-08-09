@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { CirclePicker } from 'react-color';
 import axios from '../../utils/axios';
 import './Curriculum_Management.css';
-import './Modal.css';
+import '../Modal/ManagerModal/ManagerModal.css';
 import swal from 'sweetalert';
 
 const CurriculumManagement = () => {

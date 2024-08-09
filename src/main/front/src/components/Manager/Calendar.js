@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCalendarPlus } from 'react-icons/fa';
 import './Calendar.css';
-import Modal from './Modal';
+import ManagerModal from '../Modal/ManagerModal/ManagerModal';
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -197,7 +197,7 @@ const Calendar = () => {
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      <ManagerModal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div>
           <h3 className="calendar-modal-add">일정 등록하기</h3>
           <div className="calendar-event-form-edit">
@@ -239,7 +239,7 @@ const Calendar = () => {
             </div>
           </div>
         </div>
-      </Modal>
+      </ManagerModal>
     </section>
   );
 };

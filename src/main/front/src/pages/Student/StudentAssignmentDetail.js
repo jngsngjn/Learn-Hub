@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import StudentSubmitModal from "../../components/StudentSubmitModal/StudentSubmitModal";
+import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import "./StudentAssignmentDetail.css";
 import useGetFetch from "../../hooks/useGetFetch";
 
@@ -151,7 +151,7 @@ const StudentAssignmentDetail = () => {
       ) : (
         <></>
       )}
-      <StudentSubmitModal
+      <StudentModal
         isOpen={isModalOpen}
         closeModal={closeModal}
         formData={formData}

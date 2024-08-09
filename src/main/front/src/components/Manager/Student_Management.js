@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../utils/axios';
-import Modal from './Modal';
+import ManagerModal from '../Modal/ManagerModal/ManagerModal';
 import ProgressModal from './ProgressModal';
 import './Student_Management.css';
 import swal from 'sweetalert';
@@ -269,7 +269,7 @@ const StudentManagement = () => {
         <button onClick={() => setIsModalOpen(true)}>학생 등록</button>
         <button onClick={handleDeleteStudent}>학생 삭제</button>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <ManagerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <span className="add_title">학생 등록</span>
         <div className="student-form-container">
           <label className="student-excel-label">엑셀 파일 첨부 </label>
@@ -327,7 +327,7 @@ const StudentManagement = () => {
             <button className="student-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
           </div>
         </div>
-      </Modal>
+      </ManagerModal>
       <ProgressModal isOpen={isProgressModalOpen} onClose={() => setIsProgressModalOpen(false)} setUploadProgress={setUploadProgress} />
     </div>
   );

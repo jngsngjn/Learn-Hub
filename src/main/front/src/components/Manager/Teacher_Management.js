@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../utils/axios';
-import Modal from './Modal';
+import ManagerModal from '../Modal/ManagerModal/ManagerModal';
 import './Teacher_Management.css';
 import swal from 'sweetalert';
 
@@ -203,7 +203,7 @@ const TeacherManagement = () => {
         <button onClick={handleDeleteTeachers}>강사 삭제</button>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <ManagerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <span className="add_title">강사 등록</span>
         <div className="teacher-form-container">
           <div className="teacher-course-selection">
@@ -234,7 +234,7 @@ const TeacherManagement = () => {
             <button className="add-teacher-modal-button" onClick={() => setIsModalOpen(false)}>등록 취소</button>
           </div>
         </div>
-      </Modal>
+      </ManagerModal>
     </div>
   );
 };
