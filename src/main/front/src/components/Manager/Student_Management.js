@@ -48,8 +48,9 @@ const StudentManagement = () => {
 
   const fetchCurriculums = async () => {
     try {
-      const response = await axios.get('/managers/enroll-ready');
+      const response = await axios.get('/managers/enroll-user-ready');
       if (response.data) {
+        console.log(response.data);
         setCurriculums(response.data);
       } else {
         setCurriculums([]);
@@ -87,17 +88,24 @@ const StudentManagement = () => {
     try {
       const token = getToken();
 
+      const generation = newStudent.generation ? parseInt(newStudent.generation) : 1;
+      const curriculumFullName = `${newStudent.curriculum} ${generation}기`;
+
       const studentData = {
         name: newStudent.name,
         gender: newStudent.gender,
         email: newStudent.email,
         phone: newStudent.phone,
-        curriculumFullName: `${newStudent.curriculum} ${newStudent.generation}기`
+        curriculumFullName: curriculumFullName,
       };
+
+      console.log('등록할 학생 데이터:', studentData);
+      console.log('curriculumFullName:', curriculumFullName);
 
       const response = await axios.post('/managers/manage-students/enroll', studentData, {
         headers: { access: token },
       });
+      console.log('학생 등록 응답:', response.data);
       if (response.status === 200) {
         setIsModalOpen(false);
         fetchStudents();
@@ -108,6 +116,7 @@ const StudentManagement = () => {
       console.error('이건 오류메시지:', error);
     }
   };
+
 
   const handleFileUpload = async () => {
     if (!selectedFile) {
@@ -127,9 +136,16 @@ const StudentManagement = () => {
           'access': token,
         },
       });
-
+      console.log('파일 업로드 응답:', response.data);
       setSelectedFile(null);
+      setIsProgressModalOpen(false);
 
+      swal({
+        title: "업로드 성공",
+        text: "파일 업로드가 완료되었습니다.",
+        icon: "success",
+        button: "확인",
+      });
     } catch (error) {
       console.error('파일 업로드 에러:', error);
       console.error('에러 상세 정보:', error.response ? error.response.data : '응답 없음');
@@ -162,6 +178,7 @@ const StudentManagement = () => {
         })
       );
       await Promise.all(deletePromises);
+      console.log('학생 삭제 응답:', deletePromises);
       fetchStudents();
       setSelectedStudents([]);
     } catch (error) {

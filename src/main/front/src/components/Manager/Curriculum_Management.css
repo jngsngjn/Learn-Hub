@@ -1,4 +1,4 @@
-/* Curriculum_Management.css */
+
 .curriculum-submit {
   display: flex;
   justify-content: center;
@@ -111,7 +111,6 @@
   margin-right: 5px;
 }
 
-/* Modal.css */
 .close-button {
   background: none;
   border: none;
@@ -167,7 +166,7 @@
 .color-input-select {
   position: absolute;
   right: 130px;
-  top: 65%;
+  top: 60%;
   transform: translateY(-50%);
 }
 
