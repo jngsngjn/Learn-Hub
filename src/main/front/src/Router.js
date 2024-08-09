@@ -21,7 +21,7 @@ const Router = () => {
     <BrowserRouter>
       <TeacherHeader />
       <Routes>
-        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/email" element={<LoginEmail />} />
@@ -30,8 +30,8 @@ const Router = () => {
         <Route path="/students/*" element={<StudentMain />} />
         <Route path="/image-board" element={<ImageBoard />} />
         <Route path="/test-view" element={<ViewBoardImage />} />
-        <Route path="/teachers/*" element={<TeacherMain/>}/>
-          <Route path="/play" element={<YouTubePlayer />} />
+        <Route path="/teachers/*" element={<TeacherMain />} />
+        <Route path="/play" element={<YouTubePlayer />} />
       </Routes>
       <Footer />
     </BrowserRouter>
