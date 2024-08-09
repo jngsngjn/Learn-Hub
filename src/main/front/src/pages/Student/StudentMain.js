@@ -12,6 +12,7 @@ import StudentSubjectBoardList from "./StudentSubjectBoardList";
 import StudentSubjectBoardDetail from "./StudentSubjectBoardDetail";
 import StudentLectureDetail from "./StudentLectureDetail";
 import StudentAssignmentDetail from "./StudentAssignmentDetail";
+import StudentSideBar from "../../components/SideBar/StudentSideBar";
 
 const StudentMain = () => {
   const [showSection, setShowSection] = useState(null);
@@ -39,7 +40,7 @@ const StudentMain = () => {
 
   return (
     <div className="student_dashboard_body" id="container">
-      <div className="sidebar">
+      {/* <div className="sidebar">
         <div className="profile_box">프로필 컴포넌트가 들어올 자리</div>
         <h3 className="sidebar_title" onClick={() => handleSectionClick("")}>
           대쉬보드
@@ -150,8 +151,10 @@ const StudentMain = () => {
           >
             투표
           </ul>
-        </ul>
+        </ul> 
       </div>
+      */}
+      <StudentSideBar />
       <div className="contents">
         <Routes>
           <Route path="" element={<StudentDashBoard />} />
