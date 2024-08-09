@@ -1,19 +1,19 @@
 import "./TeacherMain.css";
-import Question from "../../components/Teacher/Question";
-import Lecture_State from "../../components/Teacher/Lecture_State";
+import Question from "./Question";
+import Lecture_State from "./Lecture_State";
 import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
-import SettingList from "../../components/Teacher/Today_It";
-import Faq from "../../components/Teacher/Faq";
+import SettingList from "./Today_It";
+import Faq from "./Faq";
 // import Sidebar from "../../components/Manager/SideBar";
 import { Route, Routes } from "react-router-dom";
-import StudentManagement from "../../components/Manager/Student_Management";
-import CurriculumManagement from "../../components/Manager/Curriculum_Management";
-import TeacherManagement from "../../components/Manager/Teacher_Management";
+
 import React from "react";
 import TeacherSideBar from "../../components/SideBar/TeacherSideBar";
 import TeacherContact from "../Manager/TeacherContact";
 import StudentContact from "../Manager/StudentContact";
 import Notice from "../Manager/Notice";
+import CurriculumManagement from "../Manager/CurriculumManagement";
+import TeacherManagement from "../Manager/TeacherManagement";
 
 function Dashboard() {
   return (
@@ -44,7 +44,7 @@ function TeacherMain() {
         <div className="teacher-content-area">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="manage-students" element={<StudentManagement />} />
+            {/* <Route path="manage-students" element={<StudentManagement />} /> */}
             <Route
               path="manage-curriculums"
               element={<CurriculumManagement />}
