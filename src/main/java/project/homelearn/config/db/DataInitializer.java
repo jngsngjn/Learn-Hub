@@ -73,8 +73,8 @@ public class DataInitializer implements CommandLineRunner {
             Badge explain = new Badge("설명충", "쉿, 설명 그만!", "explain.png", "badge/explain.png");
             Badge homework = new Badge("과제왕", "오.. 상당히 빠르시군요?", "homework.png", "badge/homework.png");
             Badge knowledge = new Badge("알쓸신잡", "언젠간 도움이 될 거예요!", "knowledge.png", "badge/knowledge.png");
-            Badge login7 = new Badge("7일 연속 로그인", "이 정도는 가뿐하죠?", "login_7.png", "badge/login_7.png");
-            Badge login30 = new Badge("30일 연속 로그인", "쉬엄쉬엄 하세요..", "login_30.png", "badge/login_30.png");
+            Badge login7 = new Badge("7일 연속 로그인", "이 정도는 가뿐하죠?", "login_7.png", "badge/login_7.png"); // ✅
+            Badge login30 = new Badge("30일 연속 로그인", "쉬엄쉬엄 하세요..", "login_30.png", "badge/login_30.png"); // ✅
             Badge night = new Badge("야행성", "새벽에 같이 공부할 사람!", "night.png", "badge/night.png");
             Badge question = new Badge("질문충", "뭐였더라?", "question.png", "badge/question.png");
             Badge reviewKing = new Badge("복습왕", "배움에는 끝이 없답니다.", "review_king.png", "badge/review_king.png");

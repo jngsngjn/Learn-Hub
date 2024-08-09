@@ -2,6 +2,7 @@ package project.homelearn.service.student;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.entity.student.badge.Badge;
 import project.homelearn.entity.student.badge.StudentBadge;
 import project.homelearn.entity.user.User;
@@ -9,6 +10,7 @@ import project.homelearn.repository.badge.BadgeRepository;
 import project.homelearn.repository.badge.StudentBadgeRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BadgeService {
 
