@@ -22,7 +22,6 @@ function Dashboard() {
       <div className="teacher-dashboard-grid-container">
         <div className="teacher-dashboard-grid">
           <Lecture_State />
-
           <Question />
 
           <Faq />

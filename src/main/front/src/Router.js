@@ -17,7 +17,7 @@ import YouTubePlayer from "./pages/Teacher/play";
 const Router = () => {
   return (
     <BrowserRouter>
-      <TeacherHeader />
+      <DefaultHeader />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
