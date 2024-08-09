@@ -43,7 +43,7 @@ const TeacherManagement = () => {
       const token = getToken();
       const response = await axios.get('/managers/enroll-user-ready', {
         headers: {
-          Authorization: `Bearer ${token}`,
+          access: token, // 헤더를 Authorization에서 access로 변경
         },
       });
       setCurriculums(response.data || []);
@@ -93,7 +93,7 @@ const TeacherManagement = () => {
       console.log("강사 등록 데이터:", teacherData);
 
       const response = await axios.post('/managers/manage-teachers/enroll', teacherData, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { access: `Bearer ${token}` }, // 헤더를 Authorization에서 access로 변경
       });
       console.log('강사 등록 응답:', response.data);
       if (response.status === 200) {
@@ -114,7 +114,7 @@ const TeacherManagement = () => {
       const token = getToken();
       const deletePromises = selectedTeachers.map(teacherId =>
         axios.delete(`/managers/manage-teachers/${teacherId}`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { access: `Bearer ${token}` }, // 헤더를 Authorization에서 access로 변경
         })
       );
       await Promise.all(deletePromises);

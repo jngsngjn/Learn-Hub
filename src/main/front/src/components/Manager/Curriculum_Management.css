@@ -1,4 +1,3 @@
-
 .curriculum-submit {
   display: flex;
   justify-content: center;
@@ -153,35 +152,56 @@
   font-size: 20px;
   font-weight: bold;
   color: #757575;
+  margin-bottom: 10px;
 }
 
-.curriculum-input-group input {
-  margin: 20px 20px;
+.color-input-wrapper {
+  position: relative;
   width: 60%;
-  padding: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.color-input {
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  text-align: left;
+  pointer-events: none;
+  box-sizing: border-box;
+  padding-right: 40px;
 }
 
 .color-input-select {
   position: absolute;
-  right: 130px;
-  top: 60%;
+  right: 10px;
+  top: 50%;
   transform: translateY(-50%);
-}
-
-.color-input-container input {
-  width: 70%;
-  margin-right: 10px;
-  pointer-events: none;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }
 
 .color-box {
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   border: 1px solid #000;
-  cursor: pointer;
+}
+
+.teacher-select {
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #757575;
+  font-size: 16px;
+}
+
+.teacher-select option {
+  padding: 10px;
 }
 
 .color-picker-modal-overlay {
@@ -220,4 +240,23 @@
 
 .modal-button:hover {
   background-color: #555;
+}
+
+.curriculum-start-date-input{
+    width: 60%;
+   padding: 10px;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+   font-size: 16px;
+   box-sizing: border-box;
+}
+
+.curriculum-end-date-input{
+    width: 60%;
+   padding: 10px;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+   font-size: 16px;
+   box-sizing: border-box;
+
 }
