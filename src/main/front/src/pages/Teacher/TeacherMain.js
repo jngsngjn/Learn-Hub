@@ -1,7 +1,7 @@
 import "./TeacherMain.css";
 import Question from "../../components/Teacher/Question";
 import Lecture_State from "../../components/Teacher/Lecture_State";
-import Calendar from "../../components/Teacher/Calendar";
+import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
 import SettingList from "../../components/Teacher/Today_It";
 import Faq from "../../components/Teacher/Faq";
 // import Sidebar from "../../components/Manager/SideBar";
@@ -28,7 +28,7 @@ function Dashboard() {
           <Faq />
         </div>
         <div className="teacher-dashboard-grid2">
-          <Calendar />
+          <TeacherCalendar />
           <SettingList />
         </div>
       </div>

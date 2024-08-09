@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaCalendarPlus } from 'react-icons/fa'; // 캘린더 추가 아이콘 가져오기
-import './Calendar.css';
-import Modal from './Modal';
+import './TeacherCalendar.css';
+import TeacherModal from '../../Modal/TeacherModal/TeacherModal';
 
-const Calendar = () => {
+const TeacherCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());  // 현재 날짜
   const [selectedDate, setSelectedDate] = useState(null);  // 선택된 날짜
   const [events, setEvents] = useState([]);  // 일정 이벤트
@@ -179,7 +179,7 @@ const Calendar = () => {
         </div>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      <TeacherModal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div>
           <h3 className="teacher-modal-add">{editEvent ? '일정 수정하기' : '일정 등록하기'}</h3>
           <div className="teacher-event-form">
@@ -217,9 +217,9 @@ const Calendar = () => {
             </div>
           </div>
         </div>
-      </Modal>
+      </TeacherModal>
     </section>
   );
 };
 
-export default Calendar;
+export default TeacherCalendar;

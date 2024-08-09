@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Calendar from './Calendar';
+import ManagerCalendar from '../Calendar/ManagerCalendar/ManagerCalendar';
 import './Curriculum_Detail.css';
 
 const CurriculumDetail = () => {
@@ -146,7 +146,7 @@ const CurriculumDetail = () => {
           </div>
           <div className="curriculum-detail-right-container">
             <span className="curriculum-detail-calendar-title">캘린더</span>
-            <Calendar events={schedules} />
+            <ManagerCalendar events={schedules} />
           </div>
         </div>
         <div className="curriculum-detail-update-button-container">

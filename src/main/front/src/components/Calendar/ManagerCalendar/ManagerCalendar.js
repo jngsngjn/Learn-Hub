@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCalendarPlus } from 'react-icons/fa';
-import './Calendar.css';
-import ManagerModal from '../Modal/ManagerModal/ManagerModal';
+import './ManagerCalendar.css';
+import ManagerModal from '../../Modal/ManagerModal/ManagerModal';
 
-const Calendar = () => {
+const ManagerCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
@@ -244,4 +244,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default ManagerCalendar;

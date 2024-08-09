@@ -3,8 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import ManagerSideBar from "../../components/SideBar/ManagerSideBar";
 import TeacherSideBar from "../../components/SideBar/TeacherSideBar";
 import StudentSideBar from "../../components/SideBar/StudentSideBar";
-import Calendar from "../../components/Manager/Calendar";
-import CalendarDetail from "../../components/Manager/Calendar_Detail";
+import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
+import CalendarDetail from "../../components/Calendar/ManagerCalendar/ManagerCalendarDetail";
 import Lecture from "../../components/Manager/Lecture";
 import SettingList from "../../components/Manager/Survey";
 import MessageBox from "../../components/Manager/MessageBox";
@@ -23,7 +23,7 @@ function Dashboard() {
       <h1>대시보드</h1>
       <div className="dashboard-grid">
         <Lecture />
-        <Calendar />
+        <ManagerCalendar />
         <SettingList />
         <MessageBox />
       </div>

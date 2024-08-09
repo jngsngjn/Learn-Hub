@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './Calendar_Detail.css';
-import Calendar from './Calendar';
+import './ManagerCalendarDetail.css';
+import ManagerCalendar from './ManagerCalendar';
 
 const CalendarDetail = () => {
   const { eventId } = useParams();
@@ -70,7 +70,7 @@ const CalendarDetail = () => {
   return (
     <div className="detail-calendar-detail-page">
       <div className="detail-calendar-detail-sidebar">
-        <Calendar events={events} onDayClick={handleDayClick} />
+        <ManagerCalendar events={events} onDayClick={handleDayClick} />
       </div>
       <div className="detail-calendar-detail-container">
         <div className="detail-calendar-detail-header">
