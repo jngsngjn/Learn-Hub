@@ -48,7 +48,6 @@ public class TeacherQuestionBoardController {
         }
 
         Pageable pageable = PageRequest.of(page, size);
-
         Page<QuestionBoardDto> questionBoardList = teacherQuestionBoardService.getQuestionBoardList(filterType, subjectName, curriculum, pageable);
 
         if (questionBoardList.getTotalElements() > 0) {

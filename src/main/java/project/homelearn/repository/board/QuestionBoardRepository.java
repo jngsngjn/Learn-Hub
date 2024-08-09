@@ -16,7 +16,6 @@ public interface QuestionBoardRepository extends JpaRepository<QuestionBoard, Lo
 
     List<QuestionBoard> findByCreatedDateBeforeAndCommentsIsNull(LocalDateTime dateTime);
 
-
     //키리큘럼 고려  1차
 
     //질문 게시판 페이지 리스트 -> 최신순
@@ -38,4 +37,7 @@ public interface QuestionBoardRepository extends JpaRepository<QuestionBoard, Lo
     // 강사님의 댓글이 있는지 없는지
     @Query("select case when count(c) > 0 then true else false end from QuestionBoardComment c where c.questionBoard = :questionBoard and c.user.role = project.homelearn.entity.user.Role.ROLE_TEACHER")
     boolean hasTeacherComment(@Param("questionBoard") QuestionBoard questionBoard);
+
+    @Query("select q from QuestionBoard q join fetch q.user where q.id =:questionId")
+    QuestionBoard findQuestionBoardAndWriter(@Param("questionId") Long questionId);
 }
