@@ -51,7 +51,7 @@ public class TeacherInquiryController {
     }
 
     // 학생 문의 내역 상세 조회
-    @GetMapping("/inquiries/{inquiryId}")
+    @GetMapping("/student-inquiries/{inquiryId}")
     public ResponseEntity<?> viewInquiry(@PathVariable("inquiryId") Long inquiryId) {
         TeacherInquiryDto result = teacherInquiryService.getOneManagerInquiryDtoById(inquiryId);
         if (result != null) {
@@ -61,7 +61,7 @@ public class TeacherInquiryController {
     }
 
     // 학생 문의에 답변
-    @PostMapping("/inquiries/{inquiryId}/add-response")
+    @PostMapping("/student-inquiries/{inquiryId}/add-response")
     public ResponseEntity<?> addResponseToStudent(@Valid @RequestBody TeacherResponseDto teacherResponseDto,
                                                   @PathVariable("inquiryId") Long inquiryId) {
         boolean result = teacherInquiryService.addResponseToStudent(teacherResponseDto, inquiryId);
@@ -72,4 +72,6 @@ public class TeacherInquiryController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    // 매니저에게 문의한 내역 조회
 }
