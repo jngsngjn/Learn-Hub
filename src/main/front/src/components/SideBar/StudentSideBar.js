@@ -100,7 +100,7 @@ const StudentSideBar = () => {
                         </li>
                         {/* 4. Lecture */}
                         <li>
-                            <NavLink to="/students/lectureLists" className={({isActive}) => isActive ? 'student_sideBar_link active' : 'student_sideBar_link'}>
+                            <NavLink to="/students/lecture" className={({isActive}) => isActive ? 'student_sideBar_link active' : 'student_sideBar_link'}>
                                 강의
                             </NavLink>
                         </li>
