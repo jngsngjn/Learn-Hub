@@ -146,7 +146,7 @@
 .student_non_submit_assignment_detail_box {
   width: 1050px;
   height: 320px;
-  border-bottom: 1px solid #5c8d89;
+  /* border-bottom: 1px solid #5c8d89; */
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -181,7 +181,7 @@
 .student_submit_assignment_feedback_box {
   width: 1050px;
   height: 320px;
-  border-bottom: 1px solid #5c8d89;
+  /* border-top: 1px solid #5c8d89; */
   padding: 40px;
   display: flex;
   flex-direction: column;
