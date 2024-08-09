@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class HomeworkListDto {
+public class StudentHomeworkDetailDto {
 
     @NotNull
     private Long homeworkId;
@@ -25,6 +25,13 @@ public class HomeworkListDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime deadLine;
 
-    @NotNull
-    private int submitCount;
+    @NotBlank
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime createdDate;
+
+    @NotBlank
+    private String uploadFileName;
+
+    @NotBlank
+    private String uploadFilePath;
 }

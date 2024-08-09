@@ -3,6 +3,7 @@ package project.homelearn.repository.homework.querydsl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.homelearn.dto.student.dashboard.ViewHomeworkDto;
+import project.homelearn.dto.student.homework.StudentHomeworkDetailDto;
 import project.homelearn.dto.teacher.dashboard.HomeworkStateDto;
 import project.homelearn.dto.teacher.homework.HomeworkDetailDto;
 import project.homelearn.dto.teacher.homework.HomeworkSubmitListDto;
