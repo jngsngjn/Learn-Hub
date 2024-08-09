@@ -2,8 +2,10 @@ package project.homelearn.repository.badge.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import project.homelearn.dto.student.badge.BadgeViewDto;
 import project.homelearn.dto.student.dashboard.QViewMyBadgeDto;
 import project.homelearn.dto.student.dashboard.ViewMyBadgeDto;
+import project.homelearn.entity.student.Student;
 
 import java.util.List;
 
@@ -18,7 +20,6 @@ public class StudentBadgeRepositoryImpl implements StudentBadgeRepositoryCustom{
 
     @Override
     public List<ViewMyBadgeDto> findStudentBadgeTop4(String username) {
-
         return queryFactory
                 .select(new QViewMyBadgeDto(
                         studentBadge.id,
@@ -34,5 +35,22 @@ public class StudentBadgeRepositoryImpl implements StudentBadgeRepositoryCustom{
                 .orderBy(studentBadge.getDate.desc())
                 .limit(4)
                 .fetch();
+    }
+
+    @Override
+    public List<BadgeViewDto> findAllBadges(Student student) {
+        return List.of();
+    }
+
+    @Override
+    public List<BadgeViewDto> findEarnBadges(Student student) {
+
+
+        return List.of();
+    }
+
+    @Override
+    public List<BadgeViewDto> findNoEarnBadges(Student student) {
+        return List.of();
     }
 }

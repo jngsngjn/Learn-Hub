@@ -38,5 +38,8 @@ public class Badge {
     }
 
     @OneToMany(mappedBy = "badge", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentBadge> studentBadges = new ArrayList<>();
+
+    @OneToMany(mappedBy = "badge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentNotification> studentNotifications = new ArrayList<>();
 }
