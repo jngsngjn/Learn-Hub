@@ -10,6 +10,8 @@ import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherD
 import project.homelearn.dto.manager.manage.curriculum.QCurriculumIdAndThDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
+import project.homelearn.entity.user.QUser;
+import project.homelearn.entity.user.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -99,6 +101,15 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
                 .selectFrom(curriculum)
                 .join(curriculum.users, user)
                 .where(user.username.eq(username))
+                .fetchOne();
+    }
+
+    @Override
+    public Curriculum findCurriculumByUser(User user) {
+        return queryFactory
+                .selectFrom(curriculum)
+                .join(curriculum.users, QUser.user)
+                .where(QUser.user.eq(user))
                 .fetchOne();
     }
 

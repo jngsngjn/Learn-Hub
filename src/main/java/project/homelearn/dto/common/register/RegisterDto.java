@@ -30,7 +30,6 @@ public class RegisterDto {
     @NotBlank
     private String phone;
 
-    @Email
     @NotBlank
     private String email;
 }

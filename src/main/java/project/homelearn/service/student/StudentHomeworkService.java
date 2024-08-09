@@ -15,6 +15,7 @@ import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.student.Student;
 import project.homelearn.dto.student.dashboard.ViewHomeworkDto;
+import project.homelearn.entity.student.badge.BadgeConstants;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.homework.HomeworkRepository;
 import project.homelearn.repository.homework.StudentHomeworkRepository;
@@ -41,8 +42,9 @@ public class StudentHomeworkService {
     private final HomeworkRepository homeworkRepository;
     private final StudentHomeworkRepository studentHomeworkRepository;
     private final CurriculumRepository curriculumRepository;
+    private final BadgeService badgeService;
 
-    public boolean addHomework(String username, HomeworkSubmitDto homeWorkSubmitDto) {
+    public boolean submitHomework(String username, HomeworkSubmitDto homeWorkSubmitDto) {
         try {
             Student student = studentRepository.findByUsername(username);
             if (student == null) {
@@ -73,6 +75,9 @@ public class StudentHomeworkService {
                 studentHomework.setFilePath(fileDto.getFilePath());
             }
 
+            if (studentHomeworkRepository.countByHomework(homework) == 0) {
+                badgeService.getBadge(student, BadgeConstants.HOMEWORK);
+            }
             studentHomeworkRepository.save(studentHomework);
             return true;
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import project.homelearn.dto.manager.manage.curriculum.CurriculumTypeAndTh;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
+import project.homelearn.entity.user.User;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface CurriculumRepositoryCustom {
     List<CurriculumTypeAndTh> findCurriculumTypeAndTh();
 
     Curriculum findCurriculumByUsername(String username);
+
+    Curriculum findCurriculumByUser(User user);
 
     List<CurriculumNameAndColor> findCurriculumNameAndColor();
 }
