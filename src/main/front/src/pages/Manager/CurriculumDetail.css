@@ -37,7 +37,7 @@
 }
 
 .curriculum-detail-progress-title {
-  font-size: 18px; /* 폰트 크기 조정 */
+  font-size: 18px;
   font-weight: bold;
   margin-right: 150px;
 }
@@ -70,8 +70,8 @@
 .curriculum-detail-info-box {
   background: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  width: 266px;
-  height :410px;
+  width: 233px;
+  height :390px;
   border: 1px solid #757575;
   border-radius: 20px;
   padding: 10px;
@@ -158,7 +158,7 @@
 
 .curriculum-detail-info-box-content-second p {
   margin-top:20px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .curriculum-detail-info-box-content i {
@@ -169,11 +169,13 @@
 .curriculum-detail-right-container {
   flex: 1;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
   padding: 15px;
   border: 1px solid #757575;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+  height:800px;
+  }
+
 
 .curriculum-detail-calendar-title {
   font-size: 18px;
@@ -243,7 +245,7 @@
   padding: 10px;
   border-radius: 20px;
   cursor: pointer;
-  margin-left: 380px;
+  margin-left:300px;
 }
 
 .curriculum-detail-survey-button:hover {
