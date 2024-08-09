@@ -36,7 +36,7 @@ function ManagerMain() {
   return (
     <div className="App">
       <div className="main-content">
-        <TeacherSideBar />
+        <StudentSideBar />
         <div className="content-area">
           <Routes>
             <Route path="/" element={<Dashboard />} />

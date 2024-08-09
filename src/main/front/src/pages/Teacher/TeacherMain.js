@@ -4,7 +4,7 @@ import Lecture_State from "../../components/Teacher/Lecture_State";
 import Calendar from "../../components/Teacher/Calendar";
 import SettingList from "../../components/Teacher/Today_It";
 import Faq from "../../components/Teacher/Faq";
-import Sidebar from "../../components/Manager/Sidebar";
+// import Sidebar from "../../components/Manager/SideBar";
 import {Route, Routes} from "react-router-dom";
 import StudentManagement from "../../components/Manager/Student_Management";
 import CurriculumManagement from "../../components/Manager/Curriculum_Management";
@@ -40,7 +40,7 @@ function TeacherMain() {
     return (
         <div className="teacher-App">
             <div className="teacher-main-content">
-                <Sidebar/>
+                {/*<Sidebar/>*/}
                 <div className="teacher-content-area">
                     <Routes>
                         <Route path="/" element={<Dashboard/>} />
