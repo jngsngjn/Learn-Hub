@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Register.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../utils/axios';
 import swal from 'sweetalert';
 
 function Register() {
@@ -23,6 +23,8 @@ function Register() {
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const [usernameValid, setUsernameValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+
+  const [profileImage, setProfileImage] = useState(null); // 이미지 파일 상태 추가
 
   const navigate = useNavigate();
 
@@ -56,7 +58,7 @@ function Register() {
 
   const checkUsernameAvailability = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/register/id-duplicate-check', { username });
+      const response = await axios.post('/register/id-duplicate-check', { username });
       setUsernameAvailable(response.status === 200);
     } catch (error) {
       console.error('아이디 중복 에러:', error);
@@ -64,27 +66,40 @@ function Register() {
     }
   };
 
+  const handleFileChange = (e) => {
+    setProfileImage(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!passwordMatch || !usernameAvailable || !usernameValid || !passwordValid) {
       return;
     }
+
     try {
-      const registerData = {
-        username,
-        password,
-        name,
-        phone,
-        email
-      };
+      const registerData = new FormData();
+      registerData.append('username', username);
+      registerData.append('password', password);
+      registerData.append('name', name);
+      registerData.append('phone', phone);
+      registerData.append('email', email);
 
       if (gender) {
-        registerData.gender = gender;
+        registerData.append('gender', gender);
+      }
+
+      if (profileImage) {
+        registerData.append('profileImage', profileImage); // 이미지 파일 추가
       }
 
       console.log("회원가입 데이터:", registerData); // 디버깅용 로그
 
-      const response = await axios.post('http://localhost:8080/register', registerData);
+      const response = await axios.post('/register', registerData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // 파일 전송 시에는 multipart/form-data 사용
+        },
+      });
+
       if (response.status === 200) {
         swal("회원가입 성공", "회원가입이 성공적으로 완료되었습니다.", "success").then(() => {
           navigate('/login');
@@ -197,6 +212,15 @@ function Register() {
               </span>
             )}
           </div>
+        </div>
+        <div className="signup-input-group">
+          <label htmlFor="profileImage" className="signup-label">프로필 이미지</label>
+          <input
+            className="signup-input"
+            type="file"
+            id="profileImage"
+            onChange={handleFileChange}
+          />
         </div>
         <div className="signup-button-group">
           <button className="signup-prev-button" type="button" onClick={handlePreviousStep}>이전 단계</button>

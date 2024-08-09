@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-import axios from 'axios';
+import axios from '../../utils/axios';
 import './Login.css';
 import qs from 'qs';
 
@@ -20,7 +20,7 @@ function Login() {
       swal("입력 오류", "비밀번호를 입력하세요.", "warning");
     } else {
       try {
-        const response = await axios.post('http://localhost:8080/login', qs.stringify({
+        const response = await axios.post('/login', qs.stringify({
           username,
           password,
         }), {
@@ -39,9 +39,9 @@ function Login() {
           const userType = response.data.userType; // 서버 응답에서 사용자 유형을 받아옴
           console.log('사용자:', username);
 
-          if (username === 'manager') {
+          if (userType === 'manager') {
             navigate('/managers'); // 매니저 페이지로 이동
-          } else if (username === 'teacher') {
+          } else if (userType === 'teacher') {
             navigate('/teachers'); // 강사 페이지로 이동
           } else {
             navigate('/main'); // 그 외 학생 페이지 이동
