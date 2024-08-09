@@ -37,7 +37,7 @@ const StudentDashBoard = () => {
     console.log("모달 데이터 : " + formData);
     closeModal();
   };
-
+  //무섭다
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
