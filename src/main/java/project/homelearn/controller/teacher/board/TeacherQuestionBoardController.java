@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/teachers/questionBoards")
+@RequestMapping("/teachers/question-boards")
 @RequiredArgsConstructor
 public class TeacherQuestionBoardController {
 
