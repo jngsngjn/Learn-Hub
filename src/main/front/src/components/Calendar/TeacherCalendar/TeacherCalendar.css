@@ -1,22 +1,22 @@
 .teacher-calendar-container {
-  border: 1px solid #B1B2FF;
+  border: 1px solid #b1b2ff;
   background-color: rgba(210, 218, 255, 0.25);
-    border-radius: 10px;
-    box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
-    padding-top: 40px;
-  height: 100%;
-  width: 465px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
+  padding-top: 40px;
+  height: 710px;
+  width: 500px;
 }
 
 .teacher-calendar {
   width: 100%;
 }
 
-.teacher-calendar-title{
+.teacher-calendar-title {
   text-align: center;
   font-size: 31px;
   margin-bottom: 37px;
-  color: #B1B2FF;
+  color: #b1b2ff;
 }
 
 .teacher-calendar-header {
@@ -60,11 +60,11 @@
 }
 
 .teacher-day:hover {
-  background-color: #AAC4FF;
+  background-color: #aac4ff;
 }
 
 .teacher-day.selected {
-  background-color: #B4B4B8;
+  background-color: #b4b4b8;
 }
 
 .teacher-other-month {
@@ -115,7 +115,7 @@
   font-size: 16px;
   resize: none;
   cursor: pointer;
-  background-color: #5C8D89;
+  background-color: #5c8d89;
   color: white;
   border: none;
   border-radius: 5px;
@@ -167,7 +167,7 @@
 .teacher-add-list button {
   font-size: 15px;
   cursor: pointer;
-  background-color: #AAC4FF;
+  background-color: #aac4ff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -176,14 +176,14 @@
 }
 
 .teacher-add-list button:hover {
-  background-color: #B1B2FF;
+  background-color: #b1b2ff;
 }
 
 .teacher-calendar-submit {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  gap:20px;
+  gap: 20px;
 }
 
 .teacher-calendar-submit button {
@@ -199,7 +199,7 @@
 }
 
 .teacher-calendar-submit button:hover {
-  background-color: #B4B4B8;
+  background-color: #b4b4b8;
 }
 
 .teacher-modal-add {

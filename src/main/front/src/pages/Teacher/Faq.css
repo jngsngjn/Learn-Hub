@@ -2,10 +2,11 @@
   display: flex;
   gap: 30px;
   justify-content: center;
+  width: 500px;
   height: 285px;
 }
 
-.faq-content{
+.faq-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -20,13 +21,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #B1B2FF;
+  border: 1px solid #b1b2ff;
   box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
-  width: 213px;
+  width: 235px;
 }
 
 .faq-item h2 {
-  color: #B1B2FF;
+  color: #b1b2ff;
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 10px;
@@ -53,24 +54,23 @@
 
 .faq-view-more {
   font-size: 12px;
-  color: #B1B2FF;
+  color: #b1b2ff;
   text-decoration: none;
   align-self: end;
 }
-.faq-view-more:hover{
-    color:#B1B2FF;
+.faq-view-more:hover {
+  color: #b1b2ff;
 }
 
-.faq-icon .fa-envelope{
-  color: #AAC4FF;
+.faq-icon .fa-envelope {
+  color: #aac4ff;
 }
 
-.faq-icon .fa-envelope:hover{
-  color: #B1B2FF;
+.faq-icon .fa-envelope:hover {
+  color: #b1b2ff;
 }
 
-
-.faq-notice-container{
+.faq-notice-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -79,7 +79,7 @@
   width: 187px;
 }
 
-.teacher-notice-content{
+.teacher-notice-content {
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -89,7 +89,7 @@
   position: relative;
   height: 37px;
   width: 187px;
-  border: 3px solid #AAC4FF;
+  border: 3px solid #aac4ff;
   border-radius: 20px;
   overflow: hidden;
   display: flex;
@@ -116,9 +116,9 @@
   cursor: pointer;
 }
 
-.teacher-manager-notice-state{
-  border: 1px solid #D2DAFF;
-  background-color: #EEF1FF;
+.teacher-manager-notice-state {
+  border: 1px solid #d2daff;
+  background-color: #eef1ff;
   border-radius: 20px;
   font-size: 12px;
   width: 37px;
@@ -128,7 +128,7 @@
   justify-content: center;
 }
 
-.teacher-manager-notice-date{
+.teacher-manager-notice-date {
   font-size: 10px;
   color: black;
 }
