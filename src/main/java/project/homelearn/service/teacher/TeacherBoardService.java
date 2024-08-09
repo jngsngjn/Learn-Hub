@@ -33,7 +33,7 @@ public class TeacherBoardService {
     // 생성
     public boolean addTeacherBoard(String username, NoticeBoardDto addBoardDto) {
         try {
-            Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+            Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
 
             TeacherBoard board = new TeacherBoard();
             board.setCurriculum(curriculum);

@@ -32,7 +32,7 @@ public class TeacherNoticeController {
                                         @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 5;
         String username = principal.getName();
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
 
         if (curriculum == null) {
             return new ResponseEntity<>("Not found Teacher curriculum", HttpStatus.NOT_FOUND);
