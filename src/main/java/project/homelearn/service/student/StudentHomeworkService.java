@@ -34,7 +34,7 @@ public class StudentHomeworkService {
     private final HomeworkRepository homeworkRepository;
     private final StudentHomeworkRepository studentHomeworkRepository;
 
-    public boolean createHomework(String username, HomeworkSubmitDto homeWorkSubmitDto) {
+    public boolean addHomework(String username, HomeworkSubmitDto homeWorkSubmitDto) {
         try {
             Student student = studentRepository.findByUsername(username);
             if (student == null) {
@@ -44,6 +44,11 @@ public class StudentHomeworkService {
             Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeWorkSubmitDto.getHomeworkId());
             if (homework == null) {
                 throw new RuntimeException("Homework not found");
+            }
+
+            boolean isDuplicate = studentHomeworkRepository.existsByStudentAndHomework(student, homework);
+            if (isDuplicate) {
+                throw new RuntimeException("Homework duplicate submit");
             }
 
             StudentHomework studentHomework = new StudentHomework();
