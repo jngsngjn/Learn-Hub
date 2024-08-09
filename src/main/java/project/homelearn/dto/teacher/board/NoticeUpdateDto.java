@@ -27,4 +27,13 @@ public class NoticeUpdateDto {
 
 /*
 
+강사 공지사항 수정
+PATCH 요청 / localhost:8080/teachers/notification-boards/3 -> boards/boardId (수정할 id값 입력)
+BODY form-data
+key                 value
+title               제목
+content             내용
+isEmergency         true or false
+file                (타입 File로 변경 후)업로드할 파일
+
  */
