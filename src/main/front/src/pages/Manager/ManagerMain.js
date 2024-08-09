@@ -5,7 +5,7 @@ import TeacherSideBar from "../../components/SideBar/TeacherSideBar";
 import StudentSideBar from "../../components/SideBar/StudentSideBar";
 import Calendar from "../../components/Manager/Calendar";
 import CalendarDetail from "../../components/Manager/Calendar_Detail";
-import CourseProgress from "../../components/Manager/Lecture";
+import Lecture from "../../components/Manager/Lecture";
 import SettingList from "../../components/Manager/Survey";
 import MessageBox from "../../components/Manager/MessageBox";
 import StudentManagement from "../../components/Manager/Student_Management";
@@ -22,7 +22,7 @@ function Dashboard() {
     <>
       <h1>대시보드</h1>
       <div className="dashboard-grid">
-        <CourseProgress />
+        <Lecture />
         <Calendar />
         <SettingList />
         <MessageBox />
