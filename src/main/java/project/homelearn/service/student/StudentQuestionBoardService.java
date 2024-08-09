@@ -141,7 +141,7 @@ public class StudentQuestionBoardService {
         return true;
     }
 
-    // 댓글 작성
+    // 댓글 작성 (질문 답변)
     public void writeComment(Long questionBoardId, String username, CommentWriteDto commentDto) {
         User commentWriter = userRepository.findByUsername(username);
         QuestionBoard questionBoard = questionBoardRepository.findQuestionBoardAndWriter(questionBoardId);
@@ -158,6 +158,11 @@ public class StudentQuestionBoardService {
             return;
         }
         studentNotificationService.questionResponseNotify(boardWriter, questionBoard, comment);
+
+        long count = commentRepository.countDistinctQuestionCommentByUser(commentWriter);
+        if (count == 10) {
+            badgeService.getBadge(commentWriter, BadgeConstants.EXPLAIN);
+        }
     }
 
     // 댓글 수정

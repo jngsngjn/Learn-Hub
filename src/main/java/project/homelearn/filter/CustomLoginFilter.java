@@ -66,26 +66,23 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = authentication.getName();
         String role = authentication.getAuthorities().iterator().next().getAuthority();
 
-        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
-        LocalDate startDate = curriculum.getStartDate();
-        LocalDate endDate = curriculum.getEndDate();
-        LocalDate currentDate = LocalDate.now();
+        if ("ROLE_STUDENT".equals(role)) {
+            Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
+            LocalDate startDate = curriculum.getStartDate();
+            LocalDate endDate = curriculum.getEndDate();
+            LocalDate currentDate = LocalDate.now();
 
-        System.out.println("startDate = " + startDate);
-        System.out.println("endDate = " + endDate);
-        System.out.println("currentDate = " + currentDate);
-
-        if ("ROLE_STUDENT".equals(role) &&
-                (currentDate.isBefore(startDate) || currentDate.isAfter(endDate))) {
-            response.setStatus(403);
-            response.setContentType("text/plain; charset=UTF-8");
-            try {
-                response.getWriter().write("교육과정이 시작하지 않았거나 종료되었습니다.");
-            } catch (IOException e) {
-                log.error("Error write msg", e);
-                response.setStatus(500);
+            if ((currentDate.isBefore(startDate) || currentDate.isAfter(endDate))) {
+                response.setStatus(403);
+                response.setContentType("text/plain; charset=UTF-8");
+                try {
+                    response.getWriter().write("교육과정이 시작하지 않았거나 종료되었습니다.");
+                } catch (IOException e) {
+                    log.error("Error write msg", e);
+                    response.setStatus(500);
+                }
+                return;
             }
-            return;
         }
 
         // 토큰 생성
@@ -135,7 +132,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
                     badgeService.getBadge(user, LOGIN_30);
                 }
 
-                DayOfWeek dayOfWeek = currentDate.getDayOfWeek();
+                DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
                 if (!(dayOfWeek == SATURDAY || dayOfWeek == SUNDAY)) {
                     // 출석 체크 진행
                     processStudentAttendance(user);
