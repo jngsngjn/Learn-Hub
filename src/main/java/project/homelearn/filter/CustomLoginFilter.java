@@ -31,6 +31,7 @@ import java.time.*;
 import static java.time.DayOfWeek.*;
 import static project.homelearn.config.security.JwtConstants.*;
 import static project.homelearn.entity.student.AttendanceType.*;
+import static project.homelearn.entity.student.badge.BadgeConstants.*;
 import static project.homelearn.entity.user.Role.ROLE_STUDENT;
 
 @Slf4j
@@ -117,7 +118,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
                 boolean exists = loginHistoryRepository.existsByUser(user);
                 if (!exists) {
                     log.info("발자취 배지 획득 = {}", username);
-                    badgeService.getBadge(user, "발자취");
+                    badgeService.getBadge(user, FOOT_PRINT);
                 }
 
                 // 로그인 기록 저장
@@ -127,11 +128,11 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
                 if (count == 7) {
                     log.info("7일 연속 로그인 배지 획득 = {}", username);
-                    badgeService.getBadge(user, "7일 연속 로그인");
+                    badgeService.getBadge(user, LOGIN_7);
                 }
                 if (count == 30) {
                     log.info("30일 연속 로그인 배지 획득 = {}", username);
-                    badgeService.getBadge(user, "30일 연속 로그인");
+                    badgeService.getBadge(user, LOGIN_30);
                 }
 
                 DayOfWeek dayOfWeek = currentDate.getDayOfWeek();

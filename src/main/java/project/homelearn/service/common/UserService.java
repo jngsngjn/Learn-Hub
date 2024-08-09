@@ -17,6 +17,7 @@ import project.homelearn.service.student.BadgeService;
 import java.time.Duration;
 
 import static project.homelearn.config.common.MailType.RESET_PW;
+import static project.homelearn.entity.student.badge.BadgeConstants.SECURITY;
 
 @Slf4j
 @Service
@@ -107,7 +108,7 @@ public class UserService {
             user.setPasswordChangeCount(count);
 
             if (count == 3) {
-                badgeService.getBadge(user, "보안충");
+                badgeService.getBadge(user, SECURITY);
             }
             return true;
         }
