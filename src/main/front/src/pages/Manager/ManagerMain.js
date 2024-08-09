@@ -17,6 +17,10 @@ import TeacherContact from "../../components/Manager/Teacher_Contact";
 import CurriculumDetail from "../../components/Manager/Curriculum_Detail"; // CurriculumDetail 컴포넌트 임포트
 import "./ManagerMain.css";
 
+
+
+
+
 function Dashboard() {
   return (
     <>
