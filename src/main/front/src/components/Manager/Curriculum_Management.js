@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CirclePicker } from 'react-color';
-import axios from 'axios';
+import axios from '../../utils/axios';
 import './Curriculum_Management.css';
 import './Modal.css';
 import swal from 'sweetalert';
-
-// 기본 API URL 설정
-axios.defaults.baseURL = 'http://localhost:8080';
 
 const CurriculumManagement = () => {
   const [ncpCurriculums, setNcpCurriculums] = useState([]);

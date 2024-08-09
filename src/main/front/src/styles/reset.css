@@ -16,6 +16,8 @@ ol,
 ul,
 li {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 table {
@@ -28,4 +30,8 @@ button {
   cursor: pointer;
   background: none;
   border: none;
+}
+
+p {
+  margin: 0;
 }

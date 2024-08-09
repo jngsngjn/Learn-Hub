@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import Nav from "./components/Nav/Nav";
+import DefaultHeader from "./components/Nav/DefaultHeader";
+import ManagerHeader from "./components/Nav/ManagerHeader";
+import TeacherHeader from "./components/Nav/TeacherHeader";
+import StudentHeader from "./components/Nav/StudentHeader";
 import Footer from "./components/Footer/Footer";
 import Main from "./pages/Main/Main";
 import Login from "./components/Login/Login";
@@ -16,7 +19,7 @@ import YouTubePlayer from "./pages/Teacher/play";
 const Router = () => {
   return (
     <BrowserRouter>
-      <Nav />
+      <TeacherHeader />
       <Routes>
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<Login />} />
