@@ -114,6 +114,7 @@ const CurriculumManagement = () => {
     ))
   );
 
+
   return (
     <div className="curriculum-management">
       <h1>교육 과정</h1>
