@@ -20,6 +20,9 @@ const StudentDashBoard = () => {
   });
   const [selectedFileName, setSelectedFileName] = useState("");
 
+  // 사이드바에 유저 정보 들어올때까지는 임시로 사용할 유저명
+  const username = "ksj";
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -37,7 +40,7 @@ const StudentDashBoard = () => {
     console.log("모달 데이터 : " + formData);
     closeModal();
   };
-  //무섭다
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -201,7 +204,10 @@ const StudentDashBoard = () => {
               </div>
             </div>
             {/* 배지 컨테이너 */}
-            <div className="badge_container">
+            <div
+              className="badge_container"
+              onClick={() => navigate(`/students/${username}/badge`)}
+            >
               <div className="title_box">
                 <h3 className="components_title">배지</h3>
                 <span className="go_to_badge_page navigate_button">
