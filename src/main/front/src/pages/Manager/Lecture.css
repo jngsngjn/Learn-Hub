@@ -1,11 +1,11 @@
 .lecture-progress {
-  background: #E8E8E9;
+  background: #f0f0f0;
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border: 1px solid var(--managerMainColor);
   display: flex;
   flex-direction: column;
-  width: 600px;
+  width: 500px;
   margin: 0 auto;
 }
 
@@ -77,7 +77,6 @@
 .lecture-list::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
 
 .lecture-item {
   position: relative;
