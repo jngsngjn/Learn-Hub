@@ -7,11 +7,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.student.homework.HomeworkListDto;
+import project.homelearn.dto.student.homework.MySubmitDetailDto;
+import project.homelearn.dto.student.homework.StudentHomeworkDetailDto;
+import project.homelearn.dto.teacher.homework.HomeworkDetailDto;
+import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.service.student.StudentHomeworkService;
 
 import java.security.Principal;
@@ -62,6 +63,32 @@ public class StudentHomeWorkViewController {
         }
         else{
             return new ResponseEntity<>("마감된 과제가 없습니다.",HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{homeworkId}")
+    public ResponseEntity<?> viewHomeworkDetail(@PathVariable("homeworkId") Long homeworkId) {
+
+        StudentHomeworkDetailDto homeworkDetail = studentHomeworkService.getHomeworkDetail(homeworkId);
+
+        if(homeworkDetail != null){
+            return new ResponseEntity<>(homeworkDetail, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("해당 과제가 없습니다.",HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{homeworkId}/mySubmit")
+    public ResponseEntity<?> viewHomeworkMySubmit(@PathVariable("homeworkId") Long homeworkId){
+
+        MySubmitDetailDto mySubmit = studentHomeworkService.getMySubmit(homeworkId);
+
+        if(mySubmit != null){
+            return new ResponseEntity<>(mySubmit, HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("제출한 내역이 없습니다.",HttpStatus.NOT_FOUND);
         }
     }
 }
