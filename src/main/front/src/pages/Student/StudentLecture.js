@@ -67,9 +67,6 @@ const StudentLecture = () => {
 
   return (
     <div className="student_lecture_container">
-      <div className="side_bar">
-        <h3>옆 카테고리 컴포넌트 자리</h3>
-      </div>
       <div className="main_container">
         <div className="lecutre_type_container">
           <img
@@ -91,7 +88,9 @@ const StudentLecture = () => {
               <h3 className="board_title">과목 게시판</h3>
               <span
                 className="go_to_show_more_page"
-                onClick={() => navigate("/students/subjectBoard")}
+                onClick={() =>
+                  navigate(`/students/${mainLectures.title}/boardList`)
+                }
               >
                 더보기 ⟩
               </span>
@@ -102,7 +101,9 @@ const StudentLecture = () => {
                   className="subject_list"
                   key={idx}
                   onClick={() =>
-                    navigate(`/students/subjectBoardDetail/${el.id}`)
+                    navigate(
+                      `/students/${mainLectures.title}/boardDetail/${el.id}`
+                    )
                   }
                 >
                   <div className="subject_title_box">
@@ -175,18 +176,21 @@ const StudentLecture = () => {
                         !isOpen ? "not-released" : ""
                       }`}
                     >
-                      {!isOpen && (
+                      {/* {!isOpen && (
                         <>
                           <div className="show_not_open">
                             {daysRemaining}일 후 시청 가능합니다.
                           </div>
                           <div className="not-released-overlay"></div>
                         </>
-                      )}
+                      )} */}
                       <iframe
                         width="100%"
                         height="100%"
-                        src={getYoutubeEmbedUrl(el.links)}
+                        src={
+                          getYoutubeEmbedUrl(el.links) +
+                          "?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&fs=0&playsinline=1"
+                        }
                         frameBorder="0"
                         allow="clipboard-write; encrypted-media; picture-in-picture"
                         allowFullScreen

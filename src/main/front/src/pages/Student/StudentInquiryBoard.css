@@ -1,28 +1,9 @@
-.student_inquiry_board_container {
-  display: flex;
-  flex-direction: row;
-  width: 100vw;
-  background-color: #f5f5f5;
-  color: #74b49b;
-}
-
-/* 사이드 바 스타일 */
-.side_bar {
-  width: 514px;
-  padding: 3em;
-  background-color: #fff;
-  border-right: 0.0625em solid #a7d7c5;
-  box-shadow: 0.125em 0 0.3125em rgba(0, 0, 0, 0.1);
-}
-
-/* 메인 스타일 */
 .student_inquiry_board_main_container {
   display: flex;
   flex-direction: column;
   width: 1400px;
-  padding: 100px 36px;
-  background-color: #fff;
-  box-shadow: 0 0 0.625em rgba(0, 0, 0, 0.1);
+  padding: 100px 68px;
+  background-color: hwb(0 100% 0%);
 }
 
 .student_inquiry_board_title_box {
