@@ -223,6 +223,12 @@ public class HeaderService {
                 subDto.setUrl("/students/survey/" + surveyId);
                 subDto.setMessage("설문조사를 실시해 주세요.");
             }
+
+            if (type.equals(BADGE)) {
+                Long badgeId = notification.getBadge().getId();
+                subDto.setUrl("/students/badges?id=" + badgeId);
+                subDto.setMessage("설문조사를 실시해 주세요.");
+            }
             subList.add(subDto);
         }
         result.setNotifications(subList);

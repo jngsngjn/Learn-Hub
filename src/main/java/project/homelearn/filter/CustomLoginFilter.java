@@ -21,6 +21,7 @@ import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtService;
 import project.homelearn.service.common.RedisService;
+import project.homelearn.service.student.BadgeService;
 
 import java.time.*;
 
@@ -39,6 +40,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final LoginHistoryRepository loginHistoryRepository;
     private final UserRepository userRepository;
     private final AttendanceRepository attendanceRepository;
+    private final BadgeService badgeService;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -78,6 +80,22 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setStatus(HttpStatus.OK.value());
 
         User user = userRepository.findByUsername(username);
+
+        // 첫 로그인 시 배지 지급
+        boolean exists = loginHistoryRepository.existsByUser(user);
+        if (!exists && role.equals("ROLE_STUDENT")) {
+            badgeService.getBadge(user, "발자취");
+        } else {
+            long count = loginHistoryRepository.countConsecutiveLoginDatesByUser(user);
+            log.info("login count = {}", count);
+
+            if (count == 6) {
+                badgeService.getBadge(user, "7일 연속 로그인");
+            }
+            if (count == 29) {
+                badgeService.getBadge(user, "30일 연속 로그인");
+            }
+        }
         loginHistoryRepository.save(new LoginHistory(user));
 
         LocalDate date = LocalDate.now();

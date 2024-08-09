@@ -10,6 +10,7 @@ import project.homelearn.entity.board.comment.QuestionBoardComment;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.inquiry.ManagerInquiry;
 import project.homelearn.entity.inquiry.TeacherInquiry;
+import project.homelearn.entity.student.badge.Badge;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.entity.user.User;
 
@@ -61,4 +62,8 @@ public class StudentNotification {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "free_board_comment_id")
     private FreeBoardComment freeBoardComment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "badge_id")
+    private Badge badge;
 }

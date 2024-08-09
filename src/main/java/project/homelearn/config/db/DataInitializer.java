@@ -69,7 +69,7 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (badgeRepository.count() == 0) {
-            Badge footPrint = new Badge("발자취", "시작이 반이다.", "foot_print.png", "badge/foot_print.png");
+            Badge footPrint = new Badge("발자취", "시작이 반이다.", "foot_print.png", "badge/foot_print.png"); // ✅
             Badge explain = new Badge("설명충", "쉿, 설명 그만!", "explain.png", "badge/explain.png");
             Badge homework = new Badge("과제왕", "오.. 상당히 빠르시군요?", "homework.png", "badge/homework.png");
             Badge knowledge = new Badge("알쓸신잡", "언젠간 도움이 될 거예요!", "knowledge.png", "badge/knowledge.png");
