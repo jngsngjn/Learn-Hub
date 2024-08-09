@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.dto.common.FileDto;
-import project.homelearn.dto.student.homework.HomeworkListDto;
-import project.homelearn.dto.student.homework.HomeworkSubmitDto;
-import project.homelearn.dto.student.homework.HomeworkUpdateDto;
+import project.homelearn.dto.student.homework.*;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
@@ -183,6 +181,36 @@ public class StudentHomeworkService {
                         homework.getDeadline(),
                         homework.getStudentHomeworks().size()))
                 .collect(Collectors.toList());
+    }
+
+    // 과제 상세보기
+    public StudentHomeworkDetailDto getHomeworkDetail(Long homeworkId){
+        Homework homework = homeworkRepository.findById(homeworkId).orElseThrow();
+
+        return new StudentHomeworkDetailDto(
+                homework.getId(),
+                homework.getTitle(),
+                homework.getDescription(),
+                homework.getDeadline(),
+                homework.getCreatedDate(),
+                homework.getUploadFileName(),
+                homework.getFilePath()
+        );
+    }
+
+    // 내 제출 내역 확인
+    public MySubmitDetailDto getMySubmit(Long homeworkId){
+        StudentHomework myHomework = studentHomeworkRepository.findByHomeworkId(homeworkId);
+
+        return new MySubmitDetailDto(
+                myHomework.getId(),
+                myHomework.getDescription(),
+                myHomework.getUploadFileName(),
+                myHomework.getFilePath(),
+                myHomework.getCreatedDate(),
+                myHomework.getResponse(),
+                myHomework.getResponseDate()
+        );
     }
 
 }
