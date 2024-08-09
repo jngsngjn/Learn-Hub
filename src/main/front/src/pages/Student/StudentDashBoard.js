@@ -7,7 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import useGetFetch from "../../hooks/useGetFetch";
 import { useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import StudentSubmitModal from "../../components/StudentSubmitModal/StudentSubmitModal";
+import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 
 const StudentDashBoard = () => {
   const navigate = useNavigate();
@@ -312,7 +312,7 @@ const StudentDashBoard = () => {
           </div>
         </div>
       </div>
-      <StudentSubmitModal
+      <StudentModal
         isOpen={isModalOpen}
         closeModal={closeModal}
         formData={formData}

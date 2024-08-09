@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./StudentSubmitModal.css";
+import "./StudentModal.css";
 
-const StudentSubmitModal = ({
+const StudentModal = ({
   isOpen,
   closeModal,
   formData,
@@ -77,4 +77,4 @@ const StudentSubmitModal = ({
   );
 };
 
-export default StudentSubmitModal;
+export default StudentModal;

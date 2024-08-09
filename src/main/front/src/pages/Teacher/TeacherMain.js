@@ -1,7 +1,7 @@
 import "./TeacherMain.css";
 import Question from "../../components/Teacher/Question";
 import Lecture_State from "../../components/Teacher/Lecture_State";
-import Calendar from "../../components/Teacher/Calendar";
+import TeacherCalendar from "../../components/Calendar/TeacherCalendar/TeacherCalendar";
 import SettingList from "../../components/Teacher/Today_It";
 import Faq from "../../components/Teacher/Faq";
 // import Sidebar from "../../components/Manager/SideBar";
@@ -9,11 +9,11 @@ import { Route, Routes } from "react-router-dom";
 import StudentManagement from "../../components/Manager/Student_Management";
 import CurriculumManagement from "../../components/Manager/Curriculum_Management";
 import TeacherManagement from "../../components/Manager/Teacher_Management";
-import Notice from "../../components/Manager/Notice";
-import StudentContact from "../../components/Manager/Student_Contact";
-import TeacherContact from "../../components/Manager/Teacher_Contact";
 import React from "react";
 import TeacherSideBar from "../../components/SideBar/TeacherSideBar";
+import TeacherContact from "../Manager/TeacherContact";
+import StudentContact from "../Manager/StudentContact";
+import Notice from "../Manager/Notice";
 
 function Dashboard() {
   return (
@@ -28,7 +28,7 @@ function Dashboard() {
           <Faq />
         </div>
         <div className="teacher-dashboard-grid2">
-          <Calendar />
+          <TeacherCalendar />
           <SettingList />
         </div>
       </div>

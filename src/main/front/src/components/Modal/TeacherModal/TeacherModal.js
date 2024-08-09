@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Modal.css';
+import './TeacherModal.css';
 
-const Modal = ({ isOpen, onClose, children }) => {
+const TeacherModal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
     <div className="modal-overlay">
@@ -14,10 +14,10 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-Modal.propTypes = {
+TeacherModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
 
-export default Modal;
+export default TeacherModal;

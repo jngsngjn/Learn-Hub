@@ -1,20 +1,18 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import ManagerSideBar from "../../components/SideBar/ManagerSideBar";
-import TeacherSideBar from "../../components/SideBar/TeacherSideBar";
-import StudentSideBar from "../../components/SideBar/StudentSideBar";
-import Calendar from "../../components/Manager/Calendar";
-import CalendarDetail from "../../components/Manager/Calendar_Detail";
-import CourseProgress from "../../components/Manager/Lecture";
-import SettingList from "../../components/Manager/Survey";
-import MessageBox from "../../components/Manager/MessageBox";
-import StudentManagement from "../../components/Manager/Student_Management";
-import CurriculumManagement from "../../components/Manager/Curriculum_Management";
-import TeacherManagement from "../../components/Manager/Teacher_Management";
-import Notice from "../../components/Manager/Notice";
-import StudentContact from "../../components/Manager/Student_Contact";
-import TeacherContact from "../../components/Manager/Teacher_Contact";
-import CurriculumDetail from "../../components/Manager/Curriculum_Detail"; // CurriculumDetail 컴포넌트 임포트
+import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
+import CalendarDetail from "../../components/Calendar/ManagerCalendar/ManagerCalendarDetail";
+import Lecture from "./Lecture"; // 경로 수정
+import SettingList from "./Survey"; // 경로 수정
+import MessageBox from "./MessageBox"; // 경로 수정
+import StudentManagement from "./StudentManagement"; // 경로 수정
+import CurriculumManagement from "./CurriculumManagement"; // 경로 수정
+import TeacherManagement from "./TeacherManagement"; // 경로 수정
+import Notice from "./Notice"; // 경로 수정
+import StudentContact from "./StudentContact"; // 경로 수정
+import TeacherContact from "./TeacherContact"; // 경로 수정
+import CurriculumDetail from "./CurriculumDetail"; // 경로 수정
 import "./ManagerMain.css";
 
 
@@ -26,8 +24,8 @@ function Dashboard() {
     <>
       <h1>대시보드</h1>
       <div className="dashboard-grid">
-        <CourseProgress />
-        <Calendar />
+        <Lecture />
+        <ManagerCalendar />
         <SettingList />
         <MessageBox />
       </div>
