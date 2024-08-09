@@ -121,15 +121,17 @@ public class HeaderService {
         List<NotificationDto.NotificationSubDto> subList = new ArrayList<>();
         for (ManagerNotification notification : notifications) {
             NotificationDto.NotificationSubDto subDto = new NotificationDto.NotificationSubDto();
-            subDto.setInquiryId(notification.getManagerInquiry().getId());
+            Long inquiryId = notification.getManagerInquiry().getId();
 
             ManagerNotificationType type = notification.getType();
             if (type.equals(STUDENT_INQUIRY)) {
                 subDto.setMessage("학생 1:1 문의가 등록되었습니다.");
+                subDto.setUrl("/managers/student-inquiries?inquiryId=" + inquiryId);
             }
 
             if (type.equals(TEACHER_INQUIRY)) {
                 subDto.setMessage("강사 1:1 문의가 등록되었습니다.");
+                subDto.setUrl("/managers/teacher-inquiries?inquiryId=" + inquiryId);
             }
             subList.add(subDto);
         }
@@ -147,22 +149,30 @@ public class HeaderService {
         List<NotificationDto.NotificationSubDto> subList = new ArrayList<>();
         for (TeacherNotification notification : notifications) {
             NotificationDto.NotificationSubDto subDto = new NotificationDto.NotificationSubDto();
-            subDto.setInquiryId(notification.getManagerInquiry().getId());
 
             TeacherNotificationType type = notification.getType();
             if (type.equals(QUESTION_POSTED)) {
+                Long questionId = notification.getQuestionBoard().getId();
+                subDto.setUrl("/teachers/question-boards/" + questionId);
                 subDto.setMessage("질문이 등록되었습니다.");
             }
 
             if (type.equals(REPLY_TO_COMMENT)) {
+                Long questionId = notification.getQuestionBoard().getId();
+                Long commentId = notification.getQuestionBoardComment().getId();
+                subDto.setUrl("/teachers/question-boards/" + questionId + "?comment=" + commentId);
                 subDto.setMessage("질문 답변에 댓글이 등록되었습니다.");
             }
 
             if (type.equals(STUDENT_INQUIRY_TO_TEACHER)) {
+                Long teacherInquiryId = notification.getTeacherInquiry().getId();
+                subDto.setUrl("/teachers/student-inquiries/" + teacherInquiryId);
                 subDto.setMessage("학생 1:1 문의가 등록되었습니다.");
             }
 
             if (type.equals(TeacherNotificationType.MANAGER_REPLY_TO_INQUIRY)) {
+                Long managerInquiryId = notification.getManagerInquiry().getId();
+                subDto.setUrl("/teachers/manager-inquiries/" + managerInquiryId);
                 subDto.setMessage("매니저 1:1 문의 답변이 등록되었습니다.");
             }
             subList.add(subDto);
@@ -181,31 +191,37 @@ public class HeaderService {
         List<NotificationDto.NotificationSubDto> subList = new ArrayList<>();
         for (StudentNotification notification : notifications) {
             NotificationDto.NotificationSubDto subDto = new NotificationDto.NotificationSubDto();
-            subDto.setInquiryId(notification.getManagerInquiry().getId());
 
             StudentNotificationType type = notification.getType();
             if (type.equals(HOMEWORK_UPLOADED)) {
+                Long homeworkId = notification.getHomework().getId();
+                subDto.setUrl("/students/homeworks/" + homeworkId);
                 subDto.setMessage("과제가 등록되었습니다.");
             }
 
             if (type.equals(REPLY_TO_QUESTION)) {
+                Long questionId = notification.getQuestionBoard().getId();
+                Long commentId = notification.getQuestionBoardComment().getId();
+                subDto.setUrl("/students/question-boards/" + questionId + "?comment=" + commentId);
                 subDto.setMessage("질문에 답변이 등록되었습니다.");
             }
 
             if (type.equals(MANAGER_REPLY_TO_INQUIRY)) {
+                Long inquiryId = notification.getManagerInquiry().getId();
+                subDto.setUrl("/students/manager-inquiries/" + inquiryId);
                 subDto.setMessage("매니저 1:1 문의 답변이 등록되었습니다.");
             }
 
             if (type.equals(TEACHER_REPLY_TO_INQUIRY)) {
+                Long inquiryId = notification.getTeacherInquiry().getId();
+                subDto.setUrl("/students/teacher-inquiries/" + inquiryId);
                 subDto.setMessage("강사 1:1 문의 답변이 등록되었습니다.");
             }
 
             if (type.equals(SURVEY)) {
+                Long surveyId = notification.getSurvey().getId();
+                subDto.setUrl("/students/survey/" + surveyId);
                 subDto.setMessage("설문조사를 실시해 주세요.");
-            }
-
-            if (type.equals(COMMENT_ON_MY_FREE_BOARD)) {
-                subDto.setMessage("내 글에 댓글이 등록되었습니다.");
             }
             subList.add(subDto);
         }

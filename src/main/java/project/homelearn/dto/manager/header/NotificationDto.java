@@ -13,7 +13,7 @@ public class NotificationDto {
 
     @Data
     public static class NotificationSubDto {
-        private Long inquiryId;
+        private String url;
         private String message;
     }
 }
@@ -23,7 +23,7 @@ public class NotificationDto {
     "count": 1,
     "notifications": [
         {
-            "inquiryId": 1,
+            "url": "/managers/teacher-inquiries?id=3",
             "message": "강사 1:1 문의가 등록되었습니다."
         }
     ]

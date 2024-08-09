@@ -56,6 +56,7 @@ public class StudentQuestionBoardService {
     private final QuestionScrapRepository questionScrapRepository;
     private final TeacherNotificationService teacherNotificationService;
     private final TeacherRepository teacherRepository;
+    private final StudentNotificationService studentNotificationService;
 
     // 글 작성
     public void writeQuestionBoard(String username, QuestionBoardWriteDto questionBoardWriteDto) {
@@ -135,14 +136,21 @@ public class StudentQuestionBoardService {
 
     // 댓글 작성
     public void writeComment(Long questionBoardId, String username, CommentWriteDto commentDto) {
-        User user = userRepository.findByUsername(username);
-        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        User commentWriter = userRepository.findByUsername(username);
+        QuestionBoard questionBoard = questionBoardRepository.findQuestionBoardAndWriter(questionBoardId);
 
         QuestionBoardComment comment = new QuestionBoardComment();
-        comment.setUser(user);
+        comment.setUser(commentWriter);
         comment.setQuestionBoard(questionBoard);
         comment.setContent(commentDto.getContent());
         commentRepository.save(comment);
+
+        // 질문 작성한 학생에게 알림
+        User boardWriter = questionBoard.getUser();
+        if (boardWriter.equals(commentWriter)) {
+            return;
+        }
+        studentNotificationService.questionResponseNotify(boardWriter, questionBoard, comment);
     }
 
     // 댓글 수정
