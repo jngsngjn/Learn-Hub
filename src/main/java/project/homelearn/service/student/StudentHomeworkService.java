@@ -56,9 +56,21 @@ public class StudentHomeworkService {
                 throw new RuntimeException("Homework not found");
             }
 
+            LocalDateTime deadline = homework.getDeadline();
+            if (LocalDateTime.now().isAfter(deadline)) {
+                return false;
+            }
+
             boolean isDuplicate = studentHomeworkRepository.existsByStudentAndHomework(student, homework);
             if (isDuplicate) {
                 throw new RuntimeException("Homework duplicate submit");
+            }
+
+            Boolean requiredFile = homework.getRequiredFile();
+            MultipartFile file = homeWorkSubmitDto.getFile();
+            if (requiredFile && file == null) {
+                log.info("첨부파일이 필수인데 첨부하지 않았음!");
+                return false;
             }
 
             StudentHomework studentHomework = new StudentHomework();
@@ -66,7 +78,6 @@ public class StudentHomeworkService {
             studentHomework.setDescription(homeWorkSubmitDto.getDescription());
             studentHomework.setHomework(homework);
 
-            MultipartFile file = homeWorkSubmitDto.getFile();
             if (file != null && !file.isEmpty()) {
                 String folderPath = storageService.getFolderPath(student, HOMEWORK);
                 FileDto fileDto = storageService.uploadFile(file, folderPath);
@@ -88,25 +99,29 @@ public class StudentHomeworkService {
 
     public boolean updateHomework(Long homeworkId, String username, HomeworkUpdateDto homeWorkUpdateDto) {
         try {
-            StudentHomework homework = studentHomeworkRepository.findById(homeworkId)
+            StudentHomework studentHomework = studentHomeworkRepository.findById(homeworkId)
                     .orElseThrow(() -> new RuntimeException("Error getting homework" + homeworkId));
 
-            LocalDateTime deadline = homework.getHomework().getDeadline();
-            if (LocalDateTime.now().isAfter(deadline)) {
+            Homework homework = studentHomework.getHomework();
+            if (LocalDateTime.now().isAfter(homework.getDeadline())) {
                 throw new RuntimeException("Cannot update homework after the deadline:" + homeworkId);
             }
 
-            homework.setDescription(homeWorkUpdateDto.getDescription());
-
+            Boolean requiredFile = homework.getRequiredFile();
             MultipartFile file = homeWorkUpdateDto.getFile();
-            String previousFilePath = homework.getFilePath();
+            if (requiredFile && file == null) {
+                return false;
+            }
+            studentHomework.setDescription(homeWorkUpdateDto.getDescription());
+
+            String previousFilePath = studentHomework.getFilePath();
 
             if (homeWorkUpdateDto.isUseDefaultFile() || file != null && !file.isEmpty()) {
                 if (previousFilePath != null) {
                     storageService.deleteFile(previousFilePath);
-                    homework.setUploadFileName(null);
-                    homework.setStoreFileName(null);
-                    homework.setFilePath(null);
+                    studentHomework.setUploadFileName(null);
+                    studentHomework.setStoreFileName(null);
+                    studentHomework.setFilePath(null);
                 }
             }
 
@@ -114,12 +129,12 @@ public class StudentHomeworkService {
             if (file != null && !file.isEmpty()) {
                 String folderPath = storageService.getFolderPath(student, HOMEWORK);
                 FileDto fileDto = storageService.uploadFile(file, folderPath);
-                homework.setUploadFileName(fileDto.getOriginalFileName());
-                homework.setStoreFileName(fileDto.getUploadFileName());
-                homework.setFilePath(fileDto.getFilePath());
+                studentHomework.setUploadFileName(fileDto.getOriginalFileName());
+                studentHomework.setStoreFileName(fileDto.getUploadFileName());
+                studentHomework.setFilePath(fileDto.getFilePath());
             }
 
-            studentHomeworkRepository.save(homework);
+            studentHomeworkRepository.save(studentHomework);
             return true;
         } catch (Exception e) {
             log.error("Error updating homework", e);
