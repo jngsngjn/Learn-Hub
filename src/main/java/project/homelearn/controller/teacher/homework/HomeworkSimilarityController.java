@@ -11,12 +11,12 @@ import project.homelearn.entity.homework.AcceptFile;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.service.teacher.homework.TeacherHomeworkService;
-import project.homelearn.service.teacher.homework.strategy.TextFileSimilarityStrategy;
+import project.homelearn.service.teacher.homework.context.SimilarityCheckContext;
 
 import java.io.IOException;
 import java.util.List;
 
-import static project.homelearn.entity.homework.AcceptFile.*;
+import static project.homelearn.entity.homework.AcceptFile.ETC;
 
 /**
  * Author : 정성진
@@ -27,7 +27,7 @@ import static project.homelearn.entity.homework.AcceptFile.*;
 public class HomeworkSimilarityController {
 
     private final TeacherHomeworkService homeworkService;
-    private final TextFileSimilarityStrategy textFileSimilarityStrategy;
+    private final SimilarityCheckContext similarityCheckContext;
 
     @GetMapping
     public ResponseEntity<?> calculateSimilarity(@PathVariable Long homeworkId) throws IOException {
@@ -35,7 +35,7 @@ public class HomeworkSimilarityController {
         Boolean requiredFile = homework.getRequiredFile();
 
         if (!requiredFile) {
-            // 파일 첨부가 필수가 아닌 경우
+            return new ResponseEntity<>("파일 첨부가 필수인 과제만 유사성 검사를 진행할 수 있습니다.", HttpStatus.BAD_REQUEST);
         }
 
         AcceptFile acceptFile = homework.getAcceptFile();
@@ -43,25 +43,12 @@ public class HomeworkSimilarityController {
             return new ResponseEntity<>("유사성 검사를 진행할 수 없습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        if (acceptFile.equals(JAVA) || acceptFile.equals(SQL) || acceptFile.equals(HTML) || acceptFile.equals(JS)) {
-            List<StudentHomework> studentHomeworks = homeworkService.getAllStudentHomeworksByHomework(homework);
-
-            if (studentHomeworks.size() < 2) {
-                return new ResponseEntity<>("비교 대상이 2개 미만입니다.", HttpStatus.BAD_REQUEST);
-            }
-
-            List<List<String>> result = textFileSimilarityStrategy.similarityCheck(studentHomeworks);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+        List<StudentHomework> studentHomeworks = homeworkService.getAllStudentHomeworksByHomework(homework);
+        if (studentHomeworks.size() < 2) {
+            return new ResponseEntity<>("비교 대상이 2개 미만입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        if (acceptFile.equals(PDF)) {
-
-        }
-
-        if (acceptFile.equals(ZIP)) {
-
-        }
-
-        return new ResponseEntity<>("유사성 검사를 진행할 수 없습니다.", HttpStatus.BAD_REQUEST);
+        List<List<String>> result = similarityCheckContext.executeStrategy(acceptFile, studentHomeworks);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
