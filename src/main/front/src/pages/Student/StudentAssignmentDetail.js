@@ -45,6 +45,10 @@ const StudentAssignmentDetail = () => {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data: assignment, error: assignmentError } = useGetFetch(
     "/data/student/mainLecture/submittedAssginment.json",
     []
