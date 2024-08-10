@@ -1,6 +1,6 @@
 package project.homelearn.service.teacher.homework.context;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import project.homelearn.entity.homework.AcceptFile;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.service.teacher.homework.strategy.FileSimilarityStrategy;
@@ -13,18 +13,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Component
 public class SimilarityCheckContext {
 
     private final Map<AcceptFile, FileSimilarityStrategy> strategies;
 
+    // FileSimilarityStrategy를 구현한 클래스가 주입됨
     public SimilarityCheckContext(List<FileSimilarityStrategy> strategyList) {
         strategies = new HashMap<>();
-        strategies.put(AcceptFile.JAVA, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
-        strategies.put(AcceptFile.SQL, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
-        strategies.put(AcceptFile.HTML, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
-        strategies.put(AcceptFile.JS, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
-        strategies.put(AcceptFile.TXT, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
+
+        // TextFileSimilarityStrategy를 재사용하여 여러 파일 형식에 매핑
+        FileSimilarityStrategy fileSimilarityStrategy = strategyList.stream()
+                .filter(s -> s instanceof TextFileSimilarityStrategy)
+                .findFirst()
+                .orElseThrow();
+
+        strategies.put(AcceptFile.JAVA, fileSimilarityStrategy);
+        strategies.put(AcceptFile.SQL, fileSimilarityStrategy);
+        strategies.put(AcceptFile.HTML, fileSimilarityStrategy);
+        strategies.put(AcceptFile.JS, fileSimilarityStrategy);
+        strategies.put(AcceptFile.TXT, fileSimilarityStrategy);
         strategies.put(AcceptFile.PDF, strategyList.stream().filter(s -> s instanceof PdfFileSimilarityStrategy).findFirst().orElseThrow());
         strategies.put(AcceptFile.ZIP, strategyList.stream().filter(s -> s instanceof ZipFileSimilarityStrategy).findFirst().orElseThrow());
     }

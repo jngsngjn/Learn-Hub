@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-// JAVA, HTML, JS, SQL 처리
+// JAVA, HTML, JS, SQL 등 단순 텍스트 파일 처리
 @Service
 public class TextFileSimilarityStrategy extends AbstractFileSimilarityStrategy {
 
