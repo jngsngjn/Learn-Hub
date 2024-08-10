@@ -48,6 +48,4 @@ public class TeacherInquiryController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-    // 매니저에게 문의한 내역 조회
 }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.homelearn.dto.student.inquiry.StudentInquiryListDto;
 import project.homelearn.dto.teacher.inquiry.TeacherInquiryDto;
 import project.homelearn.dto.teacher.inquiry.TeacherInquiryListToManagerDto;
 import project.homelearn.service.teacher.TeacherInquiryService;
@@ -28,7 +27,7 @@ public class TeacherInquiryViewController {
     private final TeacherInquiryService teacherInquiryService;
 
     // 학생 문의 내역 조회
-    @GetMapping("/student-inquiries")
+    @GetMapping("/students-inquiries")
     public ResponseEntity<?> viewStudentList() {
 
         List<TeacherInquiryDto> teacherInquiries  = teacherInquiryService.getInquiryListDefaultFromStudents();
@@ -40,7 +39,7 @@ public class TeacherInquiryViewController {
     }
 
     // 학생 문의 내역 상세 조회
-    @GetMapping("/student-inquiries/{inquiryId}")
+    @GetMapping("/students-inquiries/{inquiryId}")
     public ResponseEntity<?> viewInquiry(@PathVariable("inquiryId") Long inquiryId) {
         TeacherInquiryDto result = teacherInquiryService.getOneStudentInquiryDtoById(inquiryId);
         if (result != null) {
@@ -50,7 +49,7 @@ public class TeacherInquiryViewController {
     }
 
     // 매니저에게 문의한 내역 조회
-    @GetMapping("/inquiries-managers")
+    @GetMapping("/managers-inquiries")
     public ResponseEntity<?> viewManagerInquiry(Principal principal) {
         String username = principal.getName();
 
@@ -59,14 +58,14 @@ public class TeacherInquiryViewController {
         if (myInquiryList != null) {
             return new ResponseEntity<>(myInquiryList, HttpStatus.OK);
         }
-        else{
+        else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     // 매니저에게 문의한 내역 상세보기
-    @GetMapping("/inquiries-managers/{inquiryId}")
-    public ResponseEntity<?> viewManagerInquiryDetail(@PathVariable("inquiryId")Long inquiryId){
+    @GetMapping("/managers-inquiries/{inquiryId}")
+    public ResponseEntity<?> viewManagerInquiryDetail(@PathVariable("inquiryId")Long inquiryId) {
         TeacherInquiryDto result = teacherInquiryService.getOneManagerInquiryDtoById(inquiryId);
 
         if (result != null) {
