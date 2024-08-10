@@ -11,7 +11,7 @@ import project.homelearn.entity.homework.AcceptFile;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.service.teacher.homework.TeacherHomeworkService;
-import project.homelearn.service.teacher.homework.TextFileSimilarityService;
+import project.homelearn.service.teacher.homework.strategy.TextFileSimilarityStrategy;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +27,7 @@ import static project.homelearn.entity.homework.AcceptFile.*;
 public class HomeworkSimilarityController {
 
     private final TeacherHomeworkService homeworkService;
-    private final TextFileSimilarityService textFileSimilarityService;
+    private final TextFileSimilarityStrategy textFileSimilarityStrategy;
 
     @GetMapping
     public ResponseEntity<?> calculateSimilarity(@PathVariable Long homeworkId) throws IOException {
@@ -50,7 +50,7 @@ public class HomeworkSimilarityController {
                 return new ResponseEntity<>("비교 대상이 2개 미만입니다.", HttpStatus.BAD_REQUEST);
             }
 
-            List<List<String>> result = textFileSimilarityService.similarityCheckProcess(studentHomeworks);
+            List<List<String>> result = textFileSimilarityStrategy.similarityCheckProcess(studentHomeworks);
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 

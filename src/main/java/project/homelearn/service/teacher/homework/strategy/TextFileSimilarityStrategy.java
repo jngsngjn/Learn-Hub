@@ -1,4 +1,4 @@
-package project.homelearn.service.teacher.homework;
+package project.homelearn.service.teacher.homework.strategy;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.similarity.CosineSimilarity;
@@ -19,11 +19,12 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TextFileSimilarityService {
+public class TextFileSimilarityStrategy implements FileSimilarityStrategy  {
 
     private final StorageService storageService;
 
-    public List<List<String>> similarityCheckProcess(List<StudentHomework> studentHomeworks) throws IOException {
+    @Override
+    public List<List<String>> similarityCheck(List<StudentHomework> studentHomeworks) throws IOException {
         List<List<String>> similarityGroups = new ArrayList<>();
         boolean[] processed = new boolean[studentHomeworks.size()];
 
