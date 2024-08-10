@@ -41,17 +41,14 @@ const CurriculumManagement = () => {
     console.log(`Course Changed: ${courseLabel}`);
   };
 
-
- const handleColorChange = (color) => {
-     const colorBox = document.querySelector(".color-box");
-     if (colorBox) {
-         colorBox.style.backgroundColor = color.hex;
-     }
-     setIsColorPickerOpen(false);
-     console.log(`Color Selected: ${color.hex}`);
- };
+  const handleColorChange = (color) => {
+    setNewCurriculum({ ...newCurriculum, color: color.hex });
+    setIsColorPickerOpen(false);
+    console.log(`Color Selected: ${color.hex}`);
+  };
 
   const handleAddCurriculum = async () => {
+    // 이미 사용된 색상 체크
     const usedColors = [...ncpCurriculums, ...awsCurriculums].map(
       (curriculum) => curriculum.color
     );
