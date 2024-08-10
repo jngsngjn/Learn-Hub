@@ -8,7 +8,6 @@ import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.notification.student.StudentNotification;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +47,4 @@ public class Homework extends BaseEntity {
 
     @OneToMany(mappedBy = "homework", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentNotification> studentNotifications = new ArrayList<>();
-
-    public String getFormattedDeadline() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return deadline != null ? deadline.format(formatter) : null;
-    }
 }

@@ -6,7 +6,6 @@ import lombok.Setter;
 import project.homelearn.entity.user.User;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter @Setter
@@ -36,14 +35,4 @@ public class StudentLecture {
 
     @Column(name = "last_position")
     private Long lastPosition; // 마지막으로 시청한 비디오의 재생 위치를 초 단위로 저장
-
-    public String getFormattedInitialViewDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return initialViewDate != null ? initialViewDate.format(formatter) : null;
-    }
-
-    public String getFormattedCompletedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return completedDate != null ? completedDate.format(formatter) : null;
-    }
 }
