@@ -8,7 +8,6 @@ import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.user.User;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter @Setter
@@ -42,10 +41,5 @@ public class StudentBadge {
         this.user = user;
         this.badge = badge;
         this.curriculum = curriculum;
-    }
-
-    public String getFormattedGetDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return getDate != null ? getDate.format(formatter) : null;
     }
 }

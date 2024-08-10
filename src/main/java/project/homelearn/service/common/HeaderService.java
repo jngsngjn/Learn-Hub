@@ -227,7 +227,7 @@ public class HeaderService {
             if (type.equals(BADGE)) {
                 Long badgeId = notification.getBadge().getId();
                 subDto.setUrl("/students/badges?id=" + badgeId);
-                subDto.setMessage("설문조사를 실시해 주세요.");
+                subDto.setMessage("새로운 배지를 획득했습니다!");
             }
             subList.add(subDto);
         }

@@ -31,6 +31,7 @@ public class BadgeRepositoryImpl implements BadgeRepositoryCustom {
 
         return allBadges.stream().map(badge -> {
             BadgeViewDto dto = new BadgeViewDto();
+            dto.setBadgeId(badge.getId());
             dto.setName("???");
             dto.setDescription(badge.getDescription());
             dto.setImagePath("");
@@ -60,6 +61,7 @@ public class BadgeRepositoryImpl implements BadgeRepositoryCustom {
         return studentBadges.stream().map(studentBadge -> {
             Badge badge = studentBadge.getBadge();
             BadgeViewDto dto = new BadgeViewDto();
+            dto.setBadgeId(badge.getId());
             dto.setName(badge.getName());
             dto.setDescription(badge.getDescription());
             dto.setImagePath(badge.getImagePath());
@@ -88,6 +90,7 @@ public class BadgeRepositoryImpl implements BadgeRepositoryCustom {
 
         return noEarnBadges.stream().map(badge -> {
             BadgeViewDto dto = new BadgeViewDto();
+            dto.setBadgeId(badge.getId());
             dto.setName("???");
             dto.setDescription(badge.getDescription());
             dto.setImagePath("");
