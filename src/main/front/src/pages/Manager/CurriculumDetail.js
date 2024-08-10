@@ -4,7 +4,9 @@ import axios from "../../utils/axios";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
+import { CirclePicker } from "react-color";
 import "./CurriculumDetail.css";
+import swal from "sweetalert";
 
 const CurriculumDetail = () => {
   const { id } = useParams();
@@ -18,7 +20,7 @@ const CurriculumDetail = () => {
     total: 0,
     ratio: 0,
   });
-  const [teacher, setTeacher] = useState(null); // 초기 상태를 null로 설정
+  const [teacher, setTeacher] = useState(null);
   const [schedules, setSchedules] = useState([]);
   const [survey, setSurvey] = useState({
     title: "",
@@ -27,6 +29,14 @@ const CurriculumDetail = () => {
     total: 0,
   });
   const [isWeekend, setIsWeekend] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [updatedCurriculum, setUpdatedCurriculum] = useState({
+    teacherId: "",
+    startDate: "",
+    endDate: "",
+    color: "",
+  });
 
   const getToken = () => localStorage.getItem("access-token");
 
@@ -48,6 +58,12 @@ const CurriculumDetail = () => {
           config
         );
         setCurriculum(basicResponse.data);
+        setUpdatedCurriculum({
+          teacherId: basicResponse.data.teacherId || "",
+          startDate: basicResponse.data.startDate || "",
+          endDate: basicResponse.data.endDate || "",
+          color: basicResponse.data.color || "",
+        });
 
         try {
           const attendanceResponse = await axios.get(
@@ -71,7 +87,6 @@ const CurriculumDetail = () => {
             `/managers/curriculum/${id}/teacher`,
             config
           );
-          // 강사 정보가 제대로 있다면, 상태를 업데이트하고, 그렇지 않으면 null로 설정
           if (teacherResponse.data && teacherResponse.data.name) {
             setTeacher(teacherResponse.data);
           } else {
@@ -79,7 +94,7 @@ const CurriculumDetail = () => {
           }
         } catch (error) {
           console.error("강사 정보 조회 오류:", error);
-          setTeacher(null); // 오류 발생 시 강사 정보를 null로 설정
+          setTeacher(null);
         }
 
         const calendarResponse = await axios.get(
@@ -94,6 +109,50 @@ const CurriculumDetail = () => {
 
     fetchData();
   }, [id]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedCurriculum({ ...updatedCurriculum, [name]: value });
+  };
+
+  const handleColorChange = (color) => {
+    setUpdatedCurriculum({ ...updatedCurriculum, color: color.hex });
+    setIsColorPickerOpen(false);
+  };
+
+  const handleUpdateCurriculum = async () => {
+    try {
+      const token = getToken();
+      const response = await axios.patch(
+        `/managers/manage-curriculums/${id}`,
+        updatedCurriculum,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            access: token,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setIsModalOpen(false);
+        swal("수정 성공", "교육 과정이 성공적으로 수정되었습니다.", "success");
+        // Refresh the curriculum data
+        const updatedCurriculumResponse = await axios.get(
+          `/managers/curriculum/${id}/basic`,
+          {
+            headers: { access: token },
+          }
+        );
+        setCurriculum(updatedCurriculumResponse.data);
+      } else {
+        swal("수정 실패", "교육 과정 수정에 실패했습니다. 다시 시도해주세요.", "error");
+      }
+    } catch (error) {
+      console.error("교육 과정 수정 중 오류 발생:", error);
+      swal("수정 실패", "교육 과정 수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+    }
+  };
 
   return (
     <div className="curriculum-detail">
@@ -152,7 +211,7 @@ const CurriculumDetail = () => {
                 <span className="curriculum-detail-subtitle">강사 정보</span>
               </div>
               <div className="curriculum-detail-info-box-content-second">
-                {teacher ? (
+                {teacher && teacher.name ? (
                   <>
                     <p>
                       <i className="fas fa-user"></i> {teacher.name}
@@ -168,11 +227,8 @@ const CurriculumDetail = () => {
                   <p>강사 정보가 없습니다.</p>
                 )}
               </div>
-              {teacher && (
-                <Link
-                  to={`/teacher/${id}`}
-                  className="curriculum-detail-link teacher-link"
-                >
+              {teacher && teacher.name && (
+                <Link to={`/teacher/${id}`} className="curriculum-detail-link teacher-link">
                   자세히 보기{" "}
                 </Link>
               )}
@@ -222,11 +278,101 @@ const CurriculumDetail = () => {
           </div>
         </div>
         <div className="curriculum-detail-update-button-container">
-          <button className="curriculum-detail-update-button">
+          <button
+            className="curriculum-detail-update-button"
+            onClick={() => setIsModalOpen(true)}
+          >
             교육 과정 수정
           </button>
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button
+              className="modal-close"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ×
+            </button>
+            <span className="curriculum-submit">교육 과정 수정</span>
+            <div className="curriculum-input-group">
+              <label>시작일</label>
+              <input
+                className="curriculum-start-date-input"
+                type="date"
+                name="startDate"
+                value={updatedCurriculum.startDate}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="curriculum-input-group">
+              <label>종료일</label>
+              <input
+                className="curriculum-end-date-input"
+                type="date"
+                name="endDate"
+                value={updatedCurriculum.endDate}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="curriculum-input-group">
+              <label>기수 색상</label>
+              <div className="color-input-wrapper">
+                <input
+                  className="color-input"
+                  type="text"
+                  name="color"
+                  value={updatedCurriculum.color}
+                  readOnly
+                />
+                <div
+                  className="color-input-select"
+                  onClick={() => setIsColorPickerOpen(true)}
+                >
+                  <div
+                    className="color-box"
+                    style={{ backgroundColor: updatedCurriculum.color }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+            {isColorPickerOpen && (
+              <div
+                className="color-picker-modal-overlay"
+                onClick={() => setIsColorPickerOpen(false)}
+              >
+                <div
+                  className="color-picker-modal-content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <CirclePicker
+                    color={updatedCurriculum.color}
+                    onChangeComplete={handleColorChange}
+                    colors={[
+                      "#F3C41E", "#F58D11", "#B85B27", "#A90C57",
+                      "#F45CE5", "#AE59F0", "#0A8735", "#6F961E",
+                      "#19E308", "#1D1AA6", "#20CFF5", "#98B3E5",
+                    ]}
+                  />
+                </div>
+              </div>
+            )}
+            <div className="modal-actions">
+              <button className="modal-button" onClick={handleUpdateCurriculum}>
+                교육 과정 수정
+              </button>
+              <button
+                className="modal-button"
+                onClick={() => setIsModalOpen(false)}
+              >
+                수정 취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

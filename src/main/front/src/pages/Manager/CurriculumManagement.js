@@ -56,6 +56,7 @@ const CurriculumManagement = () => {
       return;
     }
 
+    // 새로운 커리큘럼 객체 생성
     const newCurriculumItem = {
       type: newCurriculum.type,
       startDate: newCurriculum.startDate,
@@ -63,15 +64,14 @@ const CurriculumManagement = () => {
       color: newCurriculum.color,
     };
 
+    // teacherId가 유효한 경우에만 추가
     if (newCurriculum.teacherId && !isNaN(newCurriculum.teacherId)) {
       newCurriculumItem.teacherId = parseInt(newCurriculum.teacherId, 10);
-    } else {
-      newCurriculumItem.teacherId = null;
-      console.log("유효한 강사가 선택되지 않음");
     }
 
     console.log("전송 준비된 교육 과정:", newCurriculumItem);
 
+    // 날짜 유효성 검사
     if (new Date(newCurriculum.endDate) <= new Date(newCurriculum.startDate)) {
       swal("등록 실패", "종료일은 시작일 이후여야 합니다.", "warning");
       return;
@@ -185,9 +185,13 @@ const CurriculumManagement = () => {
           </Link>
         </div>
         <div className="curriculum-footer">
-          <span className="curriculum-teacher">
-            강사 {curriculum.teacherName}
-          </span>
+          {curriculum.teacherName ? (
+            <span className="curriculum-teacher">
+              강사 {curriculum.teacherName}
+            </span>
+          ) : (
+            <span className="curriculum-teacher">강사 정보 없음</span>
+          )}
           <span className="curriculum-students">
             <i className="fas fa-user"></i> {curriculum.attendance} /{" "}
             {curriculum.total}
@@ -195,7 +199,6 @@ const CurriculumManagement = () => {
         </div>
       </div>
     ));
-
   return (
     <div className="curriculum-management">
       <h1>교육 과정</h1>
