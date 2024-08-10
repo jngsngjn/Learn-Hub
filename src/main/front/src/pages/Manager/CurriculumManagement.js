@@ -18,6 +18,7 @@ const CurriculumManagement = () => {
     endDate: "",
     color: "",
     teacherId: "",
+    courseLabel: "",
   });
 
   const getToken = () => localStorage.getItem("access-token");
@@ -37,7 +38,7 @@ const CurriculumManagement = () => {
       courseLabel = "AWS 자바 웹 개발자 과정";
     }
 
-    setNewCurriculum({ ...newCurriculum, type: courseName, color: courseLabel }); // NCP 또는 AWS 클릭 시 기수 색상에도 반영
+    setNewCurriculum({ ...newCurriculum, type: courseName, courseLabel: courseLabel });
     console.log(`Course Changed: ${courseLabel}`);
   };
 
@@ -48,7 +49,6 @@ const CurriculumManagement = () => {
   };
 
   const handleAddCurriculum = async () => {
-    // 이미 사용된 색상 체크
     const usedColors = [...ncpCurriculums, ...awsCurriculums].map(
       (curriculum) => curriculum.color
     );
@@ -65,11 +65,10 @@ const CurriculumManagement = () => {
       color: newCurriculum.color,
     };
 
-    // teacherId가 유효한 값일 때만 숫자로 변환
     if (newCurriculum.teacherId && !isNaN(newCurriculum.teacherId)) {
       newCurriculumItem.teacherId = parseInt(newCurriculum.teacherId, 10);
     } else {
-      newCurriculumItem.teacherId = null; // teacherId를 null로 설정하여 전송
+      newCurriculumItem.teacherId = null;
       console.log("No valid teacher selected, setting teacherId to null.");
     }
 
@@ -87,7 +86,7 @@ const CurriculumManagement = () => {
         newCurriculumItem,
         {
           headers: {
-            "Content-Type": "application/json", // JSON 형식으로 전송
+            "Content-Type": "application/json",
             access: token,
           },
         }
@@ -256,8 +255,8 @@ const CurriculumManagement = () => {
                 <input
                   className="color-input"
                   type="text"
-                  name="color"
-                  value={newCurriculum.color}
+                  name="courseLabel"
+                  value={newCurriculum.courseLabel}
                   readOnly
                 />
                 <div
