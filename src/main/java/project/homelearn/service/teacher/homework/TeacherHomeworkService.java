@@ -82,7 +82,7 @@ public class TeacherHomeworkService {
         notificationService.homeworkNotify(homework, students);
     }
 
-    public boolean modifyHomework(Long homeworkId, String username, HomeworkEnrollDto homeworkDto) {
+    public boolean modifyHomework(Long homeworkId, String username, HomeworkModifyDto homeworkDto) {
         Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeworkId);
         Curriculum curriculum = homework.getCurriculum();
 
