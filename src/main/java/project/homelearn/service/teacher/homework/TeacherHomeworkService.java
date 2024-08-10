@@ -11,6 +11,7 @@ import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.teacher.dashboard.HomeworkStateDto;
 import project.homelearn.dto.teacher.homework.*;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.homework.AcceptFile;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.student.Student;
@@ -54,6 +55,17 @@ public class TeacherHomeworkService {
         homework.setDescription(homeworkDto.getDescription());
         homework.setDeadline(homeworkDto.getDeadLine());
         homework.setCurriculum(curriculum);
+
+        Boolean requiredFile = homeworkDto.getRequiredFile();
+        if (requiredFile) {
+            homework.setRequiredFile(true);
+            AcceptFile acceptFile = homeworkDto.getAcceptFile();
+            if (acceptFile == null) {
+                log.error("첨부 파일이 필수이지만 AcceptFile을 지정하지 않았습니다.");
+                return;
+            }
+            homework.setAcceptFile(acceptFile);
+        }
 
         MultipartFile file = homeworkDto.getFile();
         if (file != null) {
