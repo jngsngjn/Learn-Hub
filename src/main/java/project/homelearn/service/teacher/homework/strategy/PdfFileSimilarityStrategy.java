@@ -1,16 +1,25 @@
 package project.homelearn.service.teacher.homework.strategy;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
-import project.homelearn.entity.homework.StudentHomework;
+import project.homelearn.service.common.StorageService;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.InputStream;
 
 @Service
-public class PdfFileSimilarityStrategy implements FileSimilarityStrategy {
+public class PdfFileSimilarityStrategy extends AbstractFileSimilarityStrategy {
+
+    public PdfFileSimilarityStrategy(StorageService storageService) {
+        super(storageService);
+    }
 
     @Override
-    public List<List<String>> similarityCheck(List<StudentHomework> studentHomeworks) throws IOException {
-        return List.of();
+    protected String extractText(InputStream inputStream) throws IOException {
+        try (PDDocument document = PDDocument.load(inputStream)) {
+            PDFTextStripper pdfStripper = new PDFTextStripper();
+            return pdfStripper.getText(document);
+        }
     }
 }

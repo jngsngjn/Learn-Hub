@@ -30,7 +30,7 @@ public class HomeworkSimilarityController {
     private final SimilarityCheckContext similarityCheckContext;
 
     @GetMapping
-    public ResponseEntity<?> calculateSimilarity(@PathVariable Long homeworkId) throws IOException {
+    public ResponseEntity<?> calculateSimilarity(@PathVariable("homeworkId") Long homeworkId) throws IOException {
         Homework homework = homeworkService.getHomeworkById(homeworkId);
         Boolean requiredFile = homework.getRequiredFile();
 
