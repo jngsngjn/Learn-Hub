@@ -9,6 +9,7 @@ import project.homelearn.entity.board.comment.QuestionBoardComment;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.notification.student.StudentNotification;
 import project.homelearn.entity.student.Student;
+import project.homelearn.entity.student.badge.Badge;
 import project.homelearn.entity.survey.Survey;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.notification.StudentNotificationRepository;
@@ -63,6 +64,15 @@ public class StudentNotificationService {
         notification.setUser(student);
         notification.setQuestionBoardComment(questionBoardComment);
         notification.setType(REPLY_TO_QUESTION);
+        studentNotificationRepository.save(notification);
+    }
+
+    // 배지 얻을 시 알림
+    public void badgeNotify(User student, Badge badge) {
+        StudentNotification notification = new StudentNotification();
+        notification.setUser(student);
+        notification.setBadge(badge);
+        notification.setType(BADGE);
         studentNotificationRepository.save(notification);
     }
 }

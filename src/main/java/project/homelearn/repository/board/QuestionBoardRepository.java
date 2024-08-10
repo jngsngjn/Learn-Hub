@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.querydsl.QuestionBoardRepositoryCustom;
 
 import java.time.LocalDateTime;
@@ -15,8 +16,6 @@ import java.util.List;
 public interface QuestionBoardRepository extends JpaRepository<QuestionBoard, Long>, QuestionBoardRepositoryCustom {
 
     List<QuestionBoard> findByCreatedDateBeforeAndCommentsIsNull(LocalDateTime dateTime);
-
-    //키리큘럼 고려  1차
 
     //질문 게시판 페이지 리스트 -> 최신순
     @Query("select q from QuestionBoard q where q.user.curriculum = :curriculum order by q.createdDate desc")
@@ -40,4 +39,6 @@ public interface QuestionBoardRepository extends JpaRepository<QuestionBoard, Lo
 
     @Query("select q from QuestionBoard q join fetch q.user where q.id =:questionId")
     QuestionBoard findQuestionBoardAndWriter(@Param("questionId") Long questionId);
+
+    long countByUser(User user);
 }

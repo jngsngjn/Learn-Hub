@@ -21,6 +21,7 @@ import project.homelearn.entity.board.scrap.QuestionScrap;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.Subject;
 import project.homelearn.entity.student.Student;
+import project.homelearn.entity.student.badge.BadgeConstants;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
@@ -57,6 +58,7 @@ public class StudentQuestionBoardService {
     private final TeacherNotificationService teacherNotificationService;
     private final TeacherRepository teacherRepository;
     private final StudentNotificationService studentNotificationService;
+    private final BadgeService badgeService;
 
     // 글 작성
     public void writeQuestionBoard(String username, QuestionBoardWriteDto questionBoardWriteDto) {
@@ -87,6 +89,11 @@ public class StudentQuestionBoardService {
         // 강사에게 알림
         Teacher teacher = teacherRepository.findByStudentUsername(username);
         teacherNotificationService.questionNotify(teacher, questionBoard);
+
+        long count = questionBoardRepository.countByUser(student);
+        if (count == 10) {
+            badgeService.getBadge(student, BadgeConstants.QUESTION);
+        }
     }
 
     // 글 삭제
@@ -134,7 +141,7 @@ public class StudentQuestionBoardService {
         return true;
     }
 
-    // 댓글 작성
+    // 댓글 작성 (질문 답변)
     public void writeComment(Long questionBoardId, String username, CommentWriteDto commentDto) {
         User commentWriter = userRepository.findByUsername(username);
         QuestionBoard questionBoard = questionBoardRepository.findQuestionBoardAndWriter(questionBoardId);
@@ -151,6 +158,11 @@ public class StudentQuestionBoardService {
             return;
         }
         studentNotificationService.questionResponseNotify(boardWriter, questionBoard, comment);
+
+        long count = commentRepository.countDistinctQuestionCommentByUser(commentWriter);
+        if (count == 10) {
+            badgeService.getBadge(commentWriter, BadgeConstants.EXPLAIN);
+        }
     }
 
     // 댓글 수정

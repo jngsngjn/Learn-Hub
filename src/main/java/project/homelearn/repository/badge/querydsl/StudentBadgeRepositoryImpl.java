@@ -12,13 +12,12 @@ import static project.homelearn.entity.student.badge.QStudentBadge.studentBadge;
 import static project.homelearn.entity.user.QUser.user;
 
 @RequiredArgsConstructor
-public class StudentBadgeRepositoryImpl implements StudentBadgeRepositoryCustom{
+public class StudentBadgeRepositoryImpl implements StudentBadgeRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
     @Override
     public List<ViewMyBadgeDto> findStudentBadgeTop4(String username) {
-
         return queryFactory
                 .select(new QViewMyBadgeDto(
                         studentBadge.id,

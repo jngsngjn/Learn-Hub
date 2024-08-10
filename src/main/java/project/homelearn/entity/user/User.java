@@ -70,6 +70,9 @@ public abstract class User extends BaseEntity {
     @Column(name = "lecture_count", nullable = false)
     private int lectureCount = 0;
 
+    @Column(name = "password_change_count", nullable = false)
+    private int passwordChangeCount = 0;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LoginHistory> loginHistories = new ArrayList<>();
 
