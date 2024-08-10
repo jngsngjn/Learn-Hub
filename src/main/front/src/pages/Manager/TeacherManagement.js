@@ -84,40 +84,51 @@ const TeacherManagement = () => {
   );
 
   const handleAddTeacher = async () => {
-      try {
-          const token = getToken();
+    try {
+      const token = getToken();
+      const generation = newTeacher.generation ? parseInt(newTeacher.generation) : 1;
+      const curriculumFullName = `${newTeacher.curriculum} ${generation}기`;
 
-          const generation = newTeacher.generation ? parseInt(newTeacher.generation) : 1;
+      // 기존에 동일한 이름과 기수로 강사가 이미 등록되어 있는지 확인
+      const duplicateTeacher = teachers.find(
+        (teacher) =>
+          teacher.name === newTeacher.name &&
+          teacher.curriculumFullName === curriculumFullName
+      );
 
-          const curriculumFullName = `${newTeacher.curriculum} ${generation}기`;
-
-          const teacherData = {
-              name: newTeacher.name,
-              email: newTeacher.email,
-              phone: newTeacher.phone,
-              curriculumFullName: curriculumFullName,
-          };
-
-          console.log("강사 등록 데이터:", teacherData);
-
-          const response = await axios.post(
-              "/managers/manage-teachers/enroll",
-              teacherData,
-              {
-                  headers: { access: `Bearer ${token}` },
-              }
-          );
-
-          console.log("강사 등록 응답:", response.data);
-          if (response.status === 200) {
-              setIsModalOpen(false);
-              fetchTeachers();
-          } else {
-              console.error("강사 등록 실패");
-          }
-      } catch (error) {
-          console.error("등록 에러:", error);
+      if (duplicateTeacher) {
+        swal("등록 실패", "이미 해당 커리큘럼에 동일한 강사가 등록되어 있습니다.", "warning");
+        return;
       }
+
+      const teacherData = {
+        name: newTeacher.name,
+        email: newTeacher.email,
+        phone: newTeacher.phone,
+        curriculumFullName: curriculumFullName,
+      };
+
+      console.log("강사 등록 데이터:", teacherData);
+
+      const response = await axios.post(
+        "/managers/manage-teachers/enroll",
+        teacherData,
+        {
+          headers: { access: `Bearer ${token}` },
+        }
+      );
+
+      console.log("강사 등록 응답:", response.data);
+      if (response.status === 200) {
+        setIsModalOpen(false);
+        fetchTeachers();
+      } else {
+        console.error("강사 등록 실패");
+      }
+    } catch (error) {
+      console.error("등록 에러:", error);
+      swal("등록 실패", "강사 등록 중 오류가 발생했습니다.", "error");
+    }
   };
 
 

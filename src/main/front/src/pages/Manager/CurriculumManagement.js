@@ -7,9 +7,10 @@ import "../../components/Modal/ManagerModal/ManagerModal.css";
 import swal from "sweetalert";
 
 const CurriculumManagement = () => {
+  const [teachers, setTeachers] = useState([]);
+  const [colors, setColors] = useState([]);
   const [ncpCurriculums, setNcpCurriculums] = useState([]);
   const [awsCurriculums, setAwsCurriculums] = useState([]);
-  const [teachers, setTeachers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [newCurriculum, setNewCurriculum] = useState({
@@ -26,7 +27,7 @@ const CurriculumManagement = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCurriculum({ ...newCurriculum, [name]: value });
-    console.log(`Input Changed - ${name}: ${value}`);
+    console.log(`입력 변경됨 - ${name}: ${value}`);
   };
 
   const handleCourseChange = (courseName) => {
@@ -39,21 +40,17 @@ const CurriculumManagement = () => {
     }
 
     setNewCurriculum({ ...newCurriculum, type: courseName, courseLabel: courseLabel });
-    console.log(`Course Changed: ${courseLabel}`);
+    console.log(`과정 변경됨: ${courseLabel}`);
   };
 
   const handleColorChange = (color) => {
     setNewCurriculum({ ...newCurriculum, color: color.hex });
     setIsColorPickerOpen(false);
-    console.log(`Color Selected: ${color.hex}`);
+    console.log(`색상 선택됨: ${color.hex}`);
   };
 
   const handleAddCurriculum = async () => {
-    const usedColors = [...ncpCurriculums, ...awsCurriculums].map(
-      (curriculum) => curriculum.color
-    );
-
-    if (usedColors.includes(newCurriculum.color)) {
+    if (colors.includes(newCurriculum.color)) {
       swal("등록 실패", "이미 사용된 색상입니다. 다른 색상을 선택하세요.", "warning");
       return;
     }
@@ -69,10 +66,10 @@ const CurriculumManagement = () => {
       newCurriculumItem.teacherId = parseInt(newCurriculum.teacherId, 10);
     } else {
       newCurriculumItem.teacherId = null;
-      console.log("No valid teacher selected, setting teacherId to null.");
+      console.log("유효한 강사가 선택되지 않음");
     }
 
-    console.log("Preparing to send curriculum:", newCurriculumItem);
+    console.log("전송 준비된 교육 과정:", newCurriculumItem);
 
     if (new Date(newCurriculum.endDate) <= new Date(newCurriculum.startDate)) {
       swal("등록 실패", "종료일은 시작일 이후여야 합니다.", "warning");
@@ -92,23 +89,59 @@ const CurriculumManagement = () => {
         }
       );
 
-      console.log("Response received:", response.data);
+      console.log("응답 수신:", response.data);
 
       if (response.status === 200) {
         setIsModalOpen(false);
-        fetchCurriculums(newCurriculum.type);
+
+        // 새 교육 과정이 등록된 후 상태 업데이트
+        await fetchCurriculums(newCurriculum.type);
+        await fetchEnrollReadyData(); // 데이터를 새로고침하여 강사 목록 업데이트
       } else {
         console.error("교육 과정 등록 실패");
       }
     } catch (error) {
-      console.error("Error during curriculum enrollment:", error);
+      console.error("교육 과정 등록 중 오류 발생:", error);
+    }
+  };
+
+  const fetchEnrollReadyData = async () => {
+    try {
+      const token = getToken();
+      console.log("등록 준비 데이터 가져오는 중...");
+      const response = await axios.get("/enroll-curriculum-ready", {
+        headers: { access: token },
+      });
+
+      const { teachers: availableTeachers, colors: usedColors } = response.data;
+
+      // NCP 및 AWS 과정에 배정된 강사들의 ID를 수집
+      const assignedTeacherIds = [
+        ...ncpCurriculums,
+        ...awsCurriculums
+      ].filter(curriculum => curriculum.teacherId)
+        .map(curriculum => curriculum.teacherId);
+
+      // 배정되지 않은 강사들만 필터링
+      const availableTeachersFiltered = availableTeachers.filter(
+        (teacher) => !assignedTeacherIds.includes(teacher.id)
+      );
+
+      setTeachers(availableTeachersFiltered);
+      setColors(usedColors);
+      console.log("강사 및 색상 데이터 가져옴:", response.data);
+
+    } catch (error) {
+      console.error("등록 준비 데이터 가져오기 중 오류 발생:", error);
+      setTeachers([]);
+      setColors([]);
     }
   };
 
   const fetchCurriculums = async (type) => {
     try {
       const token = getToken();
-      console.log(`Fetching ${type} curriculums with token: ${token}`);
+      console.log(`${type} 과정 교육 과정 목록 가져오는 중...`);
       const response = await axios.get(`/managers/manage-curriculums/${type}`, {
         headers: { access: token },
       });
@@ -120,30 +153,18 @@ const CurriculumManagement = () => {
         setAwsCurriculums(response.data || []);
       }
     } catch (error) {
-      console.error(`Error fetching ${type} curriculums:`, error);
-    }
-  };
-
-  const fetchTeachers = async () => {
-    try {
-      const token = getToken();
-      console.log(`Fetching teachers with token: ${token}`);
-      const response = await axios.get("/managers/manage-teachers", {
-        headers: { access: token },
-      });
-      const teachersData = response.data?.content || [];
-      setTeachers(teachersData);
-      console.log("Teachers fetched:", teachersData);
-    } catch (error) {
-      console.error("Error fetching teachers:", error);
-      setTeachers([]);
+      console.error(`${type} 과정 교육 과정 목록 가져오기 중 오류 발생:`, error);
     }
   };
 
   useEffect(() => {
-    fetchCurriculums("NCP");
-    fetchCurriculums("AWS");
-    fetchTeachers();
+    const fetchAllData = async () => {
+      await fetchCurriculums("NCP");
+      await fetchCurriculums("AWS");
+      fetchEnrollReadyData(); // 모든 커리큘럼 데이터를 가져온 후에 강사 데이터를 필터링
+    };
+
+    fetchAllData();
   }, []);
 
   const renderCurriculumList = (curriculums) =>
