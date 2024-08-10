@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import "./StudentFreeBoard.css";
+import { useNavigate } from "react-router-dom";
 
 const StudentFreeBoard = () => {
+  const navigate = useNavigate();
+  const id = "boardId";
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -36,6 +40,11 @@ const StudentFreeBoard = () => {
       handleChange(e);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="main_container">
       <div className="student_freeboard_page_title_box">
@@ -55,7 +64,9 @@ const StudentFreeBoard = () => {
         </tr>
         <tr className="student_freeboard_table_body">
           <th>1</th>
-          <th>다들 수업 잘 따라 갈 수 있나요</th>
+          <th onClick={() => navigate(`/students/freeboard/${id}`)}>
+            다들 수업 잘 따라 갈 수 있나요
+          </th>
           <th>김수정</th>
           <th>2024-08-07</th>
           <th>3</th>
