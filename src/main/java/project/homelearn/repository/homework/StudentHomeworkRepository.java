@@ -19,6 +19,6 @@ public interface StudentHomeworkRepository extends JpaRepository<StudentHomework
 
     long countByHomework(Homework homework);
 
-    @Query("select sh from StudentHomework sh join fetch sh.user where sh.homework.id =:homeworkId")
-    List<StudentHomework> findAllByHomeworkId(@Param("homeworkId") Long homeworkId);
+    @Query("select sh from StudentHomework sh join fetch sh.user where sh.homework =:homework")
+    List<StudentHomework> findAllByHomework(@Param("homework") Homework homework);
 }

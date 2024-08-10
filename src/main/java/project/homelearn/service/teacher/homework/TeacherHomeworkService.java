@@ -197,7 +197,11 @@ public class TeacherHomeworkService {
         return homeworkRepository.findHomeworkSubmitList(homeworkId);
     }
 
-    public List<StudentHomework> getAllStudentHomeworksByHomeworkId(Long homeworkId) {
-        return studentHomeworkRepository.findAllByHomeworkId(homeworkId);
+    public List<StudentHomework> getAllStudentHomeworksByHomework(Homework homework) {
+        return studentHomeworkRepository.findAllByHomework(homework);
+    }
+
+    public Homework getHomeworkById(Long homeworkId) {
+        return homeworkRepository.findById(homeworkId).orElseThrow();
     }
 }
