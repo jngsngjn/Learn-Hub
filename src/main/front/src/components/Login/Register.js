@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Register.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from '../../utils/axios';
@@ -25,6 +25,9 @@ function Register() {
   const [passwordValid, setPasswordValid] = useState(false);
 
   const [profileImage, setProfileImage] = useState(null); // 이미지 파일 상태 추가
+  const [previewImage, setPreviewImage] = useState(null); // 이미지 미리보기 상태 추가
+
+  const fileInputRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -67,7 +70,21 @@ function Register() {
   };
 
   const handleFileChange = (e) => {
-    setProfileImage(e.target.files[0]);
+    const file = e.target.files[0];
+    setProfileImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreviewImage(null);
+    }
+  };
+
+  const handleEditClick = () => {
+    fileInputRef.current.click();
   };
 
   const handleSubmit = async (e) => {
@@ -91,8 +108,6 @@ function Register() {
       if (profileImage) {
         registerData.append('profileImage', profileImage); // 이미지 파일 추가
       }
-
-      console.log("회원가입 데이터:", registerData); // 디버깅용 로그
 
       const response = await axios.post('/register', registerData, {
         headers: {
@@ -119,6 +134,24 @@ function Register() {
     <div className="signup-container">
       <form onSubmit={handleSubmit}>
         <h2 className="signup-title">회원가입</h2>
+        <div className="image-container">
+          <div className="image-preview">
+            {previewImage ? (
+              <img src={previewImage} alt="Profile Preview" className="profile-preview-image" />
+            ) : (
+              <span>이미지 선택</span>
+            )}
+          </div>
+          <div className="edit-icon" onClick={handleEditClick}>
+            <i className="fa fa-pencil" aria-hidden="true"></i>
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </div>
+        </div>
         <div className="signup-input-group">
           <label htmlFor="name" className="signup-label">이름</label>
           <div className="signup-input-wrapper">
@@ -212,15 +245,6 @@ function Register() {
               </span>
             )}
           </div>
-        </div>
-        <div className="signup-input-group">
-          <label htmlFor="profileImage" className="signup-label">프로필 이미지</label>
-          <input
-            className="signup-input"
-            type="file"
-            id="profileImage"
-            onChange={handleFileChange}
-          />
         </div>
         <div className="signup-button-group">
           <button className="signup-prev-button" type="button" onClick={handlePreviousStep}>이전 단계</button>
