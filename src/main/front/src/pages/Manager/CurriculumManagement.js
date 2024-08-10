@@ -29,18 +29,29 @@ const CurriculumManagement = () => {
   };
 
   const handleCourseChange = (courseName) => {
-    setNewCurriculum({ ...newCurriculum, type: courseName, color: courseName }); // NCP 또는 AWS 클릭 시 기수 색상에도 반영
-    console.log(`Course Changed: ${courseName}`);
+    let courseLabel = "";
+
+    if (courseName === "NCP") {
+      courseLabel = "네이버 클라우드 데브옵스 과정";
+    } else if (courseName === "AWS") {
+      courseLabel = "AWS 자바 웹 개발자 과정";
+    }
+
+    setNewCurriculum({ ...newCurriculum, type: courseName, color: courseLabel }); // NCP 또는 AWS 클릭 시 기수 색상에도 반영
+    console.log(`Course Changed: ${courseLabel}`);
   };
 
-  const handleColorChange = (color) => {
-    setNewCurriculum({ ...newCurriculum, color: color.hex });
-    setIsColorPickerOpen(false);
-    console.log(`Color Selected: ${color.hex}`);
-  };
+
+ const handleColorChange = (color) => {
+     const colorBox = document.querySelector(".color-box");
+     if (colorBox) {
+         colorBox.style.backgroundColor = color.hex;
+     }
+     setIsColorPickerOpen(false);
+     console.log(`Color Selected: ${color.hex}`);
+ };
 
   const handleAddCurriculum = async () => {
-    // 이미 사용된 색상 체크
     const usedColors = [...ncpCurriculums, ...awsCurriculums].map(
       (curriculum) => curriculum.color
     );
