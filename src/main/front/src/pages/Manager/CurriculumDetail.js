@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../../utils/axios";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import ManagerCalendar from "../../components/Calendar/ManagerCalendar/ManagerCalendar";
@@ -18,11 +18,7 @@ const CurriculumDetail = () => {
     total: 0,
     ratio: 0,
   });
-  const [teacher, setTeacher] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
+  const [teacher, setTeacher] = useState(null); // 초기 상태를 null로 설정
   const [schedules, setSchedules] = useState([]);
   const [survey, setSurvey] = useState({
     title: "",
@@ -36,25 +32,21 @@ const CurriculumDetail = () => {
 
   useEffect(() => {
     if (!id) {
-      console.error("Invalid curriculum ID");
+      console.error("잘못된 커리큘럼 ID입니다.");
       return;
     }
 
     const fetchData = async () => {
       try {
         const token = getToken();
-        console.log("Token:", token);
         const config = {
           headers: { access: token },
         };
-
-        console.log("ID 값:", id);
 
         const basicResponse = await axios.get(
           `/managers/curriculum/${id}/basic`,
           config
         );
-        console.log("Basic:", basicResponse);
         setCurriculum(basicResponse.data);
 
         try {
@@ -62,7 +54,6 @@ const CurriculumDetail = () => {
             `/managers/curriculum/${id}/attendance`,
             config
           );
-          console.log("출석:", attendanceResponse);
           setAttendance(attendanceResponse.data);
           setIsWeekend(false);
         } catch (error) {
@@ -80,32 +71,29 @@ const CurriculumDetail = () => {
             `/managers/curriculum/${id}/teacher`,
             config
           );
-          console.log("강사:", teacherResponse);
-          setTeacher(teacherResponse.data);
+          // 강사 정보가 제대로 있다면, 상태를 업데이트하고, 그렇지 않으면 null로 설정
+          if (teacherResponse.data && teacherResponse.data.name) {
+            setTeacher(teacherResponse.data);
+          } else {
+            setTeacher(null);
+          }
         } catch (error) {
           console.error("강사 정보 조회 오류:", error);
-          setTeacher({ name: "", email: "", phone: "" });
+          setTeacher(null); // 오류 발생 시 강사 정보를 null로 설정
         }
 
         const calendarResponse = await axios.get(
           `/managers/curriculum/${id}/calendar`,
           config
         );
-        console.log("달력:", calendarResponse);
         setSchedules(calendarResponse.data);
-
-        // survey 요청은 주석 처리된 상태로 유지
-        // const surveyResponse = await axios.get(`/managers/curriculum/${id}/survey`, config);
-        // console.log('설문조사 Response:', surveyResponse);
-        // setSurvey(surveyResponse.data);
       } catch (error) {
-        console.error("response 오류:", error.response);
+        console.error("응답 오류:", error.response);
       }
     };
 
     fetchData();
   }, [id]);
-
 
   return (
     <div className="curriculum-detail">
@@ -134,9 +122,7 @@ const CurriculumDetail = () => {
           <div className="curriculum-detail-left-container">
             <div className="curriculum-detail-info-box">
               <div className="curriculum-detail-info-box-title">
-                <span className="curriculum-detail-subtitle">
-                  학생 출결 현황
-                </span>
+                <span className="curriculum-detail-subtitle">학생 출결 현황</span>
               </div>
               <div className="curriculum-detail-info-box-content">
                 {isWeekend ? (
@@ -166,7 +152,7 @@ const CurriculumDetail = () => {
                 <span className="curriculum-detail-subtitle">강사 정보</span>
               </div>
               <div className="curriculum-detail-info-box-content-second">
-                {teacher.name ? (
+                {teacher ? (
                   <>
                     <p>
                       <i className="fas fa-user"></i> {teacher.name}
@@ -182,12 +168,14 @@ const CurriculumDetail = () => {
                   <p>강사 정보가 없습니다.</p>
                 )}
               </div>
-              <Link
-                to={`/teacher/${id}`}
-                className="curriculum-detail-link teacher-link"
-              >
-                자세히 보기{" "}
-              </Link>
+              {teacher && (
+                <Link
+                  to={`/teacher/${id}`}
+                  className="curriculum-detail-link teacher-link"
+                >
+                  자세히 보기{" "}
+                </Link>
+              )}
             </div>
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">

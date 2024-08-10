@@ -50,7 +50,8 @@ const CurriculumManagement = () => {
   };
 
   const handleAddCurriculum = async () => {
-    if (colors.includes(newCurriculum.color)) {
+    // 색상 중복 체크
+    if (colors.includes(newCurriculum.color.toLowerCase())) {
       swal("등록 실패", "이미 사용된 색상입니다. 다른 색상을 선택하세요.", "warning");
       return;
     }
@@ -93,15 +94,16 @@ const CurriculumManagement = () => {
 
       if (response.status === 200) {
         setIsModalOpen(false);
-
-        // 새 교육 과정이 등록된 후 상태 업데이트
         await fetchCurriculums(newCurriculum.type);
-        await fetchEnrollReadyData(); // 데이터를 새로고침하여 강사 목록 업데이트
+        await fetchEnrollReadyData();
+        swal("등록 성공", "교육 과정이 성공적으로 등록되었습니다.", "success");
       } else {
         console.error("교육 과정 등록 실패");
+        swal("등록 실패", "교육 과정 등록에 실패했습니다. 다시 시도해주세요.", "error");
       }
     } catch (error) {
       console.error("교육 과정 등록 중 오류 발생:", error);
+      swal("등록 실패", "교육 과정 등록 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
     }
   };
 
@@ -109,26 +111,24 @@ const CurriculumManagement = () => {
     try {
       const token = getToken();
       console.log("등록 준비 데이터 가져오는 중...");
-      const response = await axios.get("/enroll-curriculum-ready", {
+      const response = await axios.get("/managers/enroll-curriculum-ready", {
         headers: { access: token },
       });
 
       const { teachers: availableTeachers, colors: usedColors } = response.data;
 
-      // NCP 및 AWS 과정에 배정된 강사들의 ID를 수집
       const assignedTeacherIds = [
         ...ncpCurriculums,
         ...awsCurriculums
       ].filter(curriculum => curriculum.teacherId)
         .map(curriculum => curriculum.teacherId);
 
-      // 배정되지 않은 강사들만 필터링
       const availableTeachersFiltered = availableTeachers.filter(
         (teacher) => !assignedTeacherIds.includes(teacher.id)
       );
 
       setTeachers(availableTeachersFiltered);
-      setColors(usedColors);
+      setColors(usedColors.map(color => color.toLowerCase()));
       console.log("강사 및 색상 데이터 가져옴:", response.data);
 
     } catch (error) {
@@ -161,7 +161,7 @@ const CurriculumManagement = () => {
     const fetchAllData = async () => {
       await fetchCurriculums("NCP");
       await fetchCurriculums("AWS");
-      fetchEnrollReadyData(); // 모든 커리큘럼 데이터를 가져온 후에 강사 데이터를 필터링
+      fetchEnrollReadyData();
     };
 
     fetchAllData();
@@ -269,7 +269,6 @@ const CurriculumManagement = () => {
                 onChange={handleInputChange}
               />
             </div>
-
             <div className="curriculum-input-group">
               <label>기수 색상</label>
               <div className="color-input-wrapper">
