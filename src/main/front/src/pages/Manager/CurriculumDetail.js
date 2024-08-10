@@ -30,6 +30,7 @@ const CurriculumDetail = () => {
     completed: 0,
     total: 0,
   });
+  const [isWeekend, setIsWeekend] = useState(false);
 
   const getToken = () => localStorage.getItem("access-token");
 
@@ -56,19 +57,36 @@ const CurriculumDetail = () => {
         console.log("Basic:", basicResponse);
         setCurriculum(basicResponse.data);
 
-        const attendanceResponse = await axios.get(
-          `/managers/curriculum/${id}/attendance`,
-          config
-        );
-        console.log("출석:", attendanceResponse);
-        setAttendance(attendanceResponse.data);
+        try {
+          const attendanceResponse = await axios.get(
+            `/managers/curriculum/${id}/attendance`,
+            config
+          );
+          console.log("출석:", attendanceResponse);
+          setAttendance(attendanceResponse.data);
+          setIsWeekend(false);
+        } catch (error) {
+          if (error.response && error.response.status === 409) {
+            console.log("주말에는 출석 정보를 조회할 수 없습니다.");
+            setAttendance({ attendance: 0, total: 0, ratio: 0 });
+            setIsWeekend(true);
+          } else {
+            console.error("출석 정보 조회 오류:", error);
+          }
+        }
 
-        const teacherResponse = await axios.get(
-          `/managers/curriculum/${id}/teacher`,
-          config
-        );
-        console.log("강사:", teacherResponse);
-        setTeacher(teacherResponse.data);
+        try {
+          const teacherResponse = await axios.get(
+            `/managers/curriculum/${id}/teacher`,
+            config
+          );
+          console.log("강사:", teacherResponse);
+          setTeacher(teacherResponse.data);
+        } catch (error) {
+          // 에러 발생 시 강사 정보를 빈 값으로 초기화
+          console.error("강사 정보 조회 오류:", error);
+          setTeacher({ name: "", email: "", phone: "" });
+        }
 
         const calendarResponse = await axios.get(
           `/managers/curriculum/${id}/calendar`,
@@ -77,7 +95,7 @@ const CurriculumDetail = () => {
         console.log("달력:", calendarResponse);
         setSchedules(calendarResponse.data);
 
-        // survey는 없기 때문에 주석처리
+        // survey 요청은 주석 처리된 상태로 유지
         // const surveyResponse = await axios.get(`/managers/curriculum/${id}/survey`, config);
         // console.log('설문조사 Response:', surveyResponse);
         // setSurvey(surveyResponse.data);
@@ -88,6 +106,7 @@ const CurriculumDetail = () => {
 
     fetchData();
   }, [id]);
+
 
   return (
     <div className="curriculum-detail">
@@ -121,16 +140,20 @@ const CurriculumDetail = () => {
                 </span>
               </div>
               <div className="curriculum-detail-info-box-content">
-                <div className="curriculum-detail-circular-progress">
-                  <p className="curriculum-detail-attendance-count">
-                    <i className="fas fa-user-graduate"></i>
-                    {attendance.attendance} / {attendance.total}
-                  </p>
-                  <CircularProgressbar
-                    value={attendance.ratio}
-                    text={`${attendance.ratio}%`}
-                  />
-                </div>
+                {isWeekend ? (
+                  <p>휴무일입니다</p>
+                ) : (
+                  <div className="curriculum-detail-circular-progress">
+                    <p className="curriculum-detail-attendance-count">
+                      <i className="fas fa-user-graduate"></i>
+                      {attendance.attendance} / {attendance.total}
+                    </p>
+                    <CircularProgressbar
+                      value={attendance.ratio}
+                      text={`${attendance.ratio}%`}
+                    />
+                  </div>
+                )}
               </div>
               <Link
                 to={`/attendance/${id}`}
@@ -144,15 +167,21 @@ const CurriculumDetail = () => {
                 <span className="curriculum-detail-subtitle">강사 정보</span>
               </div>
               <div className="curriculum-detail-info-box-content-second">
-                <p>
-                  <i className="fas fa-user"></i> {teacher.name}
-                </p>
-                <p>
-                  <i className="fas fa-envelope"></i> {teacher.email}
-                </p>
-                <p>
-                  <i className="fas fa-phone"></i> {teacher.phone}
-                </p>
+                {teacher.name ? (
+                  <>
+                    <p>
+                      <i className="fas fa-user"></i> {teacher.name}
+                    </p>
+                    <p>
+                      <i className="fas fa-envelope"></i> {teacher.email}
+                    </p>
+                    <p>
+                      <i className="fas fa-phone"></i> {teacher.phone}
+                    </p>
+                  </>
+                ) : (
+                  <p>강사 정보가 없습니다.</p>
+                )}
               </div>
               <Link
                 to={`/teacher/${id}`}
