@@ -24,6 +24,7 @@ public class SimilarityCheckContext {
         strategies.put(AcceptFile.SQL, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
         strategies.put(AcceptFile.HTML, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
         strategies.put(AcceptFile.JS, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
+        strategies.put(AcceptFile.TXT, strategyList.stream().filter(s -> s instanceof TextFileSimilarityStrategy).findFirst().orElseThrow());
         strategies.put(AcceptFile.PDF, strategyList.stream().filter(s -> s instanceof PdfFileSimilarityStrategy).findFirst().orElseThrow());
         strategies.put(AcceptFile.ZIP, strategyList.stream().filter(s -> s instanceof ZipFileSimilarityStrategy).findFirst().orElseThrow());
     }
