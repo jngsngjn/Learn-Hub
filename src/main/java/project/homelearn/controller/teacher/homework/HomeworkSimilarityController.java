@@ -50,7 +50,7 @@ public class HomeworkSimilarityController {
                 return new ResponseEntity<>("비교 대상이 2개 미만입니다.", HttpStatus.BAD_REQUEST);
             }
 
-            List<List<String>> result = textFileSimilarityStrategy.similarityCheckProcess(studentHomeworks);
+            List<List<String>> result = textFileSimilarityStrategy.similarityCheck(studentHomeworks);
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
