@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.teacher.homework.HomeworkEnrollDto;
 import project.homelearn.dto.teacher.homework.HomeworkFeedbackDto;
-import project.homelearn.service.teacher.TeacherHomeworkService;
+import project.homelearn.service.teacher.homework.TeacherHomeworkService;
 
 import java.security.Principal;
 

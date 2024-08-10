@@ -7,6 +7,8 @@ import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.student.Student;
 
+import java.util.List;
+
 public interface StudentHomeworkRepository extends JpaRepository<StudentHomework, Long> {
 
     @Query("SELECT COUNT(sh) > 0 FROM StudentHomework sh WHERE sh.user =:student AND sh.homework =:homework")
@@ -16,4 +18,7 @@ public interface StudentHomeworkRepository extends JpaRepository<StudentHomework
     StudentHomework findByHomeworkId(@Param("homeworkId") Long homeworkId);
 
     long countByHomework(Homework homework);
+
+    @Query("select sh from StudentHomework sh join fetch sh.user where sh.homework.id =:homeworkId")
+    List<StudentHomework> findAllByHomeworkId(@Param("homeworkId") Long homeworkId);
 }

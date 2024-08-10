@@ -1,4 +1,4 @@
-package project.homelearn.service.teacher;
+package project.homelearn.service.teacher.homework;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -183,5 +183,9 @@ public class TeacherHomeworkService {
             return null;
         }
         return homeworkRepository.findHomeworkSubmitList(homeworkId);
+    }
+
+    public List<StudentHomework> getAllStudentHomeworksByHomeworkId(Long homeworkId) {
+        return studentHomeworkRepository.findAllByHomeworkId(homeworkId);
     }
 }

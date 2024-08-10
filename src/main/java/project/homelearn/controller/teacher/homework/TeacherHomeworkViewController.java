@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.teacher.homework.HomeworkDetailDto;
 import project.homelearn.dto.teacher.homework.HomeworkSubmitListDto;
 import project.homelearn.dto.teacher.homework.HomeworkTabDto;
-import project.homelearn.service.teacher.TeacherHomeworkService;
+import project.homelearn.service.teacher.homework.TeacherHomeworkService;
 
 import java.security.Principal;
 import java.util.List;
