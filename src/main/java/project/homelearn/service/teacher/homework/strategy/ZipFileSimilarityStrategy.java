@@ -1,6 +1,7 @@
 package project.homelearn.service.teacher.homework.strategy;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.service.common.StorageService;
@@ -14,6 +15,7 @@ import java.util.zip.ZipFile;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ZipFileSimilarityStrategy implements FileSimilarityStrategy {
 
     private final StorageService storageService;
@@ -43,14 +45,17 @@ public class ZipFileSimilarityStrategy implements FileSimilarityStrategy {
                 Map<String, String> extractedFiles2 = extractFilesFromZip(storageService.downloadFile(studentHomeworks.get(j).getFilePath()));
 
                 double overallSimilarity = calculateZipFileSimilarity(extractedFiles1, extractedFiles2);
+                log.info("파일 {}와 {}의 유사도: {}", studentHomeworks.get(i).getFilePath(), studentHomeworks.get(j).getFilePath(), overallSimilarity);
 
                 if (overallSimilarity >= 0.9) {
+                    log.info("유사도가 90% 이상이므로 같은 그룹으로 묶습니다.");
                     currentGroup.add(studentHomeworks.get(j).getUser().getName());
                     processed[j] = true;
                 }
             }
 
             if (currentGroup.size() > 1) {
+                log.info("그룹을 추가합니다: {}", currentGroup);
                 similarityGroups.add(currentGroup);
             }
         }
@@ -68,6 +73,7 @@ public class ZipFileSimilarityStrategy implements FileSimilarityStrategy {
                 ZipEntry zipEntry = entries.nextElement();
                 if (!zipEntry.isDirectory()) {
                     String fileName = zipEntry.getName();
+                    log.info("ZIP 파일에서 추출한 파일: {}", fileName);
                     String fileContent = extractTextFromEntry(zipFile, zipEntry);
                     if (fileContent != null && !fileContent.isEmpty()) {
                         extractedFiles.put(fileName, fileContent);
@@ -92,6 +98,7 @@ public class ZipFileSimilarityStrategy implements FileSimilarityStrategy {
             byte[] fileData = outputStream.toByteArray();
 
             String fileName = zipEntry.getName();
+            log.info("파일의 내용 추출 중: {}", fileName);
             if (fileName.endsWith(".java") || fileName.endsWith(".html") || fileName.endsWith(".js") || fileName.endsWith(".css") || fileName.endsWith(".sql")
                     || fileName.endsWith(".properties") || fileName.endsWith(".yml") || fileName.endsWith(".xml") || fileName.endsWith(".gradle")) {
                 return new String(fileData);
@@ -111,11 +118,14 @@ public class ZipFileSimilarityStrategy implements FileSimilarityStrategy {
                 String text1 = extractedFiles1.get(fileName);
                 String text2 = extractedFiles2.get(fileName);
                 double similarity = textFileSimilarityStrategy.calculateTextSimilarity(text1, text2);
+                log.info("파일 {}의 유사도: {}", fileName, similarity);
                 totalSimilarity += similarity;
                 comparisonCount++;
             }
         }
 
-        return comparisonCount > 0 ? totalSimilarity / comparisonCount : 0.0;
+        double overallSimilarity = comparisonCount > 0 ? totalSimilarity / comparisonCount : 0.0;
+        log.info("전체 유사도: {}", overallSimilarity);
+        return overallSimilarity;
     }
 }
