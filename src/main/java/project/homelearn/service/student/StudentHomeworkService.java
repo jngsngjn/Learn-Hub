@@ -196,6 +196,8 @@ public class StudentHomeworkService {
                 homework.getId(),
                 homework.getTitle(),
                 homework.getDescription(),
+                homework.getRequiredFile(),
+                homework.getAcceptFile(),
                 homework.getDeadline(),
                 homework.getCreatedDate(),
                 homework.getUploadFileName(),
