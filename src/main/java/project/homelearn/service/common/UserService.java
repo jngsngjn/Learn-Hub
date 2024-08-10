@@ -12,10 +12,12 @@ import project.homelearn.entity.user.EnrollList;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.UserRepository;
+import project.homelearn.service.student.BadgeService;
 
 import java.time.Duration;
 
 import static project.homelearn.config.common.MailType.RESET_PW;
+import static project.homelearn.entity.student.badge.BadgeConstants.SECURITY;
 
 @Slf4j
 @Service
@@ -28,6 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final EnrollListRepository enrollListRepository;
+    private final BadgeService badgeService;
 
     // 회원가입 전 코드 인증
     public boolean verifyCodeBeforeRegister(EmailCodeDto emailCodeDto) {
@@ -100,6 +103,13 @@ public class UserService {
         if (redisService.isUserVerified(username)) {
             user.setPassword(passwordEncoder.encode(password));
             redisService.deleteVerification(username);
+
+            int count = user.getPasswordChangeCount() + 1;
+            user.setPasswordChangeCount(count);
+
+            if (count == 3) {
+                badgeService.getBadge(user, SECURITY);
+            }
             return true;
         }
         return false;
