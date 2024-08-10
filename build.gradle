@@ -81,6 +81,7 @@ dependencies {
     // web socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+    // 과제 유사도 검사 시 사용
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'org.apache.pdfbox:pdfbox:2.0.27'
 
