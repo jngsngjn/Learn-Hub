@@ -224,7 +224,7 @@ const CurriculumManagement = () => {
             <div className="curriculum-input-group">
               <label>시작일</label>
               <input
-                className="start-date-input"
+                className="curriculum-start-date-input"
                 type="date"
                 name="startDate"
                 value={newCurriculum.startDate}
@@ -234,13 +234,14 @@ const CurriculumManagement = () => {
             <div className="curriculum-input-group">
               <label>종료일</label>
               <input
-                className="end-date-input"
+                className="curriculum-end-date-input"
                 type="date"
                 name="endDate"
                 value={newCurriculum.endDate}
                 onChange={handleInputChange}
               />
             </div>
+
             <div className="curriculum-input-group">
               <label>기수 색상</label>
               <div className="color-input-wrapper">
@@ -248,7 +249,7 @@ const CurriculumManagement = () => {
                   className="color-input"
                   type="text"
                   name="color"
-                  value={newCurriculum.color} // NCP나 AWS 클릭 시 과정명이 기수 색상 필드에 표시됩니다.
+                  value={newCurriculum.color}
                   readOnly
                 />
                 <div

@@ -83,7 +83,6 @@ const CurriculumDetail = () => {
           console.log("강사:", teacherResponse);
           setTeacher(teacherResponse.data);
         } catch (error) {
-          // 에러 발생 시 강사 정보를 빈 값으로 초기화
           console.error("강사 정보 조회 오류:", error);
           setTeacher({ name: "", email: "", phone: "" });
         }
