@@ -16,7 +16,6 @@ public class StudentVoteViewDto {
 
     private Boolean isMultiple;
     private Boolean isAnonymous;
-    private Boolean isFinished;
     private Integer total;
     private Long participateCount;
     private Boolean participate;
@@ -42,7 +41,6 @@ public class StudentVoteViewDto {
     "description": "투표 테스트",
     "isMultiple": true,
     "isAnonymous": false,
-    "isFinished": false,
     "total": 30,
     "participateCount": 20,
     "participate": false,

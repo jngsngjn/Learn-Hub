@@ -2,7 +2,6 @@ package project.homelearn.service.teacher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
@@ -14,7 +13,6 @@ import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.vote.VoteRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -42,12 +40,10 @@ public class TeacherVoteService {
             vote.setCurriculum(curriculum); //커리큘럼 설정
             vote.setTitle(voteCreateDto.getTitle());
             vote.setDescription(voteCreateDto.getDescription());
-
             vote.setEndTime(voteCreateDto.getEndTime());
 
             vote.setIsAnonymous(voteCreateDto.getIsAnonymous());
             vote.setIsMultipleChoice(voteCreateDto.getIsMultipleChoice());
-            vote.setFinished(false);
 
             // 투표 항목 추가
             for (String contents : voteCreateDto.getContents()) {
@@ -76,43 +72,16 @@ public class TeacherVoteService {
         }
     }
 
-    // 투표 수동 마감
+    // 투표 마감
     public boolean finishVotes(Long id) {
         try {
             Vote vote = voteRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Vote not found" + id));
-
-            boolean finished = vote.isFinished();
-            if (finished) {
-                return false;
-            }
-
-            vote.setFinished(true);
             vote.setEndTime(LocalDateTime.now());
             return true;
         } catch (Exception e) {
             log.error("Error finishing vote for voteId '{}'", id, e);
             return false;
-        }
-    }
-
-    // 1분마다 실행
-    @Scheduled(fixedDelay = 60000)
-    public void autoFinishVotes() {
-        try {
-            long count = voteRepository.count();
-
-            if (count > 0) {
-                List<Vote> votes = voteRepository.findAllByIsFinishedFalse();
-                LocalDateTime now = LocalDateTime.now();
-                for (Vote vote : votes) {
-                    if (vote.getEndTime().isBefore(now)) {
-                        vote.setFinished(true);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            log.error("Error auto finishing votes", e);
         }
     }
 }

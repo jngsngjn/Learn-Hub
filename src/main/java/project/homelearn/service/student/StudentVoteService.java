@@ -16,6 +16,7 @@ import project.homelearn.repository.vote.StudentVoteRepository;
 import project.homelearn.repository.vote.VoteContentRepository;
 import project.homelearn.repository.vote.VoteRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +64,9 @@ public class StudentVoteService {
     }
 
     private boolean validateParticipateVote(Vote vote, Map<Long, Boolean> voteResult) {
-        if (vote.isFinished()) {
+        LocalDateTime endTime = vote.getEndTime();
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isAfter(endTime)) {
             return true;
         }
 
@@ -127,7 +130,9 @@ public class StudentVoteService {
     }
 
     private boolean validateModifyVote(Vote vote, long trueCount) {
-        if (vote.isFinished()) {
+        LocalDateTime endTime = vote.getEndTime();
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isAfter(endTime)) {
             return true;
         }
 

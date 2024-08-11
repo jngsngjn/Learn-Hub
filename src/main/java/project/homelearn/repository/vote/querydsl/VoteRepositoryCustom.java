@@ -7,8 +7,13 @@ import project.homelearn.dto.teacher.vote.TeacherVoteBasicDto;
 import project.homelearn.dto.teacher.vote.VoteDetailDto;
 import project.homelearn.dto.teacher.vote.VoteTabDto;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.vote.Vote;
+
+import java.util.List;
 
 public interface VoteRepositoryCustom {
+
+    List<Vote> findAllByIsFinishedFalse();
 
     Page<VoteTabDto> findVoteTab(Curriculum curriculum, Pageable pageable, String status);
 
@@ -19,4 +24,6 @@ public interface VoteRepositoryCustom {
     VoteDetailDto findVoteDetail(Long voteId);
 
     StudentVoteViewDto findStudentVoteView(Long voteId, String username);
+
+    boolean isVoteFinished(Long voteId);
 }
