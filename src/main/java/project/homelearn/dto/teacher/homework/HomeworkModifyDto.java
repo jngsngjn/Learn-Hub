@@ -4,13 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-import project.homelearn.entity.homework.AcceptFile;
 
 import java.time.LocalDateTime;
 
 // request
 @Data
-public class HomeworkEnrollDto {
+public class HomeworkModifyDto {
 
     @NotBlank
     private String title;
@@ -20,11 +19,6 @@ public class HomeworkEnrollDto {
 
     @NotNull
     private LocalDateTime deadLine;
-
-    @NotNull
-    private Boolean requiredFile;
-
-    private AcceptFile acceptFile;
 
     private MultipartFile file;
 }

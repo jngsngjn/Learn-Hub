@@ -30,6 +30,13 @@ public class Homework extends BaseEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
+    @Column(name = "required_file", nullable = false)
+    private Boolean requiredFile;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "accept_file")
+    private AcceptFile acceptFile;
+
     @Column(name = "upload_file_name")
     private String uploadFileName;
 

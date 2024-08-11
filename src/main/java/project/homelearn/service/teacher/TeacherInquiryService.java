@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.homelearn.dto.common.inquiry.InquiryWriteDto;
+import project.homelearn.dto.student.inquiry.StudentInquiryListDto;
 import project.homelearn.dto.teacher.inquiry.TeacherInquiryDto;
+import project.homelearn.dto.teacher.inquiry.TeacherInquiryListToManagerDto;
 import project.homelearn.dto.teacher.inquiry.TeacherResponseDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.inquiry.ManagerInquiry;
@@ -53,7 +55,7 @@ public class TeacherInquiryService {
     }
 
     // 문의 내역 상세 조회
-    public TeacherInquiryDto getOneManagerInquiryDtoById(Long inquiryId) {
+    public TeacherInquiryDto getOneStudentInquiryDtoById(Long inquiryId) {
         Optional<TeacherInquiry> teacherInquiry = teacherInquiryRepository.findById(inquiryId);
 
         if (teacherInquiry.isPresent()) {
@@ -119,5 +121,45 @@ public class TeacherInquiryService {
                         teacherInquiry.getResponseDate() != null ? teacherInquiry.getResponseDate() : null
                 ))
                 .toList();
+    }
+
+    // 매니저에게 문의한 내역
+    public List<TeacherInquiryListToManagerDto> getMyManagerInquiryList(String username){
+        List<ManagerInquiry> inquiries = managerInquiryRepository.findStudentInquiry(username);
+
+        return getDtoList(inquiries);
+    }
+
+    private List<TeacherInquiryListToManagerDto> getDtoList(List<ManagerInquiry> inquiries) {
+        return inquiries.stream()
+                .map(inquiry -> new TeacherInquiryListToManagerDto(
+                        inquiry.getId(),
+                        inquiry.getTitle(),
+                        inquiry.getUser().getName(),
+                        inquiry.getUser().getCurriculum().getName(),
+                        inquiry.getUser().getCurriculum().getTh(),
+                        inquiry.getCreatedDate(),
+                        inquiry.getResponse() != null ? inquiry.getResponse() : null
+                ))
+                .toList();
+    }
+
+    // 문의 내역 상세 조회
+    public TeacherInquiryDto getOneManagerInquiryDtoById(Long inquiryId) {
+        Optional<ManagerInquiry> managerInquiry = managerInquiryRepository.findById(inquiryId);
+
+        if (managerInquiry.isPresent()) {
+            ManagerInquiry inquiry = managerInquiry.get();
+            return new TeacherInquiryDto(
+                    inquiry.getId(),
+                    inquiry.getTitle(),
+                    inquiry.getContent(),
+                    inquiry.getCreatedDate(),
+                    inquiry.getUser(),
+                    inquiry.getResponse(),
+                    inquiry.getResponseDate()
+            );
+        }
+        return null;
     }
 }
