@@ -62,14 +62,8 @@ const CurriculumManagement = () => {
       startDate: newCurriculum.startDate,
       endDate: newCurriculum.endDate,
       color: newCurriculum.color,
+      teacherId: newCurriculum.teacherId || null, // 강사 ID가 없으면 null 처리
     };
-
-    // teacherId가 유효한 경우에만 추가
-    if (newCurriculum.teacherId && !isNaN(newCurriculum.teacherId)) {
-      newCurriculumItem.teacherId = parseInt(newCurriculum.teacherId, 10);
-    }
-
-    console.log("전송 준비된 교육 과정:", newCurriculumItem);
 
     // 날짜 유효성 검사
     if (new Date(newCurriculum.endDate) <= new Date(newCurriculum.startDate)) {
@@ -199,6 +193,7 @@ const CurriculumManagement = () => {
         </div>
       </div>
     ));
+
   return (
     <div className="curriculum-management">
       <h1>교육 과정</h1>
