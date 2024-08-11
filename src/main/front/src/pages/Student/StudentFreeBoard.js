@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import "./StudentFreeBoard.css";
 import { useNavigate } from "react-router-dom";
+import useGetFetch from "../../hooks/useGetFetch";
 
 const StudentFreeBoard = () => {
   const navigate = useNavigate();
   const id = "boardId";
 
+  const { data: freeboard, error: freeboardError } = useGetFetch(
+    "/data/student/mainLecture/freeBoard.json",
+    []
+  );
+
+  console.log(freeboard);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -55,22 +62,28 @@ const StudentFreeBoard = () => {
       </div>
       {/* 자유 게시판 글 목록 */}
       <table className="student_freeboard_table">
-        <tr className="student_freeboard_table_header">
-          <th>번호</th>
-          <th>제목</th>
-          <th>작성자</th>
-          <th>작성일</th>
-          <th>답변 수</th>
-        </tr>
-        <tr className="student_freeboard_table_body">
-          <th>1</th>
-          <th onClick={() => navigate(`/students/freeboard/${id}`)}>
-            다들 수업 잘 따라 갈 수 있나요
-          </th>
-          <th>김수정</th>
-          <th>2024-08-07</th>
-          <th>3</th>
-        </tr>
+        <thead>
+          <tr className="student_freeboard_table_header">
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+            <th>답변 수</th>
+          </tr>
+        </thead>
+        <tbody>
+          {freeboard.map((el, idx) => (
+            <tr className="student_freeboard_table_body" key={idx}>
+              <td>{idx + 1}</td>
+              <td onClick={() => navigate(`/students/freeboard/${el.boardId}`)}>
+                {el.title}
+              </td>
+              <td>{el.author}</td>
+              <td>{el.createDate}</td>
+              <td>{el.commentCount}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
       <StudentModal
         isOpen={isModalOpen}
@@ -79,7 +92,12 @@ const StudentFreeBoard = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
-        selectedFileName={formData.selectedFileName}
+        selectedFileName={selectedFileName}
+        modalName="게시글 등록"
+        contentTitle="제목"
+        contentBody="내용"
+        contentFile="이미지 첨부"
+        url="/students/boards"
       />
     </div>
   );

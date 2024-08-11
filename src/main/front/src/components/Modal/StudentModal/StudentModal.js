@@ -1,27 +1,101 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "./StudentModal.css";
+
+// studentFreeBoard 처럼 사용하면 됩니다.
 
 const StudentModal = ({
   isOpen,
   closeModal,
-  formData,
-  selectedFileName,
-  handleChange,
-  handleSubmit,
-  handleFileChange,
+  modalName,
+  contentTitle,
+  contentBody,
+  contentFile,
+  url,
 }) => {
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    file: null,
+  });
+
+  const [selectedFileName, setSelectedFileName] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({
+      ...formData,
+      file: file,
+    });
+    setSelectedFileName(file ? file.name : "");
+  };
+
+  const handleFileDelete = () => {
+    setFormData({
+      ...formData,
+      file: null,
+    });
+    setSelectedFileName("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preDefault();
+
+    const submissionData = new FormData();
+    submissionData.append("title", formData.title);
+    submissionData.append("content", formData.content);
+
+    if (formData.file) {
+      submissionData.append("file", formData.file);
+    }
+
+    try {
+      const response = await axios.post(url, submissionData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200) {
+        alert(`${modalName}(이)가 성공적으로 제출되었습니다!`);
+        handleClose();
+      }
+    } catch (error) {
+      console.error(`${modalName} 중 오류 발생:`, error);
+      alert(`${modalName}에 실패했습니다. 다시 시도해주세요.`);
+    }
+  };
+
+  const handleClose = () => {
+    setFormData({
+      title: "",
+      content: "",
+      file: null,
+    });
+    setSelectedFileName("");
+    closeModal();
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="student_modal show">
       <div className="student_modal_content">
-        <span className="close" onClick={closeModal}>
+        <span className="close" onClick={handleClose}>
           &times;
         </span>
-        <h1 className="student_modal_title">과제 제출</h1>
+        <h1 className="student_modal_title">{modalName}</h1>
         <form onSubmit={handleSubmit} className="student_modal_form_body">
           <label>
-            <p className="student_modal_name_tag">제목</p>
+            <p className="student_modal_name_tag">{contentTitle}</p>
             <input
               type="text"
               name="title"
@@ -31,7 +105,7 @@ const StudentModal = ({
             />
           </label>
           <label>
-            <p className="student_modal_content_tag">내용</p>
+            <p className="student_modal_content_tag">{contentBody}</p>
             <textarea
               name="content"
               value={formData.content}
@@ -40,7 +114,7 @@ const StudentModal = ({
             ></textarea>
           </label>
           <label className="student_modal_file_label">
-            <p className="student_modal_file_tag">파일 첨부</p>
+            <p className="student_modal_file_tag">{contentFile}</p>
             <div className="student_modal_file_input_wrapper">
               <input
                 type="text"
@@ -48,6 +122,11 @@ const StudentModal = ({
                 value={selectedFileName}
                 className="student_modal_input_file_display"
               />
+              {selectedFileName && (
+                <span className="delete_submit_file" onClick={handleFileDelete}>
+                  <i className="bi bi-x-lg"></i>
+                </span>
+              )}
               <label className="student_modal_file_button">
                 파일 선택
                 <input
@@ -66,7 +145,7 @@ const StudentModal = ({
             <button
               type="button"
               className="student_modal_cancel_button"
-              onClick={closeModal}
+              onClick={handleClose}
             >
               제출 취소
             </button>
