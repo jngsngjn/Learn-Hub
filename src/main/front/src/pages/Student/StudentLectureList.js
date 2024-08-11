@@ -8,6 +8,7 @@ import StudentVideoModal from "../../components/Modal/StudentModal/StudentVideoM
 const StudentLectureList = () => {
   const navigate = useNavigate();
   const [thumbnailUrls, setThumbnailUrls] = useState([]);
+  const [videoUrls, setVideoUrls] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
   console.log(selectedVideoUrl);
@@ -22,6 +23,7 @@ const StudentLectureList = () => {
     []
   );
 
+  // console.log(subjectVideos);
   useEffect(() => {
     if (subjectVideos.length > 0) {
       const urls = subjectVideos.map((el) =>
@@ -53,6 +55,7 @@ const StudentLectureList = () => {
   };
 
   const closeModal = () => {
+    // window.location.reload();
     setIsModalOpen(false);
     setSelectedVideoUrl("");
   };
@@ -95,7 +98,11 @@ const StudentLectureList = () => {
           ))}
         </div>
       </div>
-      <StudentVideoModal isOpen={isModalOpen} onClose={closeModal}>
+      <StudentVideoModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        // url={selectedVideoUrl}
+      >
         <LectureVideo url={selectedVideoUrl} />
       </StudentVideoModal>
     </div>

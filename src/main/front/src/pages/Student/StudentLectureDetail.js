@@ -2,9 +2,12 @@ import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
 import "./StudentLectureDetail.css";
 import LectureVideo from "../Teacher/play";
+import { useEffect } from "react";
 
 const StudentLectureDetail = () => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const {
     data: lectureVideo,

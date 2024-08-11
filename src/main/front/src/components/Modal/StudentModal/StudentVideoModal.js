@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./StudentVideoModal.css";
+import LectureVideo from "../../../pages/Teacher/play";
 
-const StudentVideoModal = ({ isOpen, onClose, children }) => {
+const StudentVideoModal = ({ isOpen, onClose, children, url }) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
@@ -15,6 +16,7 @@ const StudentVideoModal = ({ isOpen, onClose, children }) => {
           X
         </button>
         {children}
+        {/* <LectureVideo url={url} /> */}
       </div>
     </div>,
     document.body
