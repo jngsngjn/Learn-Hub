@@ -1,4 +1,4 @@
-package project.homelearn.service.teacher;
+package project.homelearn.service.teacher.homework;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +11,7 @@ import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.teacher.dashboard.HomeworkStateDto;
 import project.homelearn.dto.teacher.homework.*;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.homework.AcceptFile;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
 import project.homelearn.entity.student.Student;
@@ -55,6 +56,17 @@ public class TeacherHomeworkService {
         homework.setDeadline(homeworkDto.getDeadLine());
         homework.setCurriculum(curriculum);
 
+        Boolean requiredFile = homeworkDto.getRequiredFile();
+        if (requiredFile) {
+            homework.setRequiredFile(true);
+            AcceptFile acceptFile = homeworkDto.getAcceptFile();
+            if (acceptFile == null) {
+                log.error("첨부 파일이 필수이지만 AcceptFile을 지정하지 않았습니다.");
+                return;
+            }
+            homework.setAcceptFile(acceptFile);
+        }
+
         MultipartFile file = homeworkDto.getFile();
         if (file != null) {
             String folderPath = storageService.getFolderPath(teacher, HOMEWORK);
@@ -70,7 +82,7 @@ public class TeacherHomeworkService {
         notificationService.homeworkNotify(homework, students);
     }
 
-    public boolean modifyHomework(Long homeworkId, String username, HomeworkEnrollDto homeworkDto) {
+    public boolean modifyHomework(Long homeworkId, String username, HomeworkModifyDto homeworkDto) {
         Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeworkId);
         Curriculum curriculum = homework.getCurriculum();
 
@@ -183,5 +195,13 @@ public class TeacherHomeworkService {
             return null;
         }
         return homeworkRepository.findHomeworkSubmitList(homeworkId);
+    }
+
+    public List<StudentHomework> getAllStudentHomeworksByHomework(Homework homework) {
+        return studentHomeworkRepository.findAllByHomework(homework);
+    }
+
+    public Homework getHomeworkById(Long homeworkId) {
+        return homeworkRepository.findById(homeworkId).orElseThrow();
     }
 }

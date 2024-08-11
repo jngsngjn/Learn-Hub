@@ -23,7 +23,7 @@ public class StudentInquiryViewController {
 
     private final StudentInquiryService inquiryService;
 
-    @GetMapping("/inquiries-managers")
+    @GetMapping("/managers-inquiries")
     public ResponseEntity<?> viewManagerInquiry(Principal principal) {
         String username = principal.getName();
 
@@ -38,7 +38,7 @@ public class StudentInquiryViewController {
     }
 
     // 상세보기 : 학생 -> 매니저
-    @GetMapping("/inquiries-managers/{inquiryId}")
+    @GetMapping("/managers-inquiries/{inquiryId}")
     public ResponseEntity<?> viewManagerInquiryDetail(@PathVariable("inquiryId") Long inquiryId) {
         StudentInquiryDetailDto myInquiry = inquiryService.getMyManagerInquiryDetail(inquiryId);
 
@@ -51,7 +51,7 @@ public class StudentInquiryViewController {
     }
 
 
-    @GetMapping("/inquiries-teachers")
+    @GetMapping("/teachers-inquiries")
     public ResponseEntity<?> viewTeacherInquiry(Principal principal) {
         String username = principal.getName();
 
@@ -66,7 +66,7 @@ public class StudentInquiryViewController {
     }
 
     // 상세보기 : 학생 -> 강사
-    @GetMapping("/inquiries-teachers/{inquiryId}")
+    @GetMapping("/teachers-inquiries/{inquiryId}")
     public ResponseEntity<?> viewTeacherInquiryDetail(@PathVariable("inquiryId") Long inquiryId) {
         StudentInquiryDetailDto myInquiry = inquiryService.getMyTeacherInquiryDetail(inquiryId);
 
