@@ -27,9 +27,9 @@ public class StudentVoteService {
 
     private final VoteRepository voteRepository;
     private final StudentRepository studentRepository;
+    private final CurriculumRepository curriculumRepository;
     private final VoteContentRepository voteContentRepository;
     private final StudentVoteRepository studentVoteRepository;
-    private final CurriculumRepository curriculumRepository;
 
     public boolean isParticipate(Long voteId, String username) {
         Student student = studentRepository.findByUsername(username);
