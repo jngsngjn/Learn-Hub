@@ -163,6 +163,13 @@ const StudentAssignmentDetail = () => {
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
         selectedFileName={formData.selectedFileName}
+        modalName="과제 제출"
+        contentTitle="제목"
+        contentBody="내용"
+        contentFile="파일 첨부"
+        url="/students/homeworks"
+        submitName="과제 제출"
+        cancelName="제출 취소"
       />
     </div>
   );

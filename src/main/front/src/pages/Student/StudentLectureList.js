@@ -82,17 +82,19 @@ const StudentLectureList = () => {
         </div>
         <div className="subject_lecture_list_container">
           {subjectVideos.slice(0, 15).map((el, idx) => (
-            <div
-              className="subject_lecture_list_content"
-              key={idx}
-              onClick={() => openModal(el.youtubeUrl)}
-            >
+            <div className="subject_lecture_list_content" key={idx}>
               <img
                 className="subject_lecture_list_image"
                 alt="과목이미지"
                 src={thumbnailUrls[idx]}
+                onClick={() => openModal(el.youtubeUrl)}
               />
-              <h1 className="subject_lecture_list_title">{el.title}</h1>
+              <h1
+                className="subject_lecture_list_title"
+                onClick={() => navigate(`/students/:subjectName/lecture/:id`)}
+              >
+                {el.title}
+              </h1>
               <p className="subject_lecture_list_description">{el.content}</p>
             </div>
           ))}

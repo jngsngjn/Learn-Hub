@@ -6,20 +6,17 @@ const useAxiosGet = (url, initialState) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access-token");
-  console.log(accesstoken);
-  const token = accesstoken.replace("Bearer ", "");
-  console.log(token);
+  const token = accesstoken ? accesstoken.replace("Bearer ", "") : "";
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get(process.env.REACT_APP_BASE_URL2 + url, {
+      .get(url, {
         headers: {
-          token: token,
+          Authorization: `Bearer ${token}`, // Use 'Authorization' for token header
         },
       })
       .then((res) => {
-        console.log(res);
         setData(res.data);
         setLoading(false);
       })
@@ -27,7 +24,7 @@ const useAxiosGet = (url, initialState) => {
         setError(err);
         setLoading(false);
       });
-  }, [url]);
+  }, [url, token]);
 
   return { data, loading, error };
 };

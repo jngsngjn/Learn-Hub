@@ -12,6 +12,8 @@ const StudentModal = ({
   contentBody,
   contentFile,
   url,
+  submitName,
+  cancelName,
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -47,7 +49,7 @@ const StudentModal = ({
   };
 
   const handleSubmit = async (e) => {
-    e.preDefault();
+    e.preventDefault();
 
     const submissionData = new FormData();
     submissionData.append("title", formData.title);
@@ -66,7 +68,8 @@ const StudentModal = ({
 
       if (response.status === 200) {
         alert(`${modalName}(이)가 성공적으로 제출되었습니다!`);
-        handleClose();
+        // handleClose();
+        window.location.reload();
       }
     } catch (error) {
       console.error(`${modalName} 중 오류 발생:`, error);
@@ -128,7 +131,7 @@ const StudentModal = ({
                 </span>
               )}
               <label className="student_modal_file_button">
-                파일 선택
+                {contentFile}
                 <input
                   type="file"
                   name="file"
@@ -140,14 +143,14 @@ const StudentModal = ({
           </label>
           <div className="student_modal_submit_button_box">
             <button type="submit" className="student_modal_submit_button">
-              과제 제출
+              {submitName}
             </button>
             <button
               type="button"
               className="student_modal_cancel_button"
               onClick={handleClose}
             >
-              제출 취소
+              {cancelName}
             </button>
           </div>
         </form>

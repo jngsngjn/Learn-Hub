@@ -27,7 +27,7 @@
   background-color: var(--studentMainColor);
 }
 
-/* table */
+/* 테이블 */
 .student_freeboard_table {
   border-collapse: collapse;
   border-bottom: 1px solid var(--studentSubColor);
@@ -49,7 +49,7 @@
   padding: 20px 0;
 }
 
-.student_freeboard_table_body th:nth-child(2) {
+.student_freeboard_table_body td:nth-child(2) {
   cursor: pointer;
 }
 
@@ -65,4 +65,34 @@
 .table-header-row th:nth-child(3),
 .table-header-row th:nth-child(5) {
   width: 10%;
+}
+
+/* 페이지네이션 */
+.freeboard_pagination {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 0;
+}
+
+.freeboard_pagination button {
+  font-size: 20px;
+}
+
+.freeboard_pagination i {
+  font-size: 20px;
+  color: var(--studentMainColor);
+}
+
+.freeboard_pagination .active {
+  font-weight: bold;
+  color: var(--studentMainColor);
+  font-size: 20px;
+}
+
+.freeboard_pagination button:disabled {
+  color: gray;
+  cursor: not-allowed;
 }

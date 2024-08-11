@@ -2,18 +2,22 @@ import { useEffect, useState } from "react";
 import StudentModal from "../../components/Modal/StudentModal/StudentModal";
 import "./StudentFreeBoard.css";
 import { useNavigate } from "react-router-dom";
-import useGetFetch from "../../hooks/useGetFetch";
+import useAxiosGet from "../../hooks/useAxiosGet";
 
 const StudentFreeBoard = () => {
   const navigate = useNavigate();
-  const id = "boardId";
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize] = useState(15);
 
-  const { data: freeboard, error: freeboardError } = useGetFetch(
-    "/data/student/mainLecture/freeBoard.json",
-    []
-  );
+  const {
+    data: freeboardData,
+    loading,
+    error,
+  } = useAxiosGet(`/students/boards?page=${currentPage}&size=${pageSize}`, {});
 
-  console.log(freeboard);
+  const freeboard = freeboardData.content || [];
+  const totalPages = freeboardData.totalPages || 1;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -36,7 +40,7 @@ const StudentFreeBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("모달 데이터 : " + formData);
+    console.log("모달 데이터 : ", formData);
     closeModal();
   };
 
@@ -51,6 +55,18 @@ const StudentFreeBoard = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const splitDate = (date) => {
+    return date.split("T")[0];
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    window.scrollTo(0, 0);
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className="main_container">
@@ -72,19 +88,64 @@ const StudentFreeBoard = () => {
           </tr>
         </thead>
         <tbody>
-          {freeboard.map((el, idx) => (
-            <tr className="student_freeboard_table_body" key={idx}>
-              <td>{idx + 1}</td>
-              <td onClick={() => navigate(`/students/freeboard/${el.boardId}`)}>
-                {el.title}
-              </td>
-              <td>{el.author}</td>
-              <td>{el.createDate}</td>
-              <td>{el.commentCount}</td>
+          {freeboard.length > 0 ? (
+            freeboard.map((el, idx) => (
+              <tr className="student_freeboard_table_body" key={el.boardId}>
+                <td>{idx + 1 + currentPage * pageSize}</td>
+                <td
+                  onClick={() => navigate(`/students/freeBoard/${el.boardId}`)}
+                >
+                  {el.title}
+                </td>
+                <td>{el.author}</td>
+                <td>{splitDate(el.createDate)}</td>
+                <td>{el.commentCount}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5">게시물이 없습니다.</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
+      {/* 페이지네이션  */}
+      <div className="freeboard_pagination">
+        <button
+          onClick={() => handlePageChange(0)}
+          disabled={currentPage === 0}
+        >
+          <i className="bi bi-chevron-double-left"></i>
+        </button>
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 0}
+        >
+          <i className="bi bi-chevron-left"></i>
+        </button>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index)}
+            className={index === currentPage ? "active" : ""}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages - 1}
+        >
+          <i className="bi bi-chevron-right"></i>
+        </button>
+        <button
+          onClick={() => handlePageChange(totalPages - 1)}
+          disabled={currentPage === totalPages - 1}
+        >
+          <i className="bi bi-chevron-double-right"></i>
+        </button>
+      </div>
+
       <StudentModal
         isOpen={isModalOpen}
         closeModal={closeModal}
@@ -98,6 +159,8 @@ const StudentFreeBoard = () => {
         contentBody="내용"
         contentFile="이미지 첨부"
         url="/students/boards"
+        submitName="등록 하기"
+        cancelName="등록 취소"
       />
     </div>
   );
