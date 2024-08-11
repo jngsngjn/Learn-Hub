@@ -13,7 +13,8 @@ const useAxiosGet = (url, initialState) => {
     axios
       .get(url, {
         headers: {
-          Authorization: `Bearer ${token}`, // Use 'Authorization' for token header
+          // access 야 Authorization이야
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
