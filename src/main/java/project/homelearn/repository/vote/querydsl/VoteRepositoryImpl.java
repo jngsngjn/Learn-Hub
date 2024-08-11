@@ -15,7 +15,9 @@ import project.homelearn.dto.teacher.vote.VoteTabDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
 import project.homelearn.entity.user.User;
+import project.homelearn.entity.vote.QVote;
 import project.homelearn.entity.vote.StudentVote;
+import project.homelearn.entity.vote.Vote;
 import project.homelearn.entity.vote.VoteContent;
 import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.repository.vote.StudentVoteRepository;
@@ -40,6 +42,14 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
     private final StudentVoteRepository studentVoteRepository;
 
     @Override
+    public List<Vote> findAllByIsFinishedFalse() {
+        return queryFactory
+                .selectFrom(vote)
+                .where(vote.endTime.after(LocalDateTime.now()))
+                .fetch();
+    }
+
+    @Override
     public Page<VoteTabDto> findVoteTab(Curriculum curriculum, Pageable pageable, String status) {
         List<Tuple> tuples = new ArrayList<>();
 
@@ -56,7 +66,7 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
             tuples = queryFactory
                     .select(vote.id, vote.title, vote.description, vote.endTime)
                     .from(vote)
-                    .where(vote.curriculum.eq(curriculum), vote.endTime.before(LocalDateTime.now()).or(vote.isFinished.eq(true)))
+                    .where(vote.curriculum.eq(curriculum), vote.endTime.before(LocalDateTime.now()))
                     .orderBy(vote.createdDate.desc())
                     .fetch();
         }
@@ -96,7 +106,7 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
     @Override
     public TeacherVoteBasicDto findVoteBasic(Long voteId, Curriculum curriculum) {
         Tuple tuple = queryFactory
-                .select(vote.id, vote.title, vote.description, vote.endTime, vote.isAnonymous, vote.isMultipleChoice, vote.isFinished)
+                .select(vote.id, vote.title, vote.description, vote.endTime, vote.isAnonymous, vote.isMultipleChoice)
                 .from(vote)
                 .where(vote.id.eq(voteId))
                 .fetchOne();
@@ -117,7 +127,6 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
                 .endTime(tuple.get(vote.endTime))
                 .isAnonymous(tuple.get(vote.isAnonymous))
                 .isMultiple(tuple.get(vote.isMultipleChoice))
-                .isFinished(tuple.get(vote.isFinished))
                 .total(total)
                 .participantCount(participantCount)
                 .voteCountByContent(voteCountByContent)
@@ -171,7 +180,7 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
     @Override
     public StudentVoteViewDto findStudentVoteView(Long voteId, String username) {
         Tuple tuple = queryFactory
-                .select(vote.id, vote.title, vote.description, vote.isMultipleChoice, vote.isAnonymous, vote.isFinished, vote.endTime)
+                .select(vote.id, vote.title, vote.description, vote.isMultipleChoice, vote.isAnonymous, vote.endTime)
                 .from(vote)
                 .where(vote.id.eq(voteId))
                 .fetchOne();
@@ -187,7 +196,6 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
         result.setIsAnonymous(tuple.get(vote.isAnonymous));
         result.setEndTime(tuple.get(vote.endTime));
         result.setParticipateCount(findParticipantCount(voteId));
-        result.setIsFinished(tuple.get(vote.isFinished));
 
         List<VContent> vContents = new ArrayList<>();
 
@@ -217,5 +225,21 @@ public class VoteRepositoryImpl implements VoteRepositoryCustom {
         }
         result.setVContents(vContents);
         return result;
+    }
+
+    @Override
+    public boolean isVoteFinished(Long voteId) {
+        Vote vote = queryFactory
+                .selectFrom(QVote.vote)
+                .where(QVote.vote.id.eq(voteId))
+                .fetchOne();
+
+        if (vote == null) {
+            throw new IllegalStateException("vote not found");
+        }
+
+        LocalDateTime endTime = vote.getEndTime();
+        LocalDateTime now = LocalDateTime.now();
+        return !now.isAfter(endTime);
     }
 }

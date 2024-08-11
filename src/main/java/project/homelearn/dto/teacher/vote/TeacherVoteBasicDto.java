@@ -18,7 +18,6 @@ public class TeacherVoteBasicDto {
 
     private Boolean isMultiple;
     private Boolean isAnonymous;
-    private Boolean isFinished;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endTime;
@@ -44,6 +43,5 @@ public class TeacherVoteBasicDto {
     },
     "multiple": false,
     "anonymous": false,
-    "finished": false
 }
  */

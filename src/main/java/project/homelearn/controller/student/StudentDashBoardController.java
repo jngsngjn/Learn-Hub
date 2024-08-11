@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.homelearn.dto.student.dashboard.*;
+import project.homelearn.dto.teacher.board.TeacherBoardDto;
 import project.homelearn.dto.teacher.dashboard.ManagerBoardDto;
 import project.homelearn.dto.teacher.dashboard.TeacherScheduleDto;
 import project.homelearn.service.manager.ManagerBoardService;
@@ -16,6 +17,7 @@ import project.homelearn.service.student.StudentBadgeService;
 import project.homelearn.service.student.StudentHomeworkService;
 import project.homelearn.service.student.StudentLectureService;
 import project.homelearn.service.student.StudentQuestionBoardService;
+import project.homelearn.service.teacher.TeacherBoardService;
 import project.homelearn.service.teacher.TeacherCalendarService;
 
 import java.security.Principal;
@@ -29,7 +31,7 @@ import java.util.Optional;
 public class StudentDashBoardController {
 
     private final ManagerBoardService managerNoticeService;
-    /* private final TeacherBoardService teacherNoticeService; */
+    private final TeacherBoardService teacherNoticeService;
     private final ManagerCalendarService managerCalendarService;
     private final TeacherCalendarService teacherCalendarService;
     private final StudentQuestionBoardService questionBoardService;
@@ -43,11 +45,11 @@ public class StudentDashBoardController {
         return managerNoticeService.viewManagerBoardRecent();
     }
 
-    // 강사 공지사항 최신순 4개
-//    @GetMapping("/teacher-boards")
-//    public List<ViewTeacherNoticeDto> viewTeacherBoard(){
-//        return teacherNoticeService.viewTeacherBoardRecent();
-//    }
+     //강사 공지사항 최신순 4개
+    @GetMapping("/teacher-boards")
+    public List<TeacherBoardDto> viewTeacherBoard(){
+        return teacherNoticeService.viewTeacherBoardRecent();
+    }
 
     // 매니저가 등록한 일정 중 학생 교육과정에 대한 일정
     @GetMapping("/calendar/manager")

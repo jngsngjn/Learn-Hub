@@ -31,7 +31,7 @@ public class StudentHomeWorkViewController {
     1. 진행 중인 과제
     2. 마감된 과제
     */
-    @GetMapping("/proceeding")
+    @GetMapping("/progress")
     public ResponseEntity<?> viewProceedingHomework(Principal principal,
                                                     @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 1;
