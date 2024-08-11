@@ -40,75 +40,78 @@ const CurriculumDetail = () => {
 
   const getToken = () => localStorage.getItem("access-token");
 
-  useEffect(() => {
-    if (!id) {
-      console.error("잘못된 커리큘럼 ID입니다.");
-      return;
-    }
+ useEffect(() => {
+   if (!id) {
+     console.error("잘못된 커리큘럼 ID입니다.");
+     return;
+   }
 
-    const fetchData = async () => {
-      try {
-        const token = getToken();
-        const config = {
-          headers: { access: token },
-        };
+   const fetchData = async () => {
+     try {
+       const token = getToken();
+       const config = {
+         headers: { access: token },
+       };
 
-        const basicResponse = await axios.get(
-          `/managers/curriculum/${id}/basic`,
-          config
-        );
-        setCurriculum(basicResponse.data);
-        setUpdatedCurriculum({
-          teacherId: basicResponse.data.teacherId || "",
-          startDate: basicResponse.data.startDate || "",
-          endDate: basicResponse.data.endDate || "",
-          color: basicResponse.data.color || "",
-        });
+       const basicResponse = await axios.get(
+         `/managers/curriculum/${id}/basic`,
+         config
+       );
+       setCurriculum(basicResponse.data);
+       setUpdatedCurriculum({
+         teacherId: basicResponse.data.teacherId || "",
+         startDate: basicResponse.data.startDate || "",
+         endDate: basicResponse.data.endDate || "",
+         color: basicResponse.data.color || "",
+       });
 
-        try {
-          const attendanceResponse = await axios.get(
-            `/managers/curriculum/${id}/attendance`,
-            config
-          );
-          setAttendance(attendanceResponse.data);
-          setIsWeekend(false);
-        } catch (error) {
-          if (error.response && error.response.status === 409) {
-            console.log("주말에는 출석 정보를 조회할 수 없습니다.");
-            setAttendance({ attendance: 0, total: 0, ratio: 0 });
-            setIsWeekend(true);
-          } else {
-            console.error("출석 정보 조회 오류:", error);
-          }
-        }
+       // 강사 정보를 먼저 불러오기
+       try {
+         const teacherResponse = await axios.get(
+           `/managers/curriculum/${id}/teacher`,
+           config
+         );
+         if (teacherResponse.data && teacherResponse.data.name) {
+           setTeacher(teacherResponse.data);
+         } else {
+           setTeacher(null);
+         }
+       } catch (error) {
+         console.error("강사 정보 조회 오류:", error);
+         setTeacher(null);
+       }
 
-        try {
-          const teacherResponse = await axios.get(
-            `/managers/curriculum/${id}/teacher`,
-            config
-          );
-          if (teacherResponse.data && teacherResponse.data.name) {
-            setTeacher(teacherResponse.data);
-          } else {
-            setTeacher(null);
-          }
-        } catch (error) {
-          console.error("강사 정보 조회 오류:", error);
-          setTeacher(null);
-        }
+       // 출결 정보를 그다음에 불러오기
+       try {
+         const attendanceResponse = await axios.get(
+           `/managers/curriculum/${id}/attendance`,
+           config
+         );
+         setAttendance(attendanceResponse.data);
+         setIsWeekend(false);
+       } catch (error) {
+         if (error.response && error.response.status === 409) {
+           console.log("주말에는 출석 정보를 조회할 수 없습니다.");
+           setAttendance({ attendance: 0, total: 0, ratio: 0 });
+           setIsWeekend(true);
+         } else {
+           console.error("출석 정보 조회 오류:", error);
+         }
+       }
 
-        const calendarResponse = await axios.get(
-          `/managers/curriculum/${id}/calendar`,
-          config
-        );
-        setSchedules(calendarResponse.data);
-      } catch (error) {
-        console.error("응답 오류:", error.response);
-      }
-    };
+       const calendarResponse = await axios.get(
+         `/managers/curriculum/${id}/calendar`,
+         config
+       );
+       setSchedules(calendarResponse.data);
+     } catch (error) {
+       console.error("응답 오류:", error.response);
+     }
+   };
 
-    fetchData();
-  }, [id]);
+   fetchData();
+ }, [id]);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
