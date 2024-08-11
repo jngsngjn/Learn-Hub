@@ -82,11 +82,11 @@ const StudentMain = () => {
             element={<StudentSubjectBoardDetail username={username} />}
           />
           <Route
-            path="/lectureLists"
+            path="/lecture"
             element={<StudentLectureList username={username} />}
           />
           <Route
-            path="/:subjectName/lectures/:id"
+            path="/:subjectName/lecture/:id"
             element={<StudentLectureDetail username={username} />}
           />
           <Route

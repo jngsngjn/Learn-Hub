@@ -4,167 +4,167 @@
     "subjectName": "JAVA",
     "title": "JAVA 상속",
     "content": "JAVA 상속관련 영상입니다. 시청 바랍니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://youtu.be/zRf3FyEno-0"
   },
   {
     "lectureId": 2,
     "subjectName": "JAVA",
     "title": "JAVA DB",
     "content": "JAVA DB관련 영상입니다. 시청 바랍니다.JAVA DB관련 영상입니다. 시청 바랍니다.JAVA DB관련 영상입니다. 시청 바랍니다.JAVA DB관련 영상입니다. 시청 바랍니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 3,
     "subjectName": "JAVA",
     "title": "JAVA 기초",
     "content": "JAVA 기초에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 4,
     "subjectName": "JAVA",
     "title": "JAVA 객체지향",
     "content": "JAVA 객체지향 프로그래밍에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 5,
     "subjectName": "JAVA",
     "title": "JAVA 인터페이스",
     "content": "JAVA 인터페이스 사용법에 대한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 6,
     "subjectName": "MySQL",
     "title": "MySQL 컬렉션 프레임워크",
     "content": "MySQL 컬렉션 프레임워크에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 7,
     "title": "MySQL 예외 처리",
     "content": "MySQL 예외 처리 방법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 8,
     "title": "MySQL 멀티쓰레딩",
     "content": "MySQL 멀티쓰레딩 기법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 9,
     "title": "MySQL 람다 표현식",
     "content": "MySQL 람다 표현식 사용법에 대한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 10,
     "title": "MySQL 스트림 API",
     "content": "MySQL 스트림 API에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 11,
     "title": "JAVA 네트워킹",
     "content": "JAVA 네트워킹 기법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://www.youtube.com/watch?v=6DTjiS1zVOM"
   },
   {
     "lectureId": 12,
     "title": "JAVA 파일 입출력",
     "content": "JAVA 파일 입출력 방법에 대한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 13,
     "title": "JAVA Swing",
     "content": "JAVA Swing을 이용한 GUI 프로그래밍 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 14,
     "title": "JAVA 애노테이션",
     "content": "JAVA 애노테이션 사용법에 대한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 15,
     "title": "JAVA 리플렉션",
     "content": "JAVA 리플렉션에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 16,
     "title": "JAVA JUnit",
     "content": "JAVA JUnit을 이용한 테스트 방법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 17,
     "title": "JAVA 빌드 도구",
     "content": "JAVA 빌드 도구 (Maven, Gradle)에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 18,
     "title": "JAVA 성능 튜닝",
     "content": "JAVA 애플리케이션 성능 튜닝 방법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 19,
     "title": "JAVA 정규 표현식",
     "content": "JAVA에서 정규 표현식 사용법에 대한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 20,
     "title": "JAVA 암호화",
     "content": "JAVA에서 암호화 기법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 21,
     "title": "JAVA 8 새로운 기능",
     "content": "JAVA 8의 새로운 기능들에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 22,
     "title": "JAVA 메모리 관리",
     "content": "JAVA에서 메모리 관리 방법에 대한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 23,
     "title": "JAVA 패턴",
     "content": "JAVA 디자인 패턴에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 24,
     "title": "JAVA 버전 관리",
     "content": "JAVA 버전 관리 및 업데이트 방법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 25,
     "title": "JAVA 코드 최적화",
     "content": "JAVA 코드 최적화 기법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 26,
     "title": "JAVA 최신 트렌드",
     "content": "JAVA 최신 트렌드와 미래 전망에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   },
   {
     "lectureId": 27,
     "title": "JAVA 모듈화",
     "content": "JAVA 모듈화 기법에 관한 강의입니다.",
-    "links": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
+    "youtubeUrl": "https://img.freepik.com/premium-vector/pixel-art-game-background-with-button-level-up-game-design-concept-retro-style-vector-illustration-game-screen-pixel_148553-711.jpg"
   }
 ]
