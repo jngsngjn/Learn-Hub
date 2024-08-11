@@ -14,6 +14,7 @@ import StudentContact from "../Manager/StudentContact";
 import Notice from "../Manager/Notice";
 import CurriculumManagement from "../Manager/CurriculumManagement";
 import TeacherManagement from "../Manager/TeacherManagement";
+import TeacherHeader from "../../components/Nav/TeacherHeader";
 
 function Dashboard() {
   return (
@@ -38,6 +39,7 @@ function Dashboard() {
 function TeacherMain() {
   return (
     <div className="teacher-App">
+      <TeacherHeader />
       <div className="teacher-main-content">
         <TeacherSideBar />
         <div className="teacher-content-area">

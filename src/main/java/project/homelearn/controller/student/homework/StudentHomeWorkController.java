@@ -25,10 +25,10 @@ public class StudentHomeWorkController {
 
     // 학생 과제 등록
     @PostMapping
-    public ResponseEntity<?> addHomework(Principal principal,
-                                         @Valid @ModelAttribute HomeworkSubmitDto homeWorkSubmitDto) {
+    public ResponseEntity<?> submitHomework(Principal principal,
+                                            @Valid @ModelAttribute HomeworkSubmitDto homeWorkSubmitDto) {
         String username = principal.getName();
-        boolean result = studentHomeworkService.addHomework(username, homeWorkSubmitDto);
+        boolean result = studentHomeworkService.submitHomework(username, homeWorkSubmitDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK); // 제출 성공
         } else {

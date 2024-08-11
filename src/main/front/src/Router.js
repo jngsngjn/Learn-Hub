@@ -1,9 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import DefaultHeader from "./components/Nav/DefaultHeader";
-import ManagerHeader from "./components/Nav/ManagerHeader";
-import TeacherHeader from "./components/Nav/TeacherHeader";
-import StudentHeader from "./components/Nav/StudentHeader";
 import Footer from "./components/Footer/Footer";
 import Main from "./pages/Main/Main";
 import Login from "./components/Login/Login";

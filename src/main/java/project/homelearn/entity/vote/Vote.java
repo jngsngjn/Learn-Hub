@@ -8,7 +8,6 @@ import project.homelearn.entity.BaseEntity;
 import project.homelearn.entity.curriculum.Curriculum;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,14 +51,4 @@ public class Vote extends BaseEntity {
 
     @OneToMany(mappedBy = "vote")
     private List<StudentVote> studentVotes = new ArrayList<>();
-
-    public String getFormattedStartTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return startTime != null ? startTime.format(formatter) : null;
-    }
-
-    public String getFormattedEndTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return endTime != null ? endTime.format(formatter) : null;
-    }
 }

@@ -1,32 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./DefaultHeader.css";
-import { jwtDecode } from "jwt-decode";
-import StudentHeader from "./StudentHeader";
-import ManagerHeader from "./ManagerHeader";
-import TeacherHeader from "./TeacherHeader";
 
 const DefaultHeader = () => {
   const [token, setToken] = useState(localStorage.getItem("access-token"));
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const updatedToken = localStorage.getItem("access-token");
-      setToken(updatedToken);
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
-
-  useEffect(() => {
-    const updatedToken = localStorage.getItem("access-token");
-    setToken(updatedToken);
-  }, [token]);
 
   if (!token) {
     return (
@@ -51,22 +28,6 @@ const DefaultHeader = () => {
       </header>
     );
   }
-
-  const decodedToken = jwtDecode(token);
-  const userRole = decodedToken.role;
-
-  const roleHeader =
-    userRole === "ROLE_STUDENT" ? (
-      <StudentHeader />
-    ) : userRole === "ROLE_TEACHER" ? (
-      <TeacherHeader />
-    ) : userRole === "ROLE_MANAGER" ? (
-      <ManagerHeader />
-    ) : (
-      <div>응 없어</div>
-    );
-
-  return <div>{roleHeader}</div>;
 };
 
 export default DefaultHeader;

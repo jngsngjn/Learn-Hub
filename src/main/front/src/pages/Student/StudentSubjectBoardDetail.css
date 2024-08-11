@@ -39,17 +39,24 @@
 .subject_board_download_file_name {
   text-align: right;
   font-size: 28px;
+  text-decoration: underline;
+  text-underline-offset: 12px;
 }
 
 .student_subject_board_content {
   font-size: 28px;
+  color: #000;
+}
+
+.student_subject_board_view_count_icon {
+  padding-top: 5px;
 }
 
 .student_subject_board_content_image {
   width: 100%;
   /* 임시 높이 */
-  height: 500px;
-  border-radius: 20px;
+
+  border-radius: 10px;
   border: 1px solid black;
   background-color: #5c8d8957;
 }

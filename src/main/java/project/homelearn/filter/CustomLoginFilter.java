@@ -11,22 +11,28 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Attendance;
 import project.homelearn.entity.user.LoginHistory;
 import project.homelearn.entity.user.Role;
 import project.homelearn.entity.user.User;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.AttendanceRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtService;
 import project.homelearn.service.common.RedisService;
+import project.homelearn.service.student.BadgeService;
 
+import java.io.IOException;
 import java.time.*;
 
 import static java.time.DayOfWeek.*;
 import static project.homelearn.config.security.JwtConstants.*;
 import static project.homelearn.entity.student.AttendanceType.*;
+import static project.homelearn.entity.student.badge.BadgeConstants.*;
+import static project.homelearn.entity.user.Role.ROLE_STUDENT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,6 +45,8 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final LoginHistoryRepository loginHistoryRepository;
     private final UserRepository userRepository;
     private final AttendanceRepository attendanceRepository;
+    private final BadgeService badgeService;
+    private final CurriculumRepository curriculumRepository;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -55,9 +63,27 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
     // 로그인 성공 시
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
-
         String username = authentication.getName();
         String role = authentication.getAuthorities().iterator().next().getAuthority();
+
+        if ("ROLE_STUDENT".equals(role)) {
+            Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
+            LocalDate startDate = curriculum.getStartDate();
+            LocalDate endDate = curriculum.getEndDate();
+            LocalDate currentDate = LocalDate.now();
+
+            if ((currentDate.isBefore(startDate) || currentDate.isAfter(endDate))) {
+                response.setStatus(403);
+                response.setContentType("text/plain; charset=UTF-8");
+                try {
+                    response.getWriter().write("교육과정이 시작하지 않았거나 종료되었습니다.");
+                } catch (IOException e) {
+                    log.error("Error write msg", e);
+                    response.setStatus(500);
+                }
+                return;
+            }
+        }
 
         // 토큰 생성
         String access = jwtService.createJwt(ACCESS_TOKEN_HEADER_NAME, username, Role.valueOf(role), ACCESS_TOKEN_EXPIRATION);
@@ -77,16 +103,42 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader("role", role);
         response.setStatus(HttpStatus.OK.value());
 
-        User user = userRepository.findByUsername(username);
-        loginHistoryRepository.save(new LoginHistory(user));
+        if ("ROLE_STUDENT".equals(role)) {
+            User user = userRepository.findByUsername(username);
+            boolean todayLogin = loginHistoryRepository.existsByUserAndLoginDateTimeIsToday(user);
+            if (todayLogin) {
+                log.info("오늘 이미 로그인 한 사용자 : {}", username);
+            } else {
+                log.info("오늘 첫 로그인 사용자 : {}", username);
 
-        LocalDate date = LocalDate.now();
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
+                // 첫 로그인 시 배지 지급
+                boolean exists = loginHistoryRepository.existsByUser(user);
+                if (!exists) {
+                    log.info("발자취 배지 획득 = {}", username);
+                    badgeService.getBadge(user, FOOT_PRINT);
+                }
 
-        if ("ROLE_STUDENT".equals(role) && !(dayOfWeek == SATURDAY || dayOfWeek == SUNDAY)) {
-            processStudentAttendance(user);
+                // 로그인 기록 저장
+                loginHistoryRepository.save(new LoginHistory(user));
+                long count = loginHistoryRepository.countConsecutiveLoginDatesByUser(user);
+                log.info("연속 로그인 횟수 = {}", count);
+
+                if (count == 7) {
+                    log.info("7일 연속 로그인 배지 획득 = {}", username);
+                    badgeService.getBadge(user, LOGIN_7);
+                }
+                if (count == 30) {
+                    log.info("30일 연속 로그인 배지 획득 = {}", username);
+                    badgeService.getBadge(user, LOGIN_30);
+                }
+
+                DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
+                if (!(dayOfWeek == SATURDAY || dayOfWeek == SUNDAY)) {
+                    // 출석 체크 진행
+                    processStudentAttendance(user);
+                }
+            }
         }
-
         log.info("다음 사용자가 로그인 성공 : {}", username);
     }
 

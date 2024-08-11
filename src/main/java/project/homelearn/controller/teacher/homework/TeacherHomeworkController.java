@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.teacher.homework.HomeworkEnrollDto;
 import project.homelearn.dto.teacher.homework.HomeworkFeedbackDto;
-import project.homelearn.service.teacher.TeacherHomeworkService;
+import project.homelearn.dto.teacher.homework.HomeworkModifyDto;
+import project.homelearn.service.teacher.homework.TeacherHomeworkService;
 
 import java.security.Principal;
 
@@ -35,7 +36,7 @@ public class TeacherHomeworkController {
     @PatchMapping("/{homeworkId}")
     public ResponseEntity<?> modifyHomework(Principal principal,
                                             @PathVariable("homeworkId") Long homeworkId,
-                                            @Valid @ModelAttribute HomeworkEnrollDto homeworkDto) {
+                                            @Valid @ModelAttribute HomeworkModifyDto homeworkDto) {
         boolean result = homeworkService.modifyHomework(homeworkId, principal.getName(), homeworkDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);

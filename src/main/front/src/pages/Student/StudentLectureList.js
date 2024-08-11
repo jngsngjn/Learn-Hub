@@ -1,9 +1,17 @@
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
 import "./StudentLectureList.css";
+import LectureVideo from "../Teacher/play";
+import StudentVideoModal from "../../components/Modal/StudentModal/StudentVideoModal";
 
 const StudentLectureList = () => {
   const navigate = useNavigate();
+  const [thumbnailUrls, setThumbnailUrls] = useState([]);
+  const [videoUrls, setVideoUrls] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
+  console.log(selectedVideoUrl);
 
   const { data: subjectVideos, error: subjectVideosError } = useGetFetch(
     "/data/student/mainLecture/lectureList.json",
@@ -14,6 +22,43 @@ const StudentLectureList = () => {
     "/data/student/mainpage/subjectCategory.json",
     []
   );
+
+  // console.log(subjectVideos);
+  useEffect(() => {
+    if (subjectVideos.length > 0) {
+      const urls = subjectVideos.map((el) =>
+        getYouTubeThumbnailUrl(el.youtubeUrl)
+      );
+      setThumbnailUrls(urls);
+    }
+  }, [subjectVideos]);
+
+  const getYouTubeThumbnailUrl = (youtubeUrl) => {
+    const videoId =
+      youtubeUrl.split("v=")[1] || youtubeUrl.split("youtu.be/")[1];
+    if (videoId) {
+      const ampersandPosition = videoId.indexOf("&");
+      if (ampersandPosition !== -1) {
+        return `https://img.youtube.com/vi/${videoId.substring(
+          0,
+          ampersandPosition
+        )}/mqdefault.jpg`;
+      }
+      return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+    }
+    return null;
+  };
+
+  const openModal = (youtubeUrl) => {
+    setSelectedVideoUrl(youtubeUrl);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    // window.location.reload();
+    setIsModalOpen(false);
+    setSelectedVideoUrl("");
+  };
 
   if (subjectNameError || subjectVideosError) {
     return <div>데이터 로딩에 실패하였습니다.</div>;
@@ -41,15 +86,12 @@ const StudentLectureList = () => {
               <img
                 className="subject_lecture_list_image"
                 alt="과목이미지"
-                src={el.links}
+                src={thumbnailUrls[idx]}
+                onClick={() => openModal(el.youtubeUrl)}
               />
               <h1
                 className="subject_lecture_list_title"
-                onClick={() =>
-                  navigate(
-                    `/students/${el.subjectName}/lectures/${el.lectureId}`
-                  )
-                }
+                onClick={() => navigate(`/students/:subjectName/lecture/:id`)}
               >
                 {el.title}
               </h1>
@@ -58,6 +100,13 @@ const StudentLectureList = () => {
           ))}
         </div>
       </div>
+      <StudentVideoModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        // url={selectedVideoUrl}
+      >
+        <LectureVideo url={selectedVideoUrl} />
+      </StudentVideoModal>
     </div>
   );
 };

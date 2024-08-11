@@ -2,10 +2,7 @@ package project.homelearn.service.common;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -125,5 +122,11 @@ public class StorageService {
         }
 
         return folderPath.toString();
+    }
+
+    // S3에서 파일 다운로드
+    public InputStream downloadFile(String key) {
+        S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(bucketName, key));
+        return s3Object.getObjectContent();
     }
 }

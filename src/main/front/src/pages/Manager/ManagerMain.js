@@ -14,10 +14,7 @@ import StudentContact from "./StudentContact";
 import TeacherContact from "./TeacherContact";
 import CurriculumDetail from "./CurriculumDetail";
 import "./ManagerMain.css";
-
-
-
-
+import ManagerHeader from "../../components/Nav/ManagerHeader";
 
 function Dashboard() {
   return (
@@ -40,6 +37,7 @@ function Dashboard() {
 function ManagerMain() {
   return (
     <div className="App">
+      <ManagerHeader />
       <div className="main-content">
         <ManagerSideBar />
         <div className="content-area">

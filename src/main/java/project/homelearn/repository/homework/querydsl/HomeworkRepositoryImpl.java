@@ -129,7 +129,9 @@ public class HomeworkRepositoryImpl implements HomeworkRepositoryCustom {
                         homework.uploadFileName,
                         homework.filePath,
                         homework.createdDate,
-                        homework.deadline)
+                        homework.deadline,
+                        homework.requiredFile,
+                        homework.acceptFile)
                 .from(homework)
                 .where(homework.id.eq(homeworkId))
                 .fetchOne();
@@ -161,6 +163,8 @@ public class HomeworkRepositoryImpl implements HomeworkRepositoryCustom {
                 .deadLine(tuple.get(homework.deadline))
                 .unsubmittedCount(unsubmittedCount)
                 .unsubmittedList(unsubmittedList)
+                .requiredFile(tuple.get(homework.requiredFile))
+                .acceptFile(tuple.get(homework.acceptFile))
                 .build();
     }
 
