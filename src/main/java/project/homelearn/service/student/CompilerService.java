@@ -53,9 +53,33 @@ public class CompilerService {
             );
 
             Map<String, Object> result = responseEntity.getBody();
-            return processResult(result);
+            String statusDescription = (String) ((Map<String, Object>) result.get("status")).get("description");
+
+            if ("Accepted".equals(statusDescription)) {
+                return processResult(result);
+            } else {
+                // 컴파일 오류나 실행 오류가 발생한 경우 상세 정보를 반환
+                StringBuilder errorOutput = new StringBuilder();
+
+                String compileOutput = (String) result.get("compile_output");
+                String stderr = (String) result.get("stderr");
+
+                if (compileOutput != null) {
+                    String decodedCompileOutput = new String(Base64.getDecoder().decode(compileOutput));
+                    errorOutput.append(decodedCompileOutput);
+                }
+                if (stderr != null) {
+                    String decodedStderr = new String(Base64.getDecoder().decode(stderr));
+                    errorOutput.append(decodedStderr);
+                }
+
+                return errorOutput.toString();
+            }
+
+        } catch (IllegalArgumentException e) {
+            return "Unsupported language specified: " + e.getMessage();
         } catch (Exception e) {
-            return "An error occurred: " + e.getMessage();
+            return "An internal server error occurred. Please try again later.";
         }
     }
 
