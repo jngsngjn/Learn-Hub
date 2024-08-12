@@ -12,7 +12,6 @@ import {
 import "./play.css";
 
 const LectureVideo = ({ url, onClose }) => {
-  console.log(onClose);
   const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -31,8 +30,8 @@ const LectureVideo = ({ url, onClose }) => {
   const handleMouseEnter = () => setIsHovering(true);
   const handleMouseLeave = () => setIsHovering(false);
 
-  // 값은 잘 들어오는데 영상이 바로 뜨지 않음 -> 어떻게 해야할까...
-  // console.log(url);
+  // 값은 잘 들어오는데 영상이 바로 뜨지 않음 ->
+  console.log(url);
 
   useEffect(() => {
     if (url) {
