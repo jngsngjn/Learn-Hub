@@ -40,9 +40,9 @@ public class TeacherSubjectService {
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
     private final LectureRepository lectureRepository;
+    private final CurriculumRepository curriculumRepository;
     private final SubjectBoardRepository subjectBoardRepository;
     private final QuestionBoardRepository questionBoardRepository;
-    private final CurriculumRepository curriculumRepository;
 
     public void createSubject(String username, SubjectEnrollDto subjectDto) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
@@ -127,6 +127,7 @@ public class TeacherSubjectService {
         return subjectBoardRepository.findSubjectBoardTop5(subjectId);
     }
 
+    // 글 등록
     public void writeBoard(Long subjectId, SubjectBoardWriteDto boardDto, String username) {
         Subject subject = subjectRepository.findById(subjectId).orElseThrow();
         SubjectBoard board = new SubjectBoard();
@@ -146,6 +147,55 @@ public class TeacherSubjectService {
         }
 
         subjectBoardRepository.save(board);
+    }
+
+    // 글 수정
+    public boolean modifySubjectBoard(Long subjectId, Long boardId, SubjectBoardWriteDto boardDto, String username) {
+        Subject subject = subjectRepository.findSubjectAndCurriculum(subjectId);
+        Curriculum curriculum = subject.getCurriculum();
+
+        Teacher teacher = teacherRepository.findByCurriculum(curriculum);
+        if (!teacher.getUsername().equals(username)) {
+            return false;
+        }
+
+        // 수정 로직
+        SubjectBoard board = subjectBoardRepository.findById(boardId).orElseThrow();
+        board.setTitle(boardDto.getTitle());
+        board.setContent(boardDto.getContent());
+
+        MultipartFile file = boardDto.getFile();
+        String existFile = board.getFilePath();
+        if (file != null) {
+
+            // 파일 수정 + 기존 파일 O
+            if (!existFile.isEmpty()) {
+                // 기존 파일 삭제
+                storageService.deleteFile(existFile);
+            }
+
+            // 새로운 파일 등록
+            String folderPath = storageService.getFolderPath(teacher, SUBJECT);
+            FileDto fileDto = storageService.uploadFile(file, folderPath);
+            board.setFilePath(fileDto.getFilePath());
+            board.setUploadFileName(fileDto.getOriginalFileName());
+            board.setStoreFileName(fileDto.getUploadFileName());
+        }
+        return true;
+    }
+
+    // 글 삭제
+    public boolean deleteSubjectBoard(Long subjectId, Long boardId, String username) {
+        Subject subject = subjectRepository.findSubjectAndCurriculum(subjectId);
+        Curriculum curriculum = subject.getCurriculum();
+
+        Teacher teacher = teacherRepository.findByCurriculum(curriculum);
+        if (!teacher.getUsername().equals(username)) {
+            return false;
+        }
+
+        subjectBoardRepository.deleteById(boardId);
+        return true;
     }
 
     public List<QuestionTop5Dto> getQuestionTop5(Long subjectId) {
