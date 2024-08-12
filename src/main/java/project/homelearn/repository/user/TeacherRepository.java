@@ -38,4 +38,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Teacher
 
     @Query("select t from Teacher t where t.curriculum =:curriculum")
     Teacher findByCurriculum(@Param("curriculum") Curriculum curriculum);
+
+    boolean existsByEmail(String email);
 }

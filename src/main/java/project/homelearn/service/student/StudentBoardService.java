@@ -215,6 +215,7 @@ public class StudentBoardService {
                 freeBoard.getContent(),
                 freeBoard.getViewCount(),
                 freeBoard.getUser().getName(),
+                freeBoard.getUser().getUsername(),
                 freeBoard.getCreatedDate(),
                 freeBoard.getCommentCount()
         );
