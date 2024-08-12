@@ -1,6 +1,10 @@
+// LectureVideo.js
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, ChevronRight, ChevronLeft, Info, Code } from 'lucide-react';
 import './play.css';
+import { useNavigate } from "react-router-dom";
+import useGetFetch from "../../hooks/useGetFetch";
+import axios from 'axios';
 
 const LectureVideo = () => {
     const [player, setPlayer] = useState(null);
@@ -16,8 +20,41 @@ const LectureVideo = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [sidebarContent, setSidebarContent] = useState('info');
+    const [videoTitle, setVideoTitle] = useState("");
     const playerContainerRef = useRef(null);
     const progressInterval = useRef(null);
+
+    // 컴파일러 관련 상태 추가
+    const [code, setCode] = useState('public class Main {\n    public static void main(String[] args) {\n        System.out.println("hello, world");\n    }\n}');
+    const [language, setLanguage] = useState('java');
+    const [compilerOutput, setCompilerOutput] = useState('출력이 여기에 표시됩니다.');
+
+    const languageTemplates = {
+        java: `public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}`,
+        python: `print("Hello, World!")`,
+        javascript: `console.log("Hello, World!");`
+    };
+
+    useEffect(() => {
+        setCode(languageTemplates[language]);
+    }, [language]);
+
+    const navigate = useNavigate();
+
+    const { data: subjectVideos, error: subjectVideosError } = useGetFetch(
+        "/data/student/mainLecture/lectureList.json",
+        []
+    );
+
+    const { data: subjectName, error: subjectNameError } = useGetFetch(
+        "/data/student/mainpage/subjectCategory.json",
+        []
+    );
 
     const handleMouseEnter = () => setIsHovering(true);
     const handleMouseLeave = () => setIsHovering(false);
@@ -86,6 +123,7 @@ const LectureVideo = () => {
                         setVolume(event.target.getVolume());
                         setIsMuted(event.target.isMuted());
                         setDuration(event.target.getDuration());
+                        setVideoTitle(event.target.getVideoData().title);
                     },
                     onStateChange: (event) => {
                         setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
@@ -174,8 +212,155 @@ const LectureVideo = () => {
     };
 
     const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
+        setIsSidebarOpen(prev => !prev);
+        if (!isSidebarOpen) {
+            setSidebarContent('info');
+        }
     };
+
+    const changeSidebarContent = (content) => {
+        setSidebarContent(content);
+    };
+
+    const handleCodeChange = (e) => {
+        setCode(e.target.value);
+    };
+
+    const handleLanguageChange = (e) => {
+        setLanguage(e.target.value);
+    };
+
+
+
+    const runCode = async () => {
+        setCompilerOutput('코드 실행 중...');
+        const languageId = {
+            'python': 71,
+            'javascript': 63,
+            'java': 62,
+        }[language];
+
+        try {
+            // Base64로 인코딩
+            const encodedCode = btoa(unescape(encodeURIComponent(code)));
+            console.log('Sending encoded code to API:', encodedCode);
+
+            const response = await axios.post('https://judge0-ce.p.rapidapi.com/submissions', {
+                language_id: languageId,
+                source_code: code,
+                stdin: '',
+                base64_encoded: true
+            }, {
+                headers: {
+                    'content-type': 'application/json',
+                    'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                    'X-RapidAPI-Key': '180f0cf557msh68f08910ce677b9p1712c4jsn889cb7401d81'
+                }
+            });
+
+            console.log('API response:', response.data);
+            const { token } = response.data;
+
+            // 결과를 기다리기 위해 잠시 대기
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            const result = await axios.get(`https://judge0-ce.p.rapidapi.com/submissions/${token}`, {
+                headers: {
+                    'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                    'X-RapidAPI-Key': '180f0cf557msh68f08910ce677b9p1712c4jsn889cb7401d81'
+                },
+                params: {
+                    base64_encoded: 'true' // 결과도 Base64로 인코딩되어 있음을 명시
+                }
+            });
+
+
+            const decodedOutput = result.data.stdout
+                ? decodeURIComponent(escape(atob(result.data.stdout)))
+                : (result.data.stderr ? decodeURIComponent(escape(atob(result.data.stderr))) : '출력 없음');
+            setCompilerOutput(decodedOutput);
+        } catch (error) {
+            console.error('Error running code:', error);
+            setCompilerOutput('코드 실행 중 오류 발생: ' + error.message);
+        }
+    };
+
+    const renderSidebarContent = () => {
+        switch (sidebarContent) {
+            case 'info':
+                return (
+                    <div className="player_sidebar-content">
+                        <p className="player_category">동영상 정보</p>
+                        <div className="player_line"></div>
+                        <p className="player_title">{videoTitle}</p>
+                        <p className="player_category">다른 강의</p>
+                        <div className="player_line"></div>
+                        <div className="player_lecture_list_container">
+                            {subjectVideos.slice(0, 2).map((el, idx) => (
+                                <div className="player_lecture_list_content" key={idx}>
+                                    <img
+                                        className="player_lecture_list_image"
+                                        alt="과목이미지"
+                                        src={el.links}
+                                    />
+                                    <h1
+                                        className="player_lecture_list_title"
+                                        onClick={() =>
+                                            navigate(
+                                                `/students/${el.subjectName}/lectures/${el.lectureId}`
+                                            )
+                                        }
+                                    >
+                                        {el.title}
+                                    </h1>
+                                    <p className="player_lecture_list_description">{el.content}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            case 'compiler':
+                return (
+                    <div className="player-sidebar-content compiler-container">
+                        <p className="compiler-title">컴파일러</p>
+                        <div className="player_line"></div>
+                        <div className="compiler-header">
+                            <select
+                                value={language}
+                                onChange={handleLanguageChange}
+                                className="compiler-language-select"
+                            >
+                                <option value="java">Java</option>
+                                <option value="python">Python</option>
+                                <option value="javascript">JavaScript</option>
+                            </select>
+                            <button
+                                onClick={runCode}
+                                className="compiler-run-button"
+                            >
+                                <Play size={16} className="compiler-run-icon" />
+                                Run
+                            </button>
+                        </div>
+                        <textarea
+                            value={code}
+                            onChange={handleCodeChange}
+                            className="compiler-code-editor"
+                            placeholder="여기에 코드를 입력하세요"
+                        />
+                        <div className="compiler-output-container">
+                            <pre className="compiler-output-content">{compilerOutput}</pre>
+                        </div>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
+    if (subjectNameError || subjectVideosError) {
+        return <div>데이터 로딩에 실패하였습니다.</div>;
+    }
 
     if (loading) {
         return <p>비디오 로딩 중...</p>;
@@ -251,10 +436,24 @@ const LectureVideo = () => {
                 </div>
             </div>
             <div className={`player-sidebar ${isSidebarOpen ? 'open' : ''}`}>
-                <button className="sidebar-toggle" onClick={toggleSidebar}>
+                <button className="player-sidebar-toggle" onClick={toggleSidebar}>
                     {isSidebarOpen ? <ChevronRight size={24}/> : <ChevronLeft size={24}/>}
                 </button>
-                {/* 사이드바 내용을 여기에 추가하세요 */}
+                <div className="player_sidebar-buttons">
+                    <div className="player_sidebar_button_list">
+                        <button className="player_sidebar-btn" onClick={() => changeSidebarContent('info')}>
+                            <Info size={24}/>
+                            <span>동영상 정보</span>
+                        </button>
+                    </div>
+                    <div className="player_sidebar_button_list">
+                        <button className="player_sidebar-btn" onClick={() => changeSidebarContent('compiler')}>
+                            <Code size={24}/>
+                            <span>컴파일러</span>
+                        </button>
+                    </div>
+                </div>
+                {renderSidebarContent()}
             </div>
         </div>
     );
