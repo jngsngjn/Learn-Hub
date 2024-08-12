@@ -5,8 +5,7 @@ const useAxiosGet = (url) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const accesstoken = localStorage.getItem("access-token");
-  const token = accesstoken ? accesstoken.replace("Bearer ", "") : "";
+  const token = localStorage.getItem("access-token");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,7 +13,7 @@ const useAxiosGet = (url) => {
       try {
         const response = await axios.get(url, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            access: token,
           },
         });
         setData(response.data);

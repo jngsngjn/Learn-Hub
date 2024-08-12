@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 const useAxiosDelete = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const accesstoken = localStorage.getItem("access-token");
-  const token = accesstoken ? accesstoken.replace("Bearer ", "") : "";
+  const token = localStorage.getItem("access-token");
+
   const navigate = useNavigate();
 
   const deleteRequest = useCallback(() => {
@@ -14,7 +14,7 @@ const useAxiosDelete = (url) => {
     return axios
       .delete(url, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          access: token,
         },
       })
       .then((res) => {
