@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -10,6 +10,7 @@ import swal from "sweetalert";
 
 const CurriculumDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [curriculum, setCurriculum] = useState({
     name: "",
     th: 0,
@@ -31,12 +32,15 @@ const CurriculumDetail = () => {
   const [isWeekend, setIsWeekend] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
+  const [password, setPassword] = useState("");
   const [updatedCurriculum, setUpdatedCurriculum] = useState({
     teacherId: "",
     startDate: "",
     endDate: "",
     color: "",
   });
+  const [colorWarning, setColorWarning] = useState(""); // 색상 경고 메시지
 
   const getToken = () => localStorage.getItem("access-token");
 
@@ -59,8 +63,6 @@ const CurriculumDetail = () => {
         );
         console.log("기본 정보 가져오기:", basicResponse.data);
         setCurriculum(basicResponse.data);
-
-        // teacherId가 존재하지 않으면 빈 문자열로 설정
         setUpdatedCurriculum({
           teacherId: basicResponse.data.teacherId || "",
           startDate: basicResponse.data.startDate || "",
@@ -68,53 +70,32 @@ const CurriculumDetail = () => {
           color: basicResponse.data.color || "",
         });
 
-        // 강사 정보를 먼저 불러오기
-        try {
-          const teacherResponse = await axios.get(
-            `/managers/curriculum/${id}/teacher`,
-            config
-          );
-          console.log("강사 정보 가져오기:", teacherResponse.data);
-          if (teacherResponse.data && teacherResponse.data.name) {
-            setTeacher(teacherResponse.data);
-            setUpdatedCurriculum((prev) => ({
-              ...prev,
-              teacherId: teacherResponse.data.id || "",
-            }));
-          } else {
-            setTeacher(null); // 강사 정보가 없을 때는 null로 설정
-            setUpdatedCurriculum((prev) => ({
-              ...prev,
-              teacherId: "", // teacherId를 빈 문자열로 설정
-            }));
-          }
-        } catch (error) {
-          console.error("강사 정보 조회 오류:", error);
-          setTeacher(null); // 오류가 발생해도 teacher를 null로 설정
+        const teacherResponse = await axios.get(
+          `/managers/curriculum/${id}/teacher`,
+          config
+        );
+        console.log("강사 정보 가져오기:", teacherResponse.data);
+        if (teacherResponse.data && teacherResponse.data.name) {
+          setTeacher(teacherResponse.data);
           setUpdatedCurriculum((prev) => ({
             ...prev,
-            teacherId: "", // 오류가 발생하면 teacherId를 빈 문자열로 설정
+            teacherId: teacherResponse.data.id || "",
+          }));
+        } else {
+          setTeacher(null);
+          setUpdatedCurriculum((prev) => ({
+            ...prev,
+            teacherId: "",
           }));
         }
 
-        // 출결 정보를 그다음에 불러오기
-        try {
-          const attendanceResponse = await axios.get(
-            `/managers/curriculum/${id}/attendance`,
-            config
-          );
-          console.log("출결 정보 가져오기:", attendanceResponse.data);
-          setAttendance(attendanceResponse.data);
-          setIsWeekend(false);
-        } catch (error) {
-          if (error.response && error.response.status === 409) {
-            console.log("주말에는 출석 정보를 조회할 수 없습니다.");
-            setAttendance({ attendance: 0, total: 0, ratio: 0 });
-            setIsWeekend(true);
-          } else {
-            console.error("출석 정보 조회 오류:", error);
-          }
-        }
+        const attendanceResponse = await axios.get(
+          `/managers/curriculum/${id}/attendance`,
+          config
+        );
+        console.log("출결 정보 가져오기:", attendanceResponse.data);
+        setAttendance(attendanceResponse.data);
+        setIsWeekend(false);
 
         const calendarResponse = await axios.get(
           `/managers/curriculum/${id}/calendar`,
@@ -123,7 +104,7 @@ const CurriculumDetail = () => {
         console.log("캘린더 정보 가져오기:", calendarResponse.data);
         setSchedules(calendarResponse.data);
       } catch (error) {
-        console.error("응답 오류:", error.response);
+        console.error("데이터 가져오기 오류:", error.response);
       }
     };
 
@@ -136,11 +117,31 @@ const CurriculumDetail = () => {
   };
 
   const handleColorChange = (color) => {
-    setUpdatedCurriculum({ ...updatedCurriculum, color: color.hex });
+    // 색상 중복 체크 로직 추가
+    if (isColorDuplicate(color.hex)) {
+      setColorWarning("이 색상은 이미 다른 교육 과정에서 사용 중입니다.");
+    } else {
+      setColorWarning("");
+      setUpdatedCurriculum({ ...updatedCurriculum, color: color.hex });
+    }
     setIsColorPickerOpen(false);
   };
 
+  // 색상 중복 체크 함수
+  const isColorDuplicate = (newColor) => {
+    // 기존의 모든 교육 과정을 불러와 색상 비교 로직 추가 (단순 예시)
+    // 실제 API 호출을 통해 다른 교육 과정들의 색상 데이터를 가져와 비교할 수 있습니다.
+    // 여기서는 간단히 같은 페이지 내에서 중복 여부를 체크합니다.
+    const existingColors = ["#F3C41E", "#F58D11", "#B85B27"]; // 예시로 고정된 색상 목록
+    return existingColors.includes(newColor);
+  };
+
   const handleUpdateCurriculum = async () => {
+    if (colorWarning) {
+      swal("색상 중복 오류", "다른 색상을 선택해 주세요.", "error");
+      return;
+    }
+
     try {
       const token = getToken();
       const response = await axios.patch(
@@ -157,7 +158,6 @@ const CurriculumDetail = () => {
       if (response.status === 200) {
         setIsModalOpen(false);
         swal("수정 성공", "교육 과정이 성공적으로 수정되었습니다.", "success");
-        // Refresh the curriculum data
         const updatedCurriculumResponse = await axios.get(
           `/managers/curriculum/${id}/basic`,
           {
@@ -171,6 +171,52 @@ const CurriculumDetail = () => {
     } catch (error) {
       console.error("교육 과정 수정 중 오류 발생:", error);
       swal("수정 실패", "교육 과정 수정 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+    }
+  };
+
+  const handleDeleteCurriculum = () => {
+    setIsDeleteModalOpen(true); // 삭제 모달 열기
+  };
+
+  const confirmDeleteCurriculum = async () => {
+    try {
+      const token = getToken();
+      const passwordCheckResponse = await axios.post(
+        "/managers/check-password",
+        { password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            access: token,
+          },
+        }
+      );
+
+      if (passwordCheckResponse.status === 200) {
+        const deleteResponse = await axios.delete(
+          `/managers/manage-curriculums/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              access: token,
+            },
+          }
+        );
+
+        if (deleteResponse.status === 200) {
+          swal("삭제 성공", "교육 과정이 성공적으로 삭제되었습니다.", "success");
+          navigate("/managers/manage-curriculums");
+        } else {
+          swal("삭제 실패", "교육 과정 삭제에 실패했습니다. 다시 시도해주세요.", "error");
+        }
+      } else {
+        swal("비밀번호 오류", "비밀번호가 일치하지 않습니다. 다시 시도해주세요.", "error");
+      }
+    } catch (error) {
+      console.error("교육 과정 삭제 중 오류 발생:", error);
+      swal("삭제 실패", "교육 과정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
+    } finally {
+      setIsDeleteModalOpen(false); // 삭제 모달 닫기
     }
   };
 
@@ -316,7 +362,7 @@ const CurriculumDetail = () => {
             >
               ×
             </button>
-            <span className="curriculum-submit">교육 과정 수정</span>
+            <h2 className="curriculum-modal-title">교육 과정 수정</h2>
             <div className="curriculum-input-group">
               <label>시작일</label>
               <input
@@ -357,6 +403,11 @@ const CurriculumDetail = () => {
                   ></div>
                 </div>
               </div>
+              {colorWarning && (
+                <p className="color-warning" style={{ color: "red" }}>
+                  {colorWarning}
+                </p>
+              )}
             </div>
             {isColorPickerOpen && (
               <div
@@ -379,15 +430,63 @@ const CurriculumDetail = () => {
                 </div>
               </div>
             )}
+            <div className="curriculum-input-group">
+              <label>강사</label>
+              <select
+                name="teacherId"
+                value={updatedCurriculum.teacherId}
+                onChange={handleInputChange}
+                className="teacher-select"
+              >
+                <option value="">선택 안 함</option>
+                {teacher && (
+                  <option value={teacher.id}>{teacher.name}</option>
+                )}
+              </select>
+            </div>
             <div className="modal-actions">
               <button className="modal-button" onClick={handleUpdateCurriculum}>
                 교육 과정 수정
               </button>
               <button
-                className="modal-button"
-                onClick={() => setIsModalOpen(false)}
+                className="modal-button delete-button"
+                onClick={handleDeleteCurriculum}
               >
-                수정 취소
+                교육 과정 삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isDeleteModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button
+              className="modal-close"
+              onClick={() => setIsDeleteModalOpen(false)}
+            >
+              ×
+            </button>
+            <h2 className="delete-modal-title">
+              {curriculum.name} {curriculum.th}기 과정을<br />
+              삭제하시려면 비밀번호를 입력해 주세요
+            </h2>
+            <div className="curriculum-input-group">
+              <label>비밀번호</label>
+              <input
+                className="curriculum-password-input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="modal-actions">
+              <button
+                className="modal-button delete-button"
+                onClick={confirmDeleteCurriculum}
+              >
+                삭제
               </button>
             </div>
           </div>
