@@ -200,7 +200,6 @@ public class StudentBoardService {
                 freeBoard.getId(),
                 freeBoard.getTitle(),
                 freeBoard.getUser().getName(),
-                freeBoard.getUser().getUsername(),
                 freeBoard.getCreatedDate(),
                 freeBoard.getCommentCount()
         );
@@ -216,6 +215,7 @@ public class StudentBoardService {
                 freeBoard.getContent(),
                 freeBoard.getViewCount(),
                 freeBoard.getUser().getName(),
+                freeBoard.getUser().getUsername(),
                 freeBoard.getCreatedDate(),
                 freeBoard.getCommentCount()
         );

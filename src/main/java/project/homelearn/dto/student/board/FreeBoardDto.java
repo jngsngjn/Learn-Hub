@@ -21,9 +21,6 @@ public class FreeBoardDto {
     private String author;
 
     @NotBlank
-    private String username;
-
-    @NotBlank
     private LocalDateTime createDate;
 
     @NotNull
