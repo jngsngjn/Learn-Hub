@@ -28,7 +28,6 @@ public class AnswerBotController {
     @Value("${openai.api.url}")
     private String openaiUrl;
 
-
     @GetMapping("/chat")
     public ResponseEntity<?> chat(@RequestParam(name = "prompt") String prompt) {
 

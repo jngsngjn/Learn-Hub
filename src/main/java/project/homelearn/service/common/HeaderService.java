@@ -90,8 +90,11 @@ public class HeaderService {
             return true;
         }
 
-        managerNotificationRepository.deleteById(id);
-        return true;
+        if (role.equals(ROLE_MANAGER)) {
+            managerNotificationRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public boolean deleteAllNotifications(String username) {
@@ -108,8 +111,11 @@ public class HeaderService {
             return true;
         }
 
-        managerNotificationRepository.deleteAll();
-        return true;
+        if (role.equals(ROLE_MANAGER)) {
+            managerNotificationRepository.deleteAll();
+            return true;
+        }
+        return false;
     }
 
     public NotificationDto getManagerNotification() {

@@ -34,6 +34,4 @@ public class TeacherSubjectBoardController {
     // 글 수정
 
     // 글 삭제
-
-    // 조회수 증가
 }

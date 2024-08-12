@@ -30,8 +30,6 @@ public class StudentQuestionBoardViewController {
     private final CurriculumRepository curriculumRepository;
     private final StudentQuestionBoardService studentQuestionBoardService;
 
-    // 조회수 증가
-
     // 게시글 리스트
     @GetMapping
     public ResponseEntity<?> getQuestionBoardList(@RequestParam(required = false) String filterType,
@@ -39,7 +37,6 @@ public class StudentQuestionBoardViewController {
                                                   Principal principal,
                                                   @RequestParam(name = "page", defaultValue = "0") int page) {
         int size = 15;
-
         String username = principal.getName();
         Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
 

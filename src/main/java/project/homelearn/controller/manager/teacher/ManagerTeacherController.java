@@ -109,8 +109,8 @@ public class ManagerTeacherController {
 
     /**
      * 특정 강사 페이지
-     * 1. 일반 정보 ✅ viewTeacherBasic()
-     * 2. 강사가 배정되지 않은 교육 과정 ✅ viewTeacherWithoutCurriculum()
+     * 1. 일반 정보 viewTeacherBasic()
+     * 2. 강사가 배정되지 않은 교육 과정 viewTeacherWithoutCurriculum()
      */
     @GetMapping("/teacher/basic/{teacherId}")
     public ResponseEntity<?> viewTeacherBasic(@PathVariable("teacherId") Long teacherId) {

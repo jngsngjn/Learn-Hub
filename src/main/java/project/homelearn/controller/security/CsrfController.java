@@ -5,6 +5,7 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+// 삭제 대기
 @RestController
 public class CsrfController {
 
