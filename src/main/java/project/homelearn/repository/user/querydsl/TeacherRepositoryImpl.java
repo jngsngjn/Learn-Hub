@@ -32,7 +32,7 @@ public class TeacherRepositoryImpl implements TeacherRepositoryCustom {
                         teacher.phone
                 ))
                 .from(teacher)
-                .join(teacher.curriculum, curriculum)
+                .where(teacher.curriculum.id.eq(curriculumId))
                 .fetchOne();
     }
 

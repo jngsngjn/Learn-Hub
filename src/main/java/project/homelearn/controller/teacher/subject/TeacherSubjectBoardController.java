@@ -24,7 +24,7 @@ public class TeacherSubjectBoardController {
 
     // 글 등록
     @PostMapping
-    public ResponseEntity<?> writeBoard(@PathVariable("subjectId") Long subjectId,
+    public ResponseEntity<?> writeSubjectBoard(@PathVariable("subjectId") Long subjectId,
                                         @Valid @ModelAttribute SubjectBoardWriteDto boardDto,
                                         Principal principal) {
         teacherSubjectService.writeBoard(subjectId, boardDto, principal.getName());
@@ -32,8 +32,27 @@ public class TeacherSubjectBoardController {
     }
 
     // 글 수정
+    @PatchMapping("/{boardId}")
+    public ResponseEntity<?> modifySubjectBoard(@PathVariable("subjectId") Long subjectId,
+                                                @PathVariable("boardId") Long boardId,
+                                         @Valid @ModelAttribute SubjectBoardWriteDto boardDto,
+                                         Principal principal) {
+        boolean result = teacherSubjectService.modifySubjectBoard(subjectId, boardId, boardDto, principal.getName());
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
     // 글 삭제
-
-    // 조회수 증가
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<?> deleteSubjectBoard(@PathVariable("subjectId") Long subjectId,
+                                                @PathVariable("boardId") Long boardId,
+                                                Principal principal) {
+        boolean result = teacherSubjectService.deleteSubjectBoard(subjectId, boardId, principal.getName());
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }

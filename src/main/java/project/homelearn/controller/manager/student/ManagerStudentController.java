@@ -20,6 +20,9 @@ import project.homelearn.service.student.AttendanceService;
 
 import java.util.List;
 
+/**
+ * Author : 정성진
+ */
 @Slf4j
 @RestController
 @RequestMapping("/managers")
@@ -53,7 +56,6 @@ public class ManagerStudentController {
     }
 
     /**
-     * Author : 정성진
      * 학생 1명 등록
      */
     @PostMapping("/manage-students/enroll")
@@ -67,7 +69,6 @@ public class ManagerStudentController {
     }
 
     /**
-     * Author : 정성진
      * 엑셀 파일로 학생 대량 등록
      */
     @PostMapping("/manage-students/enroll-file")
@@ -77,7 +78,6 @@ public class ManagerStudentController {
     }
 
     /**
-     * Author : 정성진
      * 학생 정보 수정
      */
     @PatchMapping("/manage-students/{id}")
@@ -92,7 +92,6 @@ public class ManagerStudentController {
     }
 
     /**
-     * Author : 정성진
      * 학생 1명 삭제
      */
     @DeleteMapping("/manage-students/{id}")
@@ -121,9 +120,9 @@ public class ManagerStudentController {
 
     /**
      * 특정 학생 페이지
-     * 1. 커리큘럼 정보 ✅
-     * 2. 학생 정보 ✅
-     * 3. 출결 현황 ✅
+     * 1. 커리큘럼 정보
+     * 2. 학생 정보
+     * 3. 출결 현황
      */
     @GetMapping("/students/curriculum/{studentId}")
     public ResponseEntity<?> viewStudentCurriculum(@PathVariable("studentId") Long studentId) {
