@@ -104,6 +104,11 @@ public class ManagerTeacherService {
         }
 
         String email = teacherEnrollDto.getEmail();
+        boolean existsByEmail = teacherRepository.existsByEmail(email);
+        if (existsByEmail) {
+            return false;
+        }
+
         String code = emailService.sendCode(email, ENROLL);
         if (code == null) {
             return false;

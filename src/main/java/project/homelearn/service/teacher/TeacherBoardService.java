@@ -12,6 +12,8 @@ import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.teacher.board.NoticeBoardDto;
 import project.homelearn.dto.teacher.board.NoticeReadDto;
 import project.homelearn.dto.teacher.board.NoticeUpdateDto;
+import project.homelearn.dto.teacher.board.TeacherBoardDto;
+import project.homelearn.dto.teacher.dashboard.ManagerBoardDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.teacher.TeacherBoard;
 import project.homelearn.repository.board.TeacherBoardRepository;
@@ -131,5 +133,10 @@ public class TeacherBoardService {
             log.error("Error delete TeacherBoard", e);
             return false;
         }
+    }
+
+    // 최근 4개 공지사항
+    public List<TeacherBoardDto> viewTeacherBoardRecent() {
+        return teacherBoardRepository.findTeacherBoardRecent4();
     }
 }

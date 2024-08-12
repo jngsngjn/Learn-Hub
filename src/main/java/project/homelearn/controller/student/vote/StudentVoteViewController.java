@@ -48,7 +48,7 @@ public class StudentVoteViewController {
     /**
      * 투표 조회 - ✅
      */
-    @GetMapping("/{voteId}")
+    @GetMapping("/{voteId}/basic")
     public ResponseEntity<?> viewVote(@PathVariable("voteId") Long voteId,
                                       Principal principal) {
         String username = principal.getName();
