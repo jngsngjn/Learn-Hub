@@ -1,7 +1,5 @@
 [
-  { "id": 1, "name": "JAVA" },
-  { "id": 2, "name": "MySQL" },
-  { "id": 3, "name": "JQuery" },
-  { "id": 4, "name": "React" },
-  { "id": 5, "name": "Docker" }
+  { "subjectId": 1, "name": "JAVA" },
+  { "subjectId": 2, "name": "SQL" },
+  { "subjectId": 3, "name": "React" }
 ]

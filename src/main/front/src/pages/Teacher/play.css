@@ -196,6 +196,5 @@
 /* 사이드바가 열렸을 때의 스타일 */
 .custom-youtube-player-container.sidebar-open .custom-youtube-player {
   width: calc(1440px - 300px); /* 사이드바 너비만큼 줄임 */
-  height: 90%;
   margin-right: 300px; /* 사이드바 너비만큼 오른쪽 마진 추가 */
 }
