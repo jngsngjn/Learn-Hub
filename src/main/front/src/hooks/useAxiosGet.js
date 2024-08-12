@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const useAxiosGet = (url, initialState) => {
-  const [data, setData] = useState(initialState);
+const useAxiosGet = (url) => {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access-token");
