@@ -17,6 +17,17 @@ public class LectureListDto {
     @NotBlank
     private String link;
 
+    @NotBlank
+    private Long subjectId;
+
+    @QueryProjection
+    public LectureListDto(Long lectureId, String title, String link, Long subjectId) {
+        this.title = title;
+        this.lectureId = lectureId;
+        this.link = link;
+        this.subjectId = subjectId;
+    }
+
     @QueryProjection
     public LectureListDto(Long lectureId, String title, String link) {
         this.title = title;
