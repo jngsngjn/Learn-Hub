@@ -13,6 +13,7 @@ import project.homelearn.dto.common.board.QuestionBoardDetailDto;
 import project.homelearn.dto.common.board.QuestionBoardDto;
 import project.homelearn.dto.student.board.CommentWriteDto;
 import project.homelearn.dto.student.board.QuestionBoardWriteDto;
+import project.homelearn.dto.student.dashboard.ViewQuestionBoardDto;
 import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
@@ -20,6 +21,8 @@ import project.homelearn.entity.board.scrap.QuestionScrap;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.Subject;
 import project.homelearn.entity.student.Student;
+import project.homelearn.entity.student.badge.BadgeConstants;
+import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
@@ -27,13 +30,16 @@ import project.homelearn.repository.board.QuestionScrapRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.curriculum.SubjectRepository;
 import project.homelearn.repository.user.StudentRepository;
+import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.common.StorageService;
+import project.homelearn.service.teacher.TeacherNotificationService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static project.homelearn.config.storage.FolderType.QUESTION_BOARD;
+import static project.homelearn.entity.user.Role.ROLE_TEACHER;
 
 @Slf4j
 @Service
@@ -49,10 +55,13 @@ public class StudentQuestionBoardService {
     private final QuestionBoardCommentRepository commentRepository;
     private final CurriculumRepository curriculumRepository;
     private final QuestionScrapRepository questionScrapRepository;
+    private final TeacherNotificationService teacherNotificationService;
+    private final TeacherRepository teacherRepository;
+    private final StudentNotificationService studentNotificationService;
+    private final BadgeService badgeService;
 
     // 글 작성
     public void writeQuestionBoard(String username, QuestionBoardWriteDto questionBoardWriteDto) {
-
         Student student = studentRepository.findByUsername(username);
 
         QuestionBoard questionBoard = new QuestionBoard();
@@ -75,8 +84,16 @@ public class StudentQuestionBoardService {
             questionBoard.setImageName(fileDto.getUploadFileName());
             questionBoard.setImagePath(fileDto.getFilePath());
         }
-
         questionBoardRepository.save(questionBoard);
+
+        // 강사에게 알림
+        Teacher teacher = teacherRepository.findByStudentUsername(username);
+        teacherNotificationService.questionNotify(teacher, questionBoard);
+
+        long count = questionBoardRepository.countByUser(student);
+        if (count == 10) {
+            badgeService.getBadge(student, BadgeConstants.QUESTION);
+        }
     }
 
     // 글 삭제
@@ -124,16 +141,28 @@ public class StudentQuestionBoardService {
         return true;
     }
 
-    // 댓글 작성
+    // 댓글 작성 (질문 답변)
     public void writeComment(Long questionBoardId, String username, CommentWriteDto commentDto) {
-        User user = userRepository.findByUsername(username);
-        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
+        User commentWriter = userRepository.findByUsername(username);
+        QuestionBoard questionBoard = questionBoardRepository.findQuestionBoardAndWriter(questionBoardId);
 
         QuestionBoardComment comment = new QuestionBoardComment();
-        comment.setUser(user);
+        comment.setUser(commentWriter);
         comment.setQuestionBoard(questionBoard);
         comment.setContent(commentDto.getContent());
         commentRepository.save(comment);
+
+        // 질문 작성한 학생에게 알림
+        User boardWriter = questionBoard.getUser();
+        if (boardWriter.equals(commentWriter)) {
+            return;
+        }
+        studentNotificationService.questionResponseNotify(boardWriter, questionBoard, comment);
+
+        long count = commentRepository.countDistinctQuestionCommentByUser(commentWriter);
+        if (count == 10) {
+            badgeService.getBadge(commentWriter, BadgeConstants.EXPLAIN);
+        }
     }
 
     // 댓글 수정
@@ -169,7 +198,7 @@ public class StudentQuestionBoardService {
 
     // 대댓글 작성
     public void writeReplyComment(Long commentId, String username, CommentWriteDto commentDto) {
-        User user = userRepository.findByUsername(username);
+        User writer = userRepository.findByUsername(username);
         QuestionBoardComment parentComment = commentRepository.findById(commentId).orElseThrow();
 
         // 대댓글 깊이 확인
@@ -178,11 +207,19 @@ public class StudentQuestionBoardService {
         }
 
         QuestionBoardComment reply = new QuestionBoardComment();
-        reply.setUser(user);
+        reply.setUser(writer);
         reply.setContent(commentDto.getContent());
         reply.setQuestionBoard(parentComment.getQuestionBoard());
         reply.setParentComment(parentComment);
         commentRepository.save(reply);
+
+        // 부모 댓글의 작성자가 강사면 강사에게 알림
+        User parent = parentComment.getUser();
+        if (parent.getRole().equals(ROLE_TEACHER) && !writer.getRole().equals(ROLE_TEACHER)) {
+            Teacher teacher = teacherRepository.findByStudentUsername(username);
+            QuestionBoard questionBoard = parentComment.getQuestionBoard();
+            teacherNotificationService.questionReplyNotify(teacher, questionBoard, reply);
+        }
     }
 
     // 대댓글 수정
@@ -336,7 +373,14 @@ public class StudentQuestionBoardService {
 
     // 최근 질문 5개
     public List<QuestionTop5Dto> getQuestionTop5(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByStudent(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return questionBoardRepository.findQuestionTop5(curriculum);
     }
+
+    // 최근 질문 2개
+    public List<ViewQuestionBoardDto> getQuestionTop2(String username){
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
+        return questionBoardRepository.findQuestionTop2(curriculum);
+    }
+
 }

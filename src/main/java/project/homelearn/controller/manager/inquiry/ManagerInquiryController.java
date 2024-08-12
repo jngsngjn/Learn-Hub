@@ -24,7 +24,7 @@ public class ManagerInquiryController {
     private final ManagerInquiryService managerInquiryService;
 
     // 학생 문의 리스트 조회
-    @GetMapping("/student-inquiries")
+    @GetMapping("/students-inquiries")
     public ResponseEntity<?> studentList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
                                          @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 
@@ -46,7 +46,7 @@ public class ManagerInquiryController {
     }
 
     // 강사 문의 리스트 조회
-    @GetMapping("/teacher-inquiries")
+    @GetMapping("/teachers-inquiries")
     public ResponseEntity<?> teacherList(@RequestParam(name = "curriculumName", required = false) String curriculumName,
                                          @RequestParam(name = "curriculumTh", required = false) Long curriculumTh) {
 

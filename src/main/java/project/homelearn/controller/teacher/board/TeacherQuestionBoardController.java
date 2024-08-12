@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/teachers/questionBoards")
+@RequestMapping("/teachers/question-boards")
 @RequiredArgsConstructor
 public class TeacherQuestionBoardController {
 
@@ -41,14 +41,13 @@ public class TeacherQuestionBoardController {
         int size = 15;
 
         String username = principal.getName();
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
 
         if (curriculum == null) {
             return new ResponseEntity<>("해당 교사의 커리큘럼을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
         Pageable pageable = PageRequest.of(page, size);
-
         Page<QuestionBoardDto> questionBoardList = teacherQuestionBoardService.getQuestionBoardList(filterType, subjectName, curriculum, pageable);
 
         if (questionBoardList.getTotalElements() > 0) {

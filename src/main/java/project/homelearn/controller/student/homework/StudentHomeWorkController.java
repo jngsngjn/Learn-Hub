@@ -12,6 +12,9 @@ import project.homelearn.service.student.StudentHomeworkService;
 
 import java.security.Principal;
 
+/**
+ * Author : 동재완
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -22,15 +25,14 @@ public class StudentHomeWorkController {
 
     // 학생 과제 등록
     @PostMapping
-    public ResponseEntity<?> enrollmentHomework(Principal principal,
-                                                @Valid @ModelAttribute HomeworkSubmitDto homeWorkSubmitDto) {
+    public ResponseEntity<?> submitHomework(Principal principal,
+                                            @Valid @ModelAttribute HomeworkSubmitDto homeWorkSubmitDto) {
         String username = principal.getName();
-        boolean result = studentHomeworkService.createHomework(username, homeWorkSubmitDto);
-
+        boolean result = studentHomeworkService.submitHomework(username, homeWorkSubmitDto);
         if (result) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK); // 제출 성공
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 제출 실패
         }
     }
 

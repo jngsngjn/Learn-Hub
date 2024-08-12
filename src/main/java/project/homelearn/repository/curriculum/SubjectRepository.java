@@ -7,10 +7,11 @@ import project.homelearn.dto.teacher.subject.SubjectBasicDto;
 import project.homelearn.dto.teacher.subject.SubjectSelectListDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.Subject;
+import project.homelearn.repository.curriculum.querydsl.SubjectRepositoryCustom;
 
 import java.util.List;
 
-public interface SubjectRepository extends JpaRepository<Subject, Long> {
+public interface SubjectRepository extends JpaRepository<Subject, Long>, SubjectRepositoryCustom {
 
     @Query("select s from Subject s join fetch s.curriculum where s.id =:subjectId")
     Subject findSubjectAndCurriculum(@Param("subjectId") Long subjectId);

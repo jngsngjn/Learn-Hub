@@ -22,6 +22,7 @@ import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.EnrollListRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.StudentRepository;
+import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.common.EmailService;
 
 import java.time.LocalDate;
@@ -41,6 +42,7 @@ public class ManagerStudentService {
 
     private final EmailService emailService;
 
+    private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final CurriculumRepository curriculumRepository;
     private final EnrollListRepository enrollListRepository;
@@ -125,6 +127,11 @@ public class ManagerStudentService {
         }
 
         String email = studentEnrollDto.getEmail();
+        boolean existsByEmail = userRepository.existsByEmail(email);
+        if (existsByEmail) {
+            return false;
+        }
+
         String code = emailService.sendCode(email, ENROLL);
         if (code == null) {
             return false;

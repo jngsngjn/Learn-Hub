@@ -2,12 +2,16 @@ package project.homelearn.repository.curriculum.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import project.homelearn.dto.manager.calendar.CurriculumNameAndColor;
+import project.homelearn.dto.manager.calendar.QCurriculumNameAndColor;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumIdAndThDto;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumTypeAndTh;
 import project.homelearn.dto.manager.manage.curriculum.CurriculumWithoutTeacherDto;
 import project.homelearn.dto.manager.manage.curriculum.QCurriculumIdAndThDto;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.curriculum.CurriculumType;
+import project.homelearn.entity.user.QUser;
+import project.homelearn.entity.user.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -92,7 +96,7 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
     }
 
     @Override
-    public Curriculum findCurriculumByTeacher(String username) {
+    public Curriculum findCurriculumByUsername(String username) {
         return queryFactory
                 .selectFrom(curriculum)
                 .join(curriculum.users, user)
@@ -101,11 +105,20 @@ public class CurriculumRepositoryImpl implements CurriculumRepositoryCustom {
     }
 
     @Override
-    public Curriculum findCurriculumByStudent(String username){
+    public Curriculum findCurriculumByUser(User user) {
         return queryFactory
                 .selectFrom(curriculum)
-                .join(curriculum.users, user)
-                .where(user.username.eq(username))
+                .join(curriculum.users, QUser.user)
+                .where(QUser.user.eq(user))
                 .fetchOne();
+    }
+
+    @Override
+    public List<CurriculumNameAndColor> findCurriculumNameAndColor() {
+        return queryFactory
+                .select(new QCurriculumNameAndColor(curriculum.fullName, curriculum.color))
+                .from(curriculum)
+                .orderBy(curriculum.createdDate.asc())
+                .fetch();
     }
 }

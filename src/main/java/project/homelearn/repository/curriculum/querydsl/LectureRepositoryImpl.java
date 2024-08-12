@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import project.homelearn.dto.student.dashboard.QViewLectureDto;
+import project.homelearn.dto.student.dashboard.ViewLectureDto;
+import project.homelearn.dto.student.lecture.StudentLectureViewDto;
 import project.homelearn.dto.teacher.lecture.LectureListDto;
 import project.homelearn.dto.teacher.lecture.QLectureListDto;
 import project.homelearn.dto.teacher.lecture.TeacherLectureViewDto;
@@ -17,8 +20,10 @@ import project.homelearn.repository.curriculum.StudentLectureRepository;
 import project.homelearn.repository.user.StudentRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static project.homelearn.entity.curriculum.QLecture.lecture;
+import static project.homelearn.entity.curriculum.QStudentLecture.studentLecture;
 import static project.homelearn.entity.curriculum.QSubjectBoard.subjectBoard;
 
 @RequiredArgsConstructor
@@ -123,6 +128,62 @@ public class LectureRepositoryImpl implements LectureRepositoryCustom {
         if (total != null && total > 0) {
             int completionRate = (completeCount * 100) / total;
             result.setCompleteRate(completionRate);
+        }
+
+        return result;
+    }
+
+    @Override
+    public Optional<ViewLectureDto> findLatestUnwatchedOrRecentLecture(String username){
+
+        ViewLectureDto unwatchedLecture = queryFactory
+                .select(new QViewLectureDto(
+                        lecture.id,
+                        lecture.youtubeLink
+                ))
+                .from(lecture)
+                .leftJoin(studentLecture)
+                .on(lecture.eq(studentLecture.lecture)
+                        .and(studentLecture.user.username.eq(username)))
+                .where(studentLecture.isNull())
+                .orderBy(lecture.createdDate.desc())
+                .fetchFirst();
+
+        if(unwatchedLecture == null){
+            return Optional.ofNullable(queryFactory
+                    .select(new QViewLectureDto(
+                            lecture.id,
+                            lecture.youtubeLink
+                    ))
+                    .from(lecture)
+                    .orderBy(lecture.createdDate.desc())
+                    .fetchFirst()
+            );
+        }
+        return Optional.of(unwatchedLecture);
+    }
+
+    @Override
+    public StudentLectureViewDto findStudentLectureView(Long lectureId) {
+        Tuple tuple = queryFactory
+                .select(lecture.id, lecture.curriculum, lecture.title, lecture.description, lecture.youtubeLink, lecture.subject)
+                .from(lecture)
+                .where(lecture.id.eq(lectureId))
+                .fetchOne();
+
+        if (tuple == null) {
+            return null;
+        }
+
+        StudentLectureViewDto result = new StudentLectureViewDto();
+        result.setLectureId(tuple.get(lecture.id));
+        result.setTitle(tuple.get(lecture.title));
+        result.setContent(tuple.get(lecture.description));
+        result.setLink(tuple.get(lecture.youtubeLink));
+
+        Subject subject = tuple.get(lecture.subject);
+        if (subject != null) {
+            result.setSubjectName(subject.getName());
         }
 
         return result;

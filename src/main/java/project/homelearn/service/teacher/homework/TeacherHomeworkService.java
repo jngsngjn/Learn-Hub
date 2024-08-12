@@ -1,4 +1,4 @@
-package project.homelearn.service.teacher;
+package project.homelearn.service.teacher.homework;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +11,10 @@ import project.homelearn.dto.common.FileDto;
 import project.homelearn.dto.teacher.dashboard.HomeworkStateDto;
 import project.homelearn.dto.teacher.homework.*;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.homework.AcceptFile;
 import project.homelearn.entity.homework.Homework;
 import project.homelearn.entity.homework.StudentHomework;
+import project.homelearn.entity.student.Student;
 import project.homelearn.entity.teacher.Teacher;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.homework.HomeworkRepository;
@@ -20,6 +22,7 @@ import project.homelearn.repository.homework.StudentHomeworkRepository;
 import project.homelearn.repository.user.StudentRepository;
 import project.homelearn.repository.user.TeacherRepository;
 import project.homelearn.service.common.StorageService;
+import project.homelearn.service.student.StudentNotificationService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,6 +44,7 @@ public class TeacherHomeworkService {
     private final HomeworkRepository homeworkRepository;
     private final CurriculumRepository curriculumRepository;
     private final StudentHomeworkRepository studentHomeworkRepository;
+    private final StudentNotificationService notificationService;
 
     public void enrollHomework(String username, HomeworkEnrollDto homeworkDto) {
         Teacher teacher = teacherRepository.findByUsernameAndCurriculum(username);
@@ -52,6 +56,17 @@ public class TeacherHomeworkService {
         homework.setDeadline(homeworkDto.getDeadLine());
         homework.setCurriculum(curriculum);
 
+        Boolean requiredFile = homeworkDto.getRequiredFile();
+        if (requiredFile) {
+            homework.setRequiredFile(true);
+            AcceptFile acceptFile = homeworkDto.getAcceptFile();
+            if (acceptFile == null) {
+                log.error("첨부 파일이 필수이지만 AcceptFile을 지정하지 않았습니다.");
+                return;
+            }
+            homework.setAcceptFile(acceptFile);
+        }
+
         MultipartFile file = homeworkDto.getFile();
         if (file != null) {
             String folderPath = storageService.getFolderPath(teacher, HOMEWORK);
@@ -61,9 +76,13 @@ public class TeacherHomeworkService {
             homework.setFilePath(fileDto.getFilePath());
         }
         homeworkRepository.save(homework);
+
+        // 학생들에게 알림
+        List<Student> students = studentRepository.findAllByCurriculum(curriculum);
+        notificationService.homeworkNotify(homework, students);
     }
 
-    public boolean modifyHomework(Long homeworkId, String username, HomeworkEnrollDto homeworkDto) {
+    public boolean modifyHomework(Long homeworkId, String username, HomeworkModifyDto homeworkDto) {
         Homework homework = homeworkRepository.findHomeworkAndCurriculum(homeworkId);
         Curriculum curriculum = homework.getCurriculum();
 
@@ -146,20 +165,20 @@ public class TeacherHomeworkService {
     }
 
     public HomeworkStateDto getHomeworkState(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         Integer totalCount = studentRepository.findStudentCountByCurriculum(curriculum);
         return homeworkRepository.findHomeworkStateDto(curriculum, totalCount);
     }
 
     public Page<HomeworkTabDto> getHomeworks(String username, int page, int size, String status) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         PageRequest pageRequest = PageRequest.of(page, size);
 
         return homeworkRepository.findHomeworks(curriculum, pageRequest, status);
     }
 
     public HomeworkDetailDto getHomeworkDetail(String username, Long homeworkId) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
 
         Integer totalCount = studentRepository.findStudentCountByCurriculum(curriculum);
         Long completedCount = homeworkRepository.findCompletedCount(homeworkId);
@@ -176,5 +195,13 @@ public class TeacherHomeworkService {
             return null;
         }
         return homeworkRepository.findHomeworkSubmitList(homeworkId);
+    }
+
+    public List<StudentHomework> getAllStudentHomeworksByHomework(Homework homework) {
+        return studentHomeworkRepository.findAllByHomework(homework);
+    }
+
+    public Homework getHomeworkById(Long homeworkId) {
+        return homeworkRepository.findById(homeworkId).orElseThrow();
     }
 }

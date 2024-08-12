@@ -47,9 +47,4 @@ public class StudentHomework extends BaseEntity {
     @Column(name = "response_date", insertable = false)
     @UpdateTimestamp
     private LocalDateTime responseDate;
-
-    public String getFormattedResponseDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return responseDate != null ? responseDate.format(formatter) : null;
-    }
 }

@@ -13,6 +13,7 @@ import project.homelearn.entity.board.FreeBoard;
 import project.homelearn.entity.board.comment.FreeBoardComment;
 import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.student.Student;
+import project.homelearn.entity.student.badge.BadgeConstants;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.FreeBoardCommentRepository;
 import project.homelearn.repository.board.FreeBoardRepository;
@@ -39,6 +40,7 @@ public class StudentBoardService {
     private final StudentRepository studentRepository;
     private final FreeBoardRepository boardRepository;
     private final FreeBoardCommentRepository commentRepository;
+    private final BadgeService badgeService;
 
     public void writeBoard(String username, FreeBoardWriteDto boardDto) {
         Student student = studentRepository.findByUsername(username);
@@ -61,8 +63,12 @@ public class StudentBoardService {
         } else {
             board.setContent(boardDto.getContent());
         }
-
         boardRepository.save(board);
+
+        long count = boardRepository.countByUser(student);
+        if (count == 10) {
+            badgeService.getBadge(student, BadgeConstants.TALK);
+        }
     }
 
     public boolean modifyBoard(Long boardId, String username, FreeBoardWriteDto boardDto) {
@@ -217,6 +223,7 @@ public class StudentBoardService {
     // 댓글 추출
     public List<FreeBoardCommentDto> getBoardComment(Long boardId) {
         List<FreeBoardComment> comments = commentRepository.findByFreeBoardCommentIdAndParentCommentIsNull(boardId);
+        // 댓글을 가져오는데 -> 최상위 댓글만 = 대댓글이 아닌 댓글만
 
         return comments.stream()
                 .map(this::convertToCommentDto)

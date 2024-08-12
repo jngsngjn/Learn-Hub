@@ -15,12 +15,14 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import project.homelearn.filter.CustomLoginFilter;
 import project.homelearn.filter.CustomLogoutFilter;
 import project.homelearn.filter.JwtFilter;
+import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.AttendanceRepository;
 import project.homelearn.repository.user.LoginHistoryRepository;
 import project.homelearn.repository.user.UserRepository;
 import project.homelearn.service.jwt.CookieService;
 import project.homelearn.service.jwt.JwtService;
 import project.homelearn.service.common.RedisService;
+import project.homelearn.service.student.BadgeService;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +36,8 @@ public class SecurityConfig {
     private final LoginHistoryRepository loginHistoryRepository;
     private final UserRepository userRepository;
     private final AttendanceRepository attendanceRepository;
+    private final BadgeService badgeService;
+    private final CurriculumRepository curriculumRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,7 +53,7 @@ public class SecurityConfig {
         http.httpBasic(auth -> auth.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/register/**", "/code-verify","/reissue", "/csrf-token", "/bot/chat", "/gs-guide-websocket/**", "/topic/progress/**").permitAll()
+                .requestMatchers("/", "/login", "/register/**", "/code-verify","/reissue", "/csrf-token", "/bot/chat", "/gs-guide-websocket/**", "/topic/progress/**", "/account/*").permitAll()
                 .requestMatchers("/manager/**").hasRole("MANAGER")
                 .requestMatchers("/teacher/**").hasRole("TEACHER")
                 .requestMatchers("/student/**").hasRole("STUDENT")
@@ -62,7 +66,7 @@ public class SecurityConfig {
 
         // 커스텀 필터 등록 (JwtFilter -> CustomLoginFilter -> CustomLogoutFilter -> LogoutFilter)
         http.addFilterBefore(new JwtFilter(jwtService), CustomLoginFilter.class);
-        http.addFilterAt(new CustomLoginFilter(jwtService, cookieService, redisService, authenticationManager(authenticationConfiguration), loginHistoryRepository, userRepository, attendanceRepository),
+        http.addFilterAt(new CustomLoginFilter(jwtService, cookieService, redisService, authenticationManager(authenticationConfiguration), loginHistoryRepository, userRepository, attendanceRepository, badgeService, curriculumRepository),
                 UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new CustomLogoutFilter(jwtService, redisService, cookieService), LogoutFilter.class);
 

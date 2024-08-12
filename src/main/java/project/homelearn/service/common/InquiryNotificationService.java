@@ -19,6 +19,7 @@ import project.homelearn.repository.user.UserRepository;
 
 import static project.homelearn.entity.notification.manager.ManagerNotificationType.STUDENT_INQUIRY;
 import static project.homelearn.entity.notification.manager.ManagerNotificationType.TEACHER_INQUIRY;
+import static project.homelearn.entity.notification.teacher.TeacherNotificationType.STUDENT_INQUIRY_TO_TEACHER;
 import static project.homelearn.entity.user.Role.*;
 
 /**
@@ -72,6 +73,15 @@ public class InquiryNotificationService {
         notification.setType(STUDENT_INQUIRY);
 
         managerNotificationRepository.save(notification);
+    }
+
+    // 학생이 강사에게 문의 등록 시 매니저에게 알림
+    public void notifyToTeacherStudentInquiry(TeacherInquiry inquiry) {
+        TeacherNotification notification = new TeacherNotification();
+        notification.setTeacherInquiry(inquiry);
+        notification.setType(STUDENT_INQUIRY_TO_TEACHER);
+
+        teacherNotificationRepository.save(notification);
     }
 
     // 강사가 매니저에게 문의 등록 시 매니저에게 알림

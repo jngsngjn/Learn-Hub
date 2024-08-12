@@ -27,10 +27,8 @@ public class StudentQuestionBoardController {
     @PostMapping
     public ResponseEntity<?> writeQuestionBoard(Principal principal,
                                                 @Valid @ModelAttribute QuestionBoardWriteDto questionBoardWriteDto) {
-        System.out.println("StudentQuestionBoardController.writeQuestionBoard");
         String username = principal.getName();
         studentQuestionBoardService.writeQuestionBoard(username, questionBoardWriteDto);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -59,7 +57,7 @@ public class StudentQuestionBoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    // 댓글 작성
+    // 댓글 작성 (질문 답변)
     @PostMapping("/{questionBoardId}/comments")
     public ResponseEntity<?> writeComment(@PathVariable("questionBoardId") Long questionBoardId, Principal principal,
                                           @Valid @RequestBody CommentWriteDto commentDto) {

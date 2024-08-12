@@ -6,4 +6,6 @@ import java.time.LocalDateTime;
 
 public interface LoginHistoryRepositoryCustom {
     LocalDateTime findUserLoginDateTime(User user);
+
+    long countConsecutiveLoginDatesByUser(User user);
 }

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 import project.homelearn.entity.user.Gender;
 
 @Data
@@ -24,10 +25,11 @@ public class RegisterDto {
 
     private Gender gender;
 
+    private MultipartFile image;
+
     @NotBlank
     private String phone;
 
-    @Email
     @NotBlank
     private String email;
 }

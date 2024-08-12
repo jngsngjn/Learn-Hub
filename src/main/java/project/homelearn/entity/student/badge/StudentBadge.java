@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import project.homelearn.entity.curriculum.Curriculum;
 import project.homelearn.entity.user.User;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter @Setter
@@ -23,6 +23,10 @@ public class StudentBadge {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curriculum_id", nullable = false)
+    private Curriculum curriculum;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "badge_id", nullable = false)
     private Badge badge;
 
@@ -33,13 +37,9 @@ public class StudentBadge {
     public StudentBadge() {
     }
 
-    public StudentBadge(User user, Badge badge) {
+    public StudentBadge(User user, Badge badge, Curriculum curriculum) {
         this.user = user;
         this.badge = badge;
-    }
-
-    public String getFormattedGetDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return getDate != null ? getDate.format(formatter) : null;
+        this.curriculum = curriculum;
     }
 }

@@ -24,6 +24,7 @@ import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.user.UserRepository;
+import project.homelearn.service.student.StudentNotificationService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,8 +40,9 @@ public class TeacherQuestionBoardService {
     private final CurriculumRepository curriculumRepository;
     private final QuestionBoardRepository questionBoardRepository;
     private final QuestionBoardCommentRepository commentRepository;
+    private final StudentNotificationService studentNotificationService;
 
-    // 댓글 작성 = 답변달기
+    // 댓글 작성 = 답변 등록
     public void writeComment(Long questionBoardId, String username, CommentWriteDto commentDto) {
         User user = userRepository.findByUsername(username);
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
@@ -50,6 +52,10 @@ public class TeacherQuestionBoardService {
         comment.setQuestionBoard(questionBoard);
         comment.setContent(commentDto.getContent());
         commentRepository.save(comment);
+
+        // 학생에게 알림
+        User student = questionBoard.getUser();
+        studentNotificationService.questionResponseNotify(student, questionBoard, comment);
     }
 
     // AI 자동응답 작성
@@ -277,7 +283,7 @@ public class TeacherQuestionBoardService {
 
     // 최근 질문 5개
     public List<QuestionTop5Dto> getQuestionTop5(String username) {
-        Curriculum curriculum = curriculumRepository.findCurriculumByTeacher(username);
+        Curriculum curriculum = curriculumRepository.findCurriculumByUsername(username);
         return questionBoardRepository.findQuestionTop5(curriculum);
     }
 }

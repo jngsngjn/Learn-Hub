@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.manager.dashboard.CurriculumDashboardDto;
 import project.homelearn.dto.manager.dashboard.ManagerScheduleDto;
 import project.homelearn.dto.manager.enroll.CurriculumEnrollDto;
+import project.homelearn.dto.manager.enroll.CurriculumEnrollReadyDto;
 import project.homelearn.dto.manager.manage.curriculum.*;
 import project.homelearn.entity.curriculum.CurriculumType;
 import project.homelearn.service.manager.ManagerCalendarService;
@@ -32,15 +33,15 @@ public class ManagerCurriculumController {
     private final ManagerCurriculumService curriculumService;
 
     // 학생 또는 강사 등록 전 사용
-    @GetMapping("/enroll-ready")
+    @GetMapping("/enroll-user-ready")
     public List<CurriculumTypeAndTh> readyEnroll() {
         return curriculumService.getCurriculumTypeAndTh();
     }
 
     // 교육과정 등록 및 수정 시 사용
-    @GetMapping("/enroll-curriculum-color")
-    public List<String> viewCurriculumColor() {
-        return curriculumService.getCurriculumColor();
+    @GetMapping("/enroll-curriculum-ready")
+    public CurriculumEnrollReadyDto viewCurriculumEnrollReady() {
+        return curriculumService.getCurriculumEnrollReady();
     }
 
     /**
