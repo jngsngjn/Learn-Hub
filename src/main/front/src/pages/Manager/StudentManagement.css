@@ -101,12 +101,21 @@
   border-radius: 8px;
 }
 
-.student-table-container th, .student-table-container td {
+.student-table-container th{
+    border: 1px solid #ddd;
+   padding: 8px;
+   text-align: center;
+   background-color: #F4F5F7;
+ }
+
+ .student-table-container td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
   background-color: #F4F5F7;
+    cursor:pointer;
 }
+
 
 .student-table-container th {
   background-color: #E3E1D9;
@@ -114,10 +123,7 @@
 
 .student-table-container tr:nth-child(even) {
   background-color: #F4F5F7;
-}
 
-.student-table-container tr:hover {
-  background-color: #B4B4B8;
 }
 
 .student-table-container th {

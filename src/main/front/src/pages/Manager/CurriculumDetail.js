@@ -32,7 +32,7 @@ const CurriculumDetail = () => {
   const [isWeekend, setIsWeekend] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 삭제 모달 상태 추가
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [updatedCurriculum, setUpdatedCurriculum] = useState({
     teacherId: "",
@@ -40,7 +40,7 @@ const CurriculumDetail = () => {
     endDate: "",
     color: "",
   });
-  const [colorWarning, setColorWarning] = useState(""); // 색상 경고 메시지
+  const [colorWarning, setColorWarning] = useState("");
 
   const getToken = () => localStorage.getItem("access-token");
 
@@ -61,7 +61,6 @@ const CurriculumDetail = () => {
           `/managers/curriculum/${id}/basic`,
           config
         );
-        console.log("기본 정보 가져오기:", basicResponse.data);
         setCurriculum(basicResponse.data);
         setUpdatedCurriculum({
           teacherId: basicResponse.data.teacherId || "",
@@ -74,7 +73,6 @@ const CurriculumDetail = () => {
           `/managers/curriculum/${id}/teacher`,
           config
         );
-        console.log("강사 정보 가져오기:", teacherResponse.data);
         if (teacherResponse.data && teacherResponse.data.name) {
           setTeacher(teacherResponse.data);
           setUpdatedCurriculum((prev) => ({
@@ -93,7 +91,6 @@ const CurriculumDetail = () => {
           `/managers/curriculum/${id}/attendance`,
           config
         );
-        console.log("출결 정보 가져오기:", attendanceResponse.data);
         setAttendance(attendanceResponse.data);
         setIsWeekend(false);
 
@@ -101,8 +98,21 @@ const CurriculumDetail = () => {
           `/managers/curriculum/${id}/calendar`,
           config
         );
-        console.log("캘린더 정보 가져오기:", calendarResponse.data);
         setSchedules(calendarResponse.data);
+
+        const surveyResponse = await axios.get(
+          `/managers/curriculum/${id}/survey-status/progress`,
+          config
+        );
+        if (surveyResponse.data) {
+          setSurvey({
+            id: surveyResponse.data.id,
+            title: surveyResponse.data.title,
+            th: surveyResponse.data.th,
+            completed: surveyResponse.data.completed,
+            total: surveyResponse.data.total,
+          });
+        }
       } catch (error) {
         console.error("데이터 가져오기 오류:", error.response);
       }
@@ -117,7 +127,6 @@ const CurriculumDetail = () => {
   };
 
   const handleColorChange = (color) => {
-    // 색상 중복 체크 로직 추가
     if (isColorDuplicate(color.hex)) {
       setColorWarning("이 색상은 이미 다른 교육 과정에서 사용 중입니다.");
     } else {
@@ -127,7 +136,6 @@ const CurriculumDetail = () => {
     setIsColorPickerOpen(false);
   };
 
-  // 색상 중복 체크 함수
   const isColorDuplicate = (newColor) => {
     const existingColors = ["#F3C41E", "#F58D11", "#B85B27"];
     return existingColors.includes(newColor);
@@ -172,7 +180,7 @@ const CurriculumDetail = () => {
   };
 
   const handleDeleteCurriculum = () => {
-    setIsDeleteModalOpen(true); // 삭제 모달 열기
+    setIsDeleteModalOpen(true);
   };
 
   const confirmDeleteCurriculum = async () => {
@@ -213,7 +221,7 @@ const CurriculumDetail = () => {
       console.error("교육 과정 삭제 중 오류 발생:", error);
       swal("삭제 실패", "교육 과정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
     } finally {
-      setIsDeleteModalOpen(false); // 삭제 모달 닫기
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -299,7 +307,7 @@ const CurriculumDetail = () => {
             <div className="curriculum-detail-info-box curriculum-detail-survey-box">
               <div className="curriculum-detail-survey-header">
                 <span className="curriculum-detail-subtitle">설문 조사</span>
-                <Link to={`/survey/${id}`} className="survey-link">
+                <Link to={`/managers/survey/${id}`} className="survey-link"> {/* 여기에서 경로 수정 */}
                   자세히 보기{" "}
                 </Link>
               </div>
@@ -320,15 +328,21 @@ const CurriculumDetail = () => {
                     <span className="curriculum-detail-survey-status-text">
                       진행 중
                     </span>
-                    <button className="curriculum-detail-survey-button">
-                      설문 마감
+                    <button
+                      className="curriculum-detail-survey-button"
+                      onClick={() => navigate(`/managers/survey/${survey.id}/detail`)}  // 여기에서 경로 수정
+                    >
+                      설문 등록
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="curriculum-detail-survey-content curriculum-detail-no-survey">
                   <p>진행중인 설문 조사가 없습니다.</p>
-                  <button className="curriculum-detail-survey-button">
+                  <button
+                    className="curriculum-detail-survey-button"
+                    onClick={() => navigate(`/managers/survey/${id}/detail`)}  // 여기에서 경로 수정
+                  >
                     설문 등록
                   </button>
                 </div>

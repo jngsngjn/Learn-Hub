@@ -14,6 +14,7 @@ import StudentContact from "./StudentContact";
 import TeacherContact from "./TeacherContact";
 import CurriculumDetail from "./CurriculumDetail";
 import StudentDetail from "./StudentDetail";
+import SurveyDetail from "./SurveyDetail";
 import "./ManagerMain.css";
 import ManagerHeader from "../../components/Nav/ManagerHeader";
 
@@ -45,23 +46,15 @@ function ManagerMain() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="manage-students" element={<StudentManagement />} />
-            <Route
-              path="manage-students/:id"
-              element={<StudentDetail />}
-            />
-            <Route
-              path="manage-curriculums"
-              element={<CurriculumManagement />}
-            />
-            <Route
-              path="manage-curriculums/:id"
-              element={<CurriculumDetail />}
-            />
+            <Route path="manage-students/:id" element={<StudentDetail />} />
+            <Route path="manage-curriculums" element={<CurriculumManagement />} />
+            <Route path="manage-curriculums/:id" element={<CurriculumDetail />} />
             <Route path="manage-teachers" element={<TeacherManagement />} />
             <Route path="notice" element={<Notice />} />
             <Route path="contact-students" element={<StudentContact />} />
             <Route path="contact-teachers" element={<TeacherContact />} />
             <Route path="calendar/:eventId" element={<CalendarDetail />} />
+            <Route path="survey/:id" element={<SurveyDetail />} />
           </Routes>
         </div>
       </div>

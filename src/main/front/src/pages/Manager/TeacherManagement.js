@@ -122,6 +122,7 @@ const TeacherManagement = () => {
       if (response.status === 200) {
         setIsModalOpen(false);
         fetchTeachers();
+        swal("등록 성공", "강사 등록 완료", "success");
       } else {
         console.error("강사 등록 실패");
       }
@@ -140,7 +141,7 @@ const TeacherManagement = () => {
       const token = getToken();
       const deletePromises = selectedTeachers.map((teacherId) =>
         axios.delete(`/managers/manage-teachers/${teacherId}`, {
-          headers: { access: `Bearer ${token}` }, // 헤더를 Authorization에서 access로 변경
+          headers: { access: `Bearer ${token}` },
         })
       );
       await Promise.all(deletePromises);
