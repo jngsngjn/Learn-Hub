@@ -1,0 +1,201 @@
+.custom-youtube-player-container {
+  display: flex;
+  width: 98%;
+  background-color: #000000;
+  justify-content: center;
+  align-items: center;
+  height: 90vh; /* 뷰포트 높이로 설정 */
+  position: relative; /* 사이드바의 기준점 */
+}
+
+.custom-youtube-player {
+  position: relative;
+  transition: all 0.3s ease;
+  width: 1440px; /* 기본 너비 설정 */
+  max-width: 100%; /* 화면 너비를 넘지 않도록 */
+  /* 아래는 김수정이 간격조정 중 */
+  max-height: 85.5vh;
+}
+
+.custom-youtube-player.fullscreen {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+}
+
+#youtube-player {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto; /* 높이를 자동으로 조정 */
+}
+
+.custom-youtube-player.fullscreen #youtube-player {
+  height: 100%;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.controls.visible {
+  opacity: 1;
+  width: 100%;
+}
+
+.controls-top {
+  width: 100%;
+  padding: 0;
+}
+
+.controls-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.controls-bottom-left,
+.controls-bottom-right {
+  display: flex;
+  align-items: center;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.volume-slider,
+.progress-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.volume-slider::-webkit-slider-thumb,
+.progress-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 50%;
+  margin-top: -5px; /* 트랙과 썸의 크기 차이의 절반 */
+}
+
+.volume-slider::-moz-range-thumb,
+.progress-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 50%;
+  margin-top: -5px; /* 트랙과 썸의 크기 차이의 절반 */
+}
+
+.volume-slider::-webkit-slider-runnable-track,
+.progress-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    #74b49b var(--value, 0%),
+    rgba(255, 255, 255, 0.3) var(--value, 0%)
+  );
+  border-radius: 1.3px;
+}
+
+.volume-slider::-moz-range-track,
+.progress-slider::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 1.3px;
+}
+
+.volume-slider::-moz-range-progress,
+.progress-slider::-moz-range-progress {
+  background-color: #74b49b;
+  height: 5px;
+}
+
+.playback-rate-select {
+  margin: 0 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.custom-youtube-player.fullscreen .controls {
+  padding-bottom: 20px;
+}
+
+.custom-youtube-player.fullscreen .control-btn {
+  font-size: 1.5em;
+}
+
+.custom-youtube-player.fullscreen .volume-slider {
+  width: 100px;
+}
+
+.custom-youtube-player.fullscreen .playback-rate-select {
+  font-size: 1.2em;
+}
+
+.player-sidebar {
+  position: fixed;
+  right: -300px;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: #f0f0f0;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+.player-sidebar.open {
+  right: 0;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #74b49b;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* 사이드바가 열렸을 때의 스타일 */
+.custom-youtube-player-container.sidebar-open .custom-youtube-player {
+  width: calc(1440px - 300px); /* 사이드바 너비만큼 줄임 */
+  height: 90%;
+  margin-right: 300px; /* 사이드바 너비만큼 오른쪽 마진 추가 */
+}

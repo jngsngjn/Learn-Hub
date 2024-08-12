@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import swal from 'sweetalert';
-import axios from 'axios';
-import './Login.css';
-import qs from 'qs';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
+import axios from "../../utils/axios";
+import "./Login.css";
+import qs from "qs";
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -20,45 +20,52 @@ function Login() {
       swal("입력 오류", "비밀번호를 입력하세요.", "warning");
     } else {
       try {
-        const response = await axios.post('http://localhost:8080/login', qs.stringify({
-          username,
-          password,
-        }), {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        });
+        const response = await axios.post(
+          "/login",
+          qs.stringify({
+            username,
+            password,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        );
 
-        console.log('로그인 응답:', response);
+        console.log("로그인 응답:", response);
 
         if (response.status === 200) {
-          const token = response.headers['access'];
-          console.log('토큰:', token);
-          localStorage.setItem('access-token', token); // 토큰을 로컬 스토리지에 저장
-          swal("로그인 성공", "성공적으로 로그인되었습니다.", "success");
+          const token = response.headers["access"];
+          console.log("토큰:", token);
+          localStorage.setItem("access-token", token); // 토큰을 로컬 스토리지에 저장
 
           const userType = response.data.userType; // 서버 응답에서 사용자 유형을 받아옴
-          console.log('사용자:', username);
+          console.log("사용자:", username);
 
-          if (username === 'manager') {
-            navigate('/managers'); // 매니저 페이지로 이동
-          } else if (username === 'teacher') {
-            navigate('/teachers'); // 강사 페이지로 이동
+          if (userType === "manager") {
+            navigate("/managers"); // 매니저 페이지로 이동
+          } else if (userType === "teacher") {
+            navigate("/teachers"); // 강사 페이지로 이동
           } else {
-            navigate('/main'); // 그 외 학생 페이지 이동
+            navigate("/main"); // 그 외 학생 페이지 이동
           }
         } else {
-          swal("로그인 실패", "아이디 또는 비밀번호가 잘못되었습니다.", "error");
+          swal(
+            "로그인 실패",
+            "아이디 또는 비밀번호가 잘못되었습니다.",
+            "error"
+          );
         }
       } catch (error) {
-        console.error('로그인 오류:', error);
+        console.error("로그인 오류:", error);
         swal("로그인 실패", "아이디 또는 비밀번호가 잘못되었습니다.", "error");
       }
     }
   };
 
   const handleSignup = () => {
-    navigate('/email');
+    navigate("/email");
   };
 
   return (
@@ -90,8 +97,16 @@ function Login() {
           <span className="user-found-pw">비밀번호 찾기</span>
         </div>
         <div className="login-button-group">
-          <button className="login-button" type="submit">로그인</button>
-          <button className="login-signup-button" type="button" onClick={handleSignup}>회원가입</button>
+          <button className="login-button" type="submit">
+            로그인
+          </button>
+          <button
+            className="login-signup-button"
+            type="button"
+            onClick={handleSignup}
+          >
+            회원가입
+          </button>
         </div>
       </form>
     </div>

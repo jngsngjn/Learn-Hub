@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./LectureVideo.css";
 
-const LectureVideo = () => {
+const LectureVideo = ({ width, height }) => {
   const [links, setLinks] = useState("");
-  const [subLecture, setSubLecture] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(links);
   useEffect(() => {
-    fetch("http://localhost:8080/test")
+    fetch("/data/student/mainpage/lectureVideo.json")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
@@ -16,8 +16,9 @@ const LectureVideo = () => {
         return res.json();
       })
       .then((data) => {
-        if (data && typeof data.link === "string") {
-          setLinks(data.link);
+        console.log(data);
+        if (data && typeof data.youtubeUrl === "string") {
+          setLinks(data.youtubeUrl);
         } else {
           throw new Error("Invalid data format");
         }
@@ -45,28 +46,23 @@ const LectureVideo = () => {
   }
 
   if (!links) {
-    return <p>비디오를 찾을 수 없습니다.</p>;
+    return <p>잘못된 링크로 비디오를 찾을 수 없습니다.</p>;
   }
 
   const videoId = extractVideoId(links);
 
   return (
-    <div className="lecture_container">
-      {videoId ? (
-        <div className="iframe_wrapper">
-          <iframe
-            width="560"
-            height="315"
-            src={`https://www.youtube.com/embed/${videoId}`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      ) : (
-        <p>비디오를 찾을 수 없습니다.</p>
-      )}
+    <div className="lecture_container" style={{ position: "relative" }}>
+      <iframe
+        id="player"
+        width={width}
+        height={height}
+        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&fs=0&playsinline=1`}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
     </div>
   );
 };
