@@ -5,17 +5,19 @@ const useGetFetch = (url, initialState) => {
   const [data, setData] = useState(initialState);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const accessToken = localStorage.getItem("access-token");
+  const accesstoken = localStorage.getItem("access-token");
+
+  const token = accesstoken.replace("Bearer ", "");
 
   useEffect(() => {
-    setLoading(true); // 요청 시작 시 로딩 상태 true
+    setLoading(true);
     axios
-      // .get(process.env.REACT_APP_BASE_URL + url, {
-      //   headers: {
-      //     acceess: accessToken,
-      //   },
-      // })
-      .get(process.env.REACT_APP_BASE_URL + url)
+      .get(process.env.REACT_APP_BASE_URL + url, {
+        headers: {
+          token: token,
+        },
+      })
+      // .get(process.env.REACT_APP_BASE_URL + url)
       .then((res) => {
         setData(res.data);
         setLoading(false);

@@ -61,6 +61,7 @@ const StudentDashBoard = () => {
     error: questionError,
   } = useGetFetch("/data/student/mainpage/question.json", []);
 
+  // 과제
   const {
     data: subject,
     loading: subjectLoading,
@@ -326,6 +327,13 @@ const StudentDashBoard = () => {
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
         selectedFileName={formData.selectedFileName}
+        modalName="과제 제출"
+        contentTitle="제목"
+        contentBody="내용"
+        contentFile="파일 첨부"
+        url="/students/homeworks"
+        submitName="과제 제출"
+        cancelName="제출 취소"
       />
     </div>
   );

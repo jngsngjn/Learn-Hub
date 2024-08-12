@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./StudentModal.css";
 
-// studentFreeBoard 처럼 사용하면 됩니다.
+// studentFreeBoardDetail 처럼 사용.
 
-const StudentModal = ({
+const StudentPatchModal = ({
   isOpen,
   closeModal,
   modalName,
@@ -20,6 +20,10 @@ const StudentModal = ({
     content: "",
     file: null,
   });
+
+  const accesstoken = localStorage.getItem("access-token");
+  const token = accesstoken ? accesstoken.replace("Bearer ", "") : "";
+  // console.log(token);
 
   const [selectedFileName, setSelectedFileName] = useState("");
 
@@ -60,14 +64,15 @@ const StudentModal = ({
     }
 
     try {
-      const response = await axios.post(url, submissionData, {
+      const response = await axios.patch(url, submissionData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          access: `Bearer ${token}`,
         },
       });
 
       if (response.status === 200) {
-        alert(`${modalName}(이)가 완료!`);
+        alert(`${modalName}(이)가 성공적으로 제출되었습니다!`);
         // handleClose();
         window.location.reload();
       }
@@ -159,4 +164,4 @@ const StudentModal = ({
   );
 };
 
-export default StudentModal;
+export default StudentPatchModal;
