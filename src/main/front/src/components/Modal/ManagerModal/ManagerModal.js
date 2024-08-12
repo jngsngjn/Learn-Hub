@@ -10,7 +10,9 @@ const ManagerModal = ({ isOpen, onClose, children }) => {
         <button className="modal-close" onClick={onClose}>
           ×
         </button>
-        {children}
+        <div className="modal-content-body">
+          {children}
+        </div>
       </div>
     </div>
   );

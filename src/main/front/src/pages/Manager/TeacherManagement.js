@@ -58,7 +58,7 @@ const TeacherManagement = () => {
 
   const handleCourseChange = (course) => {
     const fullCourseName =
-      course === "NCP" ? "네이버 클라우드 데브옵스 과정" : "AWS 데브옵스 과정";
+      course === "NCP" ? "네이버 클라우드 데브옵스 과정" : "AWS 클라우드 자바 웹 개발자 과정";
     setSelectedCourse(fullCourseName);
     setSelectedGeneration("전체");
     setNewTeacher({ ...newTeacher, curriculum: fullCourseName });
@@ -86,11 +86,20 @@ const TeacherManagement = () => {
   const handleAddTeacher = async () => {
     try {
       const token = getToken();
-
-      const generation = newTeacher.generation
-        ? parseInt(newTeacher.generation)
-        : 1;
+      const generation = newTeacher.generation ? parseInt(newTeacher.generation) : 1;
       const curriculumFullName = `${newTeacher.curriculum} ${generation}기`;
+
+      // 기존에 동일한 이름과 기수로 강사가 이미 등록되어 있는지 확인
+      const duplicateTeacher = teachers.find(
+        (teacher) =>
+          teacher.name === newTeacher.name &&
+          teacher.curriculumFullName === curriculumFullName
+      );
+
+      if (duplicateTeacher) {
+        swal("등록 실패", "이미 해당 커리큘럼에 동일한 강사가 등록되어 있습니다.", "warning");
+        return;
+      }
 
       const teacherData = {
         name: newTeacher.name,
@@ -105,9 +114,10 @@ const TeacherManagement = () => {
         "/managers/manage-teachers/enroll",
         teacherData,
         {
-          headers: { access: `Bearer ${token}` }, // 헤더를 Authorization에서 access로 변경
+          headers: { access: `Bearer ${token}` },
         }
       );
+
       console.log("강사 등록 응답:", response.data);
       if (response.status === 200) {
         setIsModalOpen(false);
@@ -117,8 +127,10 @@ const TeacherManagement = () => {
       }
     } catch (error) {
       console.error("등록 에러:", error);
+      swal("등록 실패", "강사 등록 중 오류가 발생했습니다.", "error");
     }
   };
+
 
   const handleInputChange = (e) =>
     setNewTeacher({ ...newTeacher, [e.target.name]: e.target.value });
@@ -173,7 +185,7 @@ const TeacherManagement = () => {
             NCP
           </button>
           <button
-            className={selectedCourse === "AWS 데브옵스 과정" ? "selected" : ""}
+            className={selectedCourse === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""}
             onClick={() => handleCourseChange("AWS")}
           >
             AWS
@@ -276,12 +288,12 @@ const TeacherManagement = () => {
             </button>
             <button
               className={`teacher-course-button ${
-                newTeacher.curriculum === "AWS 데브옵스 과정" ? "selected" : ""
+                newTeacher.curriculum === "AWS 클라우드 자바 웹 개발자 과정" ? "selected" : ""
               }`}
               onClick={() =>
                 setNewTeacher({
                   ...newTeacher,
-                  curriculum: "AWS 데브옵스 과정",
+                  curriculum: "AWS 클라우드 자바 웹 개발자 과정",
                 })
               }
             >

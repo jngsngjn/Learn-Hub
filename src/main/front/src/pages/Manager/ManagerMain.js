@@ -13,6 +13,7 @@ import Notice from "./Notice";
 import StudentContact from "./StudentContact";
 import TeacherContact from "./TeacherContact";
 import CurriculumDetail from "./CurriculumDetail";
+import StudentDetail from "./StudentDetail";
 import "./ManagerMain.css";
 import ManagerHeader from "../../components/Nav/ManagerHeader";
 
@@ -44,6 +45,10 @@ function ManagerMain() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="manage-students" element={<StudentManagement />} />
+            <Route
+              path="manage-students/:id"
+              element={<StudentDetail />}
+            />
             <Route
               path="manage-curriculums"
               element={<CurriculumManagement />}

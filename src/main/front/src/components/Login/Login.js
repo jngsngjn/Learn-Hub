@@ -47,8 +47,11 @@ function Login() {
             navigate("/managers"); // 매니저 페이지로 이동
           } else if (userType === "teacher") {
             navigate("/teachers"); // 강사 페이지로 이동
-          } else {
-            navigate("/main"); // 그 외 학생 페이지 이동
+          }else if (userType === "student") {
+            navigate("/students"); // 학생 페이지로 이동
+          }
+          else {
+            navigate("/main"); // 그 외 메인 페이지 이동
           }
         } else {
           swal(
