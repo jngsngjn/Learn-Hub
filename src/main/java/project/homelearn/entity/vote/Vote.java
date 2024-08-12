@@ -43,9 +43,6 @@ public class Vote extends BaseEntity {
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
-    @Column(name = "is_finished", nullable = false)
-    private boolean isFinished = false;
-
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VoteContent> contents = new ArrayList<>();
 
