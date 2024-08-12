@@ -225,7 +225,6 @@ const StudentManagement = () => {
     );
 
   const handleRowClick = (studentId) => {
-    // 학생 클릭 시 해당 학생의 상세 페이지로 이동
     window.location.href = `/managers/manage-students/${studentId}`;
   };
 

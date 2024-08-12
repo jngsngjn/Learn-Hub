@@ -20,23 +20,40 @@ const StudentDetail = () => {
   const getToken = () => localStorage.getItem("access-token");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const token = getToken();
+    const config = { headers: { access: token } };
+
+    // 학생 기본 정보 가져오기
+    const fetchStudent = async () => {
       try {
-        const token = getToken();
-        const config = { headers: { access: token } };
+        const response = await axios.get(`managers/students/basic/${id}`, config);
+        setStudent(response.data);
+        setEditedStudent(response.data);
+      } catch (err) {
+        setError("학생 정보를 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        const studentResponse = await axios.get(`/students/basic/${id}`, config);
-        setStudent(studentResponse.data);
-        setEditedStudent(studentResponse.data);
+    // 커리큘럼 정보 가져오기
+    const fetchCurriculum = async () => {
+      try {
+        const response = await axios.get(`managers/students/curriculum/${id}`, config);
+        setCurriculum(response.data);
+      } catch (err) {
+        setError("커리큘럼 정보를 불러오는데 실패했습니다.");
+      }
+    };
 
-        const curriculumResponse = await axios.get(`/students/curriculum/${id}`, config);
-        setCurriculum(curriculumResponse.data);
+    // 출석 정보 가져오기
+    const fetchAttendance = async () => {
+      try {
+        const response = await axios.get(`managers/students/attendance/${id}`, config);
+        setAttendance(response.data);
 
-        const attendanceResponse = await axios.get(`/students/attendance/${id}`, config);
-        setAttendance(attendanceResponse.data);
-
-        if (attendanceResponse.data && attendanceResponse.data.dateAttendanceType) {
-          const eventsData = Object.entries(attendanceResponse.data.dateAttendanceType).map(
+        if (response.data && response.data.dateAttendanceType) {
+          const eventsData = Object.entries(response.data.dateAttendanceType).map(
             ([date, type]) => ({
               title: type,
               start: new Date(date),
@@ -47,15 +64,13 @@ const StudentDetail = () => {
           );
           setEvents(eventsData);
         }
-
-        setLoading(false);
       } catch (err) {
-        setError("데이터를 불러오는데 실패했습니다.");
-        setLoading(false);
+        setError("출석 정보를 불러오는데 실패했습니다.");
       }
     };
-
-    fetchData();
+    fetchStudent();
+    fetchCurriculum();
+    fetchAttendance();
   }, [id]);
 
   const handleInputChange = (e) => {
@@ -165,7 +180,7 @@ const StudentDetail = () => {
             </div>
           )}
 
-          <div className="student-actions">
+          <div className="student-detail-actions">
             {isEditing ? (
               <>
                 <button onClick={handleUpdateStudent}>저장</button>
