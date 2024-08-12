@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import useGetFetch from "../../hooks/useGetFetch";
 import "./StudentLectureDetail.css";
+import LectureVideo from "../Teacher/play";
+import { useEffect } from "react";
 
 const StudentLectureDetail = () => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const {
     data: lectureVideo,
@@ -16,11 +20,12 @@ const StudentLectureDetail = () => {
   return (
     <div className="subject_lecture_detail_main_container">
       <div className="subject_lecture_detail_video_container">
-        <img
+        {/* <img
           className="subject_lecture_video_box"
           alt="유튜브 영상 들어올곳"
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXSPDfbB-Obw1Q3vqbU0ge4e9RacV-l0n8Fg&s"
-        />
+        /> */}
+        <LectureVideo />
         <div className="subject_lecutre_video_title_box">
           <h1 className="subject_lecutre_video_title">{lectureVideo.title}</h1>
           <span className="subject_lecutre_video__type_name">

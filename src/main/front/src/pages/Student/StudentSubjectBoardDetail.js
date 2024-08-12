@@ -22,8 +22,12 @@ const StudentSubjectBoardDetail = () => {
 
   return (
     <div className="subject_board_detail_main_container">
-      <LectureVideo width="1120px" height="600px" />
       <div className="lecutre_type_container">
+        <img
+          className="subject_board_type_image"
+          alt="과목이미지"
+          src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F990AE1505BFEAC2B25"
+        />
         <div className="lecture_description_box">
           <h1 className="lecture_type_name">JAVA</h1>
           <p className="lecture_type_description">설명</p>
@@ -38,7 +42,7 @@ const StudentSubjectBoardDetail = () => {
           style={{ fontSize: "28px" }}
         >
           <i className="bi bi-eye student_subject_board_view_count_icon"></i>
-          132
+          &nbsp; 132
         </span>
       </div>
       <div className="student_subject_board_body_container">
@@ -54,9 +58,11 @@ const StudentSubjectBoardDetail = () => {
           1주차 수업 자료입니다. 미리 다운로드 받으세요! 수업 때 참고 자료로
           사용 예정!
         </p>
-        <p className="student_subject_board_content_image">
-          여기가 에디터 글이 들어올 곳? 아니면 이미지인가? 모르겠네ㅔ^^
-        </p>
+        <img
+          className="student_subject_board_content_image"
+          src="https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt=""
+        />
       </div>
       {/* 과목 게시판 리스트들 */}
       <div className="subject_board_main_body_container">

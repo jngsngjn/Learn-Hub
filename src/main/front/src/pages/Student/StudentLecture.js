@@ -10,17 +10,21 @@ const StudentLecture = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // 강의 영상
   const {
     data: mainLectures,
     loading: mainLecturesLoading,
     error: mainLecturesError,
   } = useGetFetch("/data/student/mainLecture/mainLecture.json", "");
 
+  // 과목 게시판
   const {
     data: subjectBoards,
     loading: subjectBoardsLoading,
     error: subjectBoardsError,
   } = useGetFetch("/data/student/mainLecture/subjectBoard.json", []);
+
+  // 질문 게시판
 
   const {
     data: inquiryBoards,

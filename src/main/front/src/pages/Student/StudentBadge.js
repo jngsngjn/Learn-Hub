@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import "./StudentBadge.css";
 
 const StudentBadge = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="main_container">
       <h1 className="student_badge_page_title">배찌</h1>

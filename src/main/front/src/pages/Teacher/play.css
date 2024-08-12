@@ -4,15 +4,15 @@
     background-color: #000000;
     justify-content: center;
     align-items: center;
-    height: 90vh; /* 뷰포트 높이로 설정 */
-    position: relative; /* 사이드바의 기준점 */
+    height: 90vh;
+    position: relative;
 }
 
 .custom-youtube-player {
     position: relative;
     transition: all 0.3s ease;
-    width: 1440px; /* 기본 너비 설정 */
-    max-width: 100%; /* 화면 너비를 넘지 않도록 */
+    width: 1440px;
+    max-width: 100%;
 }
 
 .custom-youtube-player.fullscreen {
@@ -24,11 +24,11 @@
 #youtube-player {
     aspect-ratio: 16 / 9;
     width: 100%;
-    height: auto; /* 높이를 자동으로 조정 */
+    height: auto;
 }
 
 .custom-youtube-player.fullscreen #youtube-player {
-    height: 100%;
+  height: 100%;
 }
 
 .controls {
@@ -96,7 +96,7 @@
     background: #ffffff;
     cursor: pointer;
     border-radius: 50%;
-    margin-top: -5px; /* 트랙과 썸의 크기 차이의 절반 */
+    margin-top: -5px;
 }
 
 .volume-slider::-moz-range-thumb,
@@ -106,7 +106,7 @@
     background: #ffffff;
     cursor: pointer;
     border-radius: 50%;
-    margin-top: -5px; /* 트랙과 썸의 크기 차이의 절반 */
+    margin-top: -5px;
 }
 
 .volume-slider::-webkit-slider-runnable-track,
@@ -160,20 +160,22 @@
 
 .player-sidebar {
     position: fixed;
-    right: -300px;
+    right: -500px;
     top: 0;
-    width: 300px;
+    width: 500px;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     transition: right 0.3s ease;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
 }
 
 .player-sidebar.open {
     right: 0;
 }
 
-.sidebar-toggle {
+.player-sidebar-toggle {
     position: absolute;
     left: -30px;
     top: 50%;
@@ -185,8 +187,182 @@
     cursor: pointer;
 }
 
-/* 사이드바가 열렸을 때의 스타일 */
-.custom-youtube-player-container.sidebar-open .custom-youtube-player {
-    width: calc(1440px - 300px); /* 사이드바 너비만큼 줄임 */
-    margin-right: 300px; /* 사이드바 너비만큼 오른쪽 마진 추가 */
+.player_sidebar-buttons {
+    display: flex;
+    justify-content: space-between;
 }
+
+.player_sidebar-btn {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.player_sidebar-btn:hover {
+    background-color: #e6e6e6;
+}
+
+.player_sidebar-btn span {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.player_sidebar-content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.player_sidebar_button_list{
+    display: flex;
+    justify-content: center;
+}
+
+.custom-youtube-player-container.sidebar-open .custom-youtube-player {
+    width: calc(1440px - 100px);
+    margin-right: 500px;
+}
+
+.player_category{
+    font-size: 24px;
+}
+
+.player_line{
+    border: 1px solid #d6d6d6;
+}
+
+.player_title{
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+
+.player_lecture_list_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    gap: 30px;
+}
+
+.player_lecture_list_content {
+    width: 300px;
+    height: 260px;
+}
+
+.player_lecture_list_image {
+    width: 300px;
+    height: 190px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.player_lecture_list_title {
+    font-size: 18px;
+    padding: 16px 0 0 0;
+    cursor: pointer;
+}
+
+.player_lecture_list_title:hover {
+    color: #5c8d89;
+    font-weight: 700;
+}
+
+.player_lecture_list_description {
+    font-size: 14px;
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 새로운 컴파일러 컴포넌트 스타일 */
+/* 기존 스타일 유지 */
+/* ... */
+
+/* 컴파일러 관련 스타일 개선 */
+.compiler-container {
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.compiler-title {
+    font-size: 24px;
+}
+
+.compiler-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.compiler-language-select {
+    border: 1px solid;
+    padding: 10px 0;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.compiler-run-button {
+    background-color: #74b49b;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.compiler-run-button:hover {
+    background-color: #5d8d89;
+}
+
+.compiler-run-icon {
+    margin-right: 8px;
+}
+
+.compiler-code-editor {
+    width: 100%;
+    height: 400px;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    padding: 12px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    resize: none;
+    margin-bottom: 20px;
+}
+
+.compiler-output-container {
+    background-color: #252526;
+    padding: 12px;
+    border-radius: 4px;
+    height: 200px;
+}
+
+.compiler-output-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.compiler-output-content {
+    font-family: 'Consolas', 'Courier New', monospace;
+    white-space: pre-wrap;
+    color: #d4d4d4;
+    font-size: 14px;
+}
+
