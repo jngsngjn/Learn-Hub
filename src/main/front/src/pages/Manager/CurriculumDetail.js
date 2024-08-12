@@ -57,7 +57,10 @@ const CurriculumDetail = () => {
           `/managers/curriculum/${id}/basic`,
           config
         );
+        console.log("기본 정보 가져오기:", basicResponse.data);
         setCurriculum(basicResponse.data);
+
+        // teacherId가 존재하지 않으면 빈 문자열로 설정
         setUpdatedCurriculum({
           teacherId: basicResponse.data.teacherId || "",
           startDate: basicResponse.data.startDate || "",
@@ -71,14 +74,27 @@ const CurriculumDetail = () => {
             `/managers/curriculum/${id}/teacher`,
             config
           );
+          console.log("강사 정보 가져오기:", teacherResponse.data);
           if (teacherResponse.data && teacherResponse.data.name) {
             setTeacher(teacherResponse.data);
+            setUpdatedCurriculum((prev) => ({
+              ...prev,
+              teacherId: teacherResponse.data.id || "",
+            }));
           } else {
-            setTeacher(null);
+            setTeacher(null); // 강사 정보가 없을 때는 null로 설정
+            setUpdatedCurriculum((prev) => ({
+              ...prev,
+              teacherId: "", // teacherId를 빈 문자열로 설정
+            }));
           }
         } catch (error) {
           console.error("강사 정보 조회 오류:", error);
-          setTeacher(null);
+          setTeacher(null); // 오류가 발생해도 teacher를 null로 설정
+          setUpdatedCurriculum((prev) => ({
+            ...prev,
+            teacherId: "", // 오류가 발생하면 teacherId를 빈 문자열로 설정
+          }));
         }
 
         // 출결 정보를 그다음에 불러오기
@@ -87,6 +103,7 @@ const CurriculumDetail = () => {
             `/managers/curriculum/${id}/attendance`,
             config
           );
+          console.log("출결 정보 가져오기:", attendanceResponse.data);
           setAttendance(attendanceResponse.data);
           setIsWeekend(false);
         } catch (error) {
@@ -103,6 +120,7 @@ const CurriculumDetail = () => {
           `/managers/curriculum/${id}/calendar`,
           config
         );
+        console.log("캘린더 정보 가져오기:", calendarResponse.data);
         setSchedules(calendarResponse.data);
       } catch (error) {
         console.error("응답 오류:", error.response);

@@ -65,7 +65,7 @@ const CurriculumManagement = () => {
     };
 
     // teacherId가 유효한 경우에만 추가
-    if (newCurriculum.teacherId && !isNaN(newCurriculum.teacherId)) {
+    if (newCurriculum.teacherId && !isNaN(newCurriculum.teacherId) && newCurriculum.teacherId !== "") {
       newCurriculumItem.teacherId = parseInt(newCurriculum.teacherId, 10);
     }
 
@@ -106,6 +106,7 @@ const CurriculumManagement = () => {
       swal("등록 실패", "교육 과정 등록 중 오류가 발생했습니다. 다시 시도해주세요.", "error");
     }
   };
+
 
   const fetchEnrollReadyData = async () => {
     try {
