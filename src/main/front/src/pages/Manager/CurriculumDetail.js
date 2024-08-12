@@ -129,10 +129,7 @@ const CurriculumDetail = () => {
 
   // 색상 중복 체크 함수
   const isColorDuplicate = (newColor) => {
-    // 기존의 모든 교육 과정을 불러와 색상 비교 로직 추가 (단순 예시)
-    // 실제 API 호출을 통해 다른 교육 과정들의 색상 데이터를 가져와 비교할 수 있습니다.
-    // 여기서는 간단히 같은 페이지 내에서 중복 여부를 체크합니다.
-    const existingColors = ["#F3C41E", "#F58D11", "#B85B27"]; // 예시로 고정된 색상 목록
+    const existingColors = ["#F3C41E", "#F58D11", "#B85B27"];
     return existingColors.includes(newColor);
   };
 
