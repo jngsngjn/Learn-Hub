@@ -23,7 +23,7 @@ const StudentPatchModal = ({
 
   const accesstoken = localStorage.getItem("access-token");
   const token = accesstoken ? accesstoken.replace("Bearer ", "") : "";
-  console.log(token);
+  // console.log(token);
 
   const [selectedFileName, setSelectedFileName] = useState("");
 

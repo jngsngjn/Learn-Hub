@@ -167,25 +167,17 @@
 ///////////////////////////////////////////위에는 기존 스타일 확인용
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./StudentFreeBoardDetail.css";
 import useAxiosGet from "../../hooks/useAxiosGet";
-import StudentModal from "../../components/Modal/StudentModal/StudentModal";
-import axios from "axios";
 import StudentPatchModal from "../../components/Modal/StudentModal/StudentPatchModal";
 import useAxiosPost from "../../hooks/useAxiosPost";
+import useAxiosDelete from "../../hooks/useAxiosDelete";
+import axios from "axios";
+import { config } from "react-transition-group";
 
 const StudentFreeBoardDetail = ({ username }) => {
   const { boardId } = useParams();
-  console.log(boardId);
-
-  const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    file: null,
-    username: username,
-  });
-  const [error, setError] = useState(null);
 
   // GET 요청
   const { data: freeboardDetail, loading } = useAxiosGet(
@@ -193,20 +185,28 @@ const StudentFreeBoardDetail = ({ username }) => {
   );
 
   // Post 요청
-  const { postRequest } = useAxiosPost(`/api/boards/${boardId}/comments`);
+  const { postRequest } = useAxiosPost(`/students/boards/${boardId}/comments`);
 
-  console.log(username);
-  console.log(freeboardDetail);
-  console.log(freeboardDetail?.author);
+  // Delete 요청
+  const { deleteRequest } = useAxiosDelete(`/students/boards/${boardId}`);
 
+  //
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    file: null,
+    username: username,
+  });
+
+  const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const [text, setText] = useState("");
   const maxLength = 500;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [selectedFileName, setSelectedFileName] = useState("");
 
   useEffect(() => {
@@ -218,8 +218,6 @@ const StudentFreeBoardDetail = ({ username }) => {
       });
     }
   }, [freeboardDetail]);
-
-  console.log(formData);
 
   const handleCheckTextCount = (e) => {
     const textarea = e.target;
@@ -264,6 +262,19 @@ const StudentFreeBoardDetail = ({ username }) => {
     closeModal();
   };
 
+  const handleDelete = () => {
+    if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
+      deleteRequest()
+        .then(() => {
+          alert("게시물이 삭제되었습니다.");
+        })
+        .catch((err) => {
+          console.error("게시물 삭제 실패:", err);
+          alert("게시물 삭제에 실패했습니다.");
+        });
+    }
+  };
+
   const handleCommentSubmit = () => {
     const commentData = { content: text };
     postRequest(commentData);
@@ -278,8 +289,11 @@ const StudentFreeBoardDetail = ({ username }) => {
     });
   };
 
-  const splitDate = (date) => {
-    return date.split("T")[0];
+  const splitDate = (writeDate) => {
+    if (writeDate) {
+      return writeDate.split("T")[0];
+    }
+    return "날짜 불러오기 실패";
   };
 
   useEffect(() => {
@@ -293,7 +307,7 @@ const StudentFreeBoardDetail = ({ username }) => {
     <div className="main_container">
       <div className="student_freeboard_detail_page_title_box">
         <h1 className="student_freeboard_detail_page_title">자유 게시판</h1>
-        {username === "kimsu10" && (
+        {freeboardDetail?.username === username && (
           <>
             <i
               className="bi bi-three-dots-vertical freeboard_three_dot"
@@ -303,12 +317,17 @@ const StudentFreeBoardDetail = ({ username }) => {
               <div className="student_freeboard_detail_box">
                 <button
                   className="student_freeboard_detail"
-                  onClick={openModal}
+                  onClick={() => openModal}
                 >
                   수정
                 </button>
                 <hr className="devide_button_border" />
-                <button className="student_freeboard_detail">삭제</button>
+                <button
+                  className="student_freeboard_detail"
+                  onClick={() => handleDelete()}
+                >
+                  삭제
+                </button>
                 <hr className="devide_button_border" />
                 <button className="student_freeboard_detail">스크랩</button>
               </div>
@@ -318,27 +337,27 @@ const StudentFreeBoardDetail = ({ username }) => {
       </div>
       {/* 조회한 자유 게시판 글 */}
       <div className="freeboard_detail_container">
-        <h1 className="freeboard_detail_title">{freeboardDetail.title}</h1>
-        <p className="freeboard_detail_content">{freeboardDetail.content}</p>
+        <h1 className="freeboard_detail_title">{freeboardDetail?.title}</h1>
+        <p className="freeboard_detail_content">{freeboardDetail?.content}</p>
         <div className="freeboard_detail_info_box">
           <div className="freeboard_watcher_info_box">
             <i className="bi bi-eye"></i>&nbsp;
             <span className="freeboard_view_count">
-              {freeboardDetail.viewCount}
+              {freeboardDetail?.viewCount}
             </span>
             &nbsp;&nbsp;
             <i className="bi bi-star"></i>&nbsp;
             <span className="freeboard_view_like_count">
-              {freeboardDetail.likeCount}
+              {freeboardDetail?.likeCount}
             </span>
           </div>
           <div className="freeboard_writer_info_box">
             <span className="freeboard_writer_name">
-              {freeboardDetail.author}&nbsp;
+              {freeboardDetail?.author}&nbsp;
             </span>
             | &nbsp;
             <span className="freeboard_writer_date">
-              {splitDate(freeboardDetail.createTime)} &nbsp;
+              {splitDate(freeboardDetail?.createTime)} &nbsp;
             </span>
             작성
           </div>
@@ -348,7 +367,7 @@ const StudentFreeBoardDetail = ({ username }) => {
       <div className="freeboard_writer_comment_box">
         <i className="bi bi-chat"></i> &nbsp;
         <span className="freeboard_comment_count">
-          {freeboardDetail.commentCount}
+          {freeboardDetail?.commentCount}
         </span>
       </div>
       {/* 댓글 작성 및 목록 */}
@@ -385,8 +404,8 @@ const StudentFreeBoardDetail = ({ username }) => {
         </div>
       </div>
       {/* 기존 댓글 목록 */}
-      {freeboardDetail.comments &&
-        freeboardDetail.comments.map((comment, index) => (
+      {freeboardDetail?.comments &&
+        freeboardDetail?.comments.map((comment, index) => (
           <div key={index} className="student_freeboard_comment_list">
             <div className="freeboard_written_user_info_box">
               <div className="freeboard_user_info_box">
@@ -409,25 +428,25 @@ const StudentFreeBoardDetail = ({ username }) => {
               {comment.text}
             </textarea>
             <div className="freeboard_writedate_box">
-              <span className="freeboard_written_date">{comment.date}</span>
+              <span className="freeboard_written_date">{comment?.date}</span>
             </div>
           </div>
         ))}
       {/* 대댓글 목록 */}
-      {freeboardDetail.recomments &&
-        freeboardDetail.recomments.map((recomment, index) => (
+      {freeboardDetail?.recomments &&
+        freeboardDetail?.recomments.map((recomment, index) => (
           <div key={index} className="freeboard_recoment_list">
             <div className="freeboard_recoment_box">
               <div className="freeboard_written_user_info_box">
                 <div className="freeboard_user_info_box">
                   <img
-                    src={recomment.userProfileImage}
+                    src={recomment?.userProfileImage}
                     className="freeboard_user_profile"
                     alt=""
                   />
                   &nbsp;
                   <span className="freeboard_user_name">
-                    {recomment.username}
+                    {recomment?.username}
                   </span>
                 </div>
                 <i className="bi bi-three-dots-vertical freeboard_three_dot"></i>
@@ -438,10 +457,12 @@ const StudentFreeBoardDetail = ({ username }) => {
                 </div>
               </div>
               <textarea className="freeboard_write_textarea" readOnly>
-                {recomment.text}
+                {recomment?.text}
               </textarea>
               <div className="freeboard_writedate_box">
-                <span className="freeboard_written_date">{recomment.date}</span>
+                <span className="freeboard_written_date">
+                  {recomment?.date}
+                </span>
               </div>
             </div>
           </div>

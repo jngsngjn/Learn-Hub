@@ -5,15 +5,14 @@ const useAxiosPost = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const accesstoken = localStorage.getItem("access-token");
-  const token = accesstoken ? accesstoken.replace("Bearer ", "") : "";
+  const token = localStorage.getItem("access-token");
 
-  const postRequest = async (commentData) => {
+  const postRequest = async (data) => {
     setLoading(true);
     try {
-      const response = await axios.post(url, commentData, {
+      const response = await axios.post(url, data, {
         headers: {
-          access: `Bearer ${token}`,
+          access: token,
         },
       });
       setData(response.data);

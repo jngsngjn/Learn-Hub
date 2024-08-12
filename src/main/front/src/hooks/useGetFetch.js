@@ -6,11 +6,11 @@ const useGetFetch = (url, initialState) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const accesstoken = localStorage.getItem("access-token");
-  console.log(accesstoken);
+
   const token = accesstoken.replace("Bearer ", "");
-  console.log(token);
+
   useEffect(() => {
-    setLoading(true); // 요청 시작 시 로딩 상태 true
+    setLoading(true);
     axios
       .get(process.env.REACT_APP_BASE_URL + url, {
         headers: {

@@ -9,22 +9,23 @@ const useAxiosGet = (url, initialState) => {
   const token = accesstoken ? accesstoken.replace("Bearer ", "") : "";
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(url, {
-        headers: {
-          // access 야 Authorization이야
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        setData(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setData(response.data);
+      } catch (err) {
         setError(err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, [url, token]);
 
   return { data, loading, error };
