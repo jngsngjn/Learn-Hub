@@ -15,21 +15,30 @@
 .content-area {
   flex: 1;
   padding: 20px;
+  width: 1120px;
 }
 
 /* grid 설정 */
 .dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  max-width: 1200px;
-  /* margin: 0 auto; */
-  grid-gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.manager-dashboard-divide-box {
+  display: flex;
+  width: 1120px;
+  height: 750px;
+  gap: 30px;
+}
+
+.manager-dashboard-divide-box2 {
+  display: flex;
+  width: 1120px;
+  gap: 30px;
 }
 
 .dashboard-grid > div {
-  border: 1px solid #757575;
-  background-color: #E8E8E9;
   border-radius: 10px;
-  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.15);
   padding: 20px;
 }

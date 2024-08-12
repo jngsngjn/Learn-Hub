@@ -6,6 +6,7 @@ const LectureVideo = ({ width, height }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(links);
   useEffect(() => {
     fetch("/data/student/mainpage/lectureVideo.json")
       .then((res) => {
@@ -15,8 +16,9 @@ const LectureVideo = ({ width, height }) => {
         return res.json();
       })
       .then((data) => {
-        if (data && typeof data.link === "string") {
-          setLinks(data.link);
+        console.log(data);
+        if (data && typeof data.youtubeUrl === "string") {
+          setLinks(data.youtubeUrl);
         } else {
           throw new Error("Invalid data format");
         }
@@ -61,9 +63,6 @@ const LectureVideo = ({ width, height }) => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       ></iframe>
-
-      {/* <div className="hide_youtuebe_title_box">제목: 우어어어어어어엉</div>
-      <div className="hide_youtuebe_bottom_box"></div> */}
     </div>
   );
 };

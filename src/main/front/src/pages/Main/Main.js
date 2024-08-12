@@ -3,33 +3,51 @@ import "./Main.css";
 import StudentMain from "../Student/StudentMain";
 import TeacherMain from "../Teacher/TeacherMain";
 import ManagerMain from "../Manager/ManagerMain";
-
-// 초기설정
+import { Link } from "react-router-dom";
 
 const Main = () => {
-  //응답갑 요청해서 받아온 token에서 role을 꺼내오기.
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6InJlZnJlc2giLCJ1c2VybmFtZSI6Im1hbmFnZXIiLCJyb2xlIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNzIyMjE0MjY4LCJleHAiOjE3MjIzMDA2Njh9.-Lla7-m2w2ZSSUM-dfUkKPQNfRkGJEj34r_2UuoeMv";
+  // localStorage에서 토큰을 가져오기
+  const token = localStorage.getItem("access-token");
 
-  const decodedToken = jwtDecode(token);
-  console.log(decodedToken);
-  // const userRole = decodedToken.role;
-  const userRole = "ROLE_STUDENT";
-
-  console.log(userRole);
-
-  const roleComponent =
-    userRole === "ROLE_STUDENT" ? (
-      <StudentMain />
-    ) : userRole === "ROLE_TEACHER" ? (
-      <TeacherMain />
-    ) : userRole === "ROLE_MANAGER" ? (
-      <ManagerMain />
-    ) : (
-      <div>비로그인 시 보여줄 페이지</div>
+  // 토큰이 없으면 비로그인 시 보여줄 페이지를 표시
+  if (!token) {
+    return (
+      <div className="main-body" style={{ height: "100vh" }}>
+        비로그인 시 보여줄 페이지
+        <Link to="/login">
+          <button className="login_btn"> 로그인</button>
+        </Link>
+      </div>
     );
+  }
 
-  return <div className="main-body">{roleComponent}</div>;
+  // 토큰이 있을 때 디코딩해서 role을 가져오기
+  try {
+    const decodedToken = jwtDecode(token);
+    console.log(decodedToken);
+    const userRole = decodedToken.role;
+
+    console.log(userRole);
+
+    const roleComponent =
+      userRole === "ROLE_STUDENT" ? (
+        <StudentMain />
+      ) : userRole === "ROLE_TEACHER" ? (
+        <TeacherMain />
+      ) : userRole === "ROLE_MANAGER" ? (
+        <ManagerMain />
+      ) : (
+        <div>
+          비로그인 시 보여줄 페이지 <button> 로그인</button>
+        </div>
+      );
+
+    return <div className="main-body">{roleComponent}</div>;
+  } catch (error) {
+    // 토큰 디코딩 중 오류가 발생하면 비로그인 페이지를 표시
+    console.error("Invalid token:", error);
+    return <div className="main-body">비로그인 시 보여줄 페이지</div>;
+  }
 };
 
 export default Main;

@@ -24,6 +24,9 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Author : 김승민
+ */
 @Slf4j
 @RestController
 @RequestMapping("/students/dash-boards")
@@ -45,7 +48,7 @@ public class StudentDashBoardController {
         return managerNoticeService.viewManagerBoardRecent();
     }
 
-     //강사 공지사항 최신순 4개
+    // 강사 공지사항 최신순 4개
     @GetMapping("/teacher-boards")
     public List<TeacherBoardDto> viewTeacherBoard(){
         return teacherNoticeService.viewTeacherBoardRecent();

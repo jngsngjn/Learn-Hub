@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-import axios from 'axios';
+import axios from '../../utils/axios';
 import './Login_email.css';
 
 function LoginEmail() {
@@ -29,7 +29,7 @@ function LoginEmail() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/code-verify', { email, code: verificationCode });
+      const response = await axios.post('/code-verify', { email, code: verificationCode });
       if (response.status === 200) {
         const { name, phone, gender } = response.data;
         console.log('Received data:', { email, name, phone, gender });

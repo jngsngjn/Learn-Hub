@@ -23,6 +23,7 @@ public class BadgeViewController {
 
     private final BadgeService badgeService;
 
+    // all, earn, no-earn
     @GetMapping
     public ResponseEntity<?> viewBadges(Principal principal,
                                      @RequestParam(name = "option", required = false, defaultValue = "all") String option) {

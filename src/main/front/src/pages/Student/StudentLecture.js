@@ -176,18 +176,21 @@ const StudentLecture = () => {
                         !isOpen ? "not-released" : ""
                       }`}
                     >
-                      {!isOpen && (
+                      {/* {!isOpen && (
                         <>
                           <div className="show_not_open">
                             {daysRemaining}일 후 시청 가능합니다.
                           </div>
                           <div className="not-released-overlay"></div>
                         </>
-                      )}
+                      )} */}
                       <iframe
                         width="100%"
                         height="100%"
-                        src={getYoutubeEmbedUrl(el.links)}
+                        src={
+                          getYoutubeEmbedUrl(el.links) +
+                          "?enablejsapi=1&modestbranding=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&fs=0&playsinline=1"
+                        }
                         frameBorder="0"
                         allow="clipboard-write; encrypted-media; picture-in-picture"
                         allowFullScreen

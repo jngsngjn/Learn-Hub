@@ -1,9 +1,7 @@
 {
-  "id": 1,
-  "subject": "JAVA",
-  "youtubeLink": "https://youtu.be/BzFOUrqMFkE",
-  "complete_date": "2024-07-26",
-  "last_position": "00:00:30",
+  "lectureId": 1,
+  "subjectName": "JAVA",
   "title": "JAVA 설치 for MAC",
-  "progress": 90
+  "last_position": "00:00:30",
+  "youtubeUrl": "https://youtu.be/BzFOUrqMFkE"
 }

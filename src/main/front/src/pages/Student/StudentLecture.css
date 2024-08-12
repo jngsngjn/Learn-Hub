@@ -5,8 +5,6 @@
   width: 1120px;
   padding: 100px 68px;
   background-color: #fff;
-  box-shadow: 0 0 0.625em rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid gray;
 }
 
 .lecture_type_image {
@@ -74,6 +72,12 @@
   margin-top: 50px;
 }
 
+/* .inquiry_list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+} */
+
 /* 과목 게시판 내부 */
 .subject_list {
   width: 100%;
@@ -93,6 +97,11 @@
   font-size: 15px;
 }
 
+.subject_title {
+  margin: 0;
+  padding: 0 5px;
+}
+
 .subject_content_box {
   display: flex;
   justify-content: space-between;
@@ -110,11 +119,12 @@
   height: 120px;
   border: 2px solid #74b49b;
   border-radius: 20px;
-  padding: 10px;
+  padding: 15px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
+  margin: 0;
 }
 
 .inquiry_title_box {
@@ -139,20 +149,26 @@
   justify-content: space-between;
 }
 
+.inquiry_write_date {
+  width: 60px;
+  width: 92px;
+}
+
 .inquiry_subject_name {
   font-size: 20px;
 }
 
 .inquiry_list_title {
-  width: 308px;
+  width: 280px;
   font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 }
 
 .inquiry_text_content {
-  width: 308px;
+  width: 280px;
   font-size: 15px;
   white-space: nowrap;
   overflow: hidden;

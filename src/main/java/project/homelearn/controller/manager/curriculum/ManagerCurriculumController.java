@@ -32,16 +32,16 @@ public class ManagerCurriculumController {
     private final ManagerCalendarService calendarService;
     private final ManagerCurriculumService curriculumService;
 
-    // 학생 또는 강사 등록 전 사용
-    @GetMapping("/enroll-user-ready")
-    public List<CurriculumTypeAndTh> readyEnroll() {
-        return curriculumService.getCurriculumTypeAndTh();
-    }
-
     // 교육과정 등록 및 수정 시 사용
     @GetMapping("/enroll-curriculum-ready")
     public CurriculumEnrollReadyDto viewCurriculumEnrollReady() {
         return curriculumService.getCurriculumEnrollReady();
+    }
+
+    // 학생 또는 강사 등록 전 사용
+    @GetMapping("/enroll-user-ready")
+    public List<CurriculumTypeAndTh> readyEnroll() {
+        return curriculumService.getCurriculumTypeAndTh();
     }
 
     /**
@@ -108,11 +108,11 @@ public class ManagerCurriculumController {
     /**
      * 특정 교육 과정 페이지
      * Author : 정성진
-     * 1. 교육 과정 일반 정보 ✅ viewCurriculumBasic()
-     * 2. 출결 현황 ✅ viewCurriculumAttendance()
-     * 3. 강사 정보 ✅ viewCurriculumTeacher()
-     * 4. 캘린더 ✅ viewCurriculumCalendar()
-     * 5. 설문 조사 ✅ viewCurriculumSurvey()
+     * 1. 교육 과정 일반 정보 viewCurriculumBasic()
+     * 2. 출결 현황 viewCurriculumAttendance()
+     * 3. 강사 정보 viewCurriculumTeacher()
+     * 4. 캘린더 viewCurriculumCalendar()
+     * 5. 설문 조사 viewCurriculumSurvey()
      */
     @GetMapping("/curriculum/{curriculumId}/basic")
     public ResponseEntity<?> viewCurriculumBasic(@PathVariable("curriculumId") Long curriculumId) {
