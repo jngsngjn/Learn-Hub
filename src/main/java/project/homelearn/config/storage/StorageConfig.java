@@ -5,6 +5,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,11 +15,11 @@ import static project.homelearn.config.storage.StorageConstants.REGION_NAME;
 @Configuration
 public class StorageConfig {
 
-//    @Value("${access.key}")
-    private String accessKey = "";
+    @Value("${access.key}")
+    private String accessKey;
 
-//    @Value("${secret.key}")
-    private String secretKey = "";
+    @Value("${secret.key}")
+    private String secretKey;
 
     @Bean
     public AmazonS3Client amazonS3Client() {

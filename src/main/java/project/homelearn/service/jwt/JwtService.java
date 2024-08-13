@@ -2,6 +2,7 @@ package project.homelearn.service.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import project.homelearn.entity.user.Role;
 
@@ -15,9 +16,8 @@ public class JwtService {
 
     private final SecretKey secretKey;
 
-    // @Value("${spring.jwt.secret}") String secret
-    public JwtService() {
-        this.secretKey = new SecretKeySpec("secret".getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+    public JwtService(@Value("${spring.jwt.secret}") String secretKey) {
+        this.secretKey = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
     public String getUsername(String token) {

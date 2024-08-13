@@ -1,6 +1,7 @@
 package project.homelearn.service.student;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,9 +21,8 @@ public class CompilerService {
     private final String apiKey;
     private final RestTemplate restTemplate;
 
-    // @Value("${compiler.key}") String key,
-    public CompilerService(RestTemplateBuilder restTemplateBuilder) {
-        this.apiKey = "";
+    public CompilerService(@Value("${compiler.key}") String key, RestTemplateBuilder restTemplateBuilder) {
+        this.apiKey = key;
         this.restTemplate = restTemplateBuilder.build();
     }
 
