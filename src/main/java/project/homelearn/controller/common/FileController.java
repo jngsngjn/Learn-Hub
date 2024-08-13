@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.model.S3Object;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,8 +26,8 @@ public class FileController {
     private final StorageService storageService;
     private final AmazonS3Client amazonS3Client;
 
-    @Value("${bucket.name}")
-    private String bucketName;
+//    @Value("${bucket.name}")
+    private String bucketName = "";
 
     // 이미지 렌더링
     @GetMapping("/image/**")

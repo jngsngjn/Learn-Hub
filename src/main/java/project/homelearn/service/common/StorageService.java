@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
@@ -34,8 +33,8 @@ public class StorageService {
 
     private final AmazonS3Client amazonS3Client;
 
-    @Value("${bucket.name}")
-    private String bucketName;
+//    @Value("${bucket.name}")
+    private String bucketName = "";
 
     public FileDto uploadFile(MultipartFile file, String filePath) {
         return uploadFileProcess(file, filePath);

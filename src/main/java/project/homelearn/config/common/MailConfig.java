@@ -1,6 +1,5 @@
 package project.homelearn.config.common;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,11 +10,11 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-    @Value("${myEmail}")
-    private String email;
+//    @Value("${myEmail}")
+    private String email = "";
 
-    @Value("${emailPassword}")
-    private String password;
+//    @Value("${emailPassword}")
+    private String password = "";
 
     @Bean
     public JavaMailSender javaMailSender() {

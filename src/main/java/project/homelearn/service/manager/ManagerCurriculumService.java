@@ -4,7 +4,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,8 +51,8 @@ public class ManagerCurriculumService {
 
     private final AmazonS3Client amazonS3Client;
 
-    @Value("${bucket.name}")
-    private String bucketName;
+//    @Value("${bucket.name}")
+    private String bucketName = "";
 
     public boolean enrollCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
         try {

@@ -1,6 +1,5 @@
 package project.homelearn.config.db;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -27,8 +26,9 @@ public class DataInitializer implements CommandLineRunner {
     private final BCryptPasswordEncoder passwordEncoder;
     private final BadgeRepository badgeRepository;
 
-    public DataInitializer(@Value("${manager.password}") String password, UserRepository userRepository, SurveyContentRepository surveyContentRepository, BCryptPasswordEncoder passwordEncoder, BadgeRepository badgeRepository) {
-        this.password = password;
+    // @Value("${manager.password}") String password
+    public DataInitializer(UserRepository userRepository, SurveyContentRepository surveyContentRepository, BCryptPasswordEncoder passwordEncoder, BadgeRepository badgeRepository) {
+        this.password = "password";
         this.userRepository = userRepository;
         this.surveyContentRepository = surveyContentRepository;
         this.passwordEncoder = passwordEncoder;
