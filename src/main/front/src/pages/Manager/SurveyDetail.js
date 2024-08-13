@@ -88,11 +88,9 @@ const SurveyDetail = () => {
       <div className="survey-cards-container">
         <div className="survey-card">
           <div className="survey-card-title">진행 중인 설문 조사</div>
-          {/* 여기서 진행 중인 설문을 맵핑하여 목록을 보여줄 수 있습니다 */}
         </div>
         <div className="survey-card">
           <div className="survey-card-title">종료된 설문 조사</div>
-          {/* 여기서 완료된 설문을 맵핑하여 목록을 보여줄 수 있습니다 */}
         </div>
         <div className="survey-card survey-trend-card">
           <div className="survey-card-title">설문 조사 추이</div>
