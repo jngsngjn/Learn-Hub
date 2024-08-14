@@ -29,6 +29,7 @@ public class StorageConfig {
                 .standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(NCP_STORAGE_URL, REGION_NAME))
                 .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
+                .withChunkedEncodingDisabled(true) // 추가
                 .build();
     }
 }
