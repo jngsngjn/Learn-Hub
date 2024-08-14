@@ -61,11 +61,14 @@ public class ManagerCurriculumController {
     // 교육 과정 등록
     @PostMapping("/manage-curriculums/enroll")
     public ResponseEntity<?> enrollCurriculum(@Valid @RequestBody CurriculumEnrollDto curriculumEnrollDto) {
+        log.info("교육 과정 등록 컨트롤러 매핑");
         boolean result = curriculumService.enrollCurriculum(curriculumEnrollDto);
 
         if (result) {
+            log.info("200 OK");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
+            log.info("400 BAD REQUEST");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
