@@ -17,10 +17,10 @@ import static project.homelearn.config.storage.StorageConstants.REGION_NAME;
 @Configuration
 public class StorageConfig {
 
-    @Value("${access.key}")
+    @Value("${s3.access.key}")
     private String accessKey;
 
-    @Value("${secret.key}")
+    @Value("${s3.secret.key}")
     private String secretKey;
 
     @Bean
