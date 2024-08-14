@@ -120,10 +120,16 @@ public class ManagerCurriculumService {
     }
 
     private void createFolder(String folderName) {
+        log.info("createFolder 메서드 호출 시작");
+        log.info("bucketName = {}", bucketName);
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(0);
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, folderName, new ByteArrayInputStream(new byte[0]), metadata);
+        log.info("putObjectRequest.getBucketName = {}", putObjectRequest.getBucketName());
+
         amazonS3Client.putObject(putObjectRequest);
+        log.info("createFolder 메서드 호출 끝");
+
     }
 
     public boolean updateCurriculum(Long id, CurriculumUpdateDto curriculumUpdateDto) {
