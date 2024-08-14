@@ -56,18 +56,14 @@ public class ManagerCurriculumService {
     private String bucketName;
 
     public boolean enrollCurriculum(CurriculumEnrollDto curriculumEnrollDto) {
-        log.info("enrollCurriculum 메서드 호출");
         try {
             CurriculumType type = curriculumEnrollDto.getType();
             Long th = curriculumRepository.findCountByType(type) + 1;
 
             Curriculum curriculum = createCurriculum(curriculumEnrollDto, th, type);
             curriculumRepository.save(curriculum);
-            log.info("DB 저장 성공");
 
-            log.info("폴더 추가 시작");
             createCurriculumStorage(th, type);
-            log.info("폴더 추가 끝");
             return true;
 
         } catch (Exception e) {
@@ -103,7 +99,6 @@ public class ManagerCurriculumService {
     }
 
     private void createCurriculumStorage(Long count, CurriculumType type) {
-        log.info("createCurriculumStorage 메서드 호출 시작");
         String baseFolder = "";
         if (type.equals(CurriculumType.NCP)) {
             baseFolder = NCP_STORAGE_PREFIX + count;
@@ -116,20 +111,14 @@ public class ManagerCurriculumService {
         createFolder(baseFolder + SUBJECT_STORAGE);
         createFolder(baseFolder + HOMEWORK_STORAGE);
         createFolder(baseFolder + PROFILE_STORAGE);
-        log.info("createCurriculumStorage 메서드 호출 끝");
     }
 
     private void createFolder(String folderName) {
-        log.info("createFolder 메서드 호출 시작");
-        log.info("bucketName = {}", bucketName);
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(0);
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, folderName, new ByteArrayInputStream(new byte[0]), metadata);
-        log.info("putObjectRequest.getBucketName = {}", putObjectRequest.getBucketName());
 
         amazonS3Client.putObject(putObjectRequest);
-        log.info("createFolder 메서드 호출 끝");
-
     }
 
     public boolean updateCurriculum(Long id, CurriculumUpdateDto curriculumUpdateDto) {
