@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./DefaultHeader.css";
+import NCPMainContent from "../../pages/Main/NCPMainContent";
+import AWSMainContent from "../../pages/Main/AWSMainContent";
 
 const DefaultHeader = () => {
   const [token, setToken] = useState(localStorage.getItem("access-token"));
