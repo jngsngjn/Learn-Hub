@@ -1,5 +1,6 @@
 package project.homelearn.config.storage;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
@@ -24,10 +25,14 @@ public class StorageConfig {
     @Bean
     public AmazonS3Client amazonS3Client() {
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        ClientConfiguration clientConfig = new ClientConfiguration();
+        clientConfig.setSignerOverride("AWSS3V4SignerType"); // 명시적으로 Signer 설정
+
         return (AmazonS3Client) AmazonS3ClientBuilder
                 .standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(NCP_STORAGE_URL, REGION_NAME))
                 .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
+                .withClientConfiguration(clientConfig)
                 .build();
     }
 }
