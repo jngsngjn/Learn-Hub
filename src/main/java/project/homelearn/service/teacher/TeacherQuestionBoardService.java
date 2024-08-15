@@ -156,7 +156,7 @@ public class TeacherQuestionBoardService {
                 AiCommentWriteDto aiCommentWriteDto = new AiCommentWriteDto(question.getId(), "AI", aiResponse);
                 autoWriteComment(aiCommentWriteDto);
             } catch (Exception e) {
-                log.error("게시글 ID " + question.getId() + "에 대한 AI 응답 처리 중 오류 발생.", e);
+                log.error("게시글 ID {}에 대한 AI 응답 처리 중 오류 발생.", question.getId(), e);
             }
         }
         log.info("스케줄링 호출");
@@ -165,15 +165,15 @@ public class TeacherQuestionBoardService {
     // AI 답변 받아오기
     private String getAIResponse(String prompt) {
         String url = "http://localhost:8080/bot/chat?prompt=" + prompt; // AnswerBotController 엔드포인트 URL
-        log.info("request url: " + url);
+        log.info("request url: {}", url);
         RestTemplate restTemplate = new RestTemplate();
 
         try {
             ResponseEntity<ChatGPTResponseDto> response = restTemplate.getForEntity(url, ChatGPTResponseDto.class);
-            log.info("ai response: " + response.getBody());
+            log.info("ai response: {}", response.getBody());
 
             if (response.getBody() != null && !response.getBody().getChoices().isEmpty()) {
-                log.info("ai response: " + response.getBody().getChoices());
+                log.info("ai response: {}", response.getBody().getChoices());
                 return response.getBody().getChoices().get(0).getMessage().getContent();
             }
         } catch (Exception e) {
