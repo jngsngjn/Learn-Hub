@@ -25,8 +25,7 @@ public class AutoAnswerService {
     private final QuestionBoardCommentRepository commentRepository;
 
     // 답변없는 게시물 탐색 스케줄링
-//    @Scheduled(fixedRate = 3600000) // 1시간마다 실행
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 3600000) // 1시간마다 실행
     public void checkForUnansweredQuestions() {
         List<QuestionBoard> unansweredQuestions = findUnansweredQuestionsWithin12Hours();
         if (unansweredQuestions == null) {
