@@ -158,6 +158,16 @@ public class TeacherQuestionBoardService {
 
     // 댓글 Dto 변환
     public QuestionBoardCommentDto convertToCommentDto(QuestionBoardComment comment) {
+        User user = comment.getUser();
+        if (user == null) {
+            return new QuestionBoardCommentDto(
+                    comment.getId(),
+                    "ChatGPT",
+                    comment.getContent(),
+                    comment.getCreatedDate()
+            );
+        }
+
         return new QuestionBoardCommentDto(
                 comment.getId(),
                 comment.getUser().getName(),
