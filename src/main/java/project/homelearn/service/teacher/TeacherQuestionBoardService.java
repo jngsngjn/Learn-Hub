@@ -202,7 +202,7 @@ public class TeacherQuestionBoardService {
     }
 
     private QuestionBoardDto convertToListDto(QuestionBoard questionBoard) {
-        // 선생님이 글을 달았는지 안 달았는지 여부를 추가해야 함
+
         boolean isCommentHere = questionBoardRepository.hasTeacherComment(questionBoard);
 
         return new QuestionBoardDto(
