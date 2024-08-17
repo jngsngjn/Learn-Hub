@@ -3,6 +3,7 @@ package project.homelearn.repository.board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import project.homelearn.entity.board.QuestionBoard;
@@ -41,4 +42,8 @@ public interface QuestionBoardRepository extends JpaRepository<QuestionBoard, Lo
     QuestionBoard findQuestionBoardAndWriter(@Param("questionId") Long questionId);
 
     long countByUser(User user);
+
+    @Modifying
+    @Query("update QuestionBoard q set q.viewCount = q.viewCount + 1 where q.id = :id")
+    void incrementViewCountById(@Param("id") Long id);
 }
