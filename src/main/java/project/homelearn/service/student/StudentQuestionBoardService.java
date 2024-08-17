@@ -244,7 +244,6 @@ public class StudentQuestionBoardService {
         questionBoard.setCommentCount(questionBoard.getCommentCount() - 1);
     }
 
-
     // 질문 게시판 글 스크랩 = 나도 궁금해
     public boolean addScrap(String username, Long questionBoardId) {
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
@@ -330,7 +329,7 @@ public class StudentQuestionBoardService {
         );
     }
 
-    //게시글 리스트
+    // 게시글 리스트
     public Page<QuestionBoardDto> getQuestionBoardList(String filterType, String subjectName, Curriculum curriculum, Pageable pageable) {
         if (filterType == null) {
             filterType = "default";
@@ -362,10 +361,7 @@ public class StudentQuestionBoardService {
     }
 
     private QuestionBoardDto convertToListDto(QuestionBoard questionBoard) {
-
-        //선생님이 글을 달았는지 안달았는지 여부를 추가해야함
         boolean isCommentHere = questionBoardRepository.hasTeacherComment(questionBoard);
-
         return new QuestionBoardDto(
                 questionBoard.getId(),
                 questionBoard.getSubject().getName(),
