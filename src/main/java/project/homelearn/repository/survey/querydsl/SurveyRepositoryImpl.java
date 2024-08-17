@@ -235,7 +235,7 @@ public class SurveyRepositoryImpl implements SurveyRepositoryCustom {
         List<String> textAnswers = queryFactory
                 .select(surveyAnswer.textAnswer)
                 .from(surveyAnswer)
-                .where(surveyAnswer.survey.id.eq(surveyId))
+                .where(surveyAnswer.survey.id.eq(surveyId), surveyAnswer.rating.isNotNull())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
