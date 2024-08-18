@@ -1,11 +1,9 @@
 .gradle
-build/
+build
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-data.properties
 secret.properties
-memo.txt
 
 ### STS ###
 .apt_generated
@@ -42,16 +40,3 @@ out/
 .DS_Store
 .AppleDouble
 .LSOverride
-
-### react ###
-.DS_*
-logs
-**/*.backup.*
-**/*.back.*
-.env
-
-node_modules
-bower_components
-
-### dotenv ###
-.env
