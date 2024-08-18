@@ -8,14 +8,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.homelearn.dto.student.dashboard.ViewLectureDto;
 import project.homelearn.dto.student.dashboard.ViewRecentStudyLectureDto;
+import project.homelearn.dto.student.lecture.StudentLectureDto;
 import project.homelearn.dto.student.lecture.StudentLectureViewDto;
 import project.homelearn.dto.teacher.lecture.LectureListDto;
-import project.homelearn.dto.teacher.lecture.TeacherLectureViewDto;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.curriculum.StudentLecture;
 import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.repository.curriculum.LectureRepository;
 import project.homelearn.repository.curriculum.StudentLectureRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -30,6 +32,8 @@ public class StudentLectureService {
     private final LectureRepository lectureRepository;
     private final StudentLectureRepository myLectureRepository;
     private final CurriculumRepository curriculumRepository;
+    private final StudentLectureRepository studentLectureRepository;
+
 
     // 최근 영상 or 최근 영상 중 안본 영상
     public Optional<ViewLectureDto> getLecture(String username){
@@ -65,4 +69,43 @@ public class StudentLectureService {
         return lectureRepository.findStudentLectureView(lectureId);
     }
 
+    // 학생의 강의 시청 기록 김수정
+    @Transactional
+    public Optional<StudentLectureDto> patchLastView(StudentLectureDto studentLectureDto) {
+        // lectureId와 username으로 엔티티 조회
+        Optional<StudentLecture> optionalStudentLecture = studentLectureRepository.findByUserUsernameAndLectureId(
+                studentLectureDto.getUsername(), studentLectureDto.getLectureId());
+
+        if (optionalStudentLecture.isPresent()) {
+            StudentLecture studentLecture = optionalStudentLecture.get();
+
+            // lastPosition 업데이트
+            if (studentLectureDto.getLastPosition() != null) {
+                studentLecture.setLastPosition(studentLectureDto.getLastPosition());
+            }
+
+            // isCompleted와 completedDate 업데이트
+            studentLecture.setCompleted(studentLectureDto.isCompleted());
+
+            if (studentLectureDto.isCompleted()) {
+                studentLecture.setCompletedDate(studentLectureDto.getCompletedDate() != null
+                        ? studentLectureDto.getCompletedDate()
+                        : LocalDateTime.now());
+            }
+
+            studentLectureRepository.save(studentLecture);
+
+            // 변경된 엔티티를 다시 DTO로 변환하여 반환
+            studentLectureDto.setStudentLectureId(studentLecture.getId());
+            studentLectureDto.setLastPosition(studentLecture.getLastPosition());
+            studentLectureDto.setCompleted(studentLecture.isCompleted());
+            studentLectureDto.setCompletedDate(studentLecture.getCompletedDate());
+            studentLectureDto.setInitialViewDate(studentLecture.getInitialViewDate());
+
+            return Optional.of(studentLectureDto);
+        }
+        return Optional.empty();
+    }
+
 }
+

@@ -1,16 +1,15 @@
 package project.homelearn.controller.student.lecture;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import project.homelearn.dto.student.lecture.StudentLectureViewDto;
 import project.homelearn.dto.teacher.lecture.LectureListDto;
-import project.homelearn.dto.teacher.lecture.TeacherLectureViewDto;
 import project.homelearn.dto.teacher.subject.SubjectSelectListDto;
 import project.homelearn.service.student.StudentLectureService;
 import project.homelearn.service.student.StudentSubjectService;
-import project.homelearn.service.teacher.TeacherLectureService;
-import project.homelearn.service.teacher.TeacherSubjectService;
 
 import java.security.Principal;
 import java.util.List;
@@ -23,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentLectureViewController {
 
+    private static final Logger log = LoggerFactory.getLogger(StudentLectureViewController.class);
     private final StudentSubjectService subjectService;
     private final StudentLectureService studentLectureService;
 
@@ -57,4 +57,5 @@ public class StudentLectureViewController {
         int size = 6;
         return studentLectureService.getLectureList(principal.getName(), page, size);
     }
+
 }
