@@ -4,6 +4,7 @@ build
 !**/src/main/**/build/
 !**/src/test/**/build/
 secret.properties
+test
 
 ### STS ###
 .apt_generated

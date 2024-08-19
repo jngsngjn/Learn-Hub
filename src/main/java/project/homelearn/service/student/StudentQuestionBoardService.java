@@ -276,11 +276,10 @@ public class StudentQuestionBoardService {
 
     // 조회수 증가
     public void incrementViewCount(Long questionBoardId) {
-        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
-        questionBoard.setCommentCount(questionBoard.getViewCount() + 1);
+        questionBoardRepository.incrementViewCountById(questionBoardId);
     }
 
-    //글 상세보기
+    // 글 상세 조회
     public QuestionBoardDetailDto getQuestionBoard(Long questionBoardId) {
         QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
 
