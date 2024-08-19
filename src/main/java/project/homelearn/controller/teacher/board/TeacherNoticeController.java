@@ -16,6 +16,7 @@ import project.homelearn.repository.curriculum.CurriculumRepository;
 import project.homelearn.service.teacher.TeacherBoardService;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -44,7 +45,7 @@ public class TeacherNoticeController {
         if (noticeListBoard.hasContent()) {
             return new ResponseEntity<>(noticeListBoard, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
         }
     }
 

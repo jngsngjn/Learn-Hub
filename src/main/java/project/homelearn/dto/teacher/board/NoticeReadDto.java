@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NoticeReadDto {
 
-    @NotBlank
+    @NotNull
     private Long boardId;
 
     @NotBlank

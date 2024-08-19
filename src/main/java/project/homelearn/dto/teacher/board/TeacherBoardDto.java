@@ -1,7 +1,6 @@
 package project.homelearn.dto.teacher.board;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -15,5 +14,4 @@ public class TeacherBoardDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
-
 }

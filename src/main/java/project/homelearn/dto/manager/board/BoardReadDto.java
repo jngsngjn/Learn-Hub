@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class BoardReadDto {
 
-    @NotBlank
+    @NotNull
     private Long id;
 
     @NotBlank

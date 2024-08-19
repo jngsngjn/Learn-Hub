@@ -12,9 +12,10 @@ const useGetFetch = (url, initialState) => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(process.env.REACT_APP_BASE_URL + url, {
+      .get(process.env.REACT_APP_BASE_URL2 + url, {
         headers: {
           token: token,
+          contentType: 'application/json; charset=utf-8'
         },
       })
       // .get(process.env.REACT_APP_BASE_URL + url)
