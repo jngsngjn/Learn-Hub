@@ -60,7 +60,7 @@ public class TeacherHomeworkController {
     public ResponseEntity<?> feedbackHomework(Principal principal,
                                               @PathVariable("homeworkId") Long homeworkId,
                                               @PathVariable("studentHomeworkId") Long studentHomeworkId,
-                                              @Valid @ModelAttribute HomeworkFeedbackDto homeworkDto) {
+                                              @Valid @RequestBody HomeworkFeedbackDto homeworkDto) {
         boolean result = homeworkService.feedbackHomework(homeworkId, studentHomeworkId, principal.getName(), homeworkDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -73,7 +73,7 @@ public class TeacherHomeworkController {
     public ResponseEntity<?> modifyFeedbackHomework(Principal principal,
                                               @PathVariable("homeworkId") Long homeworkId,
                                               @PathVariable("studentHomeworkId") Long studentHomeworkId,
-                                              @Valid @ModelAttribute HomeworkFeedbackDto homeworkDto) {
+                                              @Valid @RequestBody HomeworkFeedbackDto homeworkDto) {
         boolean result = homeworkService.modifyFeedbackHomework(homeworkId, studentHomeworkId, principal.getName(), homeworkDto);
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
