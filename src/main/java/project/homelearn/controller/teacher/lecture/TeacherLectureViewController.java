@@ -30,7 +30,9 @@ public class TeacherLectureViewController {
      */
     @GetMapping("/subject-select")
     public List<SubjectSelectListDto> viewSubjectSelectList(Principal principal) {
-        return subjectService.getSubjectSelectList(principal.getName());
+        List<SubjectSelectListDto> result = subjectService.getSubjectSelectList(principal.getName());
+        System.out.println(result);
+        return result;
     }
 
     // localhost:8080/teachers/lectures?page=0&subjectId=1
