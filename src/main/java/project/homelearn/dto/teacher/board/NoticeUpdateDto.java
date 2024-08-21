@@ -36,4 +36,11 @@ content             내용
 isEmergency         true or false
 file                (타입 File로 변경 후)업로드할 파일
 
+게시글 수정 시, 파일 삭제 or 파일 삭제하지 않고 수정
+key                 value
+title               제목을 바꿀 것이냐
+content             파일을 삭제하지 않고 글만 바꿀건가 자네?
+emergency           true(긴급 O) or false(긴급 X)
+useDefaultFile      true(파일삭제 O) or false(파일삭제 X)
+
  */
