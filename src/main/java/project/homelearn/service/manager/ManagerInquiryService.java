@@ -80,7 +80,7 @@ public class ManagerInquiryService {
                     inquiry.getTitle(),
                     inquiry.getContent(),
                     inquiry.getCreatedDate(),
-                    inquiry.getUser(),
+                    inquiry.getUser().getId(),
                     inquiry.getResponse(),
                     inquiry.getResponseDate()
             );
@@ -117,7 +117,7 @@ public class ManagerInquiryService {
                         managerInquiry.getTitle(),
                         managerInquiry.getContent(),
                         managerInquiry.getCreatedDate(),
-                        managerInquiry.getUser(),
+                        managerInquiry.getUser().getId(),
                         managerInquiry.getResponse() != null ? managerInquiry.getResponse() : null,
                         managerInquiry.getResponseDate() != null ? managerInquiry.getResponseDate() : null
                 ))
