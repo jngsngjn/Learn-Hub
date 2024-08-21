@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import project.homelearn.entity.user.User;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +24,7 @@ public class ManagerInquiryDto {
     private LocalDateTime createdDate;
 
     @NotNull
-    private User user;
+    private Long userId;
 
     private String response;
 
