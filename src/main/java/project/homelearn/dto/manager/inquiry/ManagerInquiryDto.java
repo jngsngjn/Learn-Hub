@@ -25,7 +25,7 @@ public class ManagerInquiryDto {
     private LocalDateTime createdDate;
 
     @NotNull
-    private User user;
+    private Long userId;
 
     private String response;
 
