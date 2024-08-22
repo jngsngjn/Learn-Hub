@@ -14,6 +14,7 @@ import project.homelearn.dto.teacher.dashboard.QuestionTop5Dto;
 import project.homelearn.entity.board.QuestionBoard;
 import project.homelearn.entity.board.comment.QuestionBoardComment;
 import project.homelearn.entity.curriculum.Curriculum;
+import project.homelearn.entity.curriculum.Subject;
 import project.homelearn.entity.user.User;
 import project.homelearn.repository.board.QuestionBoardCommentRepository;
 import project.homelearn.repository.board.QuestionBoardRepository;
@@ -209,19 +210,31 @@ public class TeacherQuestionBoardService {
     }
 
     private QuestionBoardDto convertToListDto(QuestionBoard questionBoard) {
-
         boolean isCommentHere = questionBoardRepository.hasTeacherComment(questionBoard);
+        Subject subject = questionBoard.getSubject();
 
-        return new QuestionBoardDto(
-                questionBoard.getId(),
-                questionBoard.getSubject().getName(),
-                questionBoard.getTitle(),
-                questionBoard.getUser().getName(),
-                questionBoard.getContent(),
-                questionBoard.getCreatedDate(),
-                questionBoard.getCommentCount(),
-                isCommentHere
-        );
+        if (subject == null) {
+            return new QuestionBoardDto(
+                    questionBoard.getId(),
+                    questionBoard.getTitle(),
+                    questionBoard.getUser().getName(),
+                    questionBoard.getContent(),
+                    questionBoard.getCreatedDate(),
+                    questionBoard.getCommentCount(),
+                    isCommentHere
+            );
+        } else {
+            return new QuestionBoardDto(
+                    questionBoard.getId(),
+                    questionBoard.getSubject().getName(),
+                    questionBoard.getTitle(),
+                    questionBoard.getUser().getName(),
+                    questionBoard.getContent(),
+                    questionBoard.getCreatedDate(),
+                    questionBoard.getCommentCount(),
+                    isCommentHere
+            );
+        }
     }
 
     // 최근 질문 5개
