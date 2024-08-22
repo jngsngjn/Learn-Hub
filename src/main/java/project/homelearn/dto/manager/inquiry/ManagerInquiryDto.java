@@ -27,6 +27,12 @@ public class ManagerInquiryDto {
     @NotNull
     private Long userId;
 
+    private String name;
+
+    private String curriculumName;
+
+    private Long curriculumTh;
+
     private String response;
 
     private LocalDateTime responseDate;
