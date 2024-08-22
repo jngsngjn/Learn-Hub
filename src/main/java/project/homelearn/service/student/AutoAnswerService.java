@@ -51,6 +51,7 @@ public class AutoAnswerService {
     // 답변없는 게시글 불러오기
     private List<QuestionBoard> findUnansweredQuestionsWithin12Hours() {
         LocalDateTime twelveHoursAgo = LocalDateTime.now().minusHours(12);
+        //LocalDateTime now  = LocalDateTime.now();
         return questionRepository.findByCreatedDateBeforeAndCommentsIsNull(twelveHoursAgo);
     }
 

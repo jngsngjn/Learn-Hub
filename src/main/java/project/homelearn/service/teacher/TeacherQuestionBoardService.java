@@ -115,20 +115,17 @@ public class TeacherQuestionBoardService {
 
     // 댓글 수 증가
     public void incrementCommentCount(Long questionBoardId){
-        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
-        questionBoard.setCommentCount(questionBoard.getCommentCount() + 1);
+        questionBoardRepository.incrementCommentCountById(questionBoardId);
     }
 
     // 댓글 수 감소
     public void decrementCommentCount(Long questionBoardId){
-        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
-        questionBoard.setCommentCount(questionBoard.getCommentCount() - 1);
+        questionBoardRepository.decrementCommentCountById(questionBoardId);
     }
 
     // 조회수 증가
     public void incrementViewCount(Long questionBoardId) {
-        QuestionBoard questionBoard = questionBoardRepository.findById(questionBoardId).orElseThrow();
-        questionBoard.setCommentCount(questionBoard.getViewCount() + 1);
+        questionBoardRepository.incrementViewCountById(questionBoardId);
     }
 
     // 글 상세보기
