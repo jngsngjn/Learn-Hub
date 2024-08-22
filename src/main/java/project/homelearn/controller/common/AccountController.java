@@ -64,7 +64,7 @@ public class AccountController {
     // 비밀번호 재설정
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetDto passwordResetDto) {
-        boolean isHuman = recaptchaService.verifyRecaptcha(passwordResetDto.getRecaptchaToken());
+        boolean isHuman = recaptchaService.verifyRecaptcha(passwordResetDto.getRecaptcha());
         if (!isHuman) {
             return new ResponseEntity<>("봇입니다.", HttpStatus.BAD_REQUEST);
         }
