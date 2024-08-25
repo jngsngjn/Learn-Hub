@@ -26,7 +26,7 @@ public class StudentQuestionBoardController {
     // 질문 등록
     @PostMapping
     public ResponseEntity<?> writeQuestionBoard(Principal principal,
-                                                @Valid @ModelAttribute QuestionBoardWriteDto questionBoardWriteDto) {
+                                                @Valid @RequestBody QuestionBoardWriteDto questionBoardWriteDto) {
         String username = principal.getName();
         studentQuestionBoardService.writeQuestionBoard(username, questionBoardWriteDto);
         return new ResponseEntity<>(HttpStatus.OK);
